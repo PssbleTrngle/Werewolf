@@ -1,7 +1,7 @@
 import { ArrayOrSingle } from "../../util";
 import { Effect } from "../effect/Effet";
 import { Player } from "../player/Player";
-import { Choice } from "../vote/Options";
+import { Choice } from "../vote/Choice";
 import { Vote } from "../vote/Vote";
 
 export type EventFactory = (

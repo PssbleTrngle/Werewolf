@@ -1,7 +1,7 @@
-import { isAlive, notSelf } from "../../player/predicates";
-import { Player } from "../Player";
 import { EventEffect } from "../effect/EventEffect";
 import { KillEvent } from "../event/KillEvent";
+import { Player } from "../player/Player";
+import { isAlive, notSelf } from "../player/predicates";
 import { Role } from "./Role";
 import { RoleGroup } from "./RoleGroup";
 
