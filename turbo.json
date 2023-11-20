@@ -11,6 +11,10 @@
       "persistent": true
     },
     "lint": {},
+    "test": {
+      "dependsOn": ["lint", "^test"],
+      "outputs": ["coverage/**"]
+    },
     "clean": {
       "cache": false
     }
