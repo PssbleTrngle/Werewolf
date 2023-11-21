@@ -1,8 +1,10 @@
 import { Choice } from "models";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useVoteMutation } from "../hooks/game";
 
 export default function ChoicePanel({ choice }: { choice: Choice }) {
+  const { t } = useTranslation();
   const { mutate: vote } = useVoteMutation();
 
   return (
@@ -19,7 +21,7 @@ export default function ChoicePanel({ choice }: { choice: Choice }) {
       </PlayerButtons>
       {choice.canSkip && (
         <Skip onClick={() => vote({ type: "skip" })}>
-          {choice.players?.length ? "Skip" : "Dismiss"}
+          {choice.players?.length ? t("vote.skip") : t("vote.dismiss")}
         </Skip>
       )}
     </Buttons>

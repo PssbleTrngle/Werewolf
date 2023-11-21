@@ -7,3 +7,7 @@ export interface Event {
   choice?: Choice;
   data?: Record<string, unknown>;
 }
+
+export interface RevealData {
+  targets: ReadonlyArray<Player>;
+}

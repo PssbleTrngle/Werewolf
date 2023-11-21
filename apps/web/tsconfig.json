@@ -1,8 +1,6 @@
 {
   "extends": "tsconfig/react",
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+  "include": [
+    "src"
   ]
 }
