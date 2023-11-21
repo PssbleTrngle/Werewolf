@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsup ",
     "dev": "tsup --watch",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "test": "vitest"
   },

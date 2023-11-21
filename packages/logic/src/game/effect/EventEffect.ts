@@ -3,9 +3,13 @@ import { EventFactory } from "../event/Event.js";
 import { Effect } from "./Effect.js";
 
 export class EventEffect implements Effect {
-  constructor(private readonly factory: EventFactory) {}
+  constructor(
+    private readonly factory: EventFactory,
+    private readonly immediately = false
+  ) {}
 
   apply(game: GameAccess) {
-    game.arise(this.factory);
+    if (this.immediately) game.immediately(this.factory);
+    else game.arise(this.factory);
   }
 }

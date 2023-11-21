@@ -12,7 +12,7 @@ export class SeeEvent extends Event {
 
   finish(vote: Vote): ArrayOrSingle<Effect> {
     if (vote.type === "players") {
-      return new RevealEffect(this.players[0], vote.players);
+      return new RevealEffect("seer", this.players[0], vote.players);
     }
 
     return [];

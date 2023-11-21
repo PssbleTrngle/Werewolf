@@ -74,7 +74,7 @@ class FrozenGame implements GameAccess {
   }
 
   hasFinished(event: Event) {
-    return this.replaced.has(event);
+    return this.replaced.get(event)?.length === 0;
   }
 
   apply(effects: ArrayOrSingle<Effect>) {
@@ -101,23 +101,27 @@ class FrozenGame implements GameAccess {
     this.deaths.add(playerId);
   }
 
+  private get unnotifiedDeaths() {
+    return [...this.state.unnotifiedDeaths, ...Array.from(this.deaths.keys())];
+  }
+
   broadcastDeaths() {
-    if (this.deaths.size > 0) {
-      this.clearDeaths = true;
+    this.clearDeaths = true;
 
-      this.arise((players) => {
-        const deaths = [
-          ...this.state.unnotifiedDeaths,
-          ...Array.from(this.deaths.keys()),
-        ].map((it) => this.playerById(it));
+    this.arise((players) => {
+      const deaths = this.unnotifiedDeaths;
 
-        const alive = players
-          .filter(isAlive)
-          .filter((it) => !this.deaths.has(it.id));
+      const alive = players
+        .filter(isAlive)
+        .filter((it) => !this.deaths.has(it.id));
 
-        return new DeathEvent(alive, deaths);
-      });
-    }
+      if (deaths.length === 0) return [];
+
+      return new DeathEvent(
+        alive,
+        deaths.map((it) => this.playerById(it))
+      );
+    });
   }
 
   unfreeze(): GameState {
@@ -133,7 +137,7 @@ class FrozenGame implements GameAccess {
     );
 
     return {
-      unnotifiedDeaths: this.clearDeaths ? [] : this.state.unnotifiedDeaths,
+      unnotifiedDeaths: this.clearDeaths ? [] : this.unnotifiedDeaths,
       players: this.state.players.map((player) => {
         if (this.deaths.has(player.id)) return { ...player, status: "dead" };
         else return player;

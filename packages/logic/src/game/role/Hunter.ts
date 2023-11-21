@@ -16,6 +16,6 @@ export class Hunter extends Role {
       return new KillEvent("kill.hunter", [self], "getting shot", {
         players: targets,
       });
-    });
+    }, true);
   }
 }

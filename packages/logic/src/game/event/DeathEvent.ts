@@ -7,7 +7,7 @@ export class DeathEvent extends Event {
     players: ReadonlyArray<Player>,
     public readonly deaths: ReadonlyArray<Player>
   ) {
-    super(players, DismissChoice);
+    super("announcement.death", players, DismissChoice);
   }
 
   finish() {
