@@ -19,6 +19,6 @@ export function isAlive(player: Player) {
   return player.status === "alive";
 }
 
-export function hasRole(role: { new (...args: unknown[]): Role }) {
-  return (player: Player) => player.role instanceof role;
+export function hasRole(role: string) {
+  return (player: Player) => player.role.type === role;
 }

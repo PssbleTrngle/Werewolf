@@ -7,7 +7,7 @@ import { sleepEffects } from "./SleepBoundary.js";
 
 export default class LynchEvent extends KillEvent {
   constructor(players: ReadonlyArray<Player>) {
-    super(players, "lynching", { players, canSkip: true });
+    super("lynch", players, "lynching", { players, canSkip: true });
   }
 
   finish(vote: Vote) {

@@ -1,19 +1,19 @@
-import { Vote } from "models";
+import { Choice, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { KillEffect } from "../effect/KillEffect.js";
 import { Player } from "../player/Player.js";
-import { Choice } from "../vote/Choice.js";
 import { Event } from "./Event.js";
 
 export class KillEvent extends Event {
   constructor(
+    type: string,
     readonly players: ReadonlyArray<Player>,
     readonly cause: unknown,
     readonly choice: Choice,
     readonly timeLimit?: number
   ) {
-    super(players, choice, timeLimit);
+    super(type, players, choice, timeLimit);
   }
 
   finish(vote: Vote): ArrayOrSingle<Effect> {

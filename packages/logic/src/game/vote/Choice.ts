@@ -1,10 +1,4 @@
-import { Player } from "../player/Player.js";
-
-export interface Choice {
-  canSkip?: boolean;
-  voteCount?: number;
-  players: ReadonlyArray<Player>;
-}
+import { Choice } from "models";
 
 export const DismissChoice: Choice = {
   canSkip: true,

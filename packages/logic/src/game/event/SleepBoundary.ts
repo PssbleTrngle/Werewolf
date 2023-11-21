@@ -20,7 +20,7 @@ export function sleepEffects(): ReadonlyArray<Effect> {
 
 export class SleepBoundary extends Event {
   constructor(players: ReadonlyArray<Player>) {
-    super(players);
+    super("sleep", players);
   }
 
   finish() {

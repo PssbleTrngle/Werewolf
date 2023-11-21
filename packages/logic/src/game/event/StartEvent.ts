@@ -17,7 +17,7 @@ function startEffects(): ReadonlyArray<Effect> {
 
 export class StartEvent extends Event {
   constructor(players: ReadonlyArray<Player>) {
-    super(players, DismissChoice);
+    super("start", players, DismissChoice);
   }
 
   finish() {

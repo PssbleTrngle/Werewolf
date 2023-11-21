@@ -7,7 +7,7 @@ import { Event } from "./Event.js";
 
 export class SeeEvent extends Event {
   constructor(player: Player, targets: ReadonlyArray<Player>) {
-    super([player], { players: targets });
+    super("see", [player], { players: targets });
   }
 
   finish(vote: Vote): ArrayOrSingle<Effect> {
