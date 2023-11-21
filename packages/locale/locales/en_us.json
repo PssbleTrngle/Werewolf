@@ -1,0 +1,16 @@
+{
+  "vote": {
+    "skip": "Skip",
+    "dismiss": "Dismiss"
+  },
+  "event": {
+    "start": {
+      "title": "Start the Game?"
+    },
+    "reveal": {
+      "eye": {
+        "title": "The Seer is..."
+      }
+    }
+  }
+}
