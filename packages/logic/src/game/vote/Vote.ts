@@ -1,16 +1,5 @@
-import { maxBy, uniqBy } from "lodash-es";
-import { Player } from "../player/Player";
-
-export interface SkipVote {
-  type: "skip";
-}
-
-export interface PlayerVote {
-  type: "players";
-  players: ReadonlyArray<Player>;
-}
-
-export type Vote = PlayerVote | SkipVote;
+import { maxBy, uniq } from "lodash-es";
+import { PlayerVote, Vote } from "models";
 
 function isPlayerVote(vote: Vote): vote is PlayerVote {
   return vote.type === "players";
@@ -20,10 +9,7 @@ export function calculateWinner(votes: ReadonlyArray<Vote>): Vote {
   const skipVotes = votes.filter((it) => it.type === "skip");
 
   const playerVotes = votes.filter(isPlayerVote);
-  const players = uniqBy(
-    playerVotes.flatMap((it) => it.players),
-    (it) => it.id
-  );
+  const players = uniq(playerVotes.flatMap((it) => it.players));
 
   const withAmount = players.map((player) => {
     const votes = playerVotes.filter((it) => it.players.includes(player));

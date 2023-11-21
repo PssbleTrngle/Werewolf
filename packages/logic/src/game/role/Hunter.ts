@@ -1,9 +1,9 @@
-import { EventEffect } from "../effect/EventEffect";
-import { KillEvent } from "../event/KillEvent";
-import { Player } from "../player/Player";
-import { isAlive, notSelf } from "../player/predicates";
-import { Role } from "./Role";
-import { RoleGroup } from "./RoleGroup";
+import { EventEffect } from '../effect/EventEffect.js';
+import { KillEvent } from '../event/KillEvent.js';
+import { Player } from '../player/Player.js';
+import { isAlive, notSelf } from '../player/predicates.js';
+import { Role } from './Role.js';
+import { RoleGroup } from './RoleGroup.js';
 
 export class Hunter extends Role {
   constructor() {

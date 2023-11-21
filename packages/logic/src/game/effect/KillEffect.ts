@@ -1,15 +1,15 @@
-import { Game } from "../Game";
-import { DeathCause } from "../player/DeathCause";
-import { Player } from "../player/Player";
-import { Effect } from "./Effet";
+import { Id } from "models";
+import { GameAccess } from "../Game.js";
+import { DeathCause } from "../player/DeathCause.js";
+import { Effect } from "./Effect.js";
 
 export class KillEffect implements Effect {
   constructor(
-    private readonly target: Player,
+    private readonly target: Id,
     private readonly cause: DeathCause
   ) {}
 
-  apply(game: Game) {
+  apply(game: GameAccess) {
     game.kill(this.target, this.cause);
   }
 }

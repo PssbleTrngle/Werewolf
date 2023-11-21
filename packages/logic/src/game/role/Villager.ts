@@ -1,5 +1,5 @@
-import { Role } from "./Role";
-import { RoleGroup } from "./RoleGroup";
+import { Role } from './Role.js';
+import { RoleGroup } from './RoleGroup.js';
 
 export class Villager extends Role {
   constructor() {

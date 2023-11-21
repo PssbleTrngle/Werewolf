@@ -1,8 +1,8 @@
-import { ArrayOrSingle } from "../../util";
-import { Effect } from "../effect/Effet";
-import { Player } from "../player/Player";
-import { Choice } from "../vote/Choice";
-import { Vote } from "../vote/Vote";
+import { Vote } from "models";
+import { ArrayOrSingle } from "../../util.js";
+import { Effect } from "../effect/Effect.js";
+import { Player } from "../player/Player.js";
+import { Choice } from "../vote/Choice.js";
 
 export type EventFactory = (
   players: ReadonlyArray<Player>

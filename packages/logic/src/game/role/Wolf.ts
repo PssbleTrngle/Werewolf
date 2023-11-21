@@ -1,8 +1,8 @@
-import { KillEvent } from "../event/KillEvent";
-import { registerSleepEvent } from "../event/SleepBoundary";
-import { inGroup, isAlive } from "../player/predicates";
-import { Role } from "./Role";
-import { RoleGroup } from "./RoleGroup";
+import { KillEvent } from '../event/KillEvent.js';
+import { registerSleepEvent } from '../event/SleepBoundary.js';
+import { inGroup, isAlive } from '../player/predicates.js';
+import { Role } from './Role.js';
+import { RoleGroup } from './RoleGroup.js';
 
 export class Werewolf extends Role {
   constructor() {

@@ -1,7 +1,7 @@
-import { ArrayOrSingle } from "../../util";
-import { Effect } from "../effect/Effet";
-import { Player } from "../player/Player";
-import { RoleGroup } from "./RoleGroup";
+import { ArrayOrSingle } from "../../util.js";
+import { Effect } from "../effect/Effect.js";
+import { Player } from "../player/Player.js";
+import { RoleGroup } from "./RoleGroup.js";
 
 export class Role {
   constructor(
@@ -9,7 +9,7 @@ export class Role {
     public readonly emoji: string
   ) {}
 
-  onDeath(self: Player): ArrayOrSingle<Effect> {
+  onDeath(_self: Player): ArrayOrSingle<Effect> {
     return [];
   }
 }

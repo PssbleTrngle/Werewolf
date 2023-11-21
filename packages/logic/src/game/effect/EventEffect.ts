@@ -1,11 +1,11 @@
-import { Game } from "../Game";
-import { EventFactory } from "../event/Event";
-import { Effect } from "./Effet";
+import { GameAccess } from "../Game.js";
+import { EventFactory } from "../event/Event.js";
+import { Effect } from "./Effect.js";
 
 export class EventEffect implements Effect {
   constructor(private readonly factory: EventFactory) {}
 
-  apply(game: Game) {
-    game.arise(this.factory(game.players));
+  apply(game: GameAccess) {
+    game.arise(this.factory);
   }
 }

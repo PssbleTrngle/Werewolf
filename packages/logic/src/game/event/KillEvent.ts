@@ -1,10 +1,10 @@
-import { ArrayOrSingle } from "../../util";
-import { Player } from "../Player";
-import { Choice } from "../choice/Choice";
-import { Vote } from "../choice/Vote";
-import { Effect } from "../effect/Effet";
-import { KillEffect } from "../effect/KillEffect";
-import { Event } from "./Event";
+import { Vote } from "models";
+import { ArrayOrSingle } from "../../util.js";
+import { Effect } from "../effect/Effect.js";
+import { KillEffect } from "../effect/KillEffect.js";
+import { Player } from "../player/Player.js";
+import { Choice } from "../vote/Choice.js";
+import { Event } from "./Event.js";
 
 export class KillEvent extends Event {
   constructor(

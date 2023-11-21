@@ -1,9 +1,10 @@
-import { Effect } from "../effect/Effet";
-import { EventEffect } from "../effect/EventEffect";
-import { Player } from "../player/Player";
-import { isAlive } from "../player/predicates";
-import { Event, EventFactory } from "./Event";
-import LynchEvent from "./LynchEvent";
+import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
+import { Effect } from "../effect/Effect.js";
+import { EventEffect } from "../effect/EventEffect.js";
+import { Player } from "../player/Player.js";
+import { isAlive } from "../player/predicates.js";
+import { Event, EventFactory } from "./Event.js";
+import LynchEvent from "./LynchEvent.js";
 
 const sleepEvents: EventFactory[] = [];
 
@@ -23,8 +24,9 @@ export class SleepBoundary extends Event {
   }
 
   finish() {
-    return new EventEffect(
-      (players) => new LynchEvent(players.filter(isAlive))
-    );
+    return [
+      new AnnouncementEffect(),
+      new EventEffect((players) => new LynchEvent(players.filter(isAlive))),
+    ];
   }
 }

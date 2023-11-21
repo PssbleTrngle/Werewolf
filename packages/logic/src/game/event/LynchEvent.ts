@@ -1,8 +1,9 @@
-import { arrayOrSelf } from "../../util";
-import { Player } from "../Player";
-import { Vote } from "../choice/Vote";
-import { KillEvent } from "./KillEvent";
-import { sleepEffects } from "./SleepBoundary";
+import { Vote } from "models";
+import { arrayOrSelf } from "../../util.js";
+import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
+import { Player } from "../player/Player.js";
+import { KillEvent } from "./KillEvent.js";
+import { sleepEffects } from "./SleepBoundary.js";
 
 export default class LynchEvent extends KillEvent {
   constructor(players: ReadonlyArray<Player>) {
@@ -10,6 +11,10 @@ export default class LynchEvent extends KillEvent {
   }
 
   finish(vote: Vote) {
-    return [...arrayOrSelf(super.finish(vote)), ...sleepEffects()];
+    return [
+      ...arrayOrSelf(super.finish(vote)),
+      new AnnouncementEffect(),
+      ...sleepEffects(),
+    ];
   }
 }

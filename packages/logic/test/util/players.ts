@@ -1,6 +1,6 @@
 import { times } from "lodash-es";
-import { Player } from "../../src/game/player/Player";
-import { Villager } from "../../src/game/role/Villager";
+import { Player } from '../../src/game/player/Player.js';
+import { Villager } from '../../src/game/role/Villager.js';
 
 export function createTestPlayers(
   amount: number,
