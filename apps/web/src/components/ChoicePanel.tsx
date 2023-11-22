@@ -2,6 +2,7 @@ import { Choice } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useVoteMutation } from "../hooks/game";
+import Button from "./Button";
 
 export default function ChoicePanel({ choice }: { choice: Choice }) {
   const { t } = useTranslation();
@@ -11,12 +12,12 @@ export default function ChoicePanel({ choice }: { choice: Choice }) {
     <Buttons>
       <PlayerButtons>
         {choice.players?.map((player) => (
-          <button
+          <Button
             key={player.id}
             onClick={() => vote({ type: "players", players: [player.id] })}
           >
             {player.name}
-          </button>
+          </Button>
         ))}
       </PlayerButtons>
       {choice.canSkip && (
@@ -32,7 +33,7 @@ const PlayerButtons = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   justify-content: center;
-  gap: 0.2em;
+  gap: 0.5em;
 `;
 
 const Buttons = styled.div`
@@ -41,6 +42,6 @@ const Buttons = styled.div`
   display: grid;
 `;
 
-const Skip = styled.button`
+const Skip = styled(Button)`
   margin: 0 auto;
 `;

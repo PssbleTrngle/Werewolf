@@ -10,6 +10,28 @@
     "reveal": {
       "eye": {
         "title": "The Seer is..."
+      },
+      "seer": {
+        "title": "Your crystal ball reveals..."
+      }
+    },
+    "kill": {
+      "wolfs": {
+        "title": "Who do you want to eat?"
+      },
+      "hunter": {
+        "title": "Where does your dying shot land?"
+      },
+      "lynch": {
+        "title": "Who do you want to lynch?"
+      }
+    },
+    "see": {
+      "title": "Whose destiny would like to know?"
+    },
+    "announcement": {
+      "death": {
+        "title": "Someone has died"
       }
     }
   }

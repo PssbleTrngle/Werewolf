@@ -1,4 +1,5 @@
-import { Id, Vote } from "models";
+import { last } from "lodash-es";
+import { GameStatus, Id, Time, Vote } from "models";
 import { ArrayOrSingle, arrayOrSelf, notNull } from "../util.js";
 import { Effect } from "./effect/Effect.js";
 import { DeathEvent } from "./event/DeathEvent.js";
@@ -9,7 +10,7 @@ import { Player } from "./player/Player.js";
 import { isAlive } from "./player/predicates.js";
 import { calculateWinner } from "./vote/Vote.js";
 
-interface GameState {
+interface GameState extends GameStatus {
   players: ReadonlyArray<Player>;
   events: ReadonlyArray<Event>;
   unnotifiedDeaths: ReadonlyArray<Id>;
@@ -22,8 +23,8 @@ class StateHistory {
     this.history = [initial];
   }
 
-  get current() {
-    return this.history[this.history.length - 1];
+  get current(): GameState {
+    return last(this.history) as GameState;
   }
 
   push(next: GameState) {
@@ -45,8 +46,9 @@ export interface GameAccess {
   arise(factory: EventFactory): void;
   immediately(factory: EventFactory): void;
   playerById(id: Id): Player;
-  broadcastDeaths(): void;
+  broadcastDeaths(time?: Time): void;
   apply(effects: ArrayOrSingle<Effect>): void;
+  setTime(time: Time): void;
 }
 
 class FrozenGame implements GameAccess {
@@ -55,8 +57,9 @@ class FrozenGame implements GameAccess {
   private readonly replaced = new Map<Event, EventFactory[]>();
   private readonly pendingReplace = new Set<EventFactory>();
   private clearDeaths = false;
+  private readonly timesPassed: Time[] = [];
 
-  constructor(private readonly state: GameState) {
+  constructor(private readonly initial: GameState) {
     this.deaths = new Set();
   }
 
@@ -86,7 +89,7 @@ class FrozenGame implements GameAccess {
   }
 
   playerById(id: Id) {
-    const match = this.state.players.find((it) => it.id === id);
+    const match = this.initial.players.find((it) => it.id === id);
     if (match) return match;
     throw new Error(`Unknown Player with ID '${id}'`);
   }
@@ -101,11 +104,18 @@ class FrozenGame implements GameAccess {
     this.deaths.add(playerId);
   }
 
-  private get unnotifiedDeaths() {
-    return [...this.state.unnotifiedDeaths, ...Array.from(this.deaths.keys())];
+  setTime(time: Time) {
+    this.timesPassed.push(time);
   }
 
-  broadcastDeaths() {
+  private get unnotifiedDeaths() {
+    return [
+      ...this.initial.unnotifiedDeaths,
+      ...Array.from(this.deaths.keys()),
+    ];
+  }
+
+  broadcastDeaths(time?: Time) {
     this.clearDeaths = true;
 
     this.arise((players) => {
@@ -119,26 +129,33 @@ class FrozenGame implements GameAccess {
 
       return new DeathEvent(
         alive,
-        deaths.map((it) => this.playerById(it))
+        deaths.map((it) => this.playerById(it)),
+        time
       );
     });
   }
 
   unfreeze(): GameState {
     const factories = [
-      ...this.state.events.flatMap((it) => {
+      ...this.initial.events.flatMap((it) => {
         return this.replaced.get(it) ?? (() => it);
       }),
       ...this.newEvents,
     ];
 
     const events = factories.flatMap((factory) =>
-      arrayOrSelf(factory(this.state.players))
+      arrayOrSelf(factory(this.initial.players))
     );
 
+    const time = last(this.timesPassed) ?? this.initial.time;
+    const day =
+      this.initial.day + this.timesPassed.filter((it) => it === "dawn").length;
+
     return {
+      time,
+      day,
       unnotifiedDeaths: this.clearDeaths ? [] : this.unnotifiedDeaths,
-      players: this.state.players.map((player) => {
+      players: this.initial.players.map((player) => {
         if (this.deaths.has(player.id)) return { ...player, status: "dead" };
         else return player;
       }),
@@ -154,6 +171,8 @@ export class Game {
   constructor(players: ReadonlyArray<Player>) {
     this.state = new StateHistory({
       players,
+      day: 1,
+      time: "dusk",
       events: [new StartEvent(players)],
       unnotifiedDeaths: [],
     });
@@ -169,6 +188,11 @@ export class Game {
 
   get frames() {
     return this.state.frames;
+  }
+
+  get status(): GameStatus {
+    const { day, time } = this.state.current;
+    return { day, time };
   }
 
   private freeze(): FrozenGame {

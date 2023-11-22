@@ -5,6 +5,7 @@ export * from "./game/effect/Effect.js";
 export * from "./game/effect/EventEffect.js";
 export * from "./game/effect/KillEffect.js";
 export * from "./game/effect/RevealEffect.js";
+export * from "./game/effect/TimeEffect.js";
 export * from "./game/event/DeathEvent.js";
 export * from "./game/event/Event.js";
 export * from "./game/event/KillEvent.js";

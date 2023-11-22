@@ -1,5 +1,6 @@
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
+import { TimeEffect } from "../effect/TimeEffect.js";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
 import { Event, EventFactory } from "./Event.js";
@@ -22,6 +23,6 @@ export class StartEvent extends Event {
 
   finish() {
     console.log("Game Started");
-    return [...startEffects(), ...sleepEffects()];
+    return [new TimeEffect("night"), ...startEffects(), ...sleepEffects()];
   }
 }

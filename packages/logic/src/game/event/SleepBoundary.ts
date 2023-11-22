@@ -1,6 +1,7 @@
 import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
+import { TimeEffect } from "../effect/TimeEffect.js";
 import { Player } from "../player/Player.js";
 import { isAlive } from "../player/predicates.js";
 import { Event, EventFactory } from "./Event.js";
@@ -25,7 +26,8 @@ export class SleepBoundary extends Event {
 
   finish() {
     return [
-      new AnnouncementEffect(),
+      new TimeEffect("dawn"),
+      new AnnouncementEffect("day"),
       new EventEffect((players) => new LynchEvent(players.filter(isAlive))),
     ];
   }

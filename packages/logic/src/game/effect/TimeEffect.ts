@@ -2,10 +2,10 @@ import { Time } from "models";
 import { GameAccess } from "../Game.js";
 import { Effect } from "./Effect.js";
 
-export class AnnouncementEffect implements Effect {
-  constructor(private readonly time?: Time) {}
+export class TimeEffect implements Effect {
+  constructor(private readonly time: Time) {}
 
   apply(game: GameAccess) {
-    game.broadcastDeaths(this.time);
+    game.setTime(this.time);
   }
 }

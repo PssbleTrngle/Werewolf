@@ -4,13 +4,18 @@ import PlayerIcon from "./PlayerIcon";
 
 export default function ParticipantList({
   players,
+  size,
+  ...props
 }: {
   players: ReadonlyArray<Player>;
+  size?: number;
 }) {
   return (
-    <Style>
+    <Style {...props}>
       {players.map((player) => (
-        <PlayerIcon key={player.id}>{player}</PlayerIcon>
+        <PlayerIcon key={player.id} size={size}>
+          {player}
+        </PlayerIcon>
       ))}
     </Style>
   );
@@ -20,6 +25,7 @@ const Style = styled.ul`
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  max-width: 400px;
+  justify-content: center;
   gap: 1em;
+  padding: 0.5em;
 `;
