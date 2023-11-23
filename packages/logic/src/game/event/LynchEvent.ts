@@ -4,7 +4,7 @@ import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
 import { Player } from "../player/Player.js";
 import { KillEvent } from "./KillEvent.js";
-import { sleepEffects } from "./SleepBoundary.js";
+import { SleepEvents } from "./SleepBoundary.js";
 
 export default class LynchEvent extends KillEvent {
   constructor(players: ReadonlyArray<Player>) {
@@ -16,7 +16,7 @@ export default class LynchEvent extends KillEvent {
       ...arrayOrSelf(super.finish(vote)),
       new TimeEffect("dusk"),
       new AnnouncementEffect("night"),
-      ...sleepEffects(),
+      ...SleepEvents.createEffects(),
     ];
   }
 }

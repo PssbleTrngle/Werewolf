@@ -11,7 +11,7 @@ export class Hunter extends Role {
   }
 
   onDeath(self: Player) {
-    return new EventEffect((players) => {
+    return new EventEffect(({ players }) => {
       const targets = players.filter(isAlive).filter(notSelf(self));
       return new KillEvent("kill.hunter", [self], "getting shot", {
         players: targets,

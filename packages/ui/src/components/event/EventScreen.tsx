@@ -54,6 +54,8 @@ const Style = styled.section`
 
   text-align: center;
 
+  user-select: none;
+
   font-family: sans-serif;
   color: ${(p) => p.theme.text};
 

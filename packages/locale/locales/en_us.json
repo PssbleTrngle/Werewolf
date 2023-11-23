@@ -36,5 +36,25 @@
         "title": "Someone has died"
       }
     }
+  },
+  "role": {
+    "villager": {
+      "name": "Villager"
+    },
+    "hunter": {
+      "name": "Hunter"
+    },
+    "eye": {
+      "name": "Eye"
+    },
+    "seer": {
+      "name": "Seer"
+    },
+    "witch": {
+      "name": "Witch"
+    },
+    "werewolf": {
+      "name": "Werewolf"
+    }
   }
 }

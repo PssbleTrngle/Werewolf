@@ -2,12 +2,13 @@ import { last } from "lodash-es";
 import { GameStatus, Id, Time, Vote } from "models";
 import { ArrayOrSingle, arrayOrSelf, notNull } from "../util.js";
 import { Effect } from "./effect/Effect.js";
-import { DeathEvent } from "./event/DeathEvent.js";
+import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
 import { Event, EventFactory } from "./event/Event.js";
 import { StartEvent } from "./event/StartEvent.js";
 import { DeathCause } from "./player/DeathCause.js";
 import { Player } from "./player/Player.js";
 import { isAlive } from "./player/predicates.js";
+import "./roleEvents.js";
 import { calculateWinner } from "./vote/Vote.js";
 
 interface GameState extends GameStatus {
@@ -55,11 +56,17 @@ class StateHistory {
   }
 }
 
-export interface GameAccess {
+export interface GameReadAccess {
+  unnotifiedDeaths: ReadonlyArray<Id>;
+  players: ReadonlyArray<Player>;
+  playerById(id: Id): Player;
+}
+
+export interface GameAccess extends GameReadAccess {
   kill(playerId: Id, cause: DeathCause): void;
+  revive(playerId: Id): void;
   arise(factory: EventFactory): void;
   immediately(factory: EventFactory): void;
-  playerById(id: Id): Player;
   broadcastDeaths(time?: Time): void;
   apply(effects: ArrayOrSingle<Effect>): void;
   setTime(time: Time): void;
@@ -102,6 +109,10 @@ class FrozenGame implements GameAccess {
     this.newEvents.push(factory);
   }
 
+  get players() {
+    return this.initial.players;
+  }
+
   playerById(id: Id) {
     const match = this.initial.players.find((it) => it.id === id);
     if (match) return match;
@@ -112,17 +123,27 @@ class FrozenGame implements GameAccess {
     const target = this.playerById(playerId);
     console.log(target.name, "died by", cause);
 
-    const effects = target.role.onDeath(target);
+    const effects = [
+      ...DeathEvents.createEffects(),
+      // these should not be called if the target is revived and should therefore be called later
+      ...arrayOrSelf(target.role.onDeath(target)),
+    ];
     this.apply(effects);
 
     this.deaths.add(playerId);
+  }
+
+  revive(playerId: Id): void {
+    const target = this.playerById(playerId);
+    console.log(target.name, "was revived");
+    this.deaths.delete(playerId);
   }
 
   setTime(time: Time) {
     this.timesPassed.push(time);
   }
 
-  private get unnotifiedDeaths() {
+  get unnotifiedDeaths() {
     return [
       ...this.initial.unnotifiedDeaths,
       ...Array.from(this.deaths.keys()),
@@ -132,18 +153,16 @@ class FrozenGame implements GameAccess {
   broadcastDeaths(time?: Time) {
     this.clearDeaths = true;
 
-    this.arise((players) => {
-      const deaths = this.unnotifiedDeaths;
-
+    this.arise(({ players, unnotifiedDeaths }) => {
       const alive = players
         .filter(isAlive)
         .filter((it) => !this.deaths.has(it.id));
 
-      if (deaths.length === 0) return [];
+      if (unnotifiedDeaths.length === 0) return [];
 
       return new DeathEvent(
         alive,
-        deaths.map((it) => this.playerById(it)),
+        unnotifiedDeaths.map((it) => this.playerById(it)),
         time
       );
     });
@@ -157,9 +176,7 @@ class FrozenGame implements GameAccess {
       ...this.newEvents,
     ];
 
-    const events = factories.flatMap((factory) =>
-      arrayOrSelf(factory(this.initial.players))
-    );
+    const events = factories.flatMap((factory) => arrayOrSelf(factory(this)));
 
     const time = last(this.timesPassed) ?? this.initial.time;
     const day =

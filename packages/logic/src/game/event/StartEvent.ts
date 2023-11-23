@@ -1,20 +1,11 @@
-import { Effect } from "../effect/Effect.js";
-import { EventEffect } from "../effect/EventEffect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
-import { Event, EventFactory } from "./Event.js";
-import { sleepEffects } from "./SleepBoundary.js";
+import { Event } from "./Event.js";
+import { EventBus } from "./EventBus.js";
+import { SleepEvents } from "./SleepBoundary.js";
 
-const startEvents: EventFactory[] = [];
-
-export function registerStartEvent(factory: EventFactory) {
-  startEvents.push(factory);
-}
-
-function startEffects(): ReadonlyArray<Effect> {
-  return startEvents.map((it) => new EventEffect(it));
-}
+export const StartEvents = new EventBus();
 
 export class StartEvent extends Event {
   constructor(players: ReadonlyArray<Player>) {
@@ -23,6 +14,10 @@ export class StartEvent extends Event {
 
   finish() {
     console.log("Game Started");
-    return [new TimeEffect("night"), ...startEffects(), ...sleepEffects()];
+    return [
+      new TimeEffect("night"),
+      ...StartEvents.createEffects(),
+      ...SleepEvents.createEffects(),
+    ];
   }
 }
