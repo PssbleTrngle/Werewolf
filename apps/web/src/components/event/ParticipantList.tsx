@@ -1,6 +1,6 @@
 import { Player } from "models";
 import styled from "styled-components";
-import PlayerIcon from "./PlayerIcon";
+import PlayerIcon from "../PlayerIcon";
 
 export default function ParticipantList({
   players,

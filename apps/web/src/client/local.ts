@@ -33,5 +33,7 @@ export function createLocalGame(): GameContext {
         game.vote(it, vote);
       });
     },
+    undo: async () => game.undo(),
+    redo: async () => game.redo(),
   };
 }

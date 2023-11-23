@@ -4,32 +4,6 @@ import styled from "styled-components";
 import Clouds from "./Clouds";
 import { Moon, Sun } from "./Luminary";
 
-const gradient = (colors: string[]) => `
-linear-gradient(${colors.join(",")})
-`;
-
-const fadingGradient = (colors: string[]) => {
-  return gradient(
-    colors.map((it, i, a) => `${it} ${Math.pow(i / a.length, 0.4) * 100}%`)
-  );
-};
-
-/*
-const GRADIENTS: Record<Time, string> = {
-  dawn: fadingGradient([
-    "#1f406b",
-    "#477bbf",
-    "#6995cf",
-    "#cfb969",
-    "#e0942f",
-    "#c44e18",
-  ]),
-  day: gradient(["#477bbf", "#6995cf"]),
-  dusk: fadingGradient(["#100e24", "#2b224a", "#484391", "#60396b", "#8f334d"]),
-  night: gradient(["#100e24", "#0e1424"]),
-};
-*/
-
 const SUN_GRADIENTS: Partial<Record<Time, string[]>> = {
   dawn: ["#e6de7a", "#e0942f", "#c44e18"].reverse(),
   dusk: ["#c44e18", "#8f334d", "#60396b"],
@@ -86,7 +60,8 @@ export default function Background({
 }
 
 const Style = styled.section<{ $time: Time }>`
-  position: relative;
+  position: absolute;
+  z-index: -1;
   overflow: hidden;
 
   background: ${(p) => BG[p.$time]};

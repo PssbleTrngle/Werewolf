@@ -13,18 +13,19 @@ const Button = styled.button`
   border: solid 2px ${(p) => p.theme.text};
   background: transparent;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: ${(p) => p.theme.text};
     color: ${(p) => invert(p.theme.text)};
   }
 
-  &:focus {
+  &:focus:not(:disabled) {
     border-color: ${(p) => p.theme.accent};
     box-shadow: 0 0 0 2px ${(p) => p.theme.accent};
   }
 
   &:disabled {
     cursor: default;
+    opacity: 0.5;
   }
 
   transition: all 0.1s ease;

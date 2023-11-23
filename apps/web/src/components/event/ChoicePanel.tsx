@@ -1,9 +1,9 @@
 import { Choice } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useVoteMutation } from "../hooks/game";
-import { XS } from "../styles/screens";
-import Button from "./Button";
+import { useVoteMutation } from "../../hooks/game";
+import { XS } from "../../styles/screens";
+import Button from "../Button";
 
 export default function ChoicePanel({ choice }: { choice: Choice }) {
   const { t } = useTranslation();

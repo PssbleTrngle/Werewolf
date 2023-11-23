@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  MutationFunction,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { Event, GameStatus, Vote } from "models";
 import { createContext, useContext } from "react";
 
@@ -6,6 +11,8 @@ export interface GameContext {
   game(): Promise<GameStatus>;
   activeEvent(): Promise<Event>;
   submitVote(vote: Vote): Promise<void>;
+  undo(): Promise<void>;
+  redo(): Promise<void>;
 }
 
 const NOOP = () => {
@@ -16,6 +23,8 @@ const GameContext = createContext<GameContext>({
   game: NOOP,
   activeEvent: NOOP,
   submitVote: NOOP,
+  undo: NOOP,
+  redo: NOOP,
 });
 
 export const GameProvider = GameContext.Provider;
@@ -30,15 +39,31 @@ export function useActiveEvent() {
   return useQuery({ queryKey: ["screen"], queryFn: activeEvent });
 }
 
-export function useVoteMutation() {
+function useInvalidatingMutation<TData, TVariables>(
+  mutationFn: MutationFunction<TData, TVariables>
+) {
   const client = useQueryClient();
-  const { submitVote } = useContext(GameContext);
   return useMutation({
     mutationKey: ["vote"],
-    mutationFn: submitVote,
+    mutationFn,
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ["screen"] });
       client.invalidateQueries({ queryKey: ["game"] });
     },
   });
+}
+
+export function useVoteMutation() {
+  const { submitVote } = useContext(GameContext);
+  return useInvalidatingMutation(submitVote);
+}
+
+export function useUndoMutation() {
+  const { undo } = useContext(GameContext);
+  return useInvalidatingMutation(undo);
+}
+
+export function useRedoMutation() {
+  const { redo } = useContext(GameContext);
+  return useInvalidatingMutation(redo);
 }

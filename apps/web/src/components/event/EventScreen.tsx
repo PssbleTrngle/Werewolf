@@ -1,17 +1,16 @@
-import { GameStatus, Time } from "models";
+import { Time } from "models";
 import { invert } from "polished";
-import { useEffect, useMemo, useReducer } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled, { ThemeProvider } from "styled-components";
 import { useActiveEvent, useGameStatus } from "../../hooks/game";
 import darkTheme from "../../theme/dark";
 import lightTheme from "../../theme/light";
-import ChoicePanel from "../ChoicePanel";
-import ParticipantList from "../ParticipantList";
 import Background from "../background/Background";
+import ChoicePanel from "./ChoicePanel";
+import { ControlBar } from "./ControlBar";
 import EventDetails from "./EventDetails";
-
-const TIMES: Time[] = ["dawn", "day", "dusk", "night"];
+import ParticipantList from "./ParticipantList";
 
 function themeBy(time: Time) {
   switch (time) {
@@ -21,23 +20,6 @@ function themeBy(time: Time) {
     default:
       return darkTheme;
   }
-}
-
-function useFakeGame() {
-  const [i, increment] = useReducer((it: number) => it + 1, 0);
-
-  useEffect(() => {
-    const interval = setInterval(increment, 3_000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return useMemo<GameStatus>(
-    () => ({
-      time: TIMES[i % TIMES.length],
-      day: Math.floor(i / TIMES.length),
-    }),
-    [i]
-  );
 }
 
 export default function EventScreen() {
@@ -53,31 +35,37 @@ export default function EventScreen() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Background status={game}>
-        <Style>
+      <Style>
+        <Background status={game} />
+        <ControlBar />
+        <EventWrapper>
           <ParticipantList size={1} players={event.players} />
           <h1>{t(`event.${event.type}.title`)}</h1>
           <EventDetails event={event} />
           {event?.choice && <ChoicePanel choice={event.choice} />}
-        </Style>
-      </Background>
+        </EventWrapper>
+      </Style>
     </ThemeProvider>
   );
 }
 
-const Style = styled.div`
+const Style = styled.section`
   position: relative;
 
   text-align: center;
 
-  height: 600px;
-  padding: 1em;
-
   font-family: sans-serif;
   color: ${(p) => p.theme.text};
+
+  height: 100%;
 
   ::selection {
     background: ${(p) => p.theme.text};
     color: ${(p) => invert(p.theme.text)};
   }
+`;
+
+const EventWrapper = styled.section`
+  padding: 1em;
+  margin-top: 5em;
 `;
