@@ -2,6 +2,7 @@ import { Choice } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useVoteMutation } from "../hooks/game";
+import { XS } from "../styles/screens";
 import Button from "./Button";
 
 export default function ChoicePanel({ choice }: { choice: Choice }) {
@@ -34,6 +35,10 @@ const PlayerButtons = styled.ul`
   grid-template-columns: repeat(5, 1fr);
   justify-content: center;
   gap: 0.5em;
+
+  ${XS} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const Buttons = styled.div`

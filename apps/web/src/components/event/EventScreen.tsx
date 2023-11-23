@@ -43,6 +43,7 @@ function useFakeGame() {
 export default function EventScreen() {
   const { data: event, error } = useActiveEvent();
   const { data: game } = useGameStatus();
+  // const game = useFakeGame();
   const { t } = useTranslation();
 
   const theme = useMemo(() => themeBy(game?.time ?? "night"), [game]);
@@ -70,6 +71,7 @@ const Style = styled.div`
   text-align: center;
 
   height: 600px;
+  padding: 1em;
 
   font-family: sans-serif;
   color: ${(p) => p.theme.text};
