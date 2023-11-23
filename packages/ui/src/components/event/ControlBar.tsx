@@ -1,5 +1,6 @@
 import { EventQueue } from "models";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
   useGameStatus,
@@ -42,7 +43,9 @@ function Queue({ children }: Readonly<{ children: EventQueue }>) {
   );
 }
 
-export function ControlBar() {
+export default function ControlBar() {
+  const { t } = useTranslation();
+
   const { data: status } = useGameStatus();
   const { mutate: undo } = useUndoMutation();
   const { mutate: redo } = useRedoMutation();
@@ -58,10 +61,10 @@ export function ControlBar() {
     <Style>
       {status?.queue && <Queue>{status.queue}</Queue>}
       <Button disabled={!canUndo} onClick={undo}>
-        Undo
+        {t("button.undo")}
       </Button>
       <Button disabled={!canRedo} onClick={redo}>
-        Redo
+        {t("button.redo")}
       </Button>
     </Style>
   );

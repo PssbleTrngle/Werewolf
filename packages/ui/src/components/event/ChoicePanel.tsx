@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useVoteMutation } from "../../hooks/game";
 import { XS } from "../../styles/screens";
 import Button from "../Button";
+import PlayerIcon from "../PlayerIcon";
 
 export default function ChoicePanel({ choice }: { choice: Choice }) {
   const { t } = useTranslation();
@@ -17,13 +18,13 @@ export default function ChoicePanel({ choice }: { choice: Choice }) {
             key={player.id}
             onClick={() => vote({ type: "players", players: [player.id] })}
           >
-            {player.name}
+            <PlayerIcon>{player}</PlayerIcon>
           </Button>
         ))}
       </PlayerButtons>
       {choice.canSkip && (
         <Skip onClick={() => vote({ type: "skip" })}>
-          {choice.players?.length ? t("vote.skip") : t("vote.dismiss")}
+          {choice.players?.length ? t("button.skip") : t("button.dismiss")}
         </Skip>
       )}
     </Buttons>

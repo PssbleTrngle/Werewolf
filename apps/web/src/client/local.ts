@@ -1,6 +1,6 @@
 import { Event, Game, generateRoles } from "logic";
 import { Event as IEvent, Vote } from "models";
-import { GameContext } from "../hooks/game";
+import { GameContext } from "ui";
 
 function mapEvent(value: Event): IEvent {
   const { type, players, choice, timeLimit, ...data } = value;

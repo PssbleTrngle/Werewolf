@@ -8,7 +8,7 @@ import darkTheme from "../../theme/dark";
 import lightTheme from "../../theme/light";
 import Background from "../background/Background";
 import ChoicePanel from "./ChoicePanel";
-import { ControlBar } from "./ControlBar";
+import ControlBar from "./ControlBar";
 import EventDetails from "./EventDetails";
 import ParticipantList from "./ParticipantList";
 

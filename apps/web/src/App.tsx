@@ -3,9 +3,8 @@ import i18n from "i18next";
 import LocaleBackend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 import styled, { createGlobalStyle } from "styled-components";
+import { EventScreen, GameProvider } from "ui";
 import { createLocalGame } from "./client/local";
-import EventScreen from "./components/event/EventScreen";
-import { GameProvider } from "./hooks/game";
 
 const client = new QueryClient();
 const game = createLocalGame();

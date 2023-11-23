@@ -1,7 +1,9 @@
 {
-  "vote": {
+  "button": {
     "skip": "Skip",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "event": {
     "start": {
