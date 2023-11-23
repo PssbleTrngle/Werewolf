@@ -18,16 +18,18 @@ interface GameState extends GameStatus {
 
 class StateHistory {
   private history: GameState[];
+  private cursor = 0;
 
   constructor(initial: GameState) {
     this.history = [initial];
   }
 
   get current(): GameState {
-    return last(this.history) as GameState;
+    return this.history[this.cursor];
   }
 
   push(next: GameState) {
+    this.cursor = this.history.length;
     this.history.push(next);
   }
 
@@ -36,8 +38,20 @@ class StateHistory {
     this.push({ ...current, ...factory(current) });
   }
 
-  get frames() {
-    return this.history.length;
+  redo() {
+    this.cursor = Math.min(this.history.length - 1, this.cursor + 1);
+  }
+
+  undo() {
+    this.cursor = Math.max(0, this.cursor - 1);
+  }
+
+  get future() {
+    return this.history.length - (this.cursor + 1);
+  }
+
+  get past() {
+    return this.cursor;
   }
 }
 
@@ -186,13 +200,20 @@ export class Game {
     return this.state.current.events;
   }
 
-  get frames() {
-    return this.state.frames;
-  }
-
   get status(): GameStatus {
     const { day, time } = this.state.current;
-    return { day, time };
+    const past = this.state.past;
+    const writtenFuture = this.state.future;
+    const unknownFuture = this.events.length - 1;
+    return { day, time, queue: { past, writtenFuture, unknownFuture } };
+  }
+
+  undo() {
+    this.state.undo();
+  }
+
+  redo() {
+    this.state.redo();
   }
 
   private freeze(): FrozenGame {

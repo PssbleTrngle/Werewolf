@@ -23,7 +23,7 @@ describe("tests regarding wolf roles", () => {
       players.forEach((it) => game.vote(it, skipVote()));
     };
 
-    expect(game.frames).toBe(1);
+    expect(game.status.queue?.past).toBe(0);
 
     dismiss();
 
@@ -31,7 +31,7 @@ describe("tests regarding wolf roles", () => {
     expect(game.events[1]).toBeInstanceOf(SleepBoundary);
     expect(game.events).toHaveLength(2);
 
-    expect(game.frames).toBe(2);
+    expect(game.status.queue?.past).toBe(1);
 
     players
       .filter(inGroup(RoleGroup.WOLF))
@@ -41,11 +41,11 @@ describe("tests regarding wolf roles", () => {
     expect(game.events[1]).toBeInstanceOf(LynchEvent);
     expect(game.events).toHaveLength(2);
 
-    expect(game.frames).toBe(3);
+    expect(game.status.queue?.past).toBe(2);
 
     dismiss();
 
-    expect(game.frames).toBe(4);
+    expect(game.status.queue?.past).toBe(3);
 
     players
       .filter(inGroup(RoleGroup.WOLF))
@@ -55,7 +55,7 @@ describe("tests regarding wolf roles", () => {
       .filter(inGroup(RoleGroup.VILLAGER))
       .forEach((it) => game.vote(it, playerVote(players[0])));
 
-    expect(game.frames).toBe(5);
+    expect(game.status.queue?.past).toBe(4);
 
     const dead = game.players.filter((it) => !isAlive(it));
     expect(dead).toHaveLength(2);

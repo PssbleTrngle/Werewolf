@@ -21,7 +21,7 @@ describe("tests regarding the hunter", () => {
     };
 
     dismiss();
-    expect(game.frames).toBe(2);
+    expect(game.status.queue?.past).toBe(1);
 
     players
       .filter(inGroup(RoleGroup.WOLF))
@@ -31,7 +31,7 @@ describe("tests regarding the hunter", () => {
     expect(game.events[1]).toBeInstanceOf(SleepBoundary);
     expect(game.events).toHaveLength(2);
 
-    expect(game.frames).toBe(3);
+    expect(game.status.queue?.past).toBe(2);
 
     game.vote(players[0], playerVote(players[2]));
 
@@ -42,7 +42,7 @@ describe("tests regarding the hunter", () => {
       players.length - 2
     );
 
-    expect(game.frames).toBe(4);
+    expect(game.status.queue?.past).toBe(3);
 
     const dead = game.players.filter((it) => !isAlive(it));
     expect(dead).toHaveLength(2);
