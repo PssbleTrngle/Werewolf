@@ -5,11 +5,13 @@ import { Effect } from "./effect/Effect.js";
 import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
 import { Event, EventFactory } from "./event/Event.js";
 import { StartEvent } from "./event/StartEvent.js";
+import WinEvent from "./event/WinEvent.js";
 import { DeathCause } from "./player/DeathCause.js";
 import { Player, RoleData } from "./player/Player.js";
 import { isAlive, isDying } from "./player/predicates.js";
 import "./roleEvents.js";
 import { calculateWinner } from "./vote/Vote.js";
+import { testWinConditions } from "./winConditions.js";
 
 interface GameState extends GameStatus {
   players: ReadonlyArray<Player>;
@@ -287,6 +289,14 @@ export class Game {
 
     if (dirty.length > 0) {
       this.state.push(access.unfreeze());
+
+      const dying = this.players.some(isDying);
+      const win = !dying && testWinConditions(this.freeze());
+      if (win) {
+        console.log(`We have a winner: ${win.type}`);
+        const winEvent = new WinEvent(this.players, win);
+        this.state.modify((it) => ({ events: [...it.events, winEvent] }));
+      }
     }
   }
 
