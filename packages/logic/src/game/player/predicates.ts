@@ -9,14 +9,14 @@ export function inGroup(group: RoleGroup) {
   };
 }
 
-export function notSelf(self: Player) {
+export function others(...self: Player[]) {
   return (player: Player) => {
-    return player.id !== self.id;
+    return self.every((it) => player.id !== it.id);
   };
 }
 
 export function isAlive(player: Player) {
-  return player.status === "alive";
+  return player.status === "alive" || player.status === "dying";
 }
 
 export function hasRole(role: string) {

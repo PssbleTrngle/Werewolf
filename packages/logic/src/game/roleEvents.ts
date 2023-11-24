@@ -1,9 +1,9 @@
-import { SleepBoundary, SleepEvents } from "./event/SleepBoundary";
-import { isAlive } from "./player/predicates";
-import { registerEyeEvents } from "./role/Eye";
-import { registerSeerEvents } from "./role/Seer";
-import { registerWitchEvents } from "./role/Witch";
-import { registerWolfEvents } from "./role/Wolf";
+import { SleepBoundary, SleepEvents } from "./event/SleepBoundary.js";
+import { isAlive } from "./player/predicates.js";
+import { registerEyeEvents } from "./role/Eye.js";
+import { registerSeerEvents } from "./role/Seer.js";
+import { registerWitchEvents } from "./role/Witch.js";
+import { registerWolfEvents } from "./role/Wolf.js";
 
 registerEyeEvents();
 

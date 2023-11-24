@@ -14,7 +14,6 @@ import { calculateWinner } from "./vote/Vote.js";
 interface GameState extends GameStatus {
   players: ReadonlyArray<Player>;
   events: ReadonlyArray<Event>;
-  unnotifiedDeaths: ReadonlyArray<Id>;
 }
 
 class StateHistory {
@@ -75,6 +74,7 @@ export interface GameAccess extends GameReadAccess {
 class FrozenGame implements GameAccess {
   private readonly newEvents: EventFactory[] = [];
   private readonly deaths = new Set<Id>();
+  private readonly revives = new Set<Id>();
   private readonly replaced = new Map<Event, EventFactory[]>();
   private readonly pendingReplace = new Set<EventFactory>();
   private clearDeaths = false;
@@ -136,7 +136,7 @@ class FrozenGame implements GameAccess {
   revive(playerId: Id): void {
     const target = this.playerById(playerId);
     console.log(target.name, "was revived");
-    this.deaths.delete(playerId);
+    this.revives.add(playerId);
   }
 
   setTime(time: Time) {
@@ -144,10 +144,13 @@ class FrozenGame implements GameAccess {
   }
 
   get unnotifiedDeaths() {
-    return [
-      ...this.initial.unnotifiedDeaths,
-      ...Array.from(this.deaths.keys()),
-    ];
+    const initial = this.initial.players
+      .filter((it) => it.status === "dying")
+      .map((it) => it.id);
+
+    return [...initial, ...Array.from(this.deaths.keys())].filter(
+      (it) => !this.revives.has(it)
+    );
   }
 
   broadcastDeaths(time?: Time) {
@@ -156,7 +159,7 @@ class FrozenGame implements GameAccess {
     this.arise(({ players, unnotifiedDeaths }) => {
       const alive = players
         .filter(isAlive)
-        .filter((it) => !this.deaths.has(it.id));
+        .filter((it) => !unnotifiedDeaths.includes(it.id));
 
       if (unnotifiedDeaths.length === 0) return [];
 
@@ -185,10 +188,11 @@ class FrozenGame implements GameAccess {
     return {
       time,
       day,
-      unnotifiedDeaths: this.clearDeaths ? [] : this.unnotifiedDeaths,
       players: this.initial.players.map((player) => {
-        if (this.deaths.has(player.id)) return { ...player, status: "dead" };
-        else return player;
+        if (this.revives.has(player.id)) return { ...player, status: "alive" };
+        if (this.deaths.has(player.id) || player.status === "dying") {
+          return { ...player, status: this.clearDeaths ? "dead" : "dying" };
+        } else return player;
       }),
       events,
     };
@@ -205,7 +209,6 @@ export class Game {
       day: 1,
       time: "dusk",
       events: [new StartEvent(players)],
-      unnotifiedDeaths: [],
     });
   }
 
@@ -245,6 +248,8 @@ export class Game {
         (it) =>
           this.eventsFor(it).find((it) => !access.hasFinished(it)) === event
       );
+
+      if (!event.isFinished(access)) return;
 
       // some players still have something to do
       if (arrived.length < event.players.length) return false;
@@ -287,9 +292,10 @@ export class Game {
   }
 
   vote(player: Player, vote: Vote) {
-    if (!this.currentEvent(player)?.choice) return;
+    const event = this.currentEvent(player);
+    if (!event?.choice) return;
 
-    console.log(player.name, "voted");
+    console.log(player.name, "voted on", event.type);
     this.votes.set(player.id, vote);
 
     this.check();

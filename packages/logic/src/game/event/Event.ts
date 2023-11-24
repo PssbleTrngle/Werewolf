@@ -15,4 +15,8 @@ export abstract class Event implements IEvent {
   ) {}
 
   abstract finish(vote: Vote): ArrayOrSingle<Effect>;
+
+  isFinished(_game: GameReadAccess) {
+    return true;
+  }
 }

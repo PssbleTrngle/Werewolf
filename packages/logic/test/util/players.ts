@@ -1,6 +1,7 @@
 import { times } from "lodash-es";
-import { Player } from '../../src/game/player/Player.js';
-import { Villager } from '../../src/game/role/Villager.js';
+import { Player } from "../../src/game/player/Player.js";
+import { Villager } from "../../src/game/role/Villager.js";
+import { Role } from "../../src/index.js";
 
 export function createTestPlayers(
   amount: number,
@@ -16,4 +17,8 @@ export function createTestPlayers(
       ...rest,
     };
   });
+}
+
+export function createTestPlayersWith(roles: Role[]) {
+  return createTestPlayers(roles.length, (i) => ({ role: roles[i] }));
 }

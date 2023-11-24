@@ -1,7 +1,6 @@
-import { DeathEvents } from "../event/DeathEvent.js";
-import { KillEvent } from "../event/KillEvent.js";
-import { ReviveEvent } from "../event/ReviveEvent.js";
-import { hasRole, isAlive, notSelf } from "../player/predicates.js";
+import { SleepEvents } from "../event/SleepBoundary.js";
+import { WitchTrigger } from "../event/WitchTrigger.js";
+import { hasRole } from "../player/predicates.js";
 import { Role } from "./Role.js";
 import { RoleGroup } from "./RoleGroup.js";
 
@@ -11,6 +10,12 @@ export class Witch extends Role {
   }
 }
 
+export const registerWitchEvents = (role = "witch") =>
+  SleepEvents.register(({ players }) => {
+    const witches = players.filter(hasRole(role));
+    return witches.map((it) => new WitchTrigger([it]));
+  });
+/*
 export const registerWitchEvents = (role = "witch") =>
   DeathEvents.register(({ players, unnotifiedDeaths }) => {
     const witches = players.filter(hasRole(role));
@@ -31,8 +36,9 @@ export const registerWitchEvents = (role = "witch") =>
       }),
       // this should probably be a sleep event instead
       new KillEvent("kill.witch", [it], "potion", {
-        players: alive.filter(notSelf(it)),
+        players: alive.filter(others(it)),
         canSkip: true,
       }),
     ]);
   });
+*/

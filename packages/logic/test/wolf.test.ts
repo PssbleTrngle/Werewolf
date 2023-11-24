@@ -8,7 +8,7 @@ import { Villager } from "../src/game/role/Villager.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
 import { DeathEvent } from "../src/index.js";
 import { createTestPlayers } from "./util/players.js";
-import { playerVote, skipVote } from "./util/votes.js";
+import { dismiss, playerVote, skipVote } from "./util/votes.js";
 
 const players = createTestPlayers(12, (i) => {
   const role = i % 3 === 0 ? new Werewolf() : new Villager();
@@ -19,13 +19,9 @@ describe("tests regarding wolf roles", () => {
   it("wolfs kill a player an get lynched", () => {
     const game = new Game(players);
 
-    const dismiss = () => {
-      players.forEach((it) => game.vote(it, skipVote()));
-    };
-
     expect(game.status.queue?.past).toBe(0);
 
-    dismiss();
+    dismiss(game);
 
     expect(game.events[0]).toBeInstanceOf(KillEvent);
     expect(game.events[1]).toBeInstanceOf(SleepBoundary);
@@ -43,7 +39,7 @@ describe("tests regarding wolf roles", () => {
 
     expect(game.status.queue?.past).toBe(2);
 
-    dismiss();
+    dismiss(game);
 
     expect(game.status.queue?.past).toBe(3);
 
