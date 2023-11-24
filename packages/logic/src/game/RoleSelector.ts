@@ -1,5 +1,6 @@
 import { shuffle, times } from "lodash-es";
 import { Player } from "./player/Player.js";
+import { DreamWolf } from "./role/DreamWolf.js";
 import { Eye } from "./role/Eye.js";
 import { Hunter } from "./role/Hunter.js";
 import { Role } from "./role/Role.js";
@@ -14,7 +15,10 @@ export function generateRoles(
   const count = players.length;
   if (count < 5) throw new Error("Not enough players");
 
-  const wolfs: Role[] = times(Math.floor(count / 3), () => new Werewolf());
+  const wolfCount = Math.floor(count / 3);
+  const wolfs: Role[] = times(Math.max(1, wolfCount - 1), () => new Werewolf());
+
+  if (wolfCount > 1) wolfs.push(new DreamWolf());
 
   const specialRoles: Role[] = shuffle([
     new Seer(),
