@@ -35,7 +35,6 @@ html, body, ul {
 
 const Wrapper = styled.section`
   height: 100dvh;
-  width: 100dvw;
 `;
 
 export default App;
