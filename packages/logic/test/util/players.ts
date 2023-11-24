@@ -14,6 +14,7 @@ export function createTestPlayers(
       role,
       status: "alive",
       name: `Player ${id} [${role.emoji}]`,
+      roleData: {},
       ...rest,
     };
   });

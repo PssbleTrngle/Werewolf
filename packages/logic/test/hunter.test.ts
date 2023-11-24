@@ -1,6 +1,6 @@
 import { times } from "lodash-es";
 import { Game } from "../src/game/Game.js";
-import { inGroup, isAlive } from "../src/game/player/predicates.js";
+import { inGroup, isNotDead } from "../src/game/player/predicates.js";
 import { RoleGroup } from "../src/game/role/RoleGroup.js";
 import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
@@ -40,7 +40,7 @@ describe("tests regarding the hunter", () => {
 
     expect(game.status.queue?.past).toBe(3);
 
-    const dead = game.players.filter((it) => !isAlive(it));
+    const dead = game.players.filter((it) => !isNotDead(it));
     expect(dead).toHaveLength(2);
   });
 
@@ -74,7 +74,7 @@ describe("tests regarding the hunter", () => {
       players.length - 1
     );
 
-    const dead = game.players.filter((it) => !isAlive(it));
+    const dead = game.players.filter((it) => !isNotDead(it));
     expect(dead).toHaveLength(1);
   });
 });

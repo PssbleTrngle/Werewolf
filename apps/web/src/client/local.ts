@@ -18,6 +18,7 @@ export function createLocalGame(): GameContext {
     new Array(10).fill(null).map((_, id) => ({
       id,
       name: `Player ${id}`,
+      roleData: {},
       status: "alive",
     }))
   );

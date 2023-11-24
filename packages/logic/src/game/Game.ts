@@ -6,8 +6,8 @@ import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
 import { Event, EventFactory } from "./event/Event.js";
 import { StartEvent } from "./event/StartEvent.js";
 import { DeathCause } from "./player/DeathCause.js";
-import { Player } from "./player/Player.js";
-import { isAlive } from "./player/predicates.js";
+import { Player, RoleData } from "./player/Player.js";
+import { isAlive, isDying } from "./player/predicates.js";
 import "./roleEvents.js";
 import { calculateWinner } from "./vote/Vote.js";
 
@@ -56,7 +56,6 @@ class StateHistory {
 }
 
 export interface GameReadAccess {
-  unnotifiedDeaths: ReadonlyArray<Id>;
   players: ReadonlyArray<Player>;
   playerById(id: Id): Player;
 }
@@ -69,6 +68,7 @@ export interface GameAccess extends GameReadAccess {
   broadcastDeaths(time?: Time): void;
   apply(effects: ArrayOrSingle<Effect>): void;
   setTime(time: Time): void;
+  modifyPlayerData(id: Id, data: Partial<RoleData>): void;
 }
 
 class FrozenGame implements GameAccess {
@@ -79,6 +79,7 @@ class FrozenGame implements GameAccess {
   private readonly pendingReplace = new Set<EventFactory>();
   private clearDeaths = false;
   private readonly timesPassed: Time[] = [];
+  private readonly playerDataModifiers = new Map<Id, Partial<RoleData>[]>();
 
   constructor(private readonly initial: GameState) {
     this.deaths = new Set();
@@ -110,13 +111,28 @@ class FrozenGame implements GameAccess {
   }
 
   get players() {
-    return this.initial.players;
+    return this.initial.players.map((it) => ({
+      ...it,
+      // TODO this could be hurtful
+      status:
+        this.deaths.has(it.id) && !this.revives.has(it.id)
+          ? "dying"
+          : it.status,
+    }));
   }
 
   playerById(id: Id) {
     const match = this.initial.players.find((it) => it.id === id);
     if (match) return match;
     throw new Error(`Unknown Player with ID '${id}'`);
+  }
+
+  modifyPlayerData(id: Id, data: Partial<RoleData>) {
+    if (this.playerDataModifiers.has(id)) {
+      this.playerDataModifiers.get(id)?.push(data);
+    } else {
+      this.playerDataModifiers.set(id, [data]);
+    }
   }
 
   kill(playerId: Id, cause: DeathCause) {
@@ -143,31 +159,16 @@ class FrozenGame implements GameAccess {
     this.timesPassed.push(time);
   }
 
-  get unnotifiedDeaths() {
-    const initial = this.initial.players
-      .filter((it) => it.status === "dying")
-      .map((it) => it.id);
-
-    return [...initial, ...Array.from(this.deaths.keys())].filter(
-      (it) => !this.revives.has(it)
-    );
-  }
-
   broadcastDeaths(time?: Time) {
     this.clearDeaths = true;
 
-    this.arise(({ players, unnotifiedDeaths }) => {
-      const alive = players
-        .filter(isAlive)
-        .filter((it) => !unnotifiedDeaths.includes(it.id));
+    this.arise(({ players }) => {
+      const unnotifiedDeaths = players.filter(isDying);
+      const alive = players.filter(isAlive);
 
       if (unnotifiedDeaths.length === 0) return [];
 
-      return new DeathEvent(
-        alive,
-        unnotifiedDeaths.map((it) => this.playerById(it)),
-        time
-      );
+      return new DeathEvent(alive, unnotifiedDeaths, time);
     });
   }
 
@@ -179,7 +180,9 @@ class FrozenGame implements GameAccess {
       ...this.newEvents,
     ];
 
-    const events = factories.flatMap((factory) => arrayOrSelf(factory(this)));
+    const events = factories
+      .flatMap((factory) => arrayOrSelf(factory(this)))
+      .filter((it) => it.players.length > 0);
 
     const time = last(this.timesPassed) ?? this.initial.time;
     const day =
@@ -188,12 +191,22 @@ class FrozenGame implements GameAccess {
     return {
       time,
       day,
-      players: this.initial.players.map((player) => {
-        if (this.revives.has(player.id)) return { ...player, status: "alive" };
-        if (this.deaths.has(player.id) || player.status === "dying") {
-          return { ...player, status: this.clearDeaths ? "dead" : "dying" };
-        } else return player;
-      }),
+      players: this.initial.players
+        .map<Player>((player) => {
+          if (this.revives.has(player.id))
+            return { ...player, status: "alive" };
+          if (this.deaths.has(player.id) || isDying(player)) {
+            return { ...player, status: this.clearDeaths ? "dead" : "dying" };
+          } else return player;
+        })
+        .map<Player>((player) => {
+          const modifiers = this.playerDataModifiers.get(player.id) ?? [];
+          const roleData = modifiers.reduce<RoleData>(
+            (previous, values) => ({ ...previous, ...values }),
+            player.roleData
+          );
+          return { ...player, roleData };
+        }),
       events,
     };
   }
@@ -201,7 +214,7 @@ class FrozenGame implements GameAccess {
 
 export class Game {
   private state: StateHistory;
-  private votes = new Map<Player["id"], Vote>();
+  private votes = new Map<Id, Vote>();
 
   constructor(players: ReadonlyArray<Player>) {
     this.state = new StateHistory({
@@ -278,11 +291,13 @@ export class Game {
   }
 
   eventsFor(player: Player) {
-    return this.events.filter((it) => it.players.includes(player));
+    return this.events.filter((it) =>
+      it.players.some((p) => p.id === player.id)
+    );
   }
 
   currentEvent(player: Player) {
-    return this.events.find((it) => it.players.includes(player));
+    return this.events.find((it) => it.players.some((p) => p.id === player.id));
   }
 
   currentEvents() {
@@ -293,7 +308,15 @@ export class Game {
 
   vote(player: Player, vote: Vote) {
     const event = this.currentEvent(player);
-    if (!event?.choice) return;
+
+    // TODO only here for sanity checks right now, maybe later there will be a role which is allowed to do this
+    if (!event?.choice)
+      throw new Error("player cannot vote as he has no choice");
+
+    if (player.status === "dead")
+      throw new Error(
+        `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
+      );
 
     console.log(player.name, "voted on", event.type);
     this.votes.set(player.id, vote);

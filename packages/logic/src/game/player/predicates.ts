@@ -15,8 +15,16 @@ export function others(...self: Player[]) {
   };
 }
 
+export function isNotDead(player: Player) {
+  return isAlive(player) || isDying(player);
+}
+
 export function isAlive(player: Player) {
-  return player.status === "alive" || player.status === "dying";
+  return player.status === "alive";
+}
+
+export function isDying(player: Player) {
+  return player.status === "dying";
 }
 
 export function hasRole(role: string) {

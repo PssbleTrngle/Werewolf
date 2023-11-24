@@ -1,6 +1,6 @@
 import { times } from "lodash-es";
 import { Game } from "../src/game/Game.js";
-import { isAlive } from "../src/game/player/predicates.js";
+import { isNotDead } from "../src/game/player/predicates.js";
 import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
 import { Seer, Villager } from "../src/index.js";
@@ -36,7 +36,7 @@ describe("tests regarding the witch", () => {
     expect(game.events[0].type).toBe("kill.lynch");
     expect(game.events).toHaveLength(1);
 
-    const dead = game.players.filter((it) => !isAlive(it));
+    const dead = game.players.filter((it) => !isNotDead(it));
     expect(dead).toHaveLength(0);
   });
 
@@ -74,5 +74,15 @@ describe("tests regarding the witch", () => {
     expect(game.events).toHaveLength(2);
 
     game.vote(players[1], playerVote(players[3]));
+
+    dismiss(game);
+
+    dismiss(game);
+
+    game.vote(players[0], playerVote(players[2]));
+
+    // witch has already revived & killed
+    expect(game.events[0].type).toBe("sleep");
+    expect(game.events).toHaveLength(1);
   });
 });

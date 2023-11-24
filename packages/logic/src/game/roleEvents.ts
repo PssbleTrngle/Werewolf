@@ -1,5 +1,5 @@
 import { SleepBoundary, SleepEvents } from "./event/SleepBoundary.js";
-import { isAlive } from "./player/predicates.js";
+import { isNotDead } from "./player/predicates.js";
 import { registerEyeEvents } from "./role/Eye.js";
 import { registerSeerEvents } from "./role/Seer.js";
 import { registerWitchEvents } from "./role/Witch.js";
@@ -12,5 +12,5 @@ registerWolfEvents();
 registerWitchEvents();
 
 SleepEvents.register(
-  ({ players }) => new SleepBoundary(players.filter(isAlive))
+  ({ players }) => new SleepBoundary(players.filter(isNotDead))
 );

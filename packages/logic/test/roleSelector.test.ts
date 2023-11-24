@@ -1,11 +1,5 @@
-import { Werewolf } from "../src/game/role/Wolf.js";
-import { Hunter, RoleGroup, generateRoles, inGroup } from "../src/index.js";
+import { RoleGroup, generateRoles, inGroup } from "../src/index.js";
 import { createTestPlayers } from "./util/players.js";
-
-const players = createTestPlayers(5, (i) => {
-  const role = i === 0 ? new Hunter() : new Werewolf();
-  return { role };
-});
 
 it("role selector returns correct count", () => {
   for (let amount = 5; amount < 30; amount++) {
