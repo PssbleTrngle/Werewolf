@@ -72,5 +72,7 @@ const Style = styled.section<{ $time: Time }>`
   align-items: center;
   justify-content: center;
 
-  transition: background 0.5s linear, color 0.5s linear;
+  transition:
+    background 0.5s linear,
+    color 0.5s linear;
 `;

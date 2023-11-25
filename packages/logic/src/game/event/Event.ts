@@ -11,7 +11,7 @@ export abstract class Event implements IEvent {
     public readonly type: string,
     public readonly players: ReadonlyArray<Player>,
     public readonly choice?: Choice,
-    public readonly timeLimit?: number
+    public readonly timeLimit?: number,
   ) {}
 
   abstract finish(vote: Vote): ArrayOrSingle<Effect>;

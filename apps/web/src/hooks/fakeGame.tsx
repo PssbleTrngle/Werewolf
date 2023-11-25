@@ -16,6 +16,6 @@ export default function useFakeGame() {
       time: TIMES[i % TIMES.length],
       day: Math.floor(i / TIMES.length),
     }),
-    [i]
+    [i],
   );
 }

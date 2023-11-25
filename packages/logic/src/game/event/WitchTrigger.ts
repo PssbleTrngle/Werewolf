@@ -27,7 +27,7 @@ export class WitchTrigger extends Event {
         {
           players: dying,
           canSkip: true,
-        }
+        },
       );
 
       const kill = new PotionKillEvent(
@@ -37,7 +37,7 @@ export class WitchTrigger extends Event {
         {
           players: alive.filter(others(...this.players)),
           canSkip: true,
-        }
+        },
       );
 
       if (dying.length === 0) return kill;

@@ -12,5 +12,5 @@ registerWolfEvents();
 registerWitchEvents();
 
 SleepEvents.register(
-  ({ players }) => new SleepBoundary(players.filter(isNotDead))
+  ({ players }) => new SleepBoundary(players.filter(isNotDead)),
 );

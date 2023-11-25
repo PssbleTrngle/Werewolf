@@ -205,7 +205,7 @@ class FrozenGame implements GameAccess {
           const modifiers = this.playerDataModifiers.get(player.id) ?? [];
           const roleData = modifiers.reduce<RoleData>(
             (previous, values) => ({ ...previous, ...values }),
-            player.roleData
+            player.roleData,
           );
           return { ...player, roleData };
         }),
@@ -261,7 +261,7 @@ export class Game {
     const dirty = this.events.filter((event) => {
       const arrived = event.players.filter(
         (it) =>
-          this.eventsFor(it).find((it) => !access.hasFinished(it)) === event
+          this.eventsFor(it).find((it) => !access.hasFinished(it)) === event,
       );
 
       if (!event.isFinished(access)) return;
@@ -302,7 +302,7 @@ export class Game {
 
   eventsFor(player: Player) {
     return this.events.filter((it) =>
-      it.players.some((p) => p.id === player.id)
+      it.players.some((p) => p.id === player.id),
     );
   }
 
@@ -325,7 +325,7 @@ export class Game {
 
     if (player.status === "dead")
       throw new Error(
-        `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
+        `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`,
       );
 
     console.log(player.name, "voted on", event.type);

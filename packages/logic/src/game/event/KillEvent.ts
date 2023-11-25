@@ -12,7 +12,7 @@ export class KillEvent extends Event {
     readonly players: ReadonlyArray<Player>,
     readonly cause: DeathCause,
     readonly choice: Choice,
-    readonly timeLimit?: number
+    readonly timeLimit?: number,
   ) {
     super(type, players, choice, timeLimit);
   }

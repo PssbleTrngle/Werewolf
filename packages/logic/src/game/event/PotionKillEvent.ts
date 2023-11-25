@@ -11,7 +11,7 @@ export default class PotionKillEvent extends KillEvent {
     return [
       ...parentEffects,
       ...this.players.map(
-        (it) => new PlayerDataEffect(it.id, { usedKillPotion: true })
+        (it) => new PlayerDataEffect(it.id, { usedKillPotion: true }),
       ),
     ];
   }

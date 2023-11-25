@@ -9,7 +9,7 @@ export class ReviveEvent extends Event {
   constructor(
     type: string,
     readonly players: ReadonlyArray<Player>,
-    readonly choice: Choice
+    readonly choice: Choice,
   ) {
     super(type, players, choice);
   }

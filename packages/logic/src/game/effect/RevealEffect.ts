@@ -8,13 +8,13 @@ export class RevealEffect implements Effect {
   constructor(
     private readonly type: string,
     private readonly to: Player,
-    private readonly targets: ReadonlyArray<Id>
+    private readonly targets: ReadonlyArray<Id>,
   ) {}
 
   apply(game: GameAccess) {
     const targets = this.targets.map((it) => game.playerById(it));
     game.immediately(
-      () => new RevealEvent(`reveal.${this.type}`, [this.to], targets)
+      () => new RevealEvent(`reveal.${this.type}`, [this.to], targets),
     );
   }
 }

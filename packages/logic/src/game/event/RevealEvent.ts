@@ -7,7 +7,7 @@ export class RevealEvent extends Event implements RevealData {
   constructor(
     type: string,
     readonly players: ReadonlyArray<Player>,
-    readonly targets: ReadonlyArray<Player>
+    readonly targets: ReadonlyArray<Player>,
   ) {
     super(type, players, DismissChoice);
   }

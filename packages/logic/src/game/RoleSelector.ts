@@ -10,7 +10,7 @@ import { Witch } from "./role/Witch.js";
 import { Werewolf } from "./role/Wolf.js";
 
 export function generateRoles(
-  players: ReadonlyArray<Omit<Player, "role">>
+  players: ReadonlyArray<Omit<Player, "role">>,
 ): ReadonlyArray<Player> {
   const count = players.length;
   if (count < 5) throw new Error("Not enough players");

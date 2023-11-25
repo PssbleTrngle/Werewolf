@@ -11,7 +11,7 @@ export default class PotionReviveEvent extends ReviveEvent {
     return [
       ...parentEffects,
       ...this.players.map(
-        (it) => new PlayerDataEffect(it.id, { usedRevivePotion: true })
+        (it) => new PlayerDataEffect(it.id, { usedRevivePotion: true }),
       ),
     ];
   }

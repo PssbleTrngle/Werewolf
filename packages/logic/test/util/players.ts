@@ -5,7 +5,7 @@ import { Role } from "../../src/index.js";
 
 export function createTestPlayers(
   amount: number,
-  factory: (index: number) => Partial<Player> = () => ({})
+  factory: (index: number) => Partial<Player> = () => ({}),
 ) {
   return times<Player>(amount, (id) => {
     const { role = new Villager(), ...rest } = factory(id);

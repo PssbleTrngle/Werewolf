@@ -11,7 +11,7 @@ export class DeathEvent extends Event implements DeathData {
   constructor(
     players: ReadonlyArray<Player>,
     public readonly deaths: ReadonlyArray<Player>,
-    private readonly time?: Time
+    private readonly time?: Time,
   ) {
     super("announcement.death", players, DismissChoice);
   }

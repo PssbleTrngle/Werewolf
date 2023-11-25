@@ -21,8 +21,8 @@ export class SleepBoundary extends Event {
       new EventEffect(
         ({ players }) =>
           new LynchEvent(
-            players.filter(isNotDead).filter((it) => it.status !== "dying")
-          )
+            players.filter(isNotDead).filter((it) => it.status !== "dying"),
+          ),
       ),
     ];
   }

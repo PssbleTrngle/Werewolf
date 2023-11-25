@@ -20,7 +20,7 @@ export function createLocalGame(): GameContext {
       name: `Player ${id}`,
       roleData: {},
       status: "alive",
-    }))
+    })),
   );
 
   const game = new Game(players);

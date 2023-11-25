@@ -40,7 +40,7 @@ export function useActiveEvent() {
 }
 
 function useInvalidatingMutation<TData, TVariables>(
-  mutationFn: MutationFunction<TData, TVariables>
+  mutationFn: MutationFunction<TData, TVariables>,
 ) {
   const client = useQueryClient();
   return useMutation({

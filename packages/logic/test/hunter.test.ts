@@ -37,7 +37,7 @@ describe("tests regarding the hunter", () => {
     expect(game.events[1].type).toBe("kill.lynch");
     expect((game.events[0] as DeathEvent).deaths).toHaveLength(2);
     expect((game.events[0] as DeathEvent).players).toHaveLength(
-      players.length - 2
+      players.length - 2,
     );
     expect(game.events[2].type).toBe("win");
 
@@ -74,7 +74,7 @@ describe("tests regarding the hunter", () => {
     expect(game.events[1].type).toBe("kill.lynch");
     expect((game.events[0] as DeathEvent).deaths).toHaveLength(1);
     expect((game.events[0] as DeathEvent).players).toHaveLength(
-      players.length - 1
+      players.length - 1,
     );
 
     const dead = game.players.filter((it) => !isNotDead(it));

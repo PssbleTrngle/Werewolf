@@ -30,7 +30,7 @@ const Luminary = styled.div<{ $angle: number; $glow?: string[] }>`
         ?.map((color, i, a) => ({ color, offset: (i + 1) / a.length }))
         ?.map(
           ({ color, offset }) =>
-            `0 ${offset * 400}px ${offset * 300}px ${offset * 500}px ${color}`
+            `0 ${offset * 400}px ${offset * 300}px ${offset * 500}px ${color}`,
         )
         .join(",")};
 
@@ -47,7 +47,9 @@ const Luminary = styled.div<{ $angle: number; $glow?: string[] }>`
     background: #fff;
   }
 
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease;
 `;
 
 export const Sun = styled(Luminary)`

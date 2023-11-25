@@ -54,7 +54,7 @@ export default function ControlBar() {
 
   const canRedo = useMemo(
     () => (status?.queue?.writtenFuture ?? 0) > 0,
-    [status]
+    [status],
   );
 
   return (
