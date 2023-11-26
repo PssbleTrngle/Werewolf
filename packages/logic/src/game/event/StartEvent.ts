@@ -1,16 +1,17 @@
 import { TimeEffect } from "../effect/TimeEffect.js";
-import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
-import { Event } from "./Event.js";
-import { EventBus } from "./EventBus.js";
+import { EventType } from "./Event.js";
+import { EventFactoryBus } from "./EventBus.js";
+import { registerEventFactory } from "./EventRegistry.js";
 import { SleepEvents } from "./SleepBoundary.js";
 
-export const StartEvents = new EventBus();
+export const StartEvents = new EventFactoryBus();
 
-export class StartEvent extends Event {
-  constructor(players: ReadonlyArray<Player>) {
-    super("start", players, DismissChoice);
-  }
+export class StartEvent extends EventType {
+  static create = registerEventFactory("start", new StartEvent(), () => ({
+    choice: DismissChoice,
+    data: undefined,
+  }));
 
   finish() {
     console.log("Game Started");

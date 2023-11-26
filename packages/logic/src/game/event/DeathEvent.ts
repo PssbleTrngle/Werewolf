@@ -1,23 +1,32 @@
-import { DeathData, Time } from "models";
+import { DeathData, Event, Player as IPlayer, Time, Vote } from "models";
+import { ArrayOrSingle } from "../../util.js";
+import { Effect } from "../effect/Effect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
-import { Event } from "./Event.js";
+import { EventType } from "./Event.js";
 import { EventBus } from "./EventBus.js";
+import { registerEventFactory } from "./EventRegistry.js";
 
-export const DeathEvents = new EventBus();
+export const DeathEvents = new EventBus<
+  (player: Player) => ArrayOrSingle<Effect>
+>();
 
-export class DeathEvent extends Event implements DeathData {
-  constructor(
-    players: ReadonlyArray<Player>,
-    public readonly deaths: ReadonlyArray<Player>,
-    private readonly time?: Time,
-  ) {
-    super("announcement.death", players, DismissChoice);
-  }
+export class DeathEvent extends EventType<DeathData> {
+  static create = registerEventFactory(
+    "announcement.death",
+    new DeathEvent(),
+    (deaths: ReadonlyArray<IPlayer>, time?: Time) => ({
+      choice: DismissChoice,
+      data: {
+        deaths,
+        time,
+      },
+    })
+  );
 
-  finish() {
-    if (this.time) return new TimeEffect(this.time);
+  finish(_vote: Vote, { data }: Event<DeathData>) {
+    if (data.time) return new TimeEffect(data.time);
     return [];
   }
 }

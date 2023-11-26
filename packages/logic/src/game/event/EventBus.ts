@@ -1,18 +1,27 @@
-import { Effect } from "../effect/Effect.js";
-import { EventEffect } from "../effect/EventEffect.js";
-import { EventFactory } from "./Event.js";
+import { Effect } from "../effect/Effect";
+import { EventEffect } from "../effect/EventEffect";
+import { EventFactory } from "./Event";
 
-export class EventBus {
-  private readonly events: Array<{
-    factory: EventFactory;
-    immediately: boolean;
-  }> = [];
+function isResult<T>(value: T | false): value is T {
+  return value !== false;
+}
 
-  register(factory: EventFactory, immediately = false) {
-    this.events.push({ factory, immediately });
+export class EventBus<Listener extends (...args: any[]) => any> {
+  protected readonly listeners: Array<Listener> = [];
+
+  register(listener: Listener) {
+    this.listeners.push(listener);
   }
 
+  notify(
+    ...args: Parameters<Listener>
+  ): ReadonlyArray<Exclude<ReturnType<Listener>, "false">> {
+    return this.listeners.map((it) => it(...args)).filter(isResult);
+  }
+}
+
+export class EventFactoryBus extends EventBus<EventFactory> {
   createEffects(): ReadonlyArray<Effect> {
-    return this.events.map((it) => new EventEffect(it.factory, it.immediately));
+    return this.listeners.map((it) => new EventEffect(it));
   }
 }

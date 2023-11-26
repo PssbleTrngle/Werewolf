@@ -13,5 +13,5 @@ export class Witch extends Role {
 export const registerWitchEvents = (role = "witch") =>
   SleepEvents.register(({ players }) => {
     const witches = players.filter(hasRole(role));
-    return witches.map((it) => new WitchTrigger([it]));
+    return witches.map((it) => WitchTrigger.create([it]));
   });

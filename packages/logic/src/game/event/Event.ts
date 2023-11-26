@@ -1,22 +1,16 @@
-import { Choice, Event as IEvent, Vote } from "models";
+import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
-import { Player } from "../player/Player.js";
 
-export type EventFactory = (game: GameReadAccess) => ArrayOrSingle<Event>;
+export type EventFactory = (
+  game: GameReadAccess
+) => ArrayOrSingle<Event<unknown>>;
 
-export abstract class Event implements IEvent {
-  constructor(
-    public readonly type: string,
-    public readonly players: ReadonlyArray<Player>,
-    public readonly choice?: Choice,
-    public readonly timeLimit?: number,
-  ) {}
+export abstract class EventType<T = undefined> {
+  abstract finish(vote: Vote, event: Event<T>): ArrayOrSingle<Effect>;
 
-  abstract finish(vote: Vote): ArrayOrSingle<Effect>;
-
-  isFinished(_game: GameReadAccess) {
+  isFinished(_game: GameReadAccess, _event: Event<T>) {
     return true;
   }
 }

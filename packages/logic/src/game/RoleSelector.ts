@@ -3,6 +3,7 @@ import { Player } from "./player/Player.js";
 import { DreamWolf } from "./role/DreamWolf.js";
 import { Eye } from "./role/Eye.js";
 import { Hunter } from "./role/Hunter.js";
+import Jester from "./role/Jester.js";
 import { Role } from "./role/Role.js";
 import { Seer } from "./role/Seer.js";
 import { Villager } from "./role/Villager.js";
@@ -25,6 +26,7 @@ export function generateRoles(
     new Eye(),
     new Hunter(),
     new Witch(),
+    new Jester(),
   ]).slice(0, Math.max(0, count - wolfs.length));
 
   const roles: Role[] = shuffle([

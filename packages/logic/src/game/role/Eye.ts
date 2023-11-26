@@ -15,5 +15,5 @@ export const registerEyeEvents = (role = "eye", revealedRole = "seer") =>
     const seers = players.filter(hasRole(revealedRole));
     return players
       .filter(hasRole(role))
-      .map((it) => new RevealEvent("reveal.eye", [it], seers));
+      .map((it) => RevealEvent.create("eye", [it], seers));
   });

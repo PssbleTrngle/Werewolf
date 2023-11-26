@@ -10,5 +10,5 @@ export const playerVote = (...players: Player[]): PlayerVote => ({
 });
 
 export const dismiss = (game: Game) => {
-  game.players.filter(isAlive).forEach((it) => game.vote(it, skipVote()));
+  game.players.filter(isAlive).forEach((it) => game.vote(it.id, skipVote()));
 };

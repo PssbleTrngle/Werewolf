@@ -1,3 +1,5 @@
+import { registerEvent } from "../event/EventRegistry.js";
+import { RevealEvent } from "../event/RevealEvent.js";
 import { SeeEvent } from "../event/SeeEvent.js";
 import { SleepEvents } from "../event/SleepBoundary.js";
 import { hasRole, isNotDead, others } from "../player/predicates.js";
@@ -10,9 +12,11 @@ export class Seer extends Role {
   }
 }
 
+registerEvent("reveal.seer", new RevealEvent());
+
 export const registerSeerEvents = (role = "seer") =>
   SleepEvents.register(({ players }) => {
     const alive = players.filter(isNotDead);
     const seers = alive.filter(hasRole(role));
-    return seers.map((it) => new SeeEvent(it, alive.filter(others(it))));
+    return seers.map((it) => SeeEvent.create([it], alive.filter(others(it))));
   });

@@ -1,3 +1,5 @@
+import { DeathCause, Player } from "models";
+import { registerEventFactory } from "../event/EventRegistry.js";
 import { KillEvent } from "../event/KillEvent.js";
 import { SleepEvents } from "../event/SleepBoundary.js";
 import { inGroup, isAlive, isNotDead } from "../player/predicates.js";
@@ -9,6 +11,19 @@ export class Werewolf extends Role {
     super("werewolf", [RoleGroup.WOLF], "🐺");
   }
 }
+
+const createKillEvent = registerEventFactory(
+  "kill.wolfs",
+  new KillEvent(),
+  (targets: ReadonlyArray<Player>) => ({
+    choice: {
+      players: targets,
+    },
+    data: {
+      cause: DeathCause.WOLFS,
+    },
+  })
+);
 
 export const registerWolfEvents = () =>
   SleepEvents.register(({ players }) => {
@@ -22,7 +37,5 @@ export const registerWolfEvents = () =>
       .filter((it) => hasWolfDied || it.role.type !== "dreamwolf");
 
     const targets = alive.filter((it) => !wolfs.includes(it));
-    return new KillEvent("kill.wolfs", wolfs, "getting eaten", {
-      players: targets,
-    });
+    return createKillEvent(wolfs, targets);
   });

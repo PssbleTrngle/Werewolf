@@ -1,12 +1,12 @@
 import { last } from "lodash-es";
-import { GameStatus, Id, Time, Vote } from "models";
+import { DeathCause, Event, GameStatus, Id, Time, Vote } from "models";
 import { ArrayOrSingle, arrayOrSelf, notNull } from "../util.js";
 import { Effect } from "./effect/Effect.js";
 import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
-import { Event, EventFactory } from "./event/Event.js";
+import { EventFactory } from "./event/Event.js";
+import { EventRegistry } from "./event/EventRegistry.js";
 import { StartEvent } from "./event/StartEvent.js";
 import WinEvent from "./event/WinEvent.js";
-import { DeathCause } from "./player/DeathCause.js";
 import { Player, RoleData } from "./player/Player.js";
 import { isAlive, isDying } from "./player/predicates.js";
 import "./roleEvents.js";
@@ -15,18 +15,27 @@ import { testWinConditions } from "./winConditions.js";
 
 interface GameState extends GameStatus {
   players: ReadonlyArray<Player>;
-  events: ReadonlyArray<Event>;
+  events: ReadonlyArray<Event<unknown>>;
 }
 
 class StateHistory {
   private history: GameState[];
-  private cursor = 0;
+  private cursor;
 
-  constructor(initial: GameState) {
-    this.history = [initial];
+  constructor(...initial: GameState[]) {
+    if (initial.length === 0) {
+      throw new Error("cannot create state history with empty initial state");
+    }
+    this.history = initial;
+    this.cursor = initial.length - 1;
   }
 
   get current(): GameState {
+    if (this.cursor >= this.history.length) {
+      throw new Error(
+        `Illegal cursor position ${this.cursor} for history with length ${this.history.length}`
+      );
+    }
     return this.history[this.cursor];
   }
 
@@ -46,6 +55,10 @@ class StateHistory {
 
   undo() {
     this.cursor = Math.max(0, this.cursor - 1);
+  }
+
+  save() {
+    return this.history;
   }
 
   get future() {
@@ -75,24 +88,23 @@ export interface GameAccess extends GameReadAccess {
 
 class FrozenGame implements GameAccess {
   private readonly newEvents: EventFactory[] = [];
-  private readonly deaths = new Set<Id>();
+  private readonly deaths = new Map<Id, DeathCause>();
   private readonly revives = new Set<Id>();
-  private readonly replaced = new Map<Event, EventFactory[]>();
+  private readonly replaced = new Map<Event<unknown>, EventFactory[]>();
   private readonly pendingReplace = new Set<EventFactory>();
   private clearDeaths = false;
   private readonly timesPassed: Time[] = [];
   private readonly playerDataModifiers = new Map<Id, Partial<RoleData>[]>();
 
-  constructor(private readonly initial: GameState) {
-    this.deaths = new Set();
-  }
+  constructor(private readonly initial: GameState) {}
 
   immediately(factory: EventFactory) {
     this.pendingReplace.add(factory);
   }
 
-  finish(event: Event, vote: Vote) {
-    const effects = arrayOrSelf(event.finish(vote));
+  finish<T>(event: Event<T>, vote: Vote) {
+    const type = EventRegistry.get(event.type);
+    const effects = arrayOrSelf(type.finish(vote, event));
     effects.forEach((it) => it.apply(this));
 
     this.replaced.set(event, Array.from(this.pendingReplace));
@@ -100,7 +112,7 @@ class FrozenGame implements GameAccess {
     this.pendingReplace.clear();
   }
 
-  hasFinished(event: Event) {
+  hasFinished(event: Event<unknown>) {
     return this.replaced.get(event)?.length === 0;
   }
 
@@ -114,8 +126,9 @@ class FrozenGame implements GameAccess {
 
   get players() {
     return this.initial.players.map((it) => ({
-      ...it,
       // TODO this could be hurtful
+      ...it,
+      deathCause: this.deaths.get(it.id) ?? it.deathCause,
       status:
         this.deaths.has(it.id) && !this.revives.has(it.id)
           ? "dying"
@@ -141,14 +154,14 @@ class FrozenGame implements GameAccess {
     const target = this.playerById(playerId);
     console.log(target.name, "died by", cause);
 
-    const effects = [
-      ...DeathEvents.createEffects(),
-      // these should not be called if the target is revived and should therefore be called later
-      ...arrayOrSelf(target.role.onDeath(target)),
-    ];
+    const effects = DeathEvents.notify(target).flatMap(arrayOrSelf);
+    // these should not be called if the target is revived and should therefore be called later
+    // TODO
+    // ...arrayOrSelf(target.role.onDeath(target)),
+
     this.apply(effects);
 
-    this.deaths.add(playerId);
+    this.deaths.set(playerId, cause);
   }
 
   revive(playerId: Id): void {
@@ -170,7 +183,7 @@ class FrozenGame implements GameAccess {
 
       if (unnotifiedDeaths.length === 0) return [];
 
-      return new DeathEvent(alive, unnotifiedDeaths, time);
+      return DeathEvent.create(alive, unnotifiedDeaths, time);
     });
   }
 
@@ -193,11 +206,11 @@ class FrozenGame implements GameAccess {
     return {
       time,
       day,
-      players: this.initial.players
+      players: this.players
         .map<Player>((player) => {
           if (this.revives.has(player.id))
             return { ...player, status: "alive" };
-          if (this.deaths.has(player.id) || isDying(player)) {
+          if (isDying(player)) {
             return { ...player, status: this.clearDeaths ? "dead" : "dying" };
           } else return player;
         })
@@ -205,7 +218,7 @@ class FrozenGame implements GameAccess {
           const modifiers = this.playerDataModifiers.get(player.id) ?? [];
           const roleData = modifiers.reduce<RoleData>(
             (previous, values) => ({ ...previous, ...values }),
-            player.roleData,
+            player.roleData
           );
           return { ...player, roleData };
         }),
@@ -218,13 +231,27 @@ export class Game {
   private state: StateHistory;
   private votes = new Map<Id, Vote>();
 
-  constructor(players: ReadonlyArray<Player>) {
-    this.state = new StateHistory({
-      players,
-      day: 1,
-      time: "dusk",
-      events: [new StartEvent(players)],
-    });
+  private constructor(history: GameState[]) {
+    this.state = new StateHistory(...history);
+  }
+
+  static create(players: ReadonlyArray<Player>): Game {
+    return new Game([
+      {
+        players,
+        day: 1,
+        time: "dusk",
+        events: [StartEvent.create(players)],
+      },
+    ]);
+  }
+
+  static read(history: GameState[]): Game {
+    return new Game(history);
+  }
+
+  save(): GameState[] {
+    return this.state.save();
   }
 
   get players() {
@@ -259,14 +286,23 @@ export class Game {
     const access = this.freeze();
 
     const dirty = this.events.filter((event) => {
+      const type = EventRegistry.get(event.type);
+
+      const currentEvent = (id: Id) =>
+        this.eventsFor(id).find((it) => !access.hasFinished(it));
+
       const arrived = event.players.filter(
-        (it) =>
-          this.eventsFor(it).find((it) => !access.hasFinished(it)) === event,
+        (it) => currentEvent(it.id) === event
       );
 
-      if (!event.isFinished(access)) return;
+      if (!type.isFinished(access, event)) return;
 
       // some players still have something to do
+      if (arrived.length < event.players.length && event.type === "sleep")
+        console.log(
+          `not everyone arrived for ${event.type}`,
+          event.players.map((it) => currentEvent(it.id)?.type)
+        );
       if (arrived.length < event.players.length) return false;
 
       let vote: Vote = { type: "skip" };
@@ -294,30 +330,36 @@ export class Game {
       const win = !dying && testWinConditions(this.freeze());
       if (win) {
         console.log(`We have a winner: ${win.type}`);
-        const winEvent = new WinEvent(this.players, win);
-        this.state.modify((it) => ({ events: [...it.events, winEvent] }));
+        const winEvent = WinEvent.create(this.players, win);
+        this.state.modify((it) => {
+          const keptEvents = it.events.filter((it) =>
+            it.type.startsWith("announcement.")
+          );
+          return { events: [...keptEvents, winEvent] };
+        });
       }
     }
   }
 
-  eventsFor(player: Player) {
-    return this.events.filter((it) =>
-      it.players.some((p) => p.id === player.id),
-    );
+  eventsFor(id: Id) {
+    return this.events.filter((it) => it.players.some((p) => p.id === id));
   }
 
-  currentEvent(player: Player) {
-    return this.events.find((it) => it.players.some((p) => p.id === player.id));
+  currentEvent(id: Id) {
+    return this.events.find((it) => it.players.some((p) => p.id === id));
   }
 
   currentEvents() {
     return this.events.filter((event) => {
-      return event.players.some((it) => this.currentEvent(it) === event);
+      return event.players.some((it) => this.currentEvent(it.id) === event);
     });
   }
 
-  vote(player: Player, vote: Vote) {
-    const event = this.currentEvent(player);
+  vote(id: Id, vote: Vote) {
+    const player = this.players.find((it) => it.id === id);
+    if (!player) throw new Error(`Unknown player with id '${id}'`);
+
+    const event = this.currentEvent(id);
 
     // TODO only here for sanity checks right now, maybe later there will be a role which is allowed to do this
     if (!event?.choice)
@@ -325,7 +367,7 @@ export class Game {
 
     if (player.status === "dead")
       throw new Error(
-        `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`,
+        `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
       );
 
     console.log(player.name, "voted on", event.type);

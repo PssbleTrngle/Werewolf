@@ -15,22 +15,22 @@ describe("tests regarding the witch", () => {
       new Seer(),
       ...times(3, () => new Villager()),
     ]);
-    const game = new Game(players);
+    const game = Game.create(players);
 
     dismiss(game);
 
-    game.vote(players[2], playerVote(players[0]));
-    game.vote(players[2], skipVote());
+    game.vote(players[2].id, playerVote(players[0]));
+    game.vote(players[2].id, skipVote());
 
-    game.vote(players[0], playerVote(players[1]));
+    game.vote(players[0].id, playerVote(players[1]));
 
     expect(game.events[0].type).toBe("revive.witch");
     expect(game.events[1].type).toBe("kill.witch");
     expect(game.events[2].type).toBe("sleep");
     expect(game.events).toHaveLength(3);
 
-    game.vote(players[1], playerVote(players[1]));
-    game.vote(players[1], skipVote());
+    game.vote(players[1].id, playerVote(players[1]));
+    game.vote(players[1].id, skipVote());
 
     // No death announcement
     expect(game.events[0].type).toBe("kill.lynch");
@@ -46,19 +46,19 @@ describe("tests regarding the witch", () => {
       new Witch(),
       ...times(3, () => new Villager()),
     ]);
-    const game = new Game(players);
+    const game = Game.create(players);
 
     dismiss(game);
 
-    game.vote(players[0], playerVote(players[3]));
+    game.vote(players[0].id, playerVote(players[3]));
 
     expect(game.events[0].type).toBe("revive.witch");
     expect(game.events[1].type).toBe("kill.witch");
     expect(game.events[2].type).toBe("sleep");
     expect(game.events).toHaveLength(3);
 
-    game.vote(players[1], playerVote(players[3]));
-    game.vote(players[1], skipVote());
+    game.vote(players[1].id, playerVote(players[3]));
+    game.vote(players[1].id, skipVote());
 
     // No death announcement
     expect(game.events[0].type).toBe("kill.lynch");
@@ -66,20 +66,20 @@ describe("tests regarding the witch", () => {
 
     dismiss(game);
 
-    game.vote(players[0], playerVote(players[4]));
+    game.vote(players[0].id, playerVote(players[4]));
 
     // witch has already revived
     expect(game.events[0].type).toBe("kill.witch");
     expect(game.events[1].type).toBe("sleep");
     expect(game.events).toHaveLength(2);
 
-    game.vote(players[1], playerVote(players[3]));
+    game.vote(players[1].id, playerVote(players[3]));
 
     dismiss(game);
 
     dismiss(game);
 
-    game.vote(players[0], playerVote(players[2]));
+    game.vote(players[0].id, playerVote(players[2]));
 
     // witch has already revived & killed
     expect(game.events[0].type).toBe("sleep");

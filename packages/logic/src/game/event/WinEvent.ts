@@ -1,16 +1,20 @@
-import { WinState } from "models";
+import { Event, WinData, WinState } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
 import { Player } from "../player/Player.js";
-import { Event } from "./Event.js";
+import { EventType } from "./Event.js";
 
-export default class WinEvent extends Event {
-  constructor(
+export default class WinEvent extends EventType<WinData> {
+  static create(
     players: ReadonlyArray<Player>,
-    public readonly state: WinState,
-  ) {
-    super("win", players);
+    state: WinState
+  ): Event<WinData> {
+    return {
+      type: "win",
+      players,
+      data: { state },
+    };
   }
 
   finish(): ArrayOrSingle<Effect> {

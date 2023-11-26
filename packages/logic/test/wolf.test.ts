@@ -13,7 +13,7 @@ const players = createTestPlayers(12, (i) => {
 
 describe("tests regarding wolf roles", () => {
   it("wolfs kill a player an get lynched", () => {
-    const game = new Game(players);
+    const game = Game.create(players);
 
     expect(game.status.queue?.past).toBe(0);
 
@@ -27,7 +27,7 @@ describe("tests regarding wolf roles", () => {
 
     players
       .filter(inGroup(RoleGroup.WOLF))
-      .forEach((it) => game.vote(it, playerVote(players[1])));
+      .forEach((it) => game.vote(it.id, playerVote(players[1])));
 
     expect(game.events[0].type).toBe("announcement.death");
     expect(game.events[1].type).toBe("kill.lynch");
@@ -43,12 +43,12 @@ describe("tests regarding wolf roles", () => {
     game.players
       .filter(isAlive)
       .filter(inGroup(RoleGroup.WOLF))
-      .forEach((it) => game.vote(it, skipVote()));
+      .forEach((it) => game.vote(it.id, skipVote()));
 
     game.players
       .filter(isAlive)
       .filter(inGroup(RoleGroup.VILLAGER))
-      .forEach((it) => game.vote(it, playerVote(players[0])));
+      .forEach((it) => game.vote(it.id, playerVote(players[0])));
 
     expect(game.status.queue?.past).toBe(4);
 

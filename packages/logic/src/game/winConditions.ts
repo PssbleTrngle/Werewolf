@@ -1,6 +1,6 @@
-import { WinState } from "models";
+import { DeathCause, WinState } from "models";
 import { GameReadAccess } from "./Game.js";
-import { inGroup, isAlive } from "./player/predicates.js";
+import { hasRole, inGroup, isAlive } from "./player/predicates.js";
 import { RoleGroup } from "./role/RoleGroup.js";
 
 type WinConditionChecker = (game: GameReadAccess) => WinState | false;
@@ -55,5 +55,17 @@ WinConditions.register(({ players }) => {
   return {
     type: "villagers",
     winners: villagers,
+  };
+});
+
+WinConditions.register(({ players }) => {
+  const jesters = players.filter(hasRole("jester"));
+  const lynched = jesters.filter((it) => it.deathCause === DeathCause.LYNCHED);
+
+  if (lynched.length === 0) return false;
+
+  return {
+    type: "jester",
+    winners: lynched,
   };
 });

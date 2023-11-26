@@ -1,15 +1,20 @@
-import { RevealData } from "models";
+import { Event, RevealData } from "models";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
-import { Event } from "./Event.js";
+import { EventType } from "./Event.js";
 
-export class RevealEvent extends Event implements RevealData {
-  constructor(
+export class RevealEvent extends EventType<RevealData> {
+  static create(
     type: string,
-    readonly players: ReadonlyArray<Player>,
-    readonly targets: ReadonlyArray<Player>,
-  ) {
-    super(type, players, DismissChoice);
+    players: ReadonlyArray<Player>,
+    targets: ReadonlyArray<Player>
+  ): Event<RevealData> {
+    return {
+      players,
+      type: `reveal.${type}`,
+      choice: DismissChoice,
+      data: { targets },
+    };
   }
 
   finish() {

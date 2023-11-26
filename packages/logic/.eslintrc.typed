@@ -1,0 +1,7 @@
+{
+  "root": true,
+  "extends": ["custom/typed"],
+  "rules": {
+    "no-console": "off"
+  }
+}

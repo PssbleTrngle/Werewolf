@@ -5,7 +5,7 @@ import { Effect } from "./Effect.js";
 export class EventEffect implements Effect {
   constructor(
     private readonly factory: EventFactory,
-    private readonly immediately = false,
+    private readonly immediately = false
   ) {}
 
   apply(game: GameAccess) {

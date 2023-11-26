@@ -1,6 +1,5 @@
-import { Id } from "models";
+import { DeathCause, Id } from "models";
 import { GameAccess } from "../Game.js";
-import { DeathCause } from "../player/DeathCause.js";
 import { Effect } from "./Effect.js";
 
 export class KillEffect implements Effect {

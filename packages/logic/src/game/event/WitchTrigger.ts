@@ -1,43 +1,39 @@
+import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
-import { Player } from "../player/Player.js";
 import { isAlive, isDying, others } from "../player/predicates.js";
-import { Event } from "./Event.js";
+import { EventType } from "./Event.js";
+import { registerEventFactory } from "./EventRegistry.js";
 import PotionKillEvent from "./PotionKillEvent.js";
 import PotionReviveEvent from "./PotionReviveEvent.js";
 
-export class WitchTrigger extends Event {
-  constructor(readonly players: ReadonlyArray<Player>) {
-    super("trigger.witch", players);
-  }
+export class WitchTrigger extends EventType {
+  static create = registerEventFactory(
+    "trigger.witch",
+    new WitchTrigger(),
+    () => ({
+      data: undefined,
+    })
+  );
 
-  finish(): ArrayOrSingle<Effect> {
-    return new EventEffect(({ players }) => {
-      const dying = players.filter(isDying);
+  finish(_vote: Vote, event: Event): ArrayOrSingle<Effect> {
+    return new EventEffect((game) => {
+      const dying = game.players.filter(isDying);
 
-      const alive = players.filter(isAlive);
+      const alive = game.players.filter(isAlive);
 
-      // TODO witches should only be doing this once per round & use this once per game
-      // save data to player
-      const revive = new PotionReviveEvent(
-        "revive.witch",
-        this.players.filter((it) => !it.roleData.usedRevivePotion),
-        {
-          players: dying,
-          canSkip: true,
-        },
+      const users = event.players.map((it) => game.playerById(it.id));
+
+      const revive = PotionReviveEvent.create(
+        users.filter((it) => !it.roleData.usedRevivePotion),
+        dying
       );
 
-      const kill = new PotionKillEvent(
-        "kill.witch",
-        this.players.filter((it) => !it.roleData.usedKillPotion),
-        "potion",
-        {
-          players: alive.filter(others(...this.players)),
-          canSkip: true,
-        },
+      const kill = PotionKillEvent.create(
+        users.filter((it) => !it.roleData.usedKillPotion),
+        alive.filter(others(...users))
       );
 
       if (dying.length === 0) return kill;

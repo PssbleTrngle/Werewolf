@@ -1,17 +1,30 @@
-import { Vote } from "models";
+import { Event, Player, Vote } from "models";
 import { ArrayOrSingle, arrayOrSelf } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
+import { registerEventFactory } from "./EventRegistry.js";
 import { ReviveEvent } from "./ReviveEvent.js";
 
 export default class PotionReviveEvent extends ReviveEvent {
-  finish(vote: Vote): ArrayOrSingle<Effect> {
-    const parentEffects = arrayOrSelf(super.finish(vote));
+  static create = registerEventFactory(
+    "revive.witch",
+    new ReviveEvent(),
+    (dying: ReadonlyArray<Player>) => ({
+      choice: {
+        players: dying,
+        canSkip: true,
+      },
+      data: undefined,
+    })
+  );
+
+  finish(vote: Vote, event: Event): ArrayOrSingle<Effect> {
+    const parentEffects = arrayOrSelf(super.finish(vote, event));
     if (vote.type === "skip") return parentEffects;
     return [
       ...parentEffects,
-      ...this.players.map(
-        (it) => new PlayerDataEffect(it.id, { usedRevivePotion: true }),
+      ...event.players.map(
+        (it) => new PlayerDataEffect(it.id, { usedRevivePotion: true })
       ),
     ];
   }
