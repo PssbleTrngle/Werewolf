@@ -1,7 +1,9 @@
 import { Event } from "models";
-import { ReactNode, createElement, useMemo } from "react";
+import { ReactNode, createElement, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import DeathDetails from "./detail/DeathDetails";
 import RevealDetail from "./detail/RevealDetails";
+import WinDetails from "./detail/WinDetails";
 
 function baseType(type: string) {
   const [base] = type.split(".");
@@ -9,13 +11,27 @@ function baseType(type: string) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const details: Record<string, (props: { data: any }) => ReactNode> = {
+export type DetailProps<T = any> = Readonly<{
+  data: T;
+  createTitle: (props?: Record<string, unknown>) => ReactNode;
+}>;
+const details: Record<string, (props: DetailProps) => ReactNode> = {
   reveal: RevealDetail,
   announcement: DeathDetails,
+  win: WinDetails,
 };
 
 export default function EventDetails({ event }: { event: Event }) {
+  const { t } = useTranslation();
   const type = useMemo(() => baseType(event.type), [event]);
   const component = useMemo(() => details[type], [type]);
-  return component && createElement(component, { data: event.data });
+
+  const createTitle = useCallback<DetailProps["createTitle"]>(
+    (args) => <h1>{t(`event.${event.type}.title`, args)}</h1>,
+    [event, t]
+  );
+
+  return component
+    ? createElement(component, { data: event.data, createTitle })
+    : createTitle();
 }

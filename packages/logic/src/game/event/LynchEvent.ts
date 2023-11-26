@@ -27,7 +27,7 @@ export default class LynchEvent extends KillEvent {
       ...arrayOrSelf(super.finish(vote, event)),
       new TimeEffect("dusk"),
       new AnnouncementEffect("night"),
-      ...SleepEvents.notify(null),
+      ...SleepEvents.createEffects(),
     ];
   }
 }

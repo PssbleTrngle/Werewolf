@@ -2,12 +2,12 @@ import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
 import { EventEffect } from "../effect/EventEffect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
 import { isNotDead } from "../player/predicates.js";
-import { EventFactory, EventType } from "./Event.js";
-import { EventBus } from "./EventBus.js";
+import { EventType } from "./Event.js";
+import { EventFactoryBus } from "./EventBus.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import LynchEvent from "./LynchEvent.js";
 
-export const SleepEvents = new EventBus<EventFactory>();
+export const SleepEvents = new EventFactoryBus();
 
 export class SleepBoundary extends EventType {
   static create = registerEventFactory("sleep", new SleepBoundary(), () => ({

@@ -8,7 +8,7 @@ import { ReviveEvent } from "./ReviveEvent.js";
 export default class PotionReviveEvent extends ReviveEvent {
   static create = registerEventFactory(
     "revive.witch",
-    new ReviveEvent(),
+    new PotionReviveEvent(),
     (dying: ReadonlyArray<Player>) => ({
       choice: {
         players: dying,

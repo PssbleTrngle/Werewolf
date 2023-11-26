@@ -9,7 +9,6 @@ export default class PotionKillEvent extends KillEvent {
     "kill.witch",
     new PotionKillEvent(),
     (targets: ReadonlyArray<Player>) => ({
-      type: "kill.witch",
       choice: {
         players: targets,
         canSkip: true,

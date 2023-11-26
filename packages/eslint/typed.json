@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/eslintrc",
+  "extends": ["./base", "plugin:@typescript-eslint/recommended-type-checked"],
+  "parserOptions": {
+    "project": true,
+    "tsconfigRootDir": "."
+  }
+}

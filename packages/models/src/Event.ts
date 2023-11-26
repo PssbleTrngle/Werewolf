@@ -1,12 +1,17 @@
 import { Choice } from "./Choice.js";
-import { Player } from "./Player.js";
+import { Time, WinState } from "./Game.js";
+import { DeathCause, Player } from "./Player.js";
 
-export interface Event {
+export interface Event<T = undefined> {
   type: string;
   players: ReadonlyArray<Player>;
   choice?: Choice;
   timeLimit?: number;
-  data?: Record<string, unknown>;
+  data: T;
+}
+
+export interface KillData {
+  cause: DeathCause;
 }
 
 export interface RevealData {
@@ -15,4 +20,9 @@ export interface RevealData {
 
 export interface DeathData {
   deaths: ReadonlyArray<Player>;
+  time?: Time;
+}
+
+export interface WinData {
+  state: WinState;
 }

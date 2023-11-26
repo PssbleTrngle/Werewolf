@@ -285,7 +285,7 @@ export class Game {
   private check() {
     const access = this.freeze();
 
-    const dirty = this.events.filter((event) => {
+    const dirty = this.events.filter((event, i) => {
       const type = EventRegistry.get(event.type);
 
       const currentEvent = (id: Id) =>
@@ -295,14 +295,9 @@ export class Game {
         (it) => currentEvent(it.id) === event
       );
 
-      if (!type.isFinished(access, event)) return;
+      if (!type.isFinished(access, event, i)) return;
 
       // some players still have something to do
-      if (arrived.length < event.players.length && event.type === "sleep")
-        console.log(
-          `not everyone arrived for ${event.type}`,
-          event.players.map((it) => currentEvent(it.id)?.type)
-        );
       if (arrived.length < event.players.length) return false;
 
       let vote: Vote = { type: "skip" };

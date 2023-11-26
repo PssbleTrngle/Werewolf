@@ -10,7 +10,7 @@ export type EventFactory = (
 export abstract class EventType<T = undefined> {
   abstract finish(vote: Vote, event: Event<T>): ArrayOrSingle<Effect>;
 
-  isFinished(_game: GameReadAccess, _event: Event<T>) {
+  isFinished(_game: GameReadAccess, _event: Event<T>, _index: number) {
     return true;
   }
 }

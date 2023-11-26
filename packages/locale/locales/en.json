@@ -1,0 +1,65 @@
+{
+  "button": {
+    "skip": "Skip",
+    "dismiss": "Dismiss",
+    "undo": "Undo",
+    "redo": "Redo"
+  },
+  "event": {
+    "start.title": "Start the Game?",
+    "reveal": {
+      "eye.title": "The Seer is...",
+      "seer.title": "Your crystal ball reveals..."
+    },
+    "kill": {
+      "wolfs.title": "Who do you want to eat?",
+      "hunter.title": "Where does your dying shot land?",
+      "lynch.title": "Who do you want to lynch?",
+      "witch.title": "Do you want to kill someone?"
+    },
+    "see.title": "Whose destiny would like to know?",
+    "announcement": {
+      "death": {
+        "title_zero": "Everybody is alive",
+        "title_one": "Someone has died",
+        "title_other": "{{count}} players have died"
+      }
+    },
+    "revive": {
+      "witch.title": "Who do you want to heal?"
+    }
+  },
+  "role": {
+    "villager": {
+      "name": "Villager"
+    },
+    "hunter": {
+      "name": "Hunter"
+    },
+    "eye": {
+      "name": "Eye"
+    },
+    "seer": {
+      "name": "Seer"
+    },
+    "witch": {
+      "name": "Witch"
+    },
+    "werewolf": {
+      "name": "Werewolf"
+    },
+    "dreamwolf": {
+      "name": "Dreamwolf"
+    },
+    "jester": {
+      "name": "Jester"
+    }
+  },
+  "win": {
+    "villagers.title": "The villagers won!",
+    "wolfs.title": "The wolfs won!",
+    "jester.title": "The jester won!",
+    "couple.title": "The couple won!",
+    "executioner.title": "The executioner won!"
+  }
+}

@@ -1,15 +1,15 @@
-import { RevealData } from "models";
+import { WinData } from "models";
 import { DetailProps } from "../EventDetails";
 import ParticipantList from "../ParticipantList";
 
-export default function RevealDetails({
+export default function WinDetails({
   data,
   createTitle,
-}: DetailProps<RevealData>) {
+}: DetailProps<WinData>) {
   return (
     <>
       {createTitle}
-      <ParticipantList size={2} players={data.targets} />
+      <ParticipantList size={2} players={data.state.winners} />
     </>
   );
 }

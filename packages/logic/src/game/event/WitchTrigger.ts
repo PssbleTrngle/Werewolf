@@ -20,6 +20,7 @@ export class WitchTrigger extends EventType {
 
   finish(_vote: Vote, event: Event): ArrayOrSingle<Effect> {
     return new EventEffect((game) => {
+      console.log("witch triggered");
       const dying = game.players.filter(isDying);
 
       const alive = game.players.filter(isAlive);
@@ -41,7 +42,7 @@ export class WitchTrigger extends EventType {
     }, true);
   }
 
-  isFinished(game: GameReadAccess): boolean {
-    return game.players.some(isDying);
+  isFinished(game: GameReadAccess, _event: Event, index: number): boolean {
+    return index === 0 || game.players.some(isDying);
   }
 }

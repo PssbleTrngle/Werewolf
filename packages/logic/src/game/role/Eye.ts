@@ -1,3 +1,4 @@
+import { registerEvent } from "../event/EventRegistry.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { StartEvents } from "../event/StartEvent.js";
 import { hasRole } from "../player/predicates.js";
@@ -9,6 +10,8 @@ export class Eye extends Role {
     super("eye", [RoleGroup.VILLAGER], "👁️");
   }
 }
+
+registerEvent("reveal.eye", new RevealEvent());
 
 export const registerEyeEvents = (role = "eye", revealedRole = "seer") =>
   StartEvents.register(({ players }) => {

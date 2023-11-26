@@ -9,7 +9,7 @@ import { EventBus } from "./EventBus.js";
 import { registerEventFactory } from "./EventRegistry.js";
 
 export const DeathEvents = new EventBus<
-  (player: Player) => ArrayOrSingle<Effect>
+  (player: Player) => ArrayOrSingle<Effect> | false
 >();
 
 export class DeathEvent extends EventType<DeathData> {

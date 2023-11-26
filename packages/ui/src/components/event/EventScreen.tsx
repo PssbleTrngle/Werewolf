@@ -1,7 +1,6 @@
 import { Time } from "models";
 import { invert } from "polished";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import styled, { ThemeProvider } from "styled-components";
 import { useActiveEvent, useGameStatus } from "../../hooks/game";
 import darkTheme from "../../theme/dark";
@@ -26,7 +25,6 @@ export default function EventScreen() {
   const { data: event, error } = useActiveEvent();
   const { data: game } = useGameStatus();
   // const game = useFakeGame();
-  const { t } = useTranslation();
 
   const theme = useMemo(() => themeBy(game?.time ?? "night"), [game]);
 
@@ -40,7 +38,6 @@ export default function EventScreen() {
         <ControlBar />
         <EventWrapper>
           <ParticipantList size={1} players={event.players} />
-          <h1>{t(`event.${event.type}.title`)}</h1>
           <EventDetails event={event} />
           {event?.choice && <ChoicePanel choice={event.choice} />}
         </EventWrapper>

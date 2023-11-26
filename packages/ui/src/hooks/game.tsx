@@ -9,7 +9,7 @@ import { createContext, useContext } from "react";
 
 export interface GameContext {
   game(): Promise<GameStatus>;
-  activeEvent(): Promise<Event>;
+  activeEvent(): Promise<Event<unknown>>;
   submitVote(vote: Vote): Promise<void>;
   undo(): Promise<void>;
   redo(): Promise<void>;
@@ -40,7 +40,7 @@ export function useActiveEvent() {
 }
 
 function useInvalidatingMutation<TData, TVariables>(
-  mutationFn: MutationFunction<TData, TVariables>,
+  mutationFn: MutationFunction<TData, TVariables>
 ) {
   const client = useQueryClient();
   return useMutation({

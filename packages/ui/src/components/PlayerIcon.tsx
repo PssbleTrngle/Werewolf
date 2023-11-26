@@ -28,7 +28,7 @@ const Style = styled.span<{ $size: number }>`
 
   border-radius: 0.2em;
   outline: 2px solid transparent;
-  outline-offset: 0.5em;
+  padding: 0.2em;
 
   &:hover {
     outline-color: ${(p) => p.theme.text};

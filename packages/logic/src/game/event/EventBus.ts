@@ -1,11 +1,12 @@
-import { Effect } from "../effect/Effect";
-import { EventEffect } from "../effect/EventEffect";
-import { EventFactory } from "./Event";
+import { Effect } from "../effect/Effect.js";
+import { EventEffect } from "../effect/EventEffect.js";
+import { EventFactory } from "./Event.js";
 
 function isResult<T>(value: T | false): value is T {
   return value !== false;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class EventBus<Listener extends (...args: any[]) => any> {
   protected readonly listeners: Array<Listener> = [];
 
@@ -15,7 +16,7 @@ export class EventBus<Listener extends (...args: any[]) => any> {
 
   notify(
     ...args: Parameters<Listener>
-  ): ReadonlyArray<Exclude<ReturnType<Listener>, "false">> {
+  ): ReadonlyArray<Exclude<ReturnType<Listener>, false>> {
     return this.listeners.map((it) => it(...args)).filter(isResult);
   }
 }
