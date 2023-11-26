@@ -8,7 +8,7 @@ export default function WinDetails({
 }: DetailProps<WinData>) {
   return (
     <>
-      {createTitle}
+      {createTitle()}
       <ParticipantList size={2} players={data.state.winners} />
     </>
   );

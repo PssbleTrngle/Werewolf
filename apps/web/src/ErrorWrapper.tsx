@@ -1,4 +1,3 @@
-import { invert } from "polished";
 import { PropsWithChildren, useMemo } from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import styled from "styled-components";
@@ -39,7 +38,7 @@ const Page = styled.section`
   font-family: sans-serif;
 
   color: ${(p) => p.theme.text};
-  background: ${(p) => invert(p.theme.text)};
+  background: ${(p) => p.theme.bg};
 
   height: 100dvh;
 `;

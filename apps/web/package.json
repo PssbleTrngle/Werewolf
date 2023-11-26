@@ -16,11 +16,13 @@
     "i18next-http-backend": "^2.4.2",
     "logic": "workspace:*",
     "models": "workspace:*",
+    "nanoid": "^5.0.3",
     "polished": "^4.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.11",
     "react-i18next": "^13.5.0",
+    "react-router-dom": "^6.20.0",
     "styled-components": "^6.1.1",
     "ui": "workspace:*"
   },

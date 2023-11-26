@@ -1,39 +1,64 @@
-import { Game, generateRoles } from "logic";
-import { Vote } from "models";
+import { Game, GameState, allRoles, generateRoles } from "logic";
+import { Player, Vote } from "models";
 import { GameContext } from "ui";
+import { readLocalStorage } from "../hooks/useLocalStorage";
 
 const STORAGE_KEY = "gamestate";
 
-function readOrCreateGame() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    const parsed = JSON.parse(saved);
-    return Game.read(parsed);
-  }
-
-  const players = generateRoles(
-    new Array(10).fill(null).map((_, id) => ({
-      id,
-      name: `Player ${id}`,
-      roleData: {},
-      status: "alive",
-    }))
+function createGame() {
+  const players = readLocalStorage<ReadonlyArray<Player>>("players");
+  if (!players) throw new Error("No players added yet");
+  return Game.create(
+    generateRoles(
+      players.map((it) => ({
+        ...it,
+        status: "alive",
+        roleData: {},
+      }))
+    )
   );
+}
 
-  return Game.create(players);
+function readSavedGame() {
+  const saved = readLocalStorage<ReadonlyArray<GameState>>(STORAGE_KEY);
+  if (saved) {
+    return Game.read(saved);
+  } else {
+    return null;
+  }
 }
 
 export function createLocalGame(): GameContext {
-  const game = readOrCreateGame();
+  let game = readSavedGame();
 
   function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(game.save()));
+    if (game) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(game.save()));
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  function requireGame() {
+    if (!game) throw new Error("No game active");
+    return game;
   }
 
   return {
-    game: async () => game.status,
-    activeEvent: async () => game.events[0],
+    create: async () => {
+      game = createGame();
+      save();
+    },
+    stop: async () => {
+      game = null;
+      save();
+    },
+    game: async () => game?.status ?? null,
+    players: async () => requireGame().players,
+    roles: async () => allRoles,
+    activeEvent: async () => requireGame().events[0],
     submitVote: async (vote: Vote) => {
+      const game = requireGame();
       const event = game.events[0];
       event.players.forEach((it) => {
         game.vote(it.id, vote);
@@ -41,11 +66,11 @@ export function createLocalGame(): GameContext {
       save();
     },
     undo: async () => {
-      game.undo();
+      requireGame().undo();
       save();
     },
     redo: async () => {
-      game.redo();
+      requireGame().redo();
       save();
     },
   };

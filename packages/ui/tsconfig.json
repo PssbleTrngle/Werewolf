@@ -1,4 +1,6 @@
 {
   "extends": "tsconfig/react",
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

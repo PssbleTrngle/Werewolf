@@ -13,7 +13,7 @@ import "./roleEvents.js";
 import { calculateWinner } from "./vote/Vote.js";
 import { testWinConditions } from "./winConditions.js";
 
-interface GameState extends GameStatus {
+export interface GameState extends GameStatus {
   players: ReadonlyArray<Player>;
   events: ReadonlyArray<Event<unknown>>;
 }
@@ -231,7 +231,7 @@ export class Game {
   private state: StateHistory;
   private votes = new Map<Id, Vote>();
 
-  private constructor(history: GameState[]) {
+  private constructor(history: ReadonlyArray<GameState>) {
     this.state = new StateHistory(...history);
   }
 
@@ -246,7 +246,7 @@ export class Game {
     ]);
   }
 
-  static read(history: GameState[]): Game {
+  static read(history: ReadonlyArray<GameState>): Game {
     return new Game(history);
   }
 

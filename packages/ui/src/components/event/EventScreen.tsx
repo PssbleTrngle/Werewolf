@@ -1,8 +1,6 @@
-import { Time } from "models";
-import { invert } from "polished";
+import { Event, GameStatus, Time } from "models";
 import { useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { useActiveEvent, useGameStatus } from "../../hooks/game";
 import darkTheme from "../../theme/dark";
 import lightTheme from "../../theme/light";
 import Background from "../background/Background";
@@ -21,27 +19,29 @@ function themeBy(time: Time) {
   }
 }
 
-export default function EventScreen() {
-  const { data: event, error } = useActiveEvent();
-  const { data: game } = useGameStatus();
+export default function EventScreen({
+  status,
+  event,
+}: Readonly<{
+  status: GameStatus;
+  event: Event<unknown>;
+}>) {
   // const game = useFakeGame();
 
-  const theme = useMemo(() => themeBy(game?.time ?? "night"), [game]);
-
-  if (error) return <p>an error occured</p>;
-  if (!event || !game) return <p>...</p>;
+  const theme = useMemo(() => themeBy(status?.time ?? "night"), [status]);
 
   return (
     <ThemeProvider theme={theme}>
-      <Style>
-        <Background status={game} />
-        <ControlBar />
-        <EventWrapper>
-          <ParticipantList size={1} players={event.players} />
-          <EventDetails event={event} />
-          {event?.choice && <ChoicePanel choice={event.choice} />}
-        </EventWrapper>
-      </Style>
+      <Background status={status}>
+        <Style>
+          <ControlBar />
+          <EventWrapper>
+            <ParticipantList size={1} players={event.players} />
+            <EventDetails event={event} />
+            {event?.choice && <ChoicePanel choice={event.choice} />}
+          </EventWrapper>
+        </Style>
+      </Background>
     </ThemeProvider>
   );
 }
@@ -52,16 +52,6 @@ const Style = styled.section`
   text-align: center;
 
   user-select: none;
-
-  font-family: sans-serif;
-  color: ${(p) => p.theme.text};
-
-  height: 100%;
-
-  ::selection {
-    background: ${(p) => p.theme.text};
-    color: ${(p) => invert(p.theme.text)};
-  }
 `;
 
 const EventWrapper = styled.section`

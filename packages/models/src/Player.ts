@@ -2,6 +2,8 @@ import { Role } from "./Role.js";
 
 export type Id = number | string;
 
+export type Status = "alive" | "dead" | "dying";
+
 export const enum DeathCause {
   LYNCHED = "lynched",
   WOLFS = "wolfs",
@@ -14,4 +16,5 @@ export interface Player {
   name: string;
   role?: Role;
   deathCause?: DeathCause;
+  status?: Status;
 }

@@ -60,17 +60,11 @@ export default function Background({
 }
 
 const Style = styled.section<{ $time: Time }>`
-  position: absolute;
-  z-index: -1;
+  position: relative;
   overflow: hidden;
 
   background: ${(p) => BG[p.$time]};
   height: 100%;
-  width: 100%;
-
-  display: grid;
-  align-items: center;
-  justify-content: center;
 
   transition:
     background 0.5s linear,

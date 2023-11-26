@@ -1,4 +1,5 @@
 export { default as Button } from "./components/Button";
+export { default as Input } from "./components/Input";
 export { default as PlayerIcon } from "./components/PlayerIcon";
 export { default as Background } from "./components/background/Background";
 export { default as Clouds } from "./components/background/Clouds";

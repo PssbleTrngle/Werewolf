@@ -4,15 +4,19 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { Event, GameStatus, Vote } from "models";
+import { Event, GameStatus, Player, Role, Vote } from "models";
 import { createContext, useContext } from "react";
 
 export interface GameContext {
-  game(): Promise<GameStatus>;
+  roles(): Promise<ReadonlyArray<Role>>;
+  players(): Promise<ReadonlyArray<Player>>;
+  game(): Promise<GameStatus | null>;
   activeEvent(): Promise<Event<unknown>>;
   submitVote(vote: Vote): Promise<void>;
   undo(): Promise<void>;
   redo(): Promise<void>;
+  stop(): Promise<void>;
+  create(): Promise<void>;
 }
 
 const NOOP = () => {
@@ -20,11 +24,15 @@ const NOOP = () => {
 };
 
 const GameContext = createContext<GameContext>({
+  roles: NOOP,
+  players: NOOP,
   game: NOOP,
   activeEvent: NOOP,
   submitVote: NOOP,
   undo: NOOP,
   redo: NOOP,
+  stop: NOOP,
+  create: NOOP,
 });
 
 export const GameProvider = GameContext.Provider;
@@ -39,6 +47,16 @@ export function useActiveEvent() {
   return useQuery({ queryKey: ["screen"], queryFn: activeEvent });
 }
 
+export function usePlayers() {
+  const { players } = useContext(GameContext);
+  return useQuery({ queryKey: ["players"], queryFn: players });
+}
+
+export function useRoles() {
+  const { roles } = useContext(GameContext);
+  return useQuery({ queryKey: ["roles"], queryFn: roles });
+}
+
 function useInvalidatingMutation<TData, TVariables>(
   mutationFn: MutationFunction<TData, TVariables>
 ) {
@@ -49,6 +67,7 @@ function useInvalidatingMutation<TData, TVariables>(
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ["screen"] });
       client.invalidateQueries({ queryKey: ["game"] });
+      client.invalidateQueries({ queryKey: ["players"] });
     },
   });
 }
@@ -66,4 +85,14 @@ export function useUndoMutation() {
 export function useRedoMutation() {
   const { redo } = useContext(GameContext);
   return useInvalidatingMutation(redo);
+}
+
+export function useStopMutation() {
+  const { stop } = useContext(GameContext);
+  return useInvalidatingMutation(stop);
+}
+
+export function useCreateMutation() {
+  const { create } = useContext(GameContext);
+  return useInvalidatingMutation(create);
 }

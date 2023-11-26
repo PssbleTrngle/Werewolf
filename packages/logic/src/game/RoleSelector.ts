@@ -10,11 +10,25 @@ import { Villager } from "./role/Villager.js";
 import { Witch } from "./role/Witch.js";
 import { Werewolf } from "./role/Wolf.js";
 
+export const MIN_PLAYERS = 5;
+
+export const allRoles: Role[] = [
+  new Seer(),
+  new Eye(),
+  new Hunter(),
+  new Witch(),
+  new Jester(),
+  new Werewolf(),
+  new DreamWolf(),
+];
+
 export function generateRoles(
   players: ReadonlyArray<Omit<Player, "role">>,
+  // TODO use
+  _enabledRoles: ReadonlyArray<Role> = allRoles
 ): ReadonlyArray<Player> {
   const count = players.length;
-  if (count < 5) throw new Error("Not enough players");
+  if (count < MIN_PLAYERS) throw new Error("Not enough players");
 
   const wolfCount = Math.floor(count / 3);
   const wolfs: Role[] = times(Math.max(1, wolfCount - 1), () => new Werewolf());
