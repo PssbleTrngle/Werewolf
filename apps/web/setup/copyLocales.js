@@ -1,7 +1,7 @@
 import { cpSync } from "fs";
 
 try {
-  cpSync("../../packages/locale/locales", "public/locales", {
+  cpSync("node_modules/locale/locales", "public/locales", {
     recursive: true,
   });
 } catch (e) {

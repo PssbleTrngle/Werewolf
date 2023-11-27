@@ -1,8 +1,10 @@
-FROM node:20-alpine AS base
+FROM node:18-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 ENV CI=true
+
+RUN apk add --no-cache libc6-compat && apk update
 
 FROM base AS builder
 
@@ -16,11 +18,20 @@ RUN turbo prune --scope=web --docker
 FROM base AS installer
 
 COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install -r --frozen-lockfile
+COPY . .
+#COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+#COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/full/apps/web/setup/ ./apps/web/setup
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install -r --shamefully-hoist
 
-COPY --from=builder /app/out/full/ .
+RUN ls apps/web/node_modules
+RUN ls apps/web/node_modules/@csstools
+RUN ls apps/web/node_modules/eslint
+RUN ls apps/web/node_modules/typescript
+RUN ls apps/web/node_modules/typescript/bin
+
+#COPY --from=builder /app/out/full/ .
+#COPY turbo.json turbo.json
 
 RUN pnpm turbo run build --filter=web...
 

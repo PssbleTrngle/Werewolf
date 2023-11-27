@@ -32,7 +32,8 @@
     "@vitejs/plugin-react": "^4.2.0",
     "eslint": "^8.53.0",
     "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
+    "models": "workspace:*",
+    "locale": "workspace:*",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
   }
