@@ -358,7 +358,9 @@ export class Game {
 
     // TODO only here for sanity checks right now, maybe later there will be a role which is allowed to do this
     if (!event?.choice)
-      throw new Error("player cannot vote as he has no choice");
+      throw new Error(
+        `${player.name} cannot vote as he has no choice on ${event?.type}`
+      );
 
     if (player.status === "dead")
       throw new Error(

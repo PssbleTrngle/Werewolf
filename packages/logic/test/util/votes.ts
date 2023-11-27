@@ -1,12 +1,12 @@
-import { PlayerVote, SkipVote } from "models";
+import { Id, PlayerVote, SkipVote } from "models";
 import { Player } from "../../src/game/player/Player.js";
 import { Game, isAlive } from "../../src/index.js";
 
 export const skipVote = (): SkipVote => ({ type: "skip" });
 
-export const playerVote = (...players: Player[]): PlayerVote => ({
+export const playerVote = (...players: (Player | Id)[]): PlayerVote => ({
   type: "players",
-  players: players.map((it) => it.id),
+  players: players.map((it) => (typeof it === "object" ? it.id : it)),
 });
 
 export const dismiss = (game: Game) => {

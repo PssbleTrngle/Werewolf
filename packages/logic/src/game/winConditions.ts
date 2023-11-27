@@ -33,6 +33,18 @@ WinConditions.register(({ players }) => {
 });
 
 WinConditions.register(({ players }) => {
+  const jesters = players.filter(hasRole("jester"));
+  const lynched = jesters.filter((it) => it.deathCause === DeathCause.LYNCHED);
+
+  if (lynched.length === 0) return false;
+
+  return {
+    type: "jester",
+    winners: lynched,
+  };
+});
+
+WinConditions.register(({ players }) => {
   const alive = players.filter(isAlive);
   const wolfs = players.filter(inGroup(RoleGroup.WOLF));
 
@@ -55,17 +67,5 @@ WinConditions.register(({ players }) => {
   return {
     type: "villagers",
     winners: villagers,
-  };
-});
-
-WinConditions.register(({ players }) => {
-  const jesters = players.filter(hasRole("jester"));
-  const lynched = jesters.filter((it) => it.deathCause === DeathCause.LYNCHED);
-
-  if (lynched.length === 0) return false;
-
-  return {
-    type: "jester",
-    winners: lynched,
   };
 });
