@@ -5,7 +5,8 @@
     "undo": "Undo",
     "redo": "Redo",
     "game": {
-      "create": "Create Game"
+      "create": "Create Game",
+      "stop": "Stop"
     },
     "player": {
       "add": "Add Player",
@@ -98,7 +99,7 @@
   "player": {
     "name": "Name",
     "count_zero": "No players yet",
-    "count_once": "One player",
+    "count_one": "One player",
     "count_other": "{{count}} players",
     "status": {
       "title": "Status",
@@ -109,5 +110,10 @@
   },
   "error": {
     "min_players_requirement": "At least {{count}} players are required to start a game"
+  },
+  "nav": {
+    "game": "Game",
+    "players": "Players",
+    "roles": "Roles"
   }
 }

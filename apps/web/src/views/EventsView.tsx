@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 import {
   Button,
   Centered,
@@ -7,14 +8,23 @@ import {
   useActiveEvent,
   useCreateMutation,
   useGameStatus,
+  useStopMutation,
 } from "ui";
 
 export default function EventsView() {
+  const { t } = useTranslation();
   const { data: status, isLoading } = useGameStatus();
   const { data: event } = useActiveEvent();
 
+  const { mutate: stop } = useStopMutation();
+
   if (isLoading) return <p>Loading...</p>;
-  if (status && event) return <EventScreen status={status} event={event} />;
+  if (status && event)
+    return (
+      <EventScreen status={status} event={event}>
+        <StopButton onClick={stop}> {t("button.game.stop")}</StopButton>
+      </EventScreen>
+    );
   return <CreateGame />;
 }
 
@@ -32,3 +42,13 @@ function CreateGame() {
     </Centered>
   );
 }
+
+const StopButton = styled(Button)`
+  position: absolute;
+  z-index: 100;
+
+  top: 1em;
+  right: 1em;
+
+  font-size: 0.5em;
+`;

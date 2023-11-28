@@ -1,8 +1,10 @@
 import { mix } from "polished";
 import { useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { XS } from "ui";
+import InvisibleLink from "./InivisibleLink";
 
 interface NavLink {
   key: string;
@@ -19,6 +21,8 @@ const LINKS: ReadonlyArray<NavLink> = [
 }));
 
 export default function NavBar() {
+  const { t } = useTranslation();
+
   const location = useLocation();
   const isActive = useCallback(
     (path: string) => location.pathname.startsWith(path),
@@ -29,7 +33,7 @@ export default function NavBar() {
     <Style>
       {LINKS.map(({ key, path }) => (
         <NavLink key={key} to={path} $active={isActive(path)}>
-          <span>{key}</span>
+          <span>{t(`nav.${key}`)}</span>
         </NavLink>
       ))}
     </Style>
@@ -53,11 +57,8 @@ const ActiveLink = css`
   border-bottom-color: ${(p) => p.theme.accent};
 `;
 
-const NavLink = styled(Link)<{ $active: boolean }>`
-  text-decoration: none;
+const NavLink = styled(InvisibleLink)<{ $active: boolean }>`
   text-align: center;
-  text-transform: capitalize;
-  font-family: sans-serif;
 
   padding: 1em;
 
@@ -66,7 +67,6 @@ const NavLink = styled(Link)<{ $active: boolean }>`
   }
 
   background-color: ${(p) => p.theme.nav};
-  color: ${(p) => p.theme.text};
   border-bottom: solid 2px ${(p) => p.theme.nav};
 
   ${(p) => p.$active && ActiveLink}
