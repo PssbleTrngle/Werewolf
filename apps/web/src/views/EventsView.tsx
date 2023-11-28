@@ -36,7 +36,7 @@ function CreateGame() {
       <p>
         {error ? <ErrorMessage error={error} /> : t("status.game.no_active")}
       </p>
-      <Button onClick={create} error={!!error}>
+      <Button onClick={create} $error={!!error}>
         {t("button.game.create")}
       </Button>
     </Centered>

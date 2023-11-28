@@ -38,6 +38,13 @@
     },
     "revive": {
       "witch.title": "Würdest du gerne jemand heilen?"
+    },
+    "win": {
+      "villagers.title": "Die Dorfbewohner haben gesiegt!",
+      "wolfs.title": "Die Wölfe haben gewonnen!",
+      "jester.title": "Der Gerber hat gewonnen!",
+      "couple.title": "Die Liebe hat gesiegt!",
+      "executioner.title": "Der Henker hat gewonnen!"
     }
   },
   "role": {
@@ -72,13 +79,6 @@
     "freemason": {
       "name": "Freimaurer"
     }
-  },
-  "win": {
-    "villagers.title": "Die Dorfbewohner haben gesiegt!",
-    "wolfs.title": "Die Wölfe haben gewonnen!",
-    "jester.title": "Der Gerber hat gewonnen!",
-    "couple.title": "Die Liebe hat gesiegt!",
-    "executioner.title": "Der Henker hat gewonnen!"
   },
   "status": {
     "game.no_active": "Kein aktives Spiel"

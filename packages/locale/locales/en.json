@@ -41,6 +41,13 @@
     },
     "revive": {
       "witch.title": "Who do you want to heal?"
+    },
+    "win": {
+      "villagers.title": "The villagers won!",
+      "wolfs.title": "The wolfs won!",
+      "jester.title": "The jester won!",
+      "couple.title": "The couple won!",
+      "executioner.title": "The executioner won!"
     }
   },
   "role": {
@@ -85,13 +92,6 @@
       "name": "Freemason",
       "description": "TODO"
     }
-  },
-  "win": {
-    "villagers.title": "The villagers won!",
-    "wolfs.title": "The wolfs won!",
-    "jester.title": "The jester won!",
-    "couple.title": "The couple won!",
-    "executioner.title": "The executioner won!"
   },
   "status": {
     "game.no_active": "No active Game"

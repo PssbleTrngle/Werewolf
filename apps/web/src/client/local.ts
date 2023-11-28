@@ -44,34 +44,51 @@ export function createLocalGame(): GameContext {
     return game;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function wrap<T extends (...args: any[]) => any>(func: T) {
+    return async (...args: Parameters<T>): Promise<ReturnType<T>> => {
+      try {
+        return func(...args);
+      } catch (e) {
+        if (e instanceof Error) {
+          /* eslint-disable no-console */
+          console.error("an error occured in the logic package");
+          console.error(e.message);
+          /* eslint-enable no-console */
+        }
+        throw e;
+      }
+    };
+  }
+
   return {
-    create: async () => {
+    create: wrap(() => {
       game = createGame();
       save();
-    },
-    stop: async () => {
+    }),
+    stop: wrap(() => {
       game = null;
       save();
-    },
-    game: async () => game?.status ?? null,
-    players: async () => requireGame().players,
-    roles: async () => allRoles,
-    activeEvent: async () => requireGame().events[0],
-    submitVote: async (vote: Vote) => {
+    }),
+    game: wrap(() => game?.status ?? null),
+    players: wrap(() => requireGame().players),
+    roles: wrap(() => allRoles),
+    activeEvent: wrap(() => requireGame().events[0]),
+    submitVote: wrap((vote: Vote) => {
       const game = requireGame();
       const event = game.events[0];
       event.players.forEach((it) => {
         game.vote(it.id, vote);
       });
       save();
-    },
-    undo: async () => {
+    }),
+    undo: wrap(() => {
       requireGame().undo();
       save();
-    },
-    redo: async () => {
+    }),
+    redo: wrap(() => {
       requireGame().redo();
       save();
-    },
+    }),
   };
 }

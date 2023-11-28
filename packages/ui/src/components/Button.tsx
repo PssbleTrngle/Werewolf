@@ -10,7 +10,7 @@ const ErrorStyle = css`
   }
 `;
 
-const Button = styled.button<{ error?: boolean }>`
+const Button = styled.button<{ $error?: boolean }>`
   border: none;
   outline: none;
   cursor: pointer;
@@ -37,7 +37,7 @@ const Button = styled.button<{ error?: boolean }>`
     opacity: 0.5;
   }
 
-  ${(p) => p.error && ErrorStyle}
+  ${(p) => p.$error && ErrorStyle}
 
   transition: all 0.2s ease;
 `;

@@ -1,6 +1,7 @@
 import { Event } from "models";
 import { ReactNode, createElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Title } from "../Text";
 import DeathDetails from "./detail/DeathDetails";
 import RevealDetail from "./detail/RevealDetails";
 import WinDetails from "./detail/WinDetails";
@@ -27,7 +28,7 @@ export default function EventDetails({ event }: { event: Event<unknown> }) {
   const component = useMemo(() => details[type], [type]);
 
   const createTitle = useCallback<DetailProps["createTitle"]>(
-    (args) => <h1>{t(`event.${event.type}.title`, args)}</h1>,
+    (args) => <Title>{t(`event.${event.type}.title`, args)}</Title>,
     [event, t]
   );
 
