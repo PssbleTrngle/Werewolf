@@ -1,6 +1,9 @@
 export { default as Button } from "./components/Button";
+export { default as Centered } from "./components/Centered";
+export { default as ErrorMessage } from "./components/ErrorBox";
 export { default as Input } from "./components/Input";
 export { default as PlayerIcon } from "./components/PlayerIcon";
+export * from "./components/Text";
 export { default as Background } from "./components/background/Background";
 export { default as Clouds } from "./components/background/Clouds";
 export { Moon, Sun } from "./components/background/Luminary";

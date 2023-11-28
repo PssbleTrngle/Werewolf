@@ -1,7 +1,16 @@
-import { invert } from "polished";
-import styled from "styled-components";
+import { invert, lighten } from "polished";
+import styled, { css } from "styled-components";
 
-const Button = styled.button`
+const ErrorStyle = css`
+  background: #b53149;
+
+  &:hover:not(:disabled) {
+    background: ${lighten(0.1, "#b53149")};
+    color: #eee;
+  }
+`;
+
+const Button = styled.button<{ error?: boolean }>`
   border: none;
   outline: none;
   cursor: pointer;
@@ -28,7 +37,9 @@ const Button = styled.button`
     opacity: 0.5;
   }
 
-  transition: all 0.1s ease;
+  ${(p) => p.error && ErrorStyle}
+
+  transition: all 0.2s ease;
 `;
 
 export default Button;

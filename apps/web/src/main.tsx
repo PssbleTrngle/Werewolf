@@ -1,6 +1,7 @@
 import "@csstools/normalize.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import i18n from "i18next";
+import LangDetector from "i18next-browser-languagedetector";
 import LocaleBackend from "i18next-http-backend";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
@@ -17,7 +18,11 @@ const game = createLocalGame();
 const backend = new LocaleBackend(null, {
   loadPath: "/locales/{{lng}}.json",
 });
-i18n.use(initReactI18next).use(backend).init({ fallbackLng: "en" });
+i18n
+  .use(initReactI18next)
+  .use(backend)
+  .use(LangDetector)
+  .init({ fallbackLng: "en" });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

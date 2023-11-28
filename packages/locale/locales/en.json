@@ -7,8 +7,11 @@
     "game": {
       "create": "Create Game"
     },
-    "remove": "Remove",
-    "rename": "Rename"
+    "player": {
+      "add": "Add Player",
+      "remove": "Remove",
+      "rename": "Rename"
+    }
   },
   "event": {
     "start.title": "Start the Game?",
@@ -42,34 +45,44 @@
   "role": {
     "title": "Role",
     "villager": {
-      "name": "Villager"
+      "name": "Villager",
+      "description": "TODO"
     },
     "hunter": {
-      "name": "Hunter"
+      "name": "Hunter",
+      "description": "TODO"
     },
     "eye": {
-      "name": "Eye"
+      "name": "Eye",
+      "description": "TODO"
     },
     "seer": {
-      "name": "Seer"
+      "name": "Seer",
+      "description": "TODO"
     },
     "witch": {
-      "name": "Witch"
+      "name": "Witch",
+      "description": "TODO"
     },
     "werewolf": {
-      "name": "Werewolf"
+      "name": "Werewolf",
+      "description": "TODO"
     },
     "dreamwolf": {
-      "name": "Dreamwolf"
+      "name": "Dreamwolf",
+      "description": "TODO"
     },
     "jester": {
-      "name": "Jester"
+      "name": "Jester",
+      "description": "TODO"
     },
     "executioner": {
-      "name": "Executioner"
+      "name": "Executioner",
+      "description": "TODO"
     },
     "freemason": {
-      "name": "Freemason"
+      "name": "Freemason",
+      "description": "TODO"
     }
   },
   "win": {
@@ -93,5 +106,8 @@
       "dying": "Dying",
       "dead": "Dead"
     }
+  },
+  "error": {
+    "min_players_requirement": "At least {{count}} players are required to start a game"
   }
 }

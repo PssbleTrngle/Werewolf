@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import {
   Button,
+  Centered,
+  ErrorMessage,
   EventScreen,
   useActiveEvent,
   useCreateMutation,
@@ -18,11 +20,15 @@ export default function EventsView() {
 
 function CreateGame() {
   const { t } = useTranslation();
-  const { mutate: create } = useCreateMutation();
+  const { mutate: create, error } = useCreateMutation();
   return (
-    <>
-      <p>{t("status.game.no_active")}</p>
-      <Button onClick={create}>{t("button.game.create")}</Button>
-    </>
+    <Centered>
+      <p>
+        {error ? <ErrorMessage error={error} /> : t("status.game.no_active")}
+      </p>
+      <Button onClick={create} error={!!error}>
+        {t("button.game.create")}
+      </Button>
+    </Centered>
   );
 }

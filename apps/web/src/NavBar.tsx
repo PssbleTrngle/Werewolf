@@ -10,7 +10,7 @@ interface NavLink {
 }
 
 const LINKS: ReadonlyArray<NavLink> = [
-  { key: "events" },
+  { key: "game" },
   { key: "players" },
   { key: "roles" },
 ].map((it) => ({

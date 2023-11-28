@@ -1,9 +1,11 @@
+import { MIN_PLAYERS } from "logic";
 import { Id, Player, Status } from "models";
 import { nanoid } from "nanoid";
 import { FormEvent, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Button, Input, useGameStatus, usePlayers } from "ui";
+import { Button, Centered, Input, useGameStatus, usePlayers } from "ui";
+import InvisibleLink from "../InivisibleLink";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 function AddPanel({
@@ -24,7 +26,7 @@ function AddPanel({
   );
 
   return (
-    <CenteredForm onSubmit={submit}>
+    <Form onSubmit={submit}>
       <Input
         type="text"
         placeholder={t("player.name")}
@@ -32,8 +34,8 @@ function AddPanel({
         onChange={(e) => setName(e.target.value)}
         required
       />
-      <Button>Add Player</Button>
-    </CenteredForm>
+      <Button>{t("button.player.add")}</Button>
+    </Form>
   );
 }
 
@@ -56,7 +58,7 @@ function ActivePlayersView() {
   const { data: players } = usePlayers();
 
   return (
-    <>
+    <Centered>
       <Count>{t("player.count", { count: players?.length ?? 0 })}</Count>
       <Table>
         <thead>
@@ -72,7 +74,9 @@ function ActivePlayersView() {
               <td>{it.name}</td>
               {it.role ? (
                 <td>
-                  {it.role.emoji} {t(`role.${it.role.type}.name`)}
+                  <InvisibleLink to={`/roles/${it.role.type}`}>
+                    {it.role.emoji} {t(`role.${it.role.type}.name`)}
+                  </InvisibleLink>
                 </td>
               ) : (
                 <td />
@@ -88,7 +92,7 @@ function ActivePlayersView() {
           ))}
         </tbody>
       </Table>
-    </>
+    </Centered>
   );
 }
 
@@ -106,7 +110,10 @@ function PlayersEditView() {
   );
 
   return (
-    <>
+    <Centered>
+      {players.length < MIN_PLAYERS && (
+        <p>{t("error.min_players_requirement", { count: MIN_PLAYERS })}</p>
+      )}
       <AddPanel onAddPlayer={addPlayer} />
       <Table>
         <tbody>
@@ -115,15 +122,15 @@ function PlayersEditView() {
               <td>{it.name}</td>
               <Buttons>
                 <Button onClick={() => removePlayer(it.id)}>
-                  {t("button.remove")}
+                  {t("button.player.remove")}
                 </Button>
-                <Button>{t("button.rename")}</Button>
+                <Button>{t("button.player.rename")}</Button>
               </Buttons>
             </tr>
           ))}
         </tbody>
       </Table>
-    </>
+    </Centered>
   );
 }
 
@@ -136,18 +143,15 @@ const Buttons = styled.td`
 
 const Count = styled.h2`
   padding: 0.2em;
-  text-align: center;
 `;
 
-const CenteredForm = styled.form`
-  text-align: center;
+const Form = styled.form`
   margin: 1em 0;
 `;
 
 const Table = styled.table`
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
 
   border-collapse: collapse;
 
@@ -161,7 +165,7 @@ const Table = styled.table`
     text-align: left;
   }
 
-  tbody tr:nth-child(even) {
+  tbody tr:nth-child(odd) {
     background: #7772;
   }
 `;

@@ -1,7 +1,7 @@
 import { PropsWithChildren, useMemo } from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import styled from "styled-components";
-import { Button } from "ui";
+import { Button, Centered } from "ui";
 
 function ErrorPage({ error, resetErrorBoundary }: FallbackProps) {
   const realError = useMemo(
@@ -31,10 +31,7 @@ export default function ErrorWrapper({ children }: PropsWithChildren) {
   );
 }
 
-const Page = styled.section`
-  display: grid;
-  justify-content: center;
-  align-items: center;
+const Page = styled(Centered)`
   font-family: sans-serif;
 
   color: ${(p) => p.theme.text};

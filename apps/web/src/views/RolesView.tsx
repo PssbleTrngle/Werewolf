@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useRoles } from "ui";
+import InvisibleLink from "../InivisibleLink";
 
 export default function RolesView() {
   const { data: roles } = useRoles();
@@ -44,11 +44,6 @@ const Panel = styled.li`
 const Emoji = styled.span`
   grid-area: icon;
   font-size: 3em;
-`;
-
-const InvisibleLink = styled(Link)`
-  text-decoration: none;
-  color: ${(p) => p.theme.text};
 `;
 
 const Grid = styled.ul`
