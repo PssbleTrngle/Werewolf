@@ -10,7 +10,7 @@ export const Witch: Role = {
 };
 
 export const registerWitchEvents = (role = "witch") =>
-  SleepEvents.register(({ players }) => {
+  SleepEvents.registerEvent(({ players }) => {
     const witches = players.filter(isAlive).filter(hasRole(role));
     return witches.map((it) => WitchTrigger.create([it]));
   });

@@ -14,7 +14,7 @@ export const Seer: Role = {
 registerEvent("reveal.seer", new RevealEvent());
 
 export const registerSeerEvents = (role = Seer.type) =>
-  SleepEvents.register(({ players }) => {
+  SleepEvents.registerEvent(({ players }) => {
     const alive = players.filter(isAlive);
     const seers = alive.filter(hasRole(role));
     return seers.map((it) => SeeEvent.create([it], alive.filter(others(it))));

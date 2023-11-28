@@ -23,6 +23,7 @@ export * from "./game/event/WinEvent.js";
 export * from "./game/event/WitchTrigger.js";
 export * from "./game/player/Player.js";
 export * from "./game/player/predicates.js";
+export * from "./game/role/Executioner.js";
 export * from "./game/role/Hunter.js";
 export * from "./game/role/Jester.js";
 export * from "./game/role/Seer.js";

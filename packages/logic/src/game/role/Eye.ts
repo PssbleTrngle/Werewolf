@@ -13,7 +13,7 @@ export const Eye: Role = {
 registerEvent("reveal.eye", new RevealEvent());
 
 export const registerEyeEvents = (role = "eye", revealedRole = "seer") =>
-  StartEvents.register(({ players }) => {
+  StartEvents.registerEvent(({ players }) => {
     const seers = players.filter(hasRole(revealedRole));
     return players
       .filter(hasRole(role))

@@ -227,7 +227,7 @@ class FrozenGame implements GameAccess {
   }
 }
 
-export class Game {
+export class Game implements GameReadAccess {
   private state: StateHistory;
   private votes = new Map<Id, Vote>();
 
@@ -256,6 +256,12 @@ export class Game {
 
   get players() {
     return this.state.current.players;
+  }
+
+  playerById(id: Id): Player {
+    const match = this.players.find((it) => it.id === id);
+    if (match) return match;
+    throw new Error(`Unknown Player with ID '${id}'`);
   }
 
   get events() {
@@ -351,8 +357,7 @@ export class Game {
   }
 
   vote(id: Id, vote: Vote) {
-    const player = this.players.find((it) => it.id === id);
-    if (!player) throw new Error(`Unknown player with id '${id}'`);
+    const player = this.playerById(id);
 
     const event = this.currentEvent(id);
 

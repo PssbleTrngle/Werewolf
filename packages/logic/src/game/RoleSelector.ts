@@ -2,6 +2,7 @@ import { shuffle, times } from "lodash-es";
 import { Role } from "models";
 import { Player } from "./player/Player.js";
 import { DreamWolf } from "./role/DreamWolf.js";
+import { Executioner } from "./role/Executioner.js";
 import { Eye } from "./role/Eye.js";
 import { Hunter } from "./role/Hunter.js";
 import { Jester } from "./role/Jester.js";
@@ -18,6 +19,7 @@ export const allRoles: Role[] = [
   Hunter,
   Witch,
   Jester,
+  Executioner,
   Werewolf,
   DreamWolf,
 ];
@@ -40,7 +42,14 @@ export function generateRoles(
 
   if (wolfCount > 1) wolfs.push(...specialWolfs);
 
-  const specialRoles: Role[] = shuffle([Seer, Eye, Hunter, Witch, Jester])
+  const specialRoles: Role[] = shuffle([
+    Seer,
+    Eye,
+    Hunter,
+    Witch,
+    Jester,
+    Executioner,
+  ])
     .filter(isEnabled)
     .slice(0, Math.max(0, count - wolfs.length));
 

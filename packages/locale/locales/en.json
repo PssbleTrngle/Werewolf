@@ -14,7 +14,12 @@
     "start.title": "Start the Game?",
     "reveal": {
       "eye.title": "The Seer is...",
-      "seer.title": "Your crystal ball reveals..."
+      "seer.title": "Your crystal ball reveals...",
+      "executioner.title": "Your target is...",
+      "freemason": {
+        "title_one": "You komrade is...",
+        "title_other": "You komrades are..."
+      }
     },
     "kill": {
       "wolfs.title": "Who do you want to eat?",
@@ -59,6 +64,12 @@
     },
     "jester": {
       "name": "Jester"
+    },
+    "executioner": {
+      "name": "Executioner"
+    },
+    "freemason": {
+      "name": "Freemason"
     }
   },
   "win": {

@@ -3,6 +3,7 @@ import { registerEventFactory } from "../event/EventRegistry.js";
 import { KillEvent } from "../event/KillEvent.js";
 import { SleepEvents } from "../event/SleepBoundary.js";
 import { inGroup, isAlive } from "../player/predicates.js";
+import { WinConditions } from "../winConditions.js";
 
 export const Werewolf: Role = {
   type: "werewolf",
@@ -24,7 +25,7 @@ const createKillEvent = registerEventFactory(
 );
 
 export const registerWolfEvents = () =>
-  SleepEvents.register(({ players }) => {
+  SleepEvents.registerEvent(({ players }) => {
     const alive = players.filter(isAlive);
     const hasWolfDied = players
       .filter(inGroup(RoleGroup.WOLF))
@@ -37,3 +38,20 @@ export const registerWolfEvents = () =>
     const targets = alive.filter((it) => !wolfs.includes(it));
     return createKillEvent(wolfs, targets);
   });
+
+export function registerWolfWinCondition(
+  group: RoleGroup = RoleGroup.WOLF,
+  type: string = "wolfs"
+) {
+  WinConditions.register(({ players }) => {
+    const alive = players.filter(isAlive);
+    const wolfs = players.filter(inGroup(group));
+
+    if (wolfs.filter(isAlive).length !== alive.length) return false;
+
+    return {
+      type,
+      winners: wolfs,
+    };
+  });
+}

@@ -8,7 +8,7 @@ export default function RevealDetails({
 }: DetailProps<RevealData>) {
   return (
     <>
-      {createTitle()}
+      {createTitle({ count: data.targets.length })}
       <ParticipantList size={2} players={data.targets} />
     </>
   );

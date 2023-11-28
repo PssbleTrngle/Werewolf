@@ -1,3 +1,5 @@
+import { ArrayOrSingle, arrayOrSelf } from "../../util.js";
+import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
 import { EventFactory } from "./Event.js";
@@ -21,8 +23,21 @@ export class EventBus<Listener extends (...args: any[]) => any> {
   }
 }
 
-export class EventFactoryBus extends EventBus<EventFactory> {
+export class EventFactoryBus extends EventBus<
+  (game: GameReadAccess) => ArrayOrSingle<Effect>
+> {
+  registerEvent(factory: EventFactory) {
+    this.register(() => new EventEffect(factory));
+  }
+
   createEffects(): ReadonlyArray<Effect> {
-    return this.listeners.map((it) => new EventEffect(it));
+    return [
+      {
+        apply: (game) =>
+          this.notify(game)
+            .flatMap(arrayOrSelf)
+            .forEach((it) => it.apply(game)),
+      },
+    ];
   }
 }
