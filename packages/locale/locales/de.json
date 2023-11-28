@@ -1,3 +1,6 @@
 {
-  "event.start.title": "Spiel starten?"
+    "event.start.title": "Spiel starten?",
+    "button": {
+        "skip": "Überspringen"
+    }
 }
