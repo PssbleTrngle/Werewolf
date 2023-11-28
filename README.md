@@ -1,32 +1,23 @@
-# Turborepo react-native starter
+[TRANSLATE]: https://weblate.macarena.ceo/engage/werewolf
 
-This is an official starter Turborepo.
+# Werewolf
 
-## Using this example
+[![Test status](https://github.com/PssbleTrngle/Werewolf/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/PssbleTrngle/Werewolf/actions/workflows/test.yml)
+[![Translation status](https://weblate.macarena.ceo/widget/werewolf/common/svg-badge.svg)][TRANSLATE]
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest -e with-react-native-web
-```
+This is a monorepo containing packages for the models & logic of the werewolf game, as well as the translations and resuable components for a web frontend.
+Currently the only application using these is a simple react web frontend which runs the games logic locally in the browser. There are plans to reuse this logic for...
 
-## What's inside?
+- an online variant which runs the game on a server which multiple players can join
+- a discord bot running games in the chat
+- a react-native app similar to the current standalone frontend
 
-This Turborepo includes the following packages/apps:
+## Contribution
 
-### Apps and Packages
+Since this project is in it's early phases, a lot of conceptual work is yet to be done and contributing to the source code may not be reasonable yet in most cases.
 
-- `native`: a [react-native](https://reactnative.dev/) app built with [expo](https://docs.expo.dev/)
-- `web`: a [Next.js](https://nextjs.org/) app built with [react-native-web](https://necolas.github.io/react-native-web/)
-- `ui`: a stub [react-native](https://reactnative.dev/) component library shared by both `web` and `native` applications
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+## Translating
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [Expo](https://docs.expo.dev/) for native development
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [Prettier](https://prettier.io) for code formatting
+There is a [Weblate Project][TRANSLATE] which handles translations for the files found under `packages/locale/` and contributing here is much appreciated.
