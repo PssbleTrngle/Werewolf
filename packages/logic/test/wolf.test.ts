@@ -1,8 +1,8 @@
 import { times } from "lodash-es";
+import { RoleGroup } from "models";
 import { Game } from "../src/game/Game.js";
 import { inGroup, isAlive, isNotDead } from "../src/game/player/predicates.js";
 import { DreamWolf } from "../src/game/role/DreamWolf.js";
-import { RoleGroup } from "../src/game/role/RoleGroup.js";
 import { Villager } from "../src/game/role/Villager.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
 import { createTestPlayers, createTestPlayersWith } from "./util/players.js";
@@ -12,7 +12,7 @@ describe("tests regarding wolf roles", () => {
   it("wolfs kill a player an get lynched", () => {
     const game = Game.create(
       createTestPlayers(12, (i) => {
-        const role = i % 3 === 0 ? new Werewolf() : new Villager();
+        const role = i % 3 === 0 ? Werewolf : Villager;
         return { role };
       })
     );
@@ -60,11 +60,7 @@ describe("tests regarding wolf roles", () => {
 
   it("dreamwolf awakes only once another wolf has died", () => {
     const game = Game.create(
-      createTestPlayersWith([
-        new DreamWolf(),
-        new Werewolf(),
-        ...times(5, () => new Villager()),
-      ])
+      createTestPlayersWith([DreamWolf, Werewolf, ...times(5, () => Villager)])
     );
 
     dismiss(game);

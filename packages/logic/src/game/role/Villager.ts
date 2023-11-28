@@ -1,8 +1,7 @@
-import { Role } from "./Role.js";
-import { RoleGroup } from "./RoleGroup.js";
+import { Role, RoleGroup } from "models";
 
-export class Villager extends Role {
-  constructor() {
-    super("villager", [RoleGroup.VILLAGER], "🌾");
-  }
-}
+export const Villager: Role = {
+  type: "villager",
+  groups: [RoleGroup.VILLAGER],
+  emoji: "🌾",
+};

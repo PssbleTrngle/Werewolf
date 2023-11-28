@@ -1,14 +1,14 @@
 import { times } from "lodash-es";
 import { WinData } from "models";
-import Jester from "../src/game/role/Jester.js";
+import { Jester } from "../src/game/role/Jester.js";
 import { Game, Villager, Werewolf } from "../src/index.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { dismiss, playerVote, skipVote } from "./util/votes.js";
 
 const players = createTestPlayersWith([
-  new Jester(),
-  new Werewolf(),
-  ...times(5, () => new Villager()),
+  Jester,
+  Werewolf,
+  ...times(5, () => Villager),
 ]);
 const [jester, wolf, ...villagers] = players.map((it) => it.id);
 

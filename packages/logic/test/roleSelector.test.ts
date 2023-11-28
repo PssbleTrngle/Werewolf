@@ -1,4 +1,5 @@
-import { RoleGroup, generateRoles, inGroup } from "../src/index.js";
+import { RoleGroup } from "models";
+import { generateRoles, inGroup } from "../src/index.js";
 import { createTestPlayers } from "./util/players.js";
 
 it("role selector returns correct count", () => {

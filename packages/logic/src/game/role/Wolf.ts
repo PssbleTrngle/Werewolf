@@ -1,16 +1,14 @@
-import { DeathCause, Player } from "models";
+import { DeathCause, Player, Role, RoleGroup } from "models";
 import { registerEventFactory } from "../event/EventRegistry.js";
 import { KillEvent } from "../event/KillEvent.js";
 import { SleepEvents } from "../event/SleepBoundary.js";
 import { inGroup, isAlive } from "../player/predicates.js";
-import { Role } from "./Role.js";
-import { RoleGroup } from "./RoleGroup.js";
 
-export class Werewolf extends Role {
-  constructor() {
-    super("werewolf", [RoleGroup.WOLF], "🐺");
-  }
-}
+export const Werewolf: Role = {
+  type: "werewolf",
+  groups: [RoleGroup.WOLF],
+  emoji: "🐺",
+};
 
 const createKillEvent = registerEventFactory(
   "kill.wolfs",

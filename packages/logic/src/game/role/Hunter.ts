@@ -1,28 +1,15 @@
-import { DeathCause, Player } from "models";
+import { DeathCause, Player, Role, RoleGroup } from "models";
 import { EventEffect } from "../effect/EventEffect.js";
 import { DeathEvents } from "../event/DeathEvent.js";
 import { registerEventFactory } from "../event/EventRegistry.js";
 import { KillEvent } from "../event/KillEvent.js";
 import { isNotDead, others } from "../player/predicates.js";
-import { Role } from "./Role.js";
-import { RoleGroup } from "./RoleGroup.js";
 
-export class Hunter extends Role {
-  constructor() {
-    super("hunter", [RoleGroup.VILLAGER], "🔫");
-  }
-
-  /*
-  onDeath(self: Player) {
-    return new EventEffect(({ players }) => {
-      const targets = players.filter(isNotDead).filter(others(self));
-      return new KillEvent("kill.hunter", [self], DeathCause.HUNTER, {
-        players: targets,
-      });
-    }, true);
-  }
-  */
-}
+export const Hunter: Role = {
+  type: "hunter",
+  groups: [RoleGroup.VILLAGER],
+  emoji: "🔫",
+};
 
 const createKillEvent = registerEventFactory(
   "kill.hunter",
@@ -37,11 +24,12 @@ const createKillEvent = registerEventFactory(
   })
 );
 
-DeathEvents.register((self) => {
-  if (self.role.type !== "hunter") return false;
-  // TODO self context
-  return new EventEffect(({ players }) => {
-    const targets = players.filter(isNotDead).filter(others(self));
-    return createKillEvent([self], targets);
-  }, true);
-});
+export const registerHunterEvents = (role = Hunter.type) =>
+  DeathEvents.register((self) => {
+    if (self.role.type !== role) return false;
+    // TODO self context
+    return new EventEffect(({ players }) => {
+      const targets = players.filter(isNotDead).filter(others(self));
+      return createKillEvent([self], targets);
+    }, true);
+  });

@@ -10,10 +10,10 @@ import { dismiss, playerVote, skipVote } from "./util/votes.js";
 describe("tests regarding the witch", () => {
   it("witches events get pushed once the first death has occured", () => {
     const players = createTestPlayersWith([
-      new Werewolf(),
-      new Witch(),
-      new Seer(),
-      ...times(3, () => new Villager()),
+      Werewolf,
+      Witch,
+      Seer,
+      ...times(3, () => Villager),
     ]);
     const game = Game.create(players);
 
@@ -42,9 +42,9 @@ describe("tests regarding the witch", () => {
 
   it("witches can only revive/kill once", () => {
     const players = createTestPlayersWith([
-      new Werewolf(),
-      new Witch(),
-      ...times(3, () => new Villager()),
+      Werewolf,
+      Witch,
+      ...times(3, () => Villager),
     ]);
     const game = Game.create(players);
 

@@ -1,14 +1,13 @@
+import { Role, RoleGroup } from "models";
 import { SleepEvents } from "../event/SleepBoundary.js";
 import { WitchTrigger } from "../event/WitchTrigger.js";
 import { hasRole, isAlive } from "../player/predicates.js";
-import { Role } from "./Role.js";
-import { RoleGroup } from "./RoleGroup.js";
 
-export class Witch extends Role {
-  constructor() {
-    super("witch", [RoleGroup.VILLAGER], "🧹");
-  }
-}
+export const Witch: Role = {
+  type: "witch",
+  groups: [RoleGroup.VILLAGER],
+  emoji: "🧹",
+};
 
 export const registerWitchEvents = (role = "witch") =>
   SleepEvents.register(({ players }) => {

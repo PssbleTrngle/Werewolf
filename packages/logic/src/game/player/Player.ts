@@ -1,5 +1,4 @@
-import { Player as IPlayer, Status } from "models";
-import { Role } from "../role/Role.js";
+import { Player as IPlayer, Role, Status } from "models";
 
 export interface RoleData {
   usedRevivePotion?: boolean;

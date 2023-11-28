@@ -1,7 +1,7 @@
-import { Role } from "./Role.js";
+import { Role } from "models";
 
-export default class Jester extends Role {
-  constructor() {
-    super("jester", [], "🃏");
-  }
-}
+export const Jester: Role = {
+  type: "jester",
+  groups: [],
+  emoji: "🃏",
+};

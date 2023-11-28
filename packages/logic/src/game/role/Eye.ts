@@ -1,15 +1,14 @@
+import { Role, RoleGroup } from "models";
 import { registerEvent } from "../event/EventRegistry.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { StartEvents } from "../event/StartEvent.js";
 import { hasRole } from "../player/predicates.js";
-import { Role } from "./Role.js";
-import { RoleGroup } from "./RoleGroup.js";
 
-export class Eye extends Role {
-  constructor() {
-    super("eye", [RoleGroup.VILLAGER], "👁️");
-  }
-}
+export const Eye: Role = {
+  type: "eye",
+  groups: [RoleGroup.VILLAGER],
+  emoji: "👁️",
+};
 
 registerEvent("reveal.eye", new RevealEvent());
 

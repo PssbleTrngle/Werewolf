@@ -1,9 +1,8 @@
 import { times } from "lodash-es";
-import { DeathCause, DeathData } from "models";
+import { DeathCause, DeathData, RoleGroup } from "models";
 import { Game } from "../src/game/Game.js";
 import { inGroup, isNotDead } from "../src/game/player/predicates.js";
 import { Hunter } from "../src/game/role/Hunter.js";
-import { RoleGroup } from "../src/game/role/RoleGroup.js";
 import { Villager } from "../src/game/role/Villager.js";
 import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
@@ -13,8 +12,8 @@ import { dismiss, playerVote, skipVote } from "./util/votes.js";
 describe("tests regarding the hunter", () => {
   it("hunter gets killed and seeks revenge", () => {
     const players = createTestPlayersWith([
-      new Hunter(),
-      ...times(4, () => new Werewolf()),
+      Hunter,
+      ...times(4, () => Werewolf),
     ]);
     const game = Game.create(players);
 
@@ -54,10 +53,10 @@ describe("tests regarding the hunter", () => {
 
   it("hunter gets killed and can kill eventhough he is revived", () => {
     const players = createTestPlayersWith([
-      new Werewolf(),
-      new Hunter(),
-      new Witch(),
-      ...times(3, () => new Villager()),
+      Werewolf,
+      Hunter,
+      Witch,
+      ...times(3, () => Villager),
     ]);
     const game = Game.create(players);
 

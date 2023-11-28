@@ -1,7 +1,6 @@
-import { DeathCause, WinState } from "models";
+import { DeathCause, RoleGroup, WinState } from "models";
 import { GameReadAccess } from "./Game.js";
 import { hasRole, inGroup, isAlive } from "./player/predicates.js";
-import { RoleGroup } from "./role/RoleGroup.js";
 
 type WinConditionChecker = (game: GameReadAccess) => WinState | false;
 

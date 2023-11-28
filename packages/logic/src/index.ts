@@ -25,8 +25,6 @@ export * from "./game/player/Player.js";
 export * from "./game/player/predicates.js";
 export * from "./game/role/Hunter.js";
 export * from "./game/role/Jester.js";
-export * from "./game/role/Role.js";
-export * from "./game/role/RoleGroup.js";
 export * from "./game/role/Seer.js";
 export * from "./game/role/Villager.js";
 export * from "./game/role/Witch.js";

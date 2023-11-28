@@ -1,8 +1,7 @@
-import { Role } from "./Role.js";
-import { RoleGroup } from "./RoleGroup.js";
+import { Role, RoleGroup } from "models";
 
-export class DreamWolf extends Role {
-  constructor() {
-    super("dreamwolf", [RoleGroup.WOLF], "🌖");
-  }
-}
+export const DreamWolf: Role = {
+  type: "dreamwolf",
+  groups: [RoleGroup.WOLF],
+  emoji: "🌖",
+};
