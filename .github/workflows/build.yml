@@ -1,0 +1,52 @@
+name: Build
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  GITHUB_REPO: ${{ github.repository }}
+
+jobs:
+  docker:
+    permissions:
+      contents: read
+      packages: write
+
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile, --strict-peer-dependencies]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: pnpm run build --filter=web...
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.GITHUB_REPO }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: apps/web
+          file: apps/web/Dockerfile.prebuild
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            REPOSITORY=${{ env.GITHUB_REPO }}
+            SHA=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
