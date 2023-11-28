@@ -6,7 +6,12 @@ import { registerEvent } from "../event/EventRegistry.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { StartEvents } from "../event/StartEvent.js";
 import { Player } from "../player/Player.js";
-import { hasRole, inGroup, others } from "../player/predicates.js";
+import {
+  hasRole,
+  inGroup,
+  others,
+  requirePlayer,
+} from "../player/predicates.js";
 import { WinConditions } from "../winConditions.js";
 import { Jester } from "./Jester.js";
 
@@ -56,7 +61,7 @@ export function registerExecutionerWinCondition(role = Executioner.type) {
     const winners = users
       .filter((it) => it.roleData.target !== undefined)
       .filter((it) => {
-        const target = game.playerById(it.roleData.target!);
+        const target = requirePlayer(game.players, it.roleData.target!);
         return target.deathCause === DeathCause.LYNCHED;
       });
 

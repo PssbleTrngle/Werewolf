@@ -1,21 +1,18 @@
-import { Event, WinData, WinState } from "models";
+import { WinData, WinState } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
-import { Player } from "../player/Player.js";
 import { EventType } from "./Event.js";
+import { registerEventFactory } from "./EventRegistry.js";
 
 export default class WinEvent extends EventType<WinData> {
-  static create(
-    players: ReadonlyArray<Player>,
-    state: WinState
-  ): Event<WinData> {
-    return {
-      type: "win",
-      players,
+  static create = registerEventFactory(
+    "win",
+    new WinEvent(),
+    (state: WinState) => ({
       data: { state },
-    };
-  }
+    })
+  );
 
   finish(): ArrayOrSingle<Effect> {
     throw new Error("This should never be called");

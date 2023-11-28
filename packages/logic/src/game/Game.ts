@@ -8,18 +8,18 @@ import { EventRegistry } from "./event/EventRegistry.js";
 import { StartEvent } from "./event/StartEvent.js";
 import WinEvent from "./event/WinEvent.js";
 import { Player, RoleData } from "./player/Player.js";
-import { isAlive, isDying } from "./player/predicates.js";
+import { isAlive, isDying, requirePlayer } from "./player/predicates.js";
 import "./roleEvents.js";
 import { calculateWinner } from "./vote/Vote.js";
 import { testWinConditions } from "./winConditions.js";
 
-export interface GameState extends GameStatus {
+export interface GameState extends GameStatus, GameReadAccess {
   players: ReadonlyArray<Player>;
   events: ReadonlyArray<Event<unknown>>;
 }
 
 class StateHistory {
-  private history: GameState[];
+  private history: ReadonlyArray<GameState>;
   private cursor;
 
   constructor(...initial: GameState[]) {
@@ -40,8 +40,9 @@ class StateHistory {
   }
 
   push(next: GameState) {
-    this.cursor = this.history.length;
-    this.history.push(next);
+    const slicedHistory = this.history.slice(0, this.cursor + 1);
+    this.history = [...slicedHistory, next];
+    this.cursor++;
   }
 
   modify(factory: (previous: GameState) => Partial<GameState>) {
@@ -72,7 +73,6 @@ class StateHistory {
 
 export interface GameReadAccess {
   players: ReadonlyArray<Player>;
-  playerById(id: Id): Player;
 }
 
 export interface GameAccess extends GameReadAccess {
@@ -136,12 +136,6 @@ class FrozenGame implements GameAccess {
     }));
   }
 
-  playerById(id: Id) {
-    const match = this.initial.players.find((it) => it.id === id);
-    if (match) return match;
-    throw new Error(`Unknown Player with ID '${id}'`);
-  }
-
   modifyPlayerData(id: Id, data: Partial<RoleData>) {
     if (this.playerDataModifiers.has(id)) {
       this.playerDataModifiers.get(id)?.push(data);
@@ -151,7 +145,7 @@ class FrozenGame implements GameAccess {
   }
 
   kill(playerId: Id, cause: DeathCause) {
-    const target = this.playerById(playerId);
+    const target = requirePlayer(this.players, playerId);
     console.log(target.name, "died by", cause);
 
     const effects = DeathEvents.notify(target).flatMap(arrayOrSelf);
@@ -165,7 +159,7 @@ class FrozenGame implements GameAccess {
   }
 
   revive(playerId: Id): void {
-    const target = this.playerById(playerId);
+    const target = requirePlayer(this.players, playerId);
     console.log(target.name, "was revived");
     this.revives.add(playerId);
   }
@@ -250,18 +244,12 @@ export class Game implements GameReadAccess {
     return new Game(history);
   }
 
-  save(): GameState[] {
+  save(): ReadonlyArray<GameState> {
     return this.state.save();
   }
 
   get players() {
     return this.state.current.players;
-  }
-
-  playerById(id: Id): Player {
-    const match = this.players.find((it) => it.id === id);
-    if (match) return match;
-    throw new Error(`Unknown Player with ID '${id}'`);
   }
 
   get events() {
@@ -286,6 +274,25 @@ export class Game implements GameReadAccess {
 
   private freeze(): FrozenGame {
     return new FrozenGame(this.state.current);
+  }
+
+  private checkWin(access: FrozenGame): GameState {
+    const unfrozen = access.unfreeze();
+
+    const dying = unfrozen.players.some(isDying);
+    const win = !dying && testWinConditions(unfrozen);
+
+    if (win) {
+      console.log(`We have a winner: ${win.type}`);
+
+      const winEvent = WinEvent.create(unfrozen.players, win);
+      const keptEvents = unfrozen.events.filter((it) =>
+        it.type.startsWith("announcement.")
+      );
+      return { ...unfrozen, events: [...keptEvents, winEvent] };
+    } else {
+      return unfrozen;
+    }
   }
 
   private check() {
@@ -325,20 +332,8 @@ export class Game implements GameReadAccess {
     });
 
     if (dirty.length > 0) {
-      this.state.push(access.unfreeze());
-
-      const dying = this.players.some(isDying);
-      const win = !dying && testWinConditions(this.freeze());
-      if (win) {
-        console.log(`We have a winner: ${win.type}`);
-        const winEvent = WinEvent.create(this.players, win);
-        this.state.modify((it) => {
-          const keptEvents = it.events.filter((it) =>
-            it.type.startsWith("announcement.")
-          );
-          return { events: [...keptEvents, winEvent] };
-        });
-      }
+      const unfrozen = this.checkWin(access);
+      this.state.push(unfrozen);
     }
   }
 
@@ -357,7 +352,7 @@ export class Game implements GameReadAccess {
   }
 
   vote(id: Id, vote: Vote) {
-    const player = this.playerById(id);
+    const player = requirePlayer(this.players, id);
 
     const event = this.currentEvent(id);
 

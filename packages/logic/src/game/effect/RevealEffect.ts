@@ -1,6 +1,7 @@
 import { Id } from "models";
 import { GameAccess } from "../Game.js";
 import { RevealEvent } from "../event/RevealEvent.js";
+import { requirePlayer } from "../player/predicates.js";
 import { Effect } from "./Effect.js";
 
 export class RevealEffect implements Effect {
@@ -11,8 +12,8 @@ export class RevealEffect implements Effect {
   ) {}
 
   apply(game: GameAccess) {
-    const targets = this.targets.map((it) => game.playerById(it));
-    const to = game.playerById(this.to);
+    const targets = this.targets.map((it) => requirePlayer(game.players, it));
+    const to = requirePlayer(game.players, this.to);
     game.immediately(() => RevealEvent.create(this.type, [to], targets));
   }
 }

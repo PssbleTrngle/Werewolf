@@ -3,7 +3,12 @@ import { ArrayOrSingle } from "../../util.js";
 import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
-import { isAlive, isDying, others } from "../player/predicates.js";
+import {
+  isAlive,
+  isDying,
+  others,
+  requirePlayer,
+} from "../player/predicates.js";
 import { EventType } from "./Event.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import PotionKillEvent from "./PotionKillEvent.js";
@@ -25,7 +30,9 @@ export class WitchTrigger extends EventType {
 
       const alive = game.players.filter(isAlive);
 
-      const users = event.players.map((it) => game.playerById(it.id));
+      const users = event.players.map((it) =>
+        requirePlayer(game.players, it.id)
+      );
 
       const revive = PotionReviveEvent.create(
         users.filter((it) => !it.roleData.usedRevivePotion),

@@ -1,6 +1,12 @@
 import { times } from "lodash-es";
 import { WinData } from "models";
-import { Executioner, Game, Villager, Werewolf } from "../src/index.js";
+import {
+  Executioner,
+  Game,
+  Villager,
+  Werewolf,
+  requirePlayer,
+} from "../src/index.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { dismiss, playerVote, skipVote } from "./util/votes.js";
 
@@ -28,7 +34,7 @@ describe("tests regarding the executioner", () => {
 
     dismiss(game);
 
-    const target = game.playerById(executioner)?.roleData?.target;
+    const target = requirePlayer(game.players, executioner)?.roleData?.target;
 
     expect(target).not.toBeUndefined();
     assert(target);

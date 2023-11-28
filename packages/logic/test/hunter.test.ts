@@ -43,7 +43,7 @@ describe("tests regarding the hunter", () => {
     expect(game.events[0].players).toHaveLength(players.length - 2);
     expect(game.events[1].type).toBe("win");
 
-    expect(game.status.queue?.past).toBe(4);
+    expect(game.status.queue?.past).toBe(3);
 
     const dead = game.players.filter((it) => !isNotDead(it));
     expect(dead).toHaveLength(2);

@@ -15,12 +15,16 @@ const [jester, wolf, ...villagers] = players.map((it) => it.id);
 function expectJesterWin(game: Game) {
   expect(game.events[0].type).toBe("announcement.death");
   expect(game.events[1].type).toBe("win");
-  expect(game.events[1].data).toMatchObject<WinData>({
+  expect(game.events[1].data).toMatchObject({
     state: {
       type: "jester",
-      winners: [game.players[0]],
+      winners: [
+        {
+          id: jester,
+        },
+      ],
     },
-  });
+  } as WinData);
 }
 
 describe("tests regarding the jester", () => {
