@@ -31,6 +31,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: pnpm run build --filter=web...
+        env:
+          VITE_REPOSITORY: ${{ env.GITHUB_REPO }}
+          VITE_SHA: ${{ github.sha }}
+          VITE_VERSION: ${{ github.ref_name }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2
@@ -53,7 +57,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            REPOSITORY=${{ env.GITHUB_REPO }}
-            SHA=${{ github.sha }}
-            VERSION=${{ github.ref_name }}

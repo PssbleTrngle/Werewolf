@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { InvisibleLinkStyle } from "ui";
 
 const InvisibleLink = styled(Link)`
-  text-decoration: none;
-  color: ${(p) => p.theme.text};
+  ${InvisibleLinkStyle}
 `;
 
 export default InvisibleLink;

@@ -12,7 +12,9 @@
       "add": "Add Player",
       "remove": "Remove",
       "rename": "Rename"
-    }
+    },
+    "translate": "Help Tranlate",
+    "source": "Source Code"
   },
   "event": {
     "start.title": "Start the Game?",

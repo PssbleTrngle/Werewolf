@@ -42,4 +42,20 @@ const Button = styled.button<{ $error?: boolean }>`
   transition: all 0.2s ease;
 `;
 
+export const IconButton = styled(Button)`
+  padding: 0.3em 0.8em;
+
+  svg {
+    height: 2.2em;
+  }
+`;
+
+export const Buttons = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+`;
+
 export default Button;

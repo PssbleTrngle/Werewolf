@@ -50,7 +50,7 @@ export function createLocalGame(): GameContext {
       try {
         return func(...args);
       } catch (e) {
-        if (e instanceof Error) {
+        if (import.meta.env.DEV && e instanceof Error) {
           /* eslint-disable no-console */
           console.error("an error occured in the logic package");
           console.error(e.message);

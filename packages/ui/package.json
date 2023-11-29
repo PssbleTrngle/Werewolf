@@ -7,19 +7,23 @@
     "lint": "eslint \"{src,test}/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "react": "^18.2.0",
+    "@styled-icons/boxicons-regular": "^10.47.0",
+    "@styled-icons/boxicons-solid": "^10.47.0",
+    "@styled-icons/simple-icons": "^10.46.0",
     "@tanstack/react-query": "^5.8.4",
-    "react-i18next": "^13.5.0",
     "i18next": "^23.7.6",
     "polished": "^4.2.2",
-    "styled-components": "^6.1.1"
+    "react": "^18.2.0",
+    "react-i18next": "^13.5.0",
+    "styled-components": "^6.1.1",
+    "styled-icons": "^10.47.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
     "eslint": "^8.53.0",
-    "tsconfig": "workspace:*",
-    "models": "workspace:*",
     "eslint-config-custom": "workspace:*",
+    "models": "workspace:*",
+    "tsconfig": "workspace:*",
     "typescript": "^5.2.2"
   }
 }

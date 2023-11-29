@@ -7,7 +7,8 @@ import {
   useRedoMutation,
   useUndoMutation,
 } from "../../hooks/game";
-import Button from "../Button";
+import { RedoIcon, UndoIcon } from "../../icons";
+import { Buttons, IconButton } from "../Button";
 
 function times<T>(amount: number, factory: (i: number) => T) {
   return new Array(amount).fill(null).map((_, i) => factory(i));
@@ -45,7 +46,6 @@ function Queue({ children }: Readonly<{ children: EventQueue }>) {
 
 export default function ControlBar() {
   const { t } = useTranslation();
-
   const { data: status } = useGameStatus();
   const { mutate: undo } = useUndoMutation();
   const { mutate: redo } = useRedoMutation();
@@ -54,27 +54,26 @@ export default function ControlBar() {
 
   const canRedo = useMemo(
     () => (status?.queue?.writtenFuture ?? 0) > 0,
-    [status],
+    [status]
   );
 
   return (
     <Style>
       {status?.queue && <Queue>{status.queue}</Queue>}
-      <Button disabled={!canUndo} onClick={undo}>
-        {t("button.undo")}
-      </Button>
-      <Button disabled={!canRedo} onClick={redo}>
-        {t("button.redo")}
-      </Button>
+      <Buttons>
+        <IconButton disabled={!canUndo} onClick={undo} title={t("button.undo")}>
+          <UndoIcon />
+        </IconButton>
+        <IconButton disabled={!canRedo} onClick={redo} title={t("button.redo")}>
+          <RedoIcon />
+        </IconButton>
+      </Buttons>
     </Style>
   );
 }
 
 const Style = styled.section`
   padding: 1em;
-  ${Button} {
-    margin: 0 0.5em;
-  }
 `;
 
 const Blobs = styled.div<{ $offset: number }>`

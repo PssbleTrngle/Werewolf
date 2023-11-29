@@ -1,6 +1,11 @@
-export { default as Button } from "./components/Button";
+export { default as Button, Buttons, IconButton } from "./components/Button";
 export { default as Centered } from "./components/Centered";
 export { default as ErrorMessage } from "./components/ErrorBox";
+export {
+  FOOTER_HEIGHT,
+  default as Footer,
+  type AppInfo,
+} from "./components/Footer";
 export { default as Input } from "./components/Input";
 export { default as PlayerIcon } from "./components/PlayerIcon";
 export * from "./components/Text";
@@ -13,6 +18,8 @@ export { default as EventDetails } from "./components/event/EventDetails";
 export { default as EventScreen } from "./components/event/EventScreen";
 export { default as ParticipantList } from "./components/event/ParticipantList";
 export * from "./hooks/game";
+export * from "./icons";
+export * from "./styles/links";
 export * from "./styles/screens";
 export { default as darkTheme } from "./theme/dark";
 export { default as lightTheme } from "./theme/light";

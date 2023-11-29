@@ -1,8 +1,14 @@
 import { invert } from "polished";
 import { PropsWithChildren } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import { XS } from "ui";
+import { AppInfo, FOOTER_HEIGHT, Footer, XS } from "ui";
 import NavBar from "../NavBar";
+
+const appInfo: AppInfo = {
+  repository: import.meta.env.VITE_REPOSITORY,
+  sha: import.meta.env.VITE_SHA,
+  version: import.meta.env.VITE_VERSION,
+};
 
 export default function Layout({ children }: Readonly<PropsWithChildren>) {
   return (
@@ -11,6 +17,7 @@ export default function Layout({ children }: Readonly<PropsWithChildren>) {
       <Wrapper>
         <NavBar />
         <section>{children}</section>
+        <Footer {...appInfo} />
       </Wrapper>
     </>
   );
@@ -24,7 +31,7 @@ html, body, ul {
 `;
 
 const Wrapper = styled.section`
-  height: 100dvh;
+  min-height: 100dvh;
   display: grid;
   font-family: sans-serif;
 
@@ -39,7 +46,8 @@ const Wrapper = styled.section`
 
   grid-template:
     "nav" auto
-    "display" 1fr;
+    "display" 1fr
+    "footer" ${FOOTER_HEIGHT}px;
 
   ${XS} {
     grid-template:

@@ -1,12 +1,24 @@
 import { MIN_PLAYERS } from "logic";
 import { Id, Player, Status } from "models";
 import { nanoid } from "nanoid";
-import { FormEvent, useCallback, useState } from "react";
+import { Dispatch, FormEvent, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Button, Centered, Input, useGameStatus, usePlayers } from "ui";
+import {
+  Button,
+  Buttons,
+  Centered,
+  EditIcon,
+  IconButton,
+  Input,
+  ShuffleIcon,
+  TrashIcon,
+  useGameStatus,
+  usePlayers,
+} from "ui";
 import InvisibleLink from "../InivisibleLink";
 import useLocalStorage from "../hooks/useLocalStorage";
+import randomNames from "../randomNames";
 
 function AddPanel({
   onAddPlayer,
@@ -21,12 +33,14 @@ function AddPanel({
     (e: FormEvent) => {
       e.preventDefault();
       onAddPlayer({ id: nanoid(), name });
+      setName("");
     },
     [onAddPlayer, name]
   );
 
   return (
     <Form onSubmit={submit}>
+      {import.meta.env.DEV && <RandomizeButton setName={setName} />}
       <Input
         type="text"
         placeholder={t("player.name")}
@@ -36,6 +50,19 @@ function AddPanel({
       />
       <Button>{t("button.player.add")}</Button>
     </Form>
+  );
+}
+
+function RandomizeButton({ setName }: Readonly<{ setName: Dispatch<string> }>) {
+  const setRandomName = useCallback(() => {
+    const [random] = randomNames.sort(() => Math.random() * 2 - 1);
+    setName(random ?? "");
+  }, [setName]);
+
+  return (
+    <IconButton type="button" onClick={setRandomName}>
+      <ShuffleIcon />
+    </IconButton>
   );
 }
 
@@ -115,17 +142,23 @@ function PlayersEditView() {
         <p>{t("error.min_players_requirement", { count: MIN_PLAYERS })}</p>
       )}
       <AddPanel onAddPlayer={addPlayer} />
+      <Count>{t("player.count", { count: players.length })}</Count>
       <Table>
         <tbody>
           {players.map((it) => (
             <tr key={it.id}>
               <td>{it.name}</td>
-              <Buttons>
-                <Button onClick={() => removePlayer(it.id)}>
-                  {t("button.player.remove")}
-                </Button>
-                <Button>{t("button.player.rename")}</Button>
-              </Buttons>
+              <ButtonsCell>
+                <IconButton title={t("button.player.rename")}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  onClick={() => removePlayer(it.id)}
+                  title={t("button.player.remove")}
+                >
+                  <TrashIcon />
+                </IconButton>
+              </ButtonsCell>
             </tr>
           ))}
         </tbody>
@@ -134,10 +167,10 @@ function PlayersEditView() {
   );
 }
 
-const Buttons = styled.td`
-  text-align: right;
-  ${Button}:not(:last-child) {
-    margin-right: 1em;
+const ButtonsCell = styled(Buttons).attrs({ as: "td" })`
+  justify-content: end;
+  ${IconButton} {
+    font-size: 0.7em;
   }
 `;
 
@@ -147,6 +180,8 @@ const Count = styled.h2`
 
 const Form = styled.form`
   margin: 1em 0;
+  display: flex;
+  gap: 0.5em;
 `;
 
 const Table = styled.table`
