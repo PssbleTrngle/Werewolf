@@ -87,7 +87,6 @@ const Style = styled.footer`
 
   background-color: ${(p) => p.theme.nav};
 
-  margin-top: ${FOOTER_HEIGHT * 0.3}px;
   padding: 0.2em 0;
   border-top: solid 0.3em ${(p) => p.theme.bg};
 

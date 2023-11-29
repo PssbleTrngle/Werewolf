@@ -6,6 +6,7 @@
     "web": "turbo dev --filter=web...",
     "lint": "turbo lint",
     "test": "turbo test",
+    "test:ci": "turbo test -- --coverage",
     "build": "turbo build",
     "clean": "turbo clean && rimraf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore"

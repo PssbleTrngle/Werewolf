@@ -187,6 +187,7 @@ const Form = styled.form`
 const Table = styled.table`
   width: 100%;
   max-width: 800px;
+  margin-bottom: 1em;
 
   border-collapse: collapse;
 
