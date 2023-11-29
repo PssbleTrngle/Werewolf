@@ -5,7 +5,8 @@
   "types": "./src/index.ts",
   "scripts": {
     "lint": "eslint \"{src,test}/**/*.ts\"",
-    "test": "vitest"
+    "test": "vitest",
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.11",

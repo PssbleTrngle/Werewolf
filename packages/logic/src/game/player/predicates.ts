@@ -1,9 +1,8 @@
-import { Id, RoleGroup } from "models";
-import { Player } from "./Player.js";
+import { Id, Player, RoleGroup } from "models";
 
 export function inGroup(group: RoleGroup) {
   return (value: Player): boolean => {
-    return value.role.groups?.includes(group) ?? false;
+    return value.role?.groups?.includes(group) ?? false;
   };
 }
 
@@ -26,14 +25,17 @@ export function isDying(player: Player) {
 }
 
 export function hasRole(role: string) {
-  return (player: Player) => player.role.type === role;
+  return (player: Player) => player.role?.type === role;
 }
 
 export function byId(id: Id) {
   return (player: Player) => player.id === id;
 }
 
-export function requirePlayer(players: ReadonlyArray<Player>, id: Id) {
+export function requirePlayer<T extends Player>(
+  players: ReadonlyArray<T>,
+  id: Id
+): T {
   const match = players.find(byId(id));
   if (match) return match;
   throw new Error(`Unknown Player with ID '${id}'`);

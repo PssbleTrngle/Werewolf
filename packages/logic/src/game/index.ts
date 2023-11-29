@@ -18,14 +18,14 @@ export class Game implements GameReadAccess {
 
   private constructor(
     history: ReadonlyArray<GameState>,
-    private readonly settings: Readonly<GameSettings>
+    public readonly settings: GameSettings
   ) {
     this.state = new StateHistory(...history);
   }
 
   static create(
     players: ReadonlyArray<Player>,
-    settings: Readonly<GameSettings> = {}
+    settings: GameSettings = {}
   ): Game {
     return new Game(
       [
@@ -34,6 +34,7 @@ export class Game implements GameReadAccess {
           day: 1,
           time: "dusk",
           events: [StartEvent.create(players)],
+          settings,
         },
       ],
       settings

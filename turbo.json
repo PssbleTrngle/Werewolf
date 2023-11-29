@@ -11,8 +11,9 @@
       "persistent": true
     },
     "lint": {},
+    "check": {},
     "test": {
-      "dependsOn": ["lint", "^test"],
+      "dependsOn": ["lint", "check", "^test"],
       "outputs": ["coverage/**"]
     },
     "clean": {

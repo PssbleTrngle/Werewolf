@@ -1,4 +1,4 @@
-import { DeathCause, Event, KillData, Vote } from "models";
+import { DeathCause, Event, GameSettings, KillData, Vote } from "models";
 import { arrayOrSelf } from "../../util.js";
 import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
@@ -11,10 +11,10 @@ export default class LynchEvent extends KillEvent {
   static create = registerEventFactory(
     "kill.lynch",
     new LynchEvent(),
-    (choices: ReadonlyArray<Player>) => ({
+    (settings: GameSettings, choices: ReadonlyArray<Player>) => ({
       choice: {
         players: choices,
-        canSkip: true,
+        canSkip: !settings.disableLynchSkip,
       },
       data: {
         cause: DeathCause.LYNCHED,

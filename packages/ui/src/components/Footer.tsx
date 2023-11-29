@@ -44,12 +44,22 @@ export default function Footer({
 }
 
 function VersionInfo({ sha, version, repository }: AppInfo) {
+  if (!repository) return <span />;
   return (
     <Centered>
-      <span>{repository}@</span>
-      <Link href={`https://github.com/${repository}/tree/${sha}`}>
-        {version}
-      </Link>
+      <span>{repository}</span>
+      {version && (
+        <>
+          <span>@</span>
+          {sha ? (
+            <Link href={`https://github.com/${repository}/tree/${sha}`}>
+              {version}
+            </Link>
+          ) : (
+            <span>{version}</span>
+          )}
+        </>
+      )}
     </Centered>
   );
 }

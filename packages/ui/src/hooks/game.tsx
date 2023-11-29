@@ -1,5 +1,6 @@
 import {
   MutationFunction,
+  QueryClient,
   useMutation,
   useQuery,
   useQueryClient,
@@ -57,6 +58,12 @@ export function useRoles() {
   return useQuery({ queryKey: ["roles"], queryFn: roles });
 }
 
+export function invalidateGameQueries(client: QueryClient) {
+  client.invalidateQueries({ queryKey: ["screen"] });
+  client.invalidateQueries({ queryKey: ["game"] });
+  client.invalidateQueries({ queryKey: ["players"] });
+}
+
 function useInvalidatingMutation<TData, TVariables>(
   mutationFn: MutationFunction<TData, TVariables>
 ) {
@@ -64,11 +71,7 @@ function useInvalidatingMutation<TData, TVariables>(
   return useMutation({
     mutationKey: ["vote"],
     mutationFn,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ["screen"] });
-      client.invalidateQueries({ queryKey: ["game"] });
-      client.invalidateQueries({ queryKey: ["players"] });
-    },
+    onSuccess: () => invalidateGameQueries(client),
   });
 }
 

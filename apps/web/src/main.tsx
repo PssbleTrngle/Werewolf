@@ -8,13 +8,13 @@ import ReactDOM from "react-dom/client";
 import { initReactI18next } from "react-i18next";
 import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { GameProvider, darkTheme } from "ui";
+import { darkTheme } from "ui";
 import ErrorWrapper from "./ErrorWrapper";
-import { createLocalGame } from "./client/local";
+import { ImpersonationProvider } from "./hooks/impersonate";
+import { LocalGameProvider } from "./hooks/localGame";
 import { router } from "./router";
 
 const client = new QueryClient();
-const game = createLocalGame();
 const backend = new LocaleBackend(null, {
   loadPath: "/locales/{{lng}}.json",
 });
@@ -29,11 +29,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ThemeProvider theme={darkTheme}>
       <Suspense fallback={<p>Loading...</p>}>
         <ErrorWrapper>
-          <GameProvider value={game}>
-            <QueryClientProvider client={client}>
-              <RouterProvider router={router} />
-            </QueryClientProvider>
-          </GameProvider>
+          <QueryClientProvider client={client}>
+            <ImpersonationProvider>
+              <LocalGameProvider>
+                <RouterProvider router={router} />
+              </LocalGameProvider>
+            </ImpersonationProvider>
+          </QueryClientProvider>
         </ErrorWrapper>
       </Suspense>
     </ThemeProvider>

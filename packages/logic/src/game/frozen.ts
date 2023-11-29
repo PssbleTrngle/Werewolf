@@ -60,6 +60,10 @@ export default class FrozenGame implements GameAccess {
     }));
   }
 
+  get settings() {
+    return this.initial.settings;
+  }
+
   modifyPlayerData(id: Id, data: Partial<RoleData>) {
     if (this.playerDataModifiers.has(id)) {
       this.playerDataModifiers.get(id)?.push(data);
@@ -122,6 +126,7 @@ export default class FrozenGame implements GameAccess {
       this.initial.day + this.timesPassed.filter((it) => it === "dawn").length;
 
     return {
+      ...this.initial,
       time,
       day,
       players: this.players

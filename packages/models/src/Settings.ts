@@ -1,3 +1,3 @@
 export interface GameSettings {
-  disableLynchSkip?: boolean;
+  readonly disableLynchSkip?: boolean;
 }
