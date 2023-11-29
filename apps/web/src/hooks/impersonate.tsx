@@ -1,11 +1,5 @@
 import { Id } from "models";
-import {
-  Dispatch,
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import { Dispatch, createContext, useContext } from "react";
 
 const CTX = createContext<[Id | undefined, Dispatch<Id | undefined>]>([
   undefined,
@@ -18,7 +12,4 @@ export default function useImpersonation() {
   return useContext(CTX);
 }
 
-export function ImpersonationProvider(props: Readonly<PropsWithChildren>) {
-  const state = useState<Id>();
-  return <CTX.Provider {...props} value={state} />;
-}
+export const ImpersonationProvider = CTX.Provider;

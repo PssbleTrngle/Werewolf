@@ -6,7 +6,7 @@ export {
   default as Footer,
   type AppInfo,
 } from "./components/Footer";
-export { default as Input } from "./components/Input";
+export { default as Input, InputStyles } from "./components/Input";
 export { default as PlayerIcon } from "./components/PlayerIcon";
 export * from "./components/Text";
 export { default as Background } from "./components/background/Background";

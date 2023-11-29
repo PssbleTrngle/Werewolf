@@ -16,7 +16,7 @@ import {
   useGameStatus,
   usePlayers,
 } from "ui";
-import InvisibleLink from "../InivisibleLink";
+import InvisibleLink from "../components/InivisibleLink";
 import useLocalStorage from "../hooks/useLocalStorage";
 import randomNames from "../randomNames";
 

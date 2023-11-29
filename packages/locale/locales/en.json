@@ -54,6 +54,7 @@
   },
   "role": {
     "title": "Role",
+    "gamemaster.title": "Gamemaster",
     "villager": {
       "name": "Villager",
       "description": "TODO"

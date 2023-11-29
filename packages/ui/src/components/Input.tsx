@@ -1,7 +1,7 @@
 import { mix } from "polished";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Input = styled.input`
+export const InputStyles = css`
   border: none;
   outline: none;
 
@@ -27,6 +27,10 @@ const Input = styled.input`
   }
 
   transition: all 0.1s ease;
+`;
+
+const Input = styled.input`
+  ${InputStyles};
 `;
 
 export default Input;

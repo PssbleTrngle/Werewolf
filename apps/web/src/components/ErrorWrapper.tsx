@@ -2,7 +2,7 @@ import { PropsWithChildren, useMemo } from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import styled from "styled-components";
 import { Button, Centered } from "ui";
-import Layout from "./views/Layout";
+import Layout from "../views/Layout";
 
 function ErrorPage({ error, resetErrorBoundary }: FallbackProps) {
   const realError = useMemo(

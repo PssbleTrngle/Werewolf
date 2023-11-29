@@ -1,15 +1,8 @@
-import {
-  Game,
-  GameState,
-  GameView,
-  ModeratorGameView,
-  allRoles,
-  generateRoles,
-} from "logic";
-import { Player, Vote } from "models";
-import { PropsWithChildren, useMemo } from "react";
+import { Game, GameState, allRoles, generateRoles } from "logic";
+import { Id, Player, Vote } from "models";
+import { Dispatch, PropsWithChildren, useMemo, useReducer } from "react";
 import { GameContext, GameProvider } from "ui";
-import useImpersonation from "./impersonate";
+import { ImpersonationProvider } from "./impersonate";
 import { readLocalStorage } from "./useLocalStorage";
 
 const STORAGE_KEY = "gamestate";
@@ -54,6 +47,7 @@ function wrap<T extends (...args: any[]) => any>(func: T) {
   };
 }
 
+/*
 function createState() {
   let game = readSavedGame();
   let view: GameView | null = game && new ModeratorGameView(game);
@@ -79,42 +73,139 @@ function createState() {
 
   return { require, get: () => view, set, save };
 }
+*/
+
+function requiresGame(): never {
+  throw new Error("No game active");
+}
+
+function alreadyRunning(): never {
+  throw new Error("Game already running");
+}
+
+const localContext = {
+  roles: wrap(() => allRoles),
+} satisfies Partial<GameContext>;
+
+function createEmptyContext(startGame: Dispatch<Game>): GameContext {
+  return {
+    ...localContext,
+    create: wrap(() => startGame(createGame())),
+    game: wrap(() => null),
+    activeEvent: requiresGame,
+    players: requiresGame,
+    redo: requiresGame,
+    stop: requiresGame,
+    submitVote: requiresGame,
+    undo: requiresGame,
+  };
+}
+
+function saveGame(game: Game | null) {
+  if (game) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(game.save()));
+  } else {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+}
 
 export function useLocalGame(): GameContext {
-  const [impersonanted, impersonate] = useImpersonation();
+  const [game, setGame] = useReducer((_: Game | null, value: Game | null) => {
+    saveGame(value);
+    return value;
+  }, readSavedGame());
 
-  const game = useMemo(createState, []);
-
-  return useMemo<GameContext>(
-    () => ({
-      create: wrap(() => {
-        game.set(createGame());
-      }),
-      stop: wrap(() => {
-        game.set(null);
-      }),
-      game: wrap(() => game.get()?.status() ?? null),
-      players: wrap(() => game.require().players()),
-      roles: wrap(() => allRoles),
-      activeEvent: wrap(() => game.require().events()[0]),
-      submitVote: wrap((vote: Vote) => {
-        game.require().vote(vote);
-        game.save();
-      }),
-      undo: wrap(() => {
-        game.require().undo();
-        game.save();
-      }),
-      redo: wrap(() => {
-        game.require().redo();
-        game.save();
-      }),
-    }),
-    [game]
+  return useMemo(
+    () => createGameContextFor({ game, setGame }),
+    [game, setGame]
   );
 }
 
+function createGameContextFor({
+  game,
+  setGame,
+}: {
+  game: Game | null;
+  setGame: Dispatch<Game | null>;
+  impersonated?: Id;
+}) {
+  if (!game) return createEmptyContext(setGame);
+
+  return {
+    ...localContext,
+    create: alreadyRunning,
+    stop: wrap(() => setGame(null)),
+    game: wrap(() => game.status),
+    players: wrap(() => game.players),
+    activeEvent: wrap(() => game.events[0]),
+    submitVote: wrap((vote: Vote) => {
+      const event = game.events[0];
+      event.players.forEach((it) => {
+        game.vote(it.id, vote);
+      });
+      saveGame(game);
+    }),
+    undo: wrap(() => {
+      game.undo();
+      saveGame(game);
+    }),
+    redo: wrap(() => {
+      game.redo();
+      saveGame(game);
+    }),
+  };
+}
+
+interface ExtendedGameContext extends GameContext {
+  impersonated?: Id;
+  impersonate: Dispatch<Id | undefined>;
+}
+
+/**
+ * This is neccessary, because react-client does not recreate query functions once the context changes
+ */
+function createLocalGame(): ExtendedGameContext {
+  let actualContext: GameContext = createEmptyContext(() => {});
+  let impersonated: Id | undefined = undefined;
+  let game: Game | null = null;
+
+  function updateContext() {
+    actualContext = createGameContextFor({ game, setGame, impersonated });
+    saveGame(game);
+  }
+
+  function setGame(value: Game | null) {
+    game = value;
+    updateContext();
+  }
+
+  function impersonate(value?: Id) {
+    impersonated = value;
+    updateContext();
+  }
+
+  setGame(readSavedGame());
+
+  return {
+    roles: () => actualContext.roles(),
+    players: () => actualContext.players(),
+    game: () => actualContext.game(),
+    activeEvent: () => actualContext.activeEvent(),
+    submitVote: (vote) => actualContext.submitVote(vote),
+    undo: () => actualContext.undo(),
+    redo: () => actualContext.redo(),
+    stop: () => actualContext.stop(),
+    create: () => actualContext.create(),
+    impersonated,
+    impersonate,
+  };
+}
+
 export function LocalGameProvider(props: Readonly<PropsWithChildren>) {
-  const context = useLocalGame();
-  return <GameProvider {...props} value={context} />;
+  const context = useMemo(() => createLocalGame(), []);
+  return (
+    <ImpersonationProvider value={[context.impersonated, context.impersonate]}>
+      <GameProvider {...props} value={context} />
+    </ImpersonationProvider>
+  );
 }

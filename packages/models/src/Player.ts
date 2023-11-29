@@ -1,6 +1,6 @@
 import { Role } from "./Role.js";
 
-export type Id = number | string;
+export type Id = string;
 
 export type Status = "alive" | "dead" | "dying";
 

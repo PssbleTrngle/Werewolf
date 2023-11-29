@@ -1,5 +1,5 @@
 import { Button, Centered, Title } from "ui";
-import InvisibleLink from "../InivisibleLink";
+import InvisibleLink from "../components/InivisibleLink";
 import Layout from "./Layout";
 
 function NotFound() {

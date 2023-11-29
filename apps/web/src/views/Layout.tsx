@@ -2,7 +2,7 @@ import { invert } from "polished";
 import { PropsWithChildren } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { AppInfo, FOOTER_HEIGHT, Footer, XS } from "ui";
-import NavBar from "../NavBar";
+import NavBar from "../components/NavBar";
 
 const appInfo: AppInfo = {
   repository: import.meta.env.VITE_REPOSITORY,

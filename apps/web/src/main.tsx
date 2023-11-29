@@ -9,8 +9,7 @@ import { initReactI18next } from "react-i18next";
 import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { darkTheme } from "ui";
-import ErrorWrapper from "./ErrorWrapper";
-import { ImpersonationProvider } from "./hooks/impersonate";
+import ErrorWrapper from "./components/ErrorWrapper";
 import { LocalGameProvider } from "./hooks/localGame";
 import { router } from "./router";
 
@@ -30,11 +29,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Suspense fallback={<p>Loading...</p>}>
         <ErrorWrapper>
           <QueryClientProvider client={client}>
-            <ImpersonationProvider>
-              <LocalGameProvider>
-                <RouterProvider router={router} />
-              </LocalGameProvider>
-            </ImpersonationProvider>
+            <LocalGameProvider>
+              <RouterProvider router={router} />
+            </LocalGameProvider>
           </QueryClientProvider>
         </ErrorWrapper>
       </Suspense>

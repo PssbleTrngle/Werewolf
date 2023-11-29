@@ -1,5 +1,6 @@
 import { invert, lighten } from "polished";
 import styled, { css } from "styled-components";
+import { InputStyles } from "./Input";
 
 const ErrorStyle = css`
   background: #b53149;
@@ -11,35 +12,18 @@ const ErrorStyle = css`
 `;
 
 const Button = styled.button<{ $error?: boolean }>`
-  border: none;
-  outline: none;
-  cursor: pointer;
+  ${InputStyles};
 
-  color: inherit;
-
-  padding: 1em 2em;
-
-  border: solid 2px ${(p) => p.theme.text};
   background: transparent;
+  cursor: pointer;
+  padding: 1em 2em;
 
   &:hover:not(:disabled) {
     background: ${(p) => p.theme.text};
     color: ${(p) => invert(p.theme.text)};
   }
 
-  &:focus:not(:disabled) {
-    border-color: ${(p) => p.theme.accent};
-    box-shadow: 0 0 0 2px ${(p) => p.theme.accent};
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.5;
-  }
-
   ${(p) => p.$error && ErrorStyle}
-
-  transition: all 0.2s ease;
 `;
 
 export const IconButton = styled(Button)`

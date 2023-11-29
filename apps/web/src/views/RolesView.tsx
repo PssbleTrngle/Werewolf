@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useRoles } from "ui";
-import InvisibleLink from "../InivisibleLink";
+import InvisibleLink from "../components/InivisibleLink";
 
 export default function RolesView() {
   const { data: roles } = useRoles();
