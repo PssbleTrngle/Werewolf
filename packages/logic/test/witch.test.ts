@@ -1,5 +1,5 @@
 import { times } from "lodash-es";
-import { Game } from "../src/game/Game.js";
+import { Game } from "../src/game/index.js";
 import { isNotDead } from "../src/game/player/predicates.js";
 import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";

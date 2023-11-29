@@ -1,6 +1,6 @@
 import { Id } from "models";
-import { GameAccess } from "../Game.js";
 import { RoleData } from "../player/Player.js";
+import { GameAccess } from "../state.js";
 import { Effect } from "./Effect.js";
 
 export class PlayerDataEffect implements Effect {

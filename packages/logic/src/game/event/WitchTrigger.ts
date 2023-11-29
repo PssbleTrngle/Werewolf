@@ -1,6 +1,5 @@
 import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
-import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
 import {
@@ -9,6 +8,7 @@ import {
   others,
   requirePlayer,
 } from "../player/predicates.js";
+import { GameReadAccess } from "../state.js";
 import { EventType } from "./Event.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import PotionKillEvent from "./PotionKillEvent.js";

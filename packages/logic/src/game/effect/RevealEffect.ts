@@ -1,7 +1,7 @@
 import { Id } from "models";
-import { GameAccess } from "../Game.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { requirePlayer } from "../player/predicates.js";
+import { GameAccess } from "../state.js";
 import { Effect } from "./Effect.js";
 
 export class RevealEffect implements Effect {

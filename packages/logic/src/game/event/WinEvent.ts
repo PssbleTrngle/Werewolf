@@ -1,7 +1,7 @@
 import { WinData, WinState } from "models";
 import { ArrayOrSingle } from "../../util.js";
-import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
+import { GameReadAccess } from "../state.js";
 import { EventType } from "./Event.js";
 import { registerEventFactory } from "./EventRegistry.js";
 

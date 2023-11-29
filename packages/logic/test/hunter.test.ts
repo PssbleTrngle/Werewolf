@@ -1,6 +1,6 @@
 import { times } from "lodash-es";
 import { DeathCause, DeathData, RoleGroup } from "models";
-import { Game } from "../src/game/Game.js";
+import { Game } from "../src/game/index.js";
 import { inGroup, isNotDead } from "../src/game/player/predicates.js";
 import { Hunter } from "../src/game/role/Hunter.js";
 import { Villager } from "../src/game/role/Villager.js";

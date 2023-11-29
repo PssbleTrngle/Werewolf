@@ -1,5 +1,5 @@
-import { GameAccess } from "../Game.js";
 import { EventFactory } from "../event/Event.js";
+import { GameAccess } from "../state.js";
 import { Effect } from "./Effect.js";
 
 export class EventEffect implements Effect {

@@ -1,4 +1,3 @@
-export * from "./game/Game.js";
 export * from "./game/RoleSelector.js";
 export * from "./game/effect/AnnouncementEffect.js";
 export * from "./game/effect/Effect.js";
@@ -21,6 +20,7 @@ export * from "./game/event/SleepBoundary.js";
 export * from "./game/event/StartEvent.js";
 export * from "./game/event/WinEvent.js";
 export * from "./game/event/WitchTrigger.js";
+export * from "./game/index.js";
 export * from "./game/player/Player.js";
 export * from "./game/player/predicates.js";
 export * from "./game/role/Executioner.js";

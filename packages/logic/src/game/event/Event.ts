@@ -1,7 +1,7 @@
 import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
-import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
+import { GameReadAccess } from "../state.js";
 
 export type EventFactory = (
   game: GameReadAccess

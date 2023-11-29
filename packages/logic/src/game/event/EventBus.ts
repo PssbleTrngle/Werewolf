@@ -1,7 +1,7 @@
 import { ArrayOrSingle, arrayOrSelf } from "../../util.js";
-import { GameReadAccess } from "../Game.js";
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
+import { GameReadAccess } from "../state.js";
 import { EventFactory } from "./Event.js";
 
 function isResult<T>(value: T | false): value is T {

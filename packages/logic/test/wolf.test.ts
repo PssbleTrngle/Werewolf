@@ -1,6 +1,6 @@
 import { times } from "lodash-es";
 import { RoleGroup } from "models";
-import { Game } from "../src/game/Game.js";
+import { Game } from "../src/game/index.js";
 import { inGroup, isAlive, isNotDead } from "../src/game/player/predicates.js";
 import { DreamWolf } from "../src/game/role/DreamWolf.js";
 import { Villager } from "../src/game/role/Villager.js";

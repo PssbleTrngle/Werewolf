@@ -1,5 +1,5 @@
 import { Time } from "models";
-import { GameAccess } from "../Game.js";
+import { GameAccess } from "../state.js";
 import { Effect } from "./Effect.js";
 
 export class TimeEffect implements Effect {

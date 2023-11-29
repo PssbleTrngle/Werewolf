@@ -1,6 +1,6 @@
 import { WinState } from "models";
-import { GameReadAccess } from "./Game.js";
 import { isAlive } from "./player/predicates.js";
+import { GameReadAccess } from "./state.js";
 
 type WinConditionChecker = (game: GameReadAccess) => WinState | false;
 
