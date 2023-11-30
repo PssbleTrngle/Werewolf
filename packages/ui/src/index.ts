@@ -7,6 +7,7 @@ export {
   type AppInfo
 } from "./components/Footer";
 export { default as Input, InputStyles } from "./components/Input";
+export * from "./components/NavBar";
 export { default as PlayerIcon } from "./components/PlayerIcon";
 export * from "./components/Text";
 export { default as Background } from "./components/background/Background";

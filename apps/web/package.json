@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prepare": "node setup/copyLocales.js",
+    "prepare": "node setup/copyLocales.mjs",
     "build": "tsc && vite build",
     "lint": "eslint \"{src,test}/**/*.{ts,tsx}\"",
     "preview": "vite preview"

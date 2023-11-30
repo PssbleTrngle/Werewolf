@@ -10,7 +10,7 @@ html, body, ul {
 }
 `;
 
-export const Page = styled.section`
+export const Page = styled.main`
   min-height: 100dvh;
   display: grid;
   font-family: sans-serif;

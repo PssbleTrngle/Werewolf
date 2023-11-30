@@ -1,18 +1,26 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
+import { appWithTranslation } from "next-i18next";
 import type { AppProps } from "next/app";
-import { GameProvider, Globals } from "ui";
-import createRemoteContext from "../hooks/gameContext";
+import { ThemeProvider } from "styled-components";
+import { GameProvider, darkTheme } from "ui";
+import createRemoteContext from "../lib/gameContext";
 
 const client = new QueryClient();
 const context = createRemoteContext();
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <QueryClientProvider client={client}>
-      <GameProvider value={context}>
-        <Globals />
-        <Component {...pageProps} />
-      </GameProvider>
-    </QueryClientProvider>
+    <SessionProvider session={session}>
+      <QueryClientProvider client={client}>
+        <GameProvider value={context}>
+          <ThemeProvider theme={darkTheme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </GameProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }
+
+export default appWithTranslation(App);

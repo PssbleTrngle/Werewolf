@@ -16,8 +16,6 @@ class FetchError extends Error {
 async function request<T>(endpoint: string, method = "GET", data?: unknown) {
   const body = data && JSON.stringify(data);
 
-  console.log(endpoint, body);
-
   const response = await fetch(`/api/${endpoint}`, {
     body,
     method,

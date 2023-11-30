@@ -24,6 +24,9 @@ const createKillEvent = registerEventFactory(
   })
 );
 
+// TODO check death cause
+const VALID_DEATH_CAUSES = [DeathCause.WOLFS];
+
 export const registerHunterEvents = (role = Hunter.type) =>
   DeathEvents.register((self) => {
     if (self.role.type !== role) return false;

@@ -4,14 +4,14 @@ import styled from "styled-components";
 import { Button, Centered } from "ui";
 import Layout from "../views/Layout";
 
-function ErrorPage({ error, resetErrorBoundary }: FallbackProps) {
+function ErrorPage({ error, resetErrorBoundary }: Readonly<FallbackProps>) {
   const realError = useMemo(
     () => (error instanceof Error ? error : new Error(error)),
     [error]
   );
   return (
     <Layout>
-      <Page>
+      <Style>
         <Popup>
           <h1>An error occured!</h1>
           <p>{realError.message}</p>
@@ -23,18 +23,20 @@ function ErrorPage({ error, resetErrorBoundary }: FallbackProps) {
           </small>
           <Button onClick={resetErrorBoundary}>Dismiss</Button>
         </Popup>
-      </Page>
+      </Style>
     </Layout>
   );
 }
 
-export default function ErrorWrapper({ children }: PropsWithChildren) {
+export default function ErrorWrapper({
+  children,
+}: Readonly<PropsWithChildren>) {
   return (
     <ErrorBoundary FallbackComponent={ErrorPage}>{children}</ErrorBoundary>
   );
 }
 
-const Page = styled(Centered)`
+const Style = styled(Centered)`
   font-family: sans-serif;
 
   color: ${(p) => p.theme.text};

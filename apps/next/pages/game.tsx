@@ -1,4 +1,8 @@
 import { EventScreen, useActiveEvent, useGameStatus } from "ui";
+import Layout from "../layout/default";
+import { preloadTranslations } from "../lib/localization";
+
+export const getStaticProps = preloadTranslations;
 
 export default function GameView() {
   const { data: status } = useGameStatus();
@@ -7,8 +11,8 @@ export default function GameView() {
   if (!status || !event) return <p>...</p>;
 
   return (
-    <main>
+    <Layout>
       <EventScreen event={event} status={status} />
-    </main>
+    </Layout>
   );
 }
