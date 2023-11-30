@@ -1,4 +1,5 @@
-import { Event, RevealData } from "models";
+import { Event, RevealData, Vote } from "models";
+import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import { SubjectMappers } from "../permissions.js";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
@@ -18,8 +19,18 @@ export class RevealEvent extends EventType<RevealData> {
     };
   }
 
-  finish() {
-    return [];
+  finish(_vote: Vote, event: Event<RevealData>) {
+    // TODO only if game setting to remember is set
+    // TODO only reveal role/role group depending on setting
+    return event.players.map(
+      (it) =>
+        new PlayerDataEffect(it.id, (data) => ({
+          revealedPlayers: {
+            ...data.revealedPlayers,
+            ...Object.fromEntries(event.data.targets.map((it) => [it.id, it])),
+          },
+        }))
+    );
   }
 
   protected viewData(

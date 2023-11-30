@@ -1,3 +1,4 @@
+import { PartialOrFactory, resolveFactory } from "../util.js";
 import { GameState } from "./state.js";
 
 export default class StateHistory {
@@ -21,15 +22,18 @@ export default class StateHistory {
     return this.history[this.cursor];
   }
 
-  push(next: GameState) {
+  push(factory: PartialOrFactory<GameState>) {
+    const next = resolveFactory(factory, this.current);
     const slicedHistory = this.history.slice(0, this.cursor + 1);
     this.history = [...slicedHistory, next];
     this.cursor++;
   }
 
-  modify(factory: (previous: GameState) => Partial<GameState>) {
-    const current = this.current;
-    this.push({ ...current, ...factory(current) });
+  /**
+   * @deprecated
+   */
+  modify(factory: PartialOrFactory<GameState>) {
+    this.push(factory);
   }
 
   redo() {

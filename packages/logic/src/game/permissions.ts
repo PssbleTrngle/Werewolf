@@ -126,7 +126,14 @@ export class PlayerGameView implements GameView {
 }
 
 export function playerViewFor(player: Player, subject: IPlayer): IPlayer {
+  const revealed = player.roleData.revealedPlayers[subject.id] ?? {};
+
+  const self: Partial<IPlayer> =
+    player.id === subject.id ? { role: player.role } : {};
+
   return {
+    ...self,
+    ...revealed,
     id: subject.id,
     name: subject.name,
     status: isNotDead(subject) ? "alive" : "dead",

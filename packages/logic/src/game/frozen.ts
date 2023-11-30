@@ -1,6 +1,11 @@
 import { last } from "lodash-es";
 import { DeathCause, Event, Id, Time, Vote } from "models";
-import { ArrayOrSingle, arrayOrSelf } from "../util.js";
+import {
+  ArrayOrSingle,
+  PartialOrFactory,
+  arrayOrSelf,
+  resolveFactory,
+} from "../util.js";
 import { Effect } from "./effect/Effect.js";
 import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
 import { EventFactory } from "./event/Event.js";
@@ -64,7 +69,9 @@ export default class FrozenGame implements GameAccess {
     return this.initial.settings;
   }
 
-  modifyPlayerData(id: Id, data: Partial<RoleData>) {
+  modifyPlayerData(id: Id, factory: PartialOrFactory<RoleData>) {
+    const player = requirePlayer(this.players, id);
+    const data = resolveFactory(factory, player.roleData);
     if (this.playerDataModifiers.has(id)) {
       this.playerDataModifiers.get(id)?.push(data);
     } else {

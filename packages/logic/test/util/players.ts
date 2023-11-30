@@ -1,6 +1,6 @@
 import { times } from "lodash-es";
 import { Role } from "models";
-import { Player } from "../../src/game/player/Player.js";
+import { EMPTY_ROLE_DATA, Player } from "../../src/game/player/Player.js";
 import { Villager } from "../../src/game/role/Villager.js";
 
 export function createTestPlayers(
@@ -14,7 +14,7 @@ export function createTestPlayers(
       role,
       status: "alive",
       name: `Player ${id} [${role.emoji}]`,
-      roleData: {},
+      roleData: EMPTY_ROLE_DATA,
       ...rest,
     };
   });

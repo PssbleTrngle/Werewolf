@@ -14,6 +14,7 @@ export class RevealEffect implements Effect {
   apply(game: GameAccess) {
     const targets = this.targets.map((it) => requirePlayer(game.players, it));
     const to = requirePlayer(game.players, this.to);
+
     game.immediately(() => RevealEvent.create(this.type, [to], targets));
   }
 }

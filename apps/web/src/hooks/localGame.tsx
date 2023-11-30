@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
+  EMPTY_ROLE_DATA,
   Game,
   GameState,
   ModeratorGameView,
@@ -23,7 +24,7 @@ function createGame() {
       players.map((it) => ({
         ...it,
         status: "alive",
-        roleData: {},
+        roleData: EMPTY_ROLE_DATA,
       }))
     )
   );

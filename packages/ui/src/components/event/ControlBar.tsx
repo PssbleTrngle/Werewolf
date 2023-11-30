@@ -50,12 +50,16 @@ export default function ControlBar() {
   const { mutate: undo } = useUndoMutation();
   const { mutate: redo } = useRedoMutation();
 
+  const isModerator = useMemo(() => !!status?.queue, [status]);
+
   const canUndo = useMemo(() => (status?.queue?.past ?? 0) > 0, [status]);
 
   const canRedo = useMemo(
     () => (status?.queue?.writtenFuture ?? 0) > 0,
     [status]
   );
+
+  if (!isModerator) return null;
 
   return (
     <Style>
