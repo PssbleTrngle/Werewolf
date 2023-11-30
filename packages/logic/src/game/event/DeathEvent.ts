@@ -1,4 +1,11 @@
-import { DeathData, Event, Player as IPlayer, Time, Vote } from "models";
+import {
+  DeathCause,
+  DeathData,
+  Event,
+  Player as IPlayer,
+  Time,
+  Vote,
+} from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
@@ -10,7 +17,7 @@ import { EventBus } from "./EventBus.js";
 import { registerEventFactory } from "./EventRegistry.js";
 
 export const DeathEvents = new EventBus<
-  (player: Player) => ArrayOrSingle<Effect> | false
+  (player: Player, cause: DeathCause) => ArrayOrSingle<Effect> | false
 >();
 
 export class DeathEvent extends EventType<DeathData> {

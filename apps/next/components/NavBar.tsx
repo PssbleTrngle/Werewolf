@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { NavBar as Base, NavLink, NavLinkStyle, useIsActive } from "ui";
+import ProfileIcon from "./ProfileIcon";
 
 const LINKS: ReadonlyArray<NavLink> = [
   { key: "home", path: "/" },
@@ -25,7 +26,9 @@ export default function NavBar() {
           <span>{t(`nav.${key}`)}</span>
         </NavLink>
       ))}
-    />
+    >
+      <ProfileIcon />
+    </Base>
   );
 }
 

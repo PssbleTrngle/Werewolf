@@ -1,20 +1,6 @@
 import NextDocument, { DocumentContext } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
-/*
-export default function Document() {
-  return (
-    <Html lang="en">
-      <Head />
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  )
-}
-*/
-
 export default class Document extends NextDocument {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();

@@ -25,7 +25,12 @@ async function request<T>(endpoint: string, method = "GET", data?: unknown) {
     },
   });
 
+  if (response.status === 204) {
+    return null as T;
+  }
+
   const json = await response.json();
+
   if (response.ok) {
     return json as T;
   } else {
@@ -47,9 +52,9 @@ export default function createRemoteContext(): GameContext {
     roles: createRequester("roles"),
     players: createRequester("game/players"),
     game: createRequester("game/status"),
-    activeEvent: createRequester("game/activeEvent"),
+    activeEvent: createRequester("game/event/active"),
 
-    submitVote: createMutator("game/submitVote", "POST"),
+    submitVote: createMutator("game/vote", "POST"),
     undo: createMutator("game/undo", "POST"),
     redo: createMutator("game/redo", "POST"),
     stop: createMutator("game", "DELETE"),

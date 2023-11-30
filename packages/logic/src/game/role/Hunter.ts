@@ -24,13 +24,14 @@ const createKillEvent = registerEventFactory(
   })
 );
 
-// TODO check death cause
 const VALID_DEATH_CAUSES = [DeathCause.WOLFS];
 
 export const registerHunterEvents = (role = Hunter.type) =>
-  DeathEvents.register((self) => {
+  DeathEvents.register((self, cause) => {
     if (self.role.type !== role) return false;
-    // TODO self context
+
+    if (!VALID_DEATH_CAUSES.includes(cause)) return false;
+
     return new EventEffect(({ players }) => {
       const targets = players.filter(isNotDead).filter(others(self));
       return createKillEvent([self], targets);

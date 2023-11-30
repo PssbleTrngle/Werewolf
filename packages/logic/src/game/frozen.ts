@@ -83,7 +83,7 @@ export default class FrozenGame implements GameAccess {
     const target = requirePlayer(this.players, playerId);
     console.log(target.name, "died by", cause);
 
-    const effects = DeathEvents.notify(target).flatMap(arrayOrSelf);
+    const effects = DeathEvents.notify(target, cause).flatMap(arrayOrSelf);
     // these should not be called if the target is revived and should therefore be called later
     // TODO
     // ...arrayOrSelf(target.role.onDeath(target)),
