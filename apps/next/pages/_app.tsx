@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
-import { GameProvider } from "ui";
+import { GameProvider, Globals } from "ui";
 import createRemoteContext from "../hooks/gameContext";
 
 const client = new QueryClient();
@@ -10,6 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={client}>
       <GameProvider value={context}>
+        <Globals />
         <Component {...pageProps} />
       </GameProvider>
     </QueryClientProvider>

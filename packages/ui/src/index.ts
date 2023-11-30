@@ -4,7 +4,7 @@ export { default as ErrorMessage } from "./components/ErrorBox";
 export {
   FOOTER_HEIGHT,
   default as Footer,
-  type AppInfo,
+  type AppInfo
 } from "./components/Footer";
 export { default as Input, InputStyles } from "./components/Input";
 export { default as PlayerIcon } from "./components/PlayerIcon";
@@ -19,7 +19,9 @@ export { default as EventScreen } from "./components/event/EventScreen";
 export { default as ParticipantList } from "./components/event/ParticipantList";
 export * from "./hooks/game";
 export * from "./icons";
+export * from "./styles/layout";
 export * from "./styles/links";
 export * from "./styles/screens";
 export { default as darkTheme } from "./theme/dark";
 export { default as lightTheme } from "./theme/light";
+
