@@ -2,6 +2,7 @@ import { DeathData, Event, Player as IPlayer, Time, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
+import { SubjectMappers } from "../permissions.js";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
 import { EventType } from "./Event.js";
@@ -28,5 +29,17 @@ export class DeathEvent extends EventType<DeathData> {
   finish(_vote: Vote, { data }: Event<DeathData>) {
     if (data.time) return new TimeEffect(data.time);
     return [];
+  }
+
+  protected viewData(
+    _player: Player,
+    subject: DeathData,
+    mapper: SubjectMappers
+  ): DeathData {
+    // TODO reveal role depending on settings?
+    return {
+      time: undefined,
+      deaths: subject.deaths.map((it) => mapper.mapPlayer(it)),
+    };
   }
 }

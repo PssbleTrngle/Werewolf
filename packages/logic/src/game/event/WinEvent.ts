@@ -1,6 +1,8 @@
 import { WinData, WinState } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
+import { SubjectMappers } from "../permissions.js";
+import { Player } from "../player/Player.js";
 import { GameReadAccess } from "../state.js";
 import { EventType } from "./Event.js";
 import { registerEventFactory } from "./EventRegistry.js";
@@ -20,5 +22,14 @@ export default class WinEvent extends EventType<WinData> {
 
   isFinished(_game: GameReadAccess): boolean {
     return false;
+  }
+
+  protected viewData(
+    _player: Player,
+    { state }: WinData,
+    _mapper: SubjectMappers
+  ): WinData {
+    // no player mapping since roles are reveal on the win screen
+    return { state };
   }
 }

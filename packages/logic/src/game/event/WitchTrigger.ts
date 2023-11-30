@@ -2,6 +2,8 @@ import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
+import { SubjectMappers } from "../permissions.js";
+import { Player } from "../player/Player.js";
 import {
   isAlive,
   isDying,
@@ -9,21 +11,14 @@ import {
   requirePlayer,
 } from "../player/predicates.js";
 import { GameReadAccess } from "../state.js";
-import { EventType } from "./Event.js";
-import { registerEventFactory } from "./EventRegistry.js";
+import { NoDataEvent } from "./NoDataEvent.js";
 import PotionKillEvent from "./PotionKillEvent.js";
 import PotionReviveEvent from "./PotionReviveEvent.js";
 
-export class WitchTrigger extends EventType {
-  static create = registerEventFactory(
-    "trigger.witch",
-    new WitchTrigger(),
-    () => ({
-      data: undefined,
-    })
-  );
+export class WitchTrigger extends NoDataEvent {
+  static create = this.createFactory("trigger.witch", new WitchTrigger());
 
-  finish(_vote: Vote, event: Event): ArrayOrSingle<Effect> {
+  finish(_vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
     return new EventEffect((game) => {
       console.log("witch triggered");
       const dying = game.players.filter(isDying);
@@ -49,7 +44,23 @@ export class WitchTrigger extends EventType {
     }, true);
   }
 
-  isFinished(game: GameReadAccess, _event: Event, index: number): boolean {
+  isFinished(
+    game: GameReadAccess,
+    _event: Event<undefined>,
+    index: number
+  ): boolean {
     return index === 0 || game.players.some(isDying);
+  }
+
+  view(
+    _player: Player,
+    _event: Event<undefined>,
+    _mapper: SubjectMappers
+  ): Event<undefined> {
+    return {
+      type: "sleep",
+      data: undefined,
+      players: [],
+    };
   }
 }

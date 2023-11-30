@@ -1,13 +1,17 @@
 import { Event, GameStatus, Player as IPlayer, Id, Vote } from "models";
+import { EventType } from "./event/Event.js";
+import { EventRegistry } from "./event/EventRegistry.js";
 import { Game } from "./index.js";
 import { Player } from "./player/Player.js";
 import { isNotDead, requirePlayer } from "./player/predicates.js";
 
-export interface GameView {
+export interface SubjectMappers {
   mapEvent<T>(subject: Event<T>): Event<T>;
   mapPlayer(subject: IPlayer): IPlayer;
+}
 
-  currentEvent(): Event<unknown> | undefined;
+export interface GameView extends SubjectMappers {
+  currentEvent(): Event<unknown>;
   events(): ReadonlyArray<Event<unknown>>;
   players(): ReadonlyArray<IPlayer>;
   status(): GameStatus;
@@ -71,13 +75,24 @@ export class PlayerGameView implements GameView {
     return playerViewFor(owner, subject);
   }
 
-  mapEvent<T>(subject: Event<T>) {
-    return subject;
+  mapEvent<T>(subject: Event<T>): Event<T> {
+    const owner = requirePlayer(this.game.players, this.owner);
+    const type = EventRegistry.get(subject.type) as EventType<T>;
+    return type.view(owner, subject, this);
+  }
+
+  private createDeadEvent(): Event<undefined> {
+    const owner = requirePlayer(this.game.players, this.owner);
+    return {
+      type: "dead",
+      players: [owner],
+      data: undefined,
+    };
   }
 
   currentEvent() {
     const event = this.game.currentEvent(this.owner);
-    return event && this.mapEvent(event);
+    return event ? this.mapEvent(event) : this.createDeadEvent();
   }
 
   events() {

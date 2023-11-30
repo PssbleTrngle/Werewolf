@@ -18,6 +18,8 @@
   },
   "event": {
     "start.title": "Start the Game?",
+    "sleep.title": "You are sleeping",
+    "dead.title": "You are dead",
     "reveal": {
       "eye.title": "The Seer is...",
       "seer.title": "Your crystal ball reveals...",

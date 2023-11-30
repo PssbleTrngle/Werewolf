@@ -2,7 +2,7 @@ import { Choice } from "./Choice.js";
 import { Time, WinState } from "./Game.js";
 import { DeathCause, Player } from "./Player.js";
 
-export interface Event<T = undefined> {
+export interface Event<T> {
   type: string;
   players: ReadonlyArray<Player>;
   choice?: Choice;

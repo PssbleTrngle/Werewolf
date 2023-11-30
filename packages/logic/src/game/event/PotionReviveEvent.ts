@@ -18,7 +18,7 @@ export default class PotionReviveEvent extends ReviveEvent {
     })
   );
 
-  finish(vote: Vote, event: Event): ArrayOrSingle<Effect> {
+  finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
     const parentEffects = arrayOrSelf(super.finish(vote, event));
     if (vote.type === "skip") return parentEffects;
     return [

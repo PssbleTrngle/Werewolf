@@ -10,7 +10,7 @@ export function createTestPlayers(
   return times<Player>(amount, (id) => {
     const { role = Villager, ...rest } = factory(id);
     return {
-      id,
+      id: `${id}`,
       role,
       status: "alive",
       name: `Player ${id} [${role.emoji}]`,

@@ -1,18 +1,18 @@
+import { Event } from "models";
 import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
 import { EventEffect } from "../effect/EventEffect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
+import { SubjectMappers } from "../permissions.js";
+import { Player } from "../player/Player.js";
 import { isAlive } from "../player/predicates.js";
-import { EventType } from "./Event.js";
 import { EventFactoryBus } from "./EventBus.js";
-import { registerEventFactory } from "./EventRegistry.js";
 import LynchEvent from "./LynchEvent.js";
+import { NoDataEvent } from "./NoDataEvent.js";
 
 export const SleepEvents = new EventFactoryBus();
 
-export class SleepBoundary extends EventType {
-  static create = registerEventFactory("sleep", new SleepBoundary(), () => ({
-    data: undefined,
-  }));
+export class SleepBoundary extends NoDataEvent {
+  static create = this.createFactory("sleep", new SleepBoundary());
 
   finish() {
     return [
@@ -24,5 +24,16 @@ export class SleepBoundary extends EventType {
         return LynchEvent.create(alive, settings, alive);
       }),
     ];
+  }
+
+  view(
+    player: Player,
+    event: Event<undefined>,
+    mapper: SubjectMappers
+  ): Event<undefined> {
+    return {
+      ...super.view(player, event, mapper),
+      players: [],
+    };
   }
 }

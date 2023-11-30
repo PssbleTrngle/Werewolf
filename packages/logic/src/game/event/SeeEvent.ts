@@ -3,10 +3,10 @@ import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { RevealEffect } from "../effect/RevealEffect.js";
 import { Player } from "../player/Player.js";
-import { EventType } from "./Event.js";
 import { registerEventFactory } from "./EventRegistry.js";
+import { NoDataEvent } from "./NoDataEvent.js";
 
-export class SeeEvent extends EventType {
+export class SeeEvent extends NoDataEvent {
   static create = registerEventFactory(
     "see",
     new SeeEvent(),
@@ -16,7 +16,7 @@ export class SeeEvent extends EventType {
     })
   );
 
-  finish(vote: Vote, event: Event): ArrayOrSingle<Effect> {
+  finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
     if (vote.type === "players") {
       return new RevealEffect("seer", event.players[0].id, vote.players);
     }

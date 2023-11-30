@@ -15,6 +15,9 @@ export interface AppInfo {
 
 export default function Footer({
   children,
+  sha,
+  version,
+  repository,
   ...props
 }: Readonly<PropsWithChildren<AppInfo>>) {
   const { t } = useTranslation();
@@ -22,11 +25,11 @@ export default function Footer({
   return (
     <Style {...props}>
       <span>{children}</span>
-      <VersionInfo {...props} />
+      <VersionInfo sha={sha} version={version} repository={repository} />
       <Icons>
-        {props.repository && (
+        {repository && (
           <IconLink
-            href={`https://github.com/${props.repository}`}
+            href={`https://github.com/${repository}`}
             title={t("button.source")}
           >
             <GithubIcon />

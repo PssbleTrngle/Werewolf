@@ -1,7 +1,15 @@
-import { Game, GameState, allRoles, generateRoles } from "logic";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  Game,
+  GameState,
+  ModeratorGameView,
+  PlayerGameView,
+  allRoles,
+  generateRoles,
+} from "logic";
 import { Id, Player, Vote } from "models";
 import { Dispatch, PropsWithChildren, useMemo, useReducer } from "react";
-import { GameContext, GameProvider } from "ui";
+import { GameContext, GameProvider, invalidateGameQueries } from "ui";
 import { ImpersonationProvider } from "./impersonate";
 import { readLocalStorage } from "./useLocalStorage";
 
@@ -124,40 +132,41 @@ export function useLocalGame(): GameContext {
 function createGameContextFor({
   game,
   setGame,
+  impersonated,
 }: {
   game: Game | null;
   setGame: Dispatch<Game | null>;
   impersonated?: Id;
-}) {
+}): GameContext {
   if (!game) return createEmptyContext(setGame);
+
+  const view = impersonated
+    ? new PlayerGameView(game, impersonated)
+    : new ModeratorGameView(game);
 
   return {
     ...localContext,
     create: alreadyRunning,
     stop: wrap(() => setGame(null)),
-    game: wrap(() => game.status),
-    players: wrap(() => game.players),
-    activeEvent: wrap(() => game.events[0]),
+    game: wrap(() => view.status()),
+    players: wrap(() => view.players()),
+    activeEvent: wrap(() => view.currentEvent()),
     submitVote: wrap((vote: Vote) => {
-      const event = game.events[0];
-      event.players.forEach((it) => {
-        game.vote(it.id, vote);
-      });
+      view.vote(vote);
       saveGame(game);
     }),
     undo: wrap(() => {
-      game.undo();
+      view.undo();
       saveGame(game);
     }),
     redo: wrap(() => {
-      game.redo();
+      view.redo();
       saveGame(game);
     }),
   };
 }
 
 interface ExtendedGameContext extends GameContext {
-  impersonated?: Id;
   impersonate: Dispatch<Id | undefined>;
 }
 
@@ -196,15 +205,25 @@ function createLocalGame(): ExtendedGameContext {
     redo: () => actualContext.redo(),
     stop: () => actualContext.stop(),
     create: () => actualContext.create(),
-    impersonated,
     impersonate,
   };
 }
 
 export function LocalGameProvider(props: Readonly<PropsWithChildren>) {
+  const client = useQueryClient();
   const context = useMemo(() => createLocalGame(), []);
+
+  const impersonateState = useReducer(
+    (_: Id | undefined, value: Id | undefined) => {
+      context.impersonate(value);
+      invalidateGameQueries(client);
+      return value;
+    },
+    undefined
+  );
+
   return (
-    <ImpersonationProvider value={[context.impersonated, context.impersonate]}>
+    <ImpersonationProvider value={impersonateState}>
       <GameProvider {...props} value={context} />
     </ImpersonationProvider>
   );
