@@ -13,6 +13,7 @@ export interface GameContext {
   players(): Promise<ReadonlyArray<Player>>;
   game(): Promise<GameStatus | null>;
   activeEvent(): Promise<Event<unknown>>;
+
   submitVote(vote: Vote): Promise<void>;
   undo(): Promise<void>;
   redo(): Promise<void>;

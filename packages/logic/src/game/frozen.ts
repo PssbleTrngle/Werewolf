@@ -126,6 +126,7 @@ export default class FrozenGame implements GameAccess {
 
     const events = factories
       .flatMap((factory) => arrayOrSelf(factory(this)))
+      // TODO create "ghost" event for faked roles
       .filter((it) => it.players.length > 0);
 
     const time = last(this.timesPassed) ?? this.initial.time;
