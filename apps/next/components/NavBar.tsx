@@ -14,7 +14,7 @@ const LINKS: ReadonlyArray<NavTab> = [
 }));
 
 export default function NavBar() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("hub");
 
   const { pathname } = useRouter();
   const active = useActiveLink(LINKS, pathname);

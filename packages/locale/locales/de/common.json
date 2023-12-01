@@ -6,12 +6,7 @@
       "create": "Spiel erstellen",
       "stop": "Beenden"
     },
-    "dismiss": "Passt",
-    "player": {
-      "remove": "Entfernen",
-      "rename": "Umbenennen",
-      "add": "Spieler hinzufügen"
-    }
+    "dismiss": "Passt"
   },
   "event": {
     "reveal": {
@@ -98,10 +93,5 @@
   },
   "error": {
     "min_players_requirement": "Mindestens {{count}} Spieler werden benötigt, um ein Spiel zu starten"
-  },
-  "nav": {
-    "game": "Dorf",
-    "players": "Spieler",
-    "roles": "Rollen"
   }
 }

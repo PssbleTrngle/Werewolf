@@ -1,0 +1,14 @@
+{
+  "button": {
+    "player": {
+      "add": "Add Player",
+      "remove": "Remove",
+      "rename": "Rename"
+    }
+  },
+  "nav": {
+    "game": "Game",
+    "players": "Players",
+    "roles": "Roles"
+  }
+}

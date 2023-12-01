@@ -1,0 +1,14 @@
+{
+  "button": {
+    "player": {
+      "remove": "Entfernen",
+      "rename": "Umbenennen",
+      "add": "Spieler hinzufügen"
+    }
+  },
+  "nav": {
+    "game": "Dorf",
+    "players": "Spieler",
+    "roles": "Rollen"
+  }
+}

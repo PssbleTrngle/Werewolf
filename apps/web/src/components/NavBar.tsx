@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { NavBar as Base, NavTab, NavLinkStyle, useActiveLink } from "ui";
+import { NavBar as Base, NavLinkStyle, useActiveLink, NavTab } from "ui";
 import ImpersonationSelect from "./ImpersonationSelect";
 
-const LINKS: ReadonlyArray<NavLink> = [
+const LINKS: ReadonlyArray<NavTab> = [
   { key: "game" },
   { key: "players" },
   { key: "roles" },
@@ -14,7 +14,7 @@ const LINKS: ReadonlyArray<NavLink> = [
 }));
 
 export default function NavBar() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("local");
 
   const location = useLocation();
   const active = useActiveLink(LINKS, location.pathname);

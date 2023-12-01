@@ -4,6 +4,5 @@ module.exports = {
     defaultLocale: "en",
     locales: ["en", "de"],
   },
-  localeStructure: "{{lng}}",
-  ns: ["common"],
+  ns: ["common", "hub"],
 };

@@ -8,11 +8,6 @@
       "create": "Create Game",
       "stop": "Stop"
     },
-    "player": {
-      "add": "Add Player",
-      "remove": "Remove",
-      "rename": "Rename"
-    },
     "translate": "Help Tranlate",
     "source": "Source Code"
   },
@@ -116,10 +111,5 @@
   },
   "error": {
     "min_players_requirement": "At least {{count}} players are required to start a game"
-  },
-  "nav": {
-    "game": "Game",
-    "players": "Players",
-    "roles": "Roles"
   }
 }
