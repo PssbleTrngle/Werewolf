@@ -3,7 +3,7 @@ import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
 import { requireSessionView } from "../../../lib/server/session";
 
 const POST = createApiHandler(async (req, res) => {
-  const view = await requireSessionView(req, res);
+  const view = await requireSessionView({ req, res });
 
   // TODO verification
   const vote: Vote = req.body;

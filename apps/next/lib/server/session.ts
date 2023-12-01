@@ -1,18 +1,12 @@
 import { PlayerGameView } from "logic";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
+import { Session, getServerSession } from "next-auth";
 import { ApiError } from "next/dist/server/api-utils";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { gameOf } from "./games";
 
-export function serverSession(req: NextApiRequest, res: NextApiResponse) {
-  return getServerSession(req, res, authOptions);
-}
-
-export async function sessionView(req: NextApiRequest, res: NextApiResponse) {
-  const session = await serverSession(req, res);
-
-  const playerId = session!.user!.email!;
+export async function wrapSessionView(session: Session) {
+  const playerId = session.user!.email!;
 
   const game = await gameOf(playerId);
 
@@ -21,11 +15,26 @@ export async function sessionView(req: NextApiRequest, res: NextApiResponse) {
   return new PlayerGameView(game, playerId);
 }
 
-export async function requireSessionView(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const view = await sessionView(req, res);
+type SessionContext =
+  | Session
+  | Readonly<{ req: NextApiRequest; res: NextApiResponse }>;
+
+export async function serverSession(ctx: SessionContext) {
+  if ("req" in ctx && "res" in ctx) {
+    return getServerSession(ctx.req, ctx.res, authOptions);
+  } else {
+    return ctx;
+  }
+}
+
+export async function sessionView(ctx: SessionContext) {
+  const session = await serverSession(ctx);
+  if (!session) return null;
+  return wrapSessionView(session);
+}
+
+export async function requireSessionView(ctx: SessionContext) {
+  const view = await sessionView(ctx);
   if (view) return view;
   throw new ApiError(403, "not part of a game");
 }

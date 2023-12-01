@@ -23,7 +23,7 @@ export abstract class EventType<T> {
       data: this.viewData(player, event.data, mapper),
       choice: {
         ...event.choice,
-        players: event.choice?.players?.map((it) => mapper.mapPlayer(it)),
+        players: event.choice?.players?.map((it) => mapper.mapPlayer(it)) ?? [],
       },
     };
   }

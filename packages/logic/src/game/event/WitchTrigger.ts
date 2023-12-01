@@ -18,7 +18,7 @@ import PotionReviveEvent from "./PotionReviveEvent.js";
 export class WitchTrigger extends NoDataEvent {
   static create = this.createFactory("trigger.witch", new WitchTrigger());
 
-  finish(_vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
+  finish(_vote: Vote, event: Event<never>): ArrayOrSingle<Effect> {
     return new EventEffect((game) => {
       console.log("witch triggered");
       const dying = game.players.filter(isDying);
@@ -46,7 +46,7 @@ export class WitchTrigger extends NoDataEvent {
 
   isFinished(
     game: GameReadAccess,
-    _event: Event<undefined>,
+    _event: Event<never>,
     index: number
   ): boolean {
     return index === 0 || game.players.some(isDying);
@@ -54,12 +54,12 @@ export class WitchTrigger extends NoDataEvent {
 
   view(
     _player: Player,
-    _event: Event<undefined>,
+    _event: Event<never>,
     _mapper: SubjectMappers
-  ): Event<undefined> {
+  ): Event<never> {
     return {
       type: "sleep",
-      data: undefined,
+      data: null as never,
       players: [],
     };
   }

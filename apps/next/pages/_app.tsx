@@ -2,15 +2,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { appWithTranslation } from "next-i18next";
 import type { AppProps } from "next/app";
+import { useMemo } from "react";
 import { ThemeProvider } from "styled-components";
 import { GameProvider, darkTheme } from "ui";
-import createRemoteContext from "../lib/client/gameContext";
+import createRemoteContext from "../lib/client/remoteContext";
 import { LocalizationForward } from "../lib/localization";
 
-const client = new QueryClient();
-const context = createRemoteContext();
-
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  const client = useMemo(() => new QueryClient(), []);
+
+  const context = useMemo(createRemoteContext, []);
+
   return (
     <LocalizationForward>
       <SessionProvider session={session}>

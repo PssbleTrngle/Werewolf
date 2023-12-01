@@ -81,12 +81,12 @@ export class PlayerGameView implements GameView {
     return type.view(owner, subject, this);
   }
 
-  private createDeadEvent(): Event<undefined> {
+  private createDeadEvent(): Event<never> {
     const owner = requirePlayer(this.game.players, this.owner);
     return {
       type: "dead",
       players: [owner],
-      data: undefined,
+      data: null as never,
     };
   }
 

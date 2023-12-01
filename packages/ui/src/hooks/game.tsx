@@ -1,9 +1,11 @@
 import {
   MutationFunction,
   QueryClient,
+  UseSuspenseQueryOptions,
   useMutation,
   useQuery,
   useQueryClient,
+  useSuspenseQuery,
 } from "@tanstack/react-query";
 import { Event, GameStatus, Player, Role, Vote } from "models";
 import { createContext, useContext } from "react";
@@ -39,14 +41,23 @@ const GameContext = createContext<GameContext>({
 
 export const GameProvider = GameContext.Provider;
 
+type PartialQueryOptions<T> = Omit<
+  UseSuspenseQueryOptions<T>,
+  "queryKey" | "queryFn"
+>;
+
 export function useGameStatus() {
   const { game } = useContext(GameContext);
   return useQuery({ queryKey: ["game"], queryFn: game });
 }
 
-export function useActiveEvent() {
+export function useActiveEvent(options?: PartialQueryOptions<Event<unknown>>) {
   const { activeEvent } = useContext(GameContext);
-  return useQuery({ queryKey: ["screen"], queryFn: activeEvent });
+  return useSuspenseQuery({
+    queryKey: ["screen"],
+    queryFn: activeEvent,
+    ...options,
+  });
 }
 
 export function usePlayers() {

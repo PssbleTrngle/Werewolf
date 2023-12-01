@@ -45,7 +45,6 @@ export class DeathEvent extends EventType<DeathData> {
   ): DeathData {
     // TODO reveal role depending on settings?
     return {
-      time: undefined,
       deaths: subject.deaths.map((it) => mapper.mapPlayer(it)),
     };
   }

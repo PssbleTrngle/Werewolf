@@ -12,7 +12,7 @@ export class SeeEvent extends NoDataEvent {
     new SeeEvent(),
     (targets: ReadonlyArray<Player>) => ({
       choice: { players: targets },
-      data: undefined,
+      data: null as never,
     })
   );
 

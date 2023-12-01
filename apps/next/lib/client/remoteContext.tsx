@@ -1,3 +1,5 @@
+"use client";
+
 import { GameContext } from "ui";
 
 interface ApiError {
