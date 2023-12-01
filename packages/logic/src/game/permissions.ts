@@ -16,9 +16,9 @@ export interface GameView extends SubjectMappers {
   players(): ReadonlyArray<IPlayer>;
   status(): GameStatus;
 
-  vote(vote: Vote): void;
-  undo(): void;
-  redo(): void;
+  vote(vote: Vote): Promise<void>;
+  undo(): Promise<void>;
+  redo(): Promise<void>;
 }
 
 export class ModeratorGameView implements GameView {
@@ -48,18 +48,18 @@ export class ModeratorGameView implements GameView {
     return this.game.status;
   }
 
-  vote(vote: Vote) {
+  async vote(vote: Vote) {
     const event = this.currentEvent();
-    event?.players.forEach(({ id }) => {
-      this.game.vote(id, vote);
-    });
+    for (const player of event.players) {
+      await this.game.vote(player.id, vote);
+    }
   }
 
-  undo() {
+  async undo() {
     this.game.undo();
   }
 
-  redo() {
+  async redo() {
     this.game.redo();
   }
 }
@@ -112,16 +112,16 @@ export class PlayerGameView implements GameView {
     return { day, time };
   }
 
-  undo() {
+  async undo() {
     this.notAllowed();
   }
 
-  redo() {
+  async redo() {
     this.notAllowed();
   }
 
-  vote(vote: Vote) {
-    this.game.vote(this.owner, vote);
+  async vote(vote: Vote) {
+    await this.game.vote(this.owner, vote);
   }
 }
 

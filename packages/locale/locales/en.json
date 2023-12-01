@@ -47,6 +47,7 @@
       "witch.title": "Who do you want to heal?"
     },
     "win": {
+      "none.title": "Every body died",
       "villagers.title": "The villagers won!",
       "wolfs.title": "The wolfs won!",
       "jester.title": "The jester won!",

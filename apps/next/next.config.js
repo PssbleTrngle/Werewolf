@@ -4,6 +4,9 @@ const { i18n } = require("./next-i18next.config");
 module.exports = {
   reactStrictMode: true,
   transpilePackages: ["ui", "logic", "models"],
+  compiler: {
+    styledComponents: true,
+  },
   webpack: (config) => {
     config.resolve.extensionAlias = {
       ".js": [".ts", ".tsx", ".js", ".jsx"],

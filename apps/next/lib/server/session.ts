@@ -2,7 +2,7 @@ import { PlayerGameView } from "logic";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { ApiError } from "next/dist/server/api-utils";
-import { authOptions } from "../pages/api/auth/[...nextauth]";
+import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { gameOf } from "./games";
 
 export function serverSession(req: NextApiRequest, res: NextApiResponse) {

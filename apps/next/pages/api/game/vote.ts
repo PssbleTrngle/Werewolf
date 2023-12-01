@@ -1,6 +1,6 @@
 import { Vote } from "models";
-import { createApiHandler, methods } from "../../../lib/apiHandlers";
-import { requireSessionView } from "../../../lib/session";
+import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
+import { requireSessionView } from "../../../lib/server/session";
 
 const POST = createApiHandler(async (req, res) => {
   const view = await requireSessionView(req, res);

@@ -3,17 +3,18 @@ import { PropsWithChildren, ReactNode, useMemo } from "react";
 import styled, { css } from "styled-components";
 import { InvisibleLinkStyle } from "../styles/links";
 import { XS } from "../styles/screens";
-export interface NavLink {
+
+export interface NavTab {
   key: string;
   path: string;
 }
 
-function isActive({ path }: NavLink, pathname: string) {
+function isActive({ path }: NavTab, pathname: string) {
   if (path === "/") return path === pathname;
   return pathname.startsWith(path);
 }
 
-export function useActiveLink(links: ReadonlyArray<NavLink>, pathname: string) {
+export function useActiveLink(links: ReadonlyArray<NavTab>, pathname: string) {
   return useMemo(() => {
     return links.find((it) => isActive(it, pathname));
   }, [pathname, links]);

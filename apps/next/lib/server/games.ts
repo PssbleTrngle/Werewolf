@@ -10,9 +10,9 @@ export class RemoteGame extends Game {
     super(history);
   }
 
-  onSave(history: readonly GameState[]) {
+  async onSave(history: readonly GameState[]) {
     // TODO async?
-    saveGame(this.id, history);
+    await saveGame(this.id, history);
   }
 }
 
@@ -38,11 +38,15 @@ async function saveGame(id: Id, history: ReadonlyArray<GameState>) {
 
 export async function createGame(...initialPlayers: Player[]) {
   const id = "1";
+  const game = new RemoteGame(id, Game.createState(initialPlayers));
+  await game.save();
+
   await setGame(
     initialPlayers.map((it) => it.id),
     id
   );
-  return new RemoteGame(id, Game.createState(initialPlayers));
+
+  return game;
 }
 
 async function setGame(playerIds: Id[], gameId: Id) {
@@ -59,6 +63,7 @@ export async function gameOf(playerId: Id) {
   const redis = await connectRedis();
 
   const gameId = await redis.get(`player/${playerId}/game`);
+
   if (!gameId) return null;
 
   const game = await redis.get(`game/${gameId}`);

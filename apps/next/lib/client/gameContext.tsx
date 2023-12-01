@@ -13,7 +13,7 @@ class FetchError extends Error {
   }
 }
 
-async function request<T>(endpoint: string, method = "GET", data?: unknown) {
+async function request<T, D>(endpoint: string, method = "GET", data?: D) {
   const body = data && JSON.stringify(data);
 
   const response = await fetch(`/api/${endpoint}`, {
@@ -39,12 +39,12 @@ async function request<T>(endpoint: string, method = "GET", data?: unknown) {
   }
 }
 
-function createRequester<R, D>(endpoint: string, method = "GET") {
-  return () => request<R>(endpoint, method);
+function createRequester<R>(endpoint: string, method = "GET") {
+  return () => request<R, never>(endpoint, method);
 }
 
 function createMutator<R, D>(endpoint: string, method = "GET") {
-  return (data?: D) => request<R>(endpoint, method, data);
+  return (data?: D) => request<R, D>(endpoint, method, data);
 }
 
 export default function createRemoteContext(): GameContext {

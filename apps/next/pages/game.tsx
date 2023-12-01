@@ -1,6 +1,6 @@
 import { EventScreen, useActiveEvent, useGameStatus } from "ui";
 import Layout from "../layout/default";
-import { preloadTranslations } from "../lib/localization";
+import { preloadTranslations } from "../lib/server/localization";
 
 export const getStaticProps = preloadTranslations;
 

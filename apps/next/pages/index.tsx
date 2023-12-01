@@ -2,11 +2,11 @@ import Head from "next/head";
 import NextLink from "next/link";
 import { Button, useCreateMutation, useGameStatus } from "ui";
 import Layout from "../layout/default";
-import { preloadTranslations } from "../lib/localization";
+import { preloadTranslations } from "../lib/server/localization";
 
 export const getStaticProps = preloadTranslations;
 
-export default function Home() {
+export default function Home(props: unknown) {
   const { data: status } = useGameStatus();
   const { mutate: create } = useCreateMutation();
 

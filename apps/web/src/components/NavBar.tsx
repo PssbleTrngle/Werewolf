@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { NavBar as Base, NavLink, NavLinkStyle, useActiveLink } from "ui";
+import { NavBar as Base, NavTab, NavLinkStyle, useActiveLink } from "ui";
 import ImpersonationSelect from "./ImpersonationSelect";
 
 const LINKS: ReadonlyArray<NavLink> = [

@@ -1,7 +1,7 @@
 import { EMPTY_ROLE_DATA, Player, Villager } from "logic";
-import { createApiHandler, methods } from "../../../lib/apiHandlers";
-import { createGame } from "../../../lib/games";
-import { serverSession } from "../../../lib/session";
+import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
+import { createGame } from "../../../lib/server/games";
+import { serverSession } from "../../../lib/server/session";
 
 const POST = createApiHandler(async (req, res) => {
   const session = await serverSession(req, res);

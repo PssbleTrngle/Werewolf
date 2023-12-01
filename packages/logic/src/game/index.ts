@@ -19,7 +19,6 @@ export abstract class Game implements GameReadAccess {
   public constructor(history: ReadonlyArray<GameState>) {
     if (history.length === 0) throw new Error("Game history may not be empty");
     this.state = new StateHistory(...history);
-    this.save();
   }
 
   static createState(
@@ -37,10 +36,10 @@ export abstract class Game implements GameReadAccess {
     ];
   }
 
-  abstract onSave(history: ReadonlyArray<GameState>): void;
+  abstract onSave(history: ReadonlyArray<GameState>): Promise<void>;
 
-  private save() {
-    this.onSave(this.state.save());
+  async save() {
+    await this.onSave(this.state.save());
   }
 
   get players() {
@@ -94,7 +93,7 @@ export abstract class Game implements GameReadAccess {
     }
   }
 
-  private check() {
+  private async check() {
     const access = this.freeze();
 
     const dirty = this.events.filter((event, i) => {
@@ -133,7 +132,7 @@ export abstract class Game implements GameReadAccess {
     if (dirty.length > 0) {
       const unfrozen = this.checkWin(access);
       this.state.push(unfrozen);
-      this.save();
+      await this.save();
     }
   }
 
@@ -151,7 +150,7 @@ export abstract class Game implements GameReadAccess {
     });
   }
 
-  vote(id: Id, vote: Vote) {
+  async vote(id: Id, vote: Vote) {
     const player = requirePlayer(this.players, id);
 
     const event = this.currentEvent(id);
@@ -170,6 +169,6 @@ export abstract class Game implements GameReadAccess {
     console.log(player.name, "voted on", event.type);
     this.votes.set(player.id, vote);
 
-    this.check();
+    await this.check();
   }
 }

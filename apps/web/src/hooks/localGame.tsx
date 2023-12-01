@@ -25,7 +25,7 @@ function saveToLocalStorage(history: ReadonlyArray<GameState> | null) {
 }
 
 class LocalGame extends Game {
-  onSave(history: ReadonlyArray<GameState>) {
+  async onSave(history: ReadonlyArray<GameState>) {
     saveToLocalStorage(history);
   }
 }
@@ -57,9 +57,9 @@ function readSavedGame() {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function wrap<T extends (...args: any[]) => any>(func: T) {
-  return async (...args: Parameters<T>): Promise<ReturnType<T>> => {
+  return async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
     try {
-      return func(...args);
+      return await func(...args);
     } catch (e) {
       if (import.meta.env.DEV && e instanceof Error) {
         /* eslint-disable no-console */
@@ -100,7 +100,7 @@ function createEmptyContext(startGame: Dispatch<Game>): GameContext {
 
 export function useLocalGame(): GameContext {
   const [game, setGame] = useReducer((_: Game | null, value: Game | null) => {
-    if (!game) saveToLocalStorage(null);
+    if (!value) saveToLocalStorage(null);
     return value;
   }, readSavedGame());
 
@@ -156,6 +156,7 @@ function createLocalGame(): ExtendedGameContext {
 
   function setGame(value: Game | null) {
     game = value;
+    game?.save();
     updateContext();
   }
 

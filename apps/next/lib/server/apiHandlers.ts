@@ -14,9 +14,9 @@ export function createApiHandler<T>(
     try {
       return await handler(req, res);
     } catch (e) {
-      if (e instanceof ApiError) {
-        res.status(e.statusCode).json({ message: e.message });
-      }
+      const message = e instanceof Error ? e.message : "an error occured";
+      const status = e instanceof ApiError ? e.statusCode : 500;
+      res.status(status).json({ message });
     }
   };
 }
