@@ -2,7 +2,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { NavBar as Base, NavLink, NavLinkStyle, useIsActive } from "ui";
+import { NavBar as Base, NavLink, NavLinkStyle, useActiveLink } from "ui";
 import ProfileIcon from "./ProfileIcon";
 
 const LINKS: ReadonlyArray<NavLink> = [
@@ -17,12 +17,12 @@ export default function NavBar() {
   const { t } = useTranslation();
 
   const { pathname } = useRouter();
-  const isActive = useIsActive(pathname);
+  const active = useActiveLink(LINKS, pathname);
 
   return (
     <Base
       links={LINKS.map(({ key, path }) => (
-        <NavLink key={key} href={path} $active={isActive(path)}>
+        <NavLink key={key} href={path} $active={active?.key === key}>
           <span>{t(`nav.${key}`)}</span>
         </NavLink>
       ))}

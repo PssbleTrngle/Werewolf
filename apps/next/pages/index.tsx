@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { useGameStatus } from "ui";
+import NextLink from "next/link";
+import { Button, useCreateMutation, useGameStatus } from "ui";
 import Layout from "../layout/default";
 import { preloadTranslations } from "../lib/localization";
 
@@ -7,6 +8,7 @@ export const getStaticProps = preloadTranslations;
 
 export default function Home() {
   const { data: status } = useGameStatus();
+  const { mutate: create } = useCreateMutation();
 
   return (
     <>
@@ -17,7 +19,13 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <h1>{status ? "You are part of a game" : "No game started yet"}</h1>
+        <h1>
+          {status ? (
+            <NextLink href="/game">You are part of a game</NextLink>
+          ) : (
+            <Button onClick={() => create({})}>Create a game</Button>
+          )}
+        </h1>
       </Layout>
     </>
   );

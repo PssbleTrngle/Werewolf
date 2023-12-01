@@ -16,16 +16,32 @@ import { readLocalStorage } from "./useLocalStorage";
 
 const STORAGE_KEY = "gamestate";
 
+function saveToLocalStorage(history: ReadonlyArray<GameState> | null) {
+  if (history) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  } else {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+}
+
+class LocalGame extends Game {
+  onSave(history: ReadonlyArray<GameState>) {
+    saveToLocalStorage(history);
+  }
+}
+
 function createGame() {
   const players = readLocalStorage<ReadonlyArray<Player>>("players");
   if (!players) throw new Error("No players added yet");
-  return Game.create(
-    generateRoles(
-      players.map((it) => ({
-        ...it,
-        status: "alive",
-        roleData: EMPTY_ROLE_DATA,
-      }))
+  return new LocalGame(
+    Game.createState(
+      generateRoles(
+        players.map((it) => ({
+          ...it,
+          status: "alive",
+          roleData: EMPTY_ROLE_DATA,
+        }))
+      )
     )
   );
 }
@@ -33,7 +49,7 @@ function createGame() {
 function readSavedGame() {
   const saved = readLocalStorage<ReadonlyArray<GameState>>(STORAGE_KEY);
   if (saved) {
-    return Game.read(saved);
+    return new LocalGame(saved);
   } else {
     return null;
   }
@@ -55,34 +71,6 @@ function wrap<T extends (...args: any[]) => any>(func: T) {
     }
   };
 }
-
-/*
-function createState() {
-  let game = readSavedGame();
-  let view: GameView | null = game && new ModeratorGameView(game);
-
-  function require() {
-    if (!view) throw new Error("No game active");
-    return view;
-  }
-
-  function save() {
-    if (game) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(game.save()));
-    } else {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-  }
-
-  function set(value: Game | null) {
-    game = value;
-    view = value && new ModeratorGameView(value);
-    save();
-  }
-
-  return { require, get: () => view, set, save };
-}
-*/
 
 function requiresGame(): never {
   throw new Error("No game active");
@@ -110,17 +98,9 @@ function createEmptyContext(startGame: Dispatch<Game>): GameContext {
   };
 }
 
-function saveGame(game: Game | null) {
-  if (game) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(game.save()));
-  } else {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-}
-
 export function useLocalGame(): GameContext {
   const [game, setGame] = useReducer((_: Game | null, value: Game | null) => {
-    saveGame(value);
+    if (!game) saveToLocalStorage(null);
     return value;
   }, readSavedGame());
 
@@ -152,18 +132,9 @@ function createGameContextFor({
     game: wrap(() => view.status()),
     players: wrap(() => view.players()),
     activeEvent: wrap(() => view.currentEvent()),
-    submitVote: wrap((vote: Vote) => {
-      view.vote(vote);
-      saveGame(game);
-    }),
-    undo: wrap(() => {
-      view.undo();
-      saveGame(game);
-    }),
-    redo: wrap(() => {
-      view.redo();
-      saveGame(game);
-    }),
+    submitVote: wrap((vote: Vote) => view.vote(vote)),
+    undo: wrap(() => view.undo()),
+    redo: wrap(() => view.redo()),
   };
 }
 
@@ -181,7 +152,6 @@ function createLocalGame(): ExtendedGameContext {
 
   function updateContext() {
     actualContext = createGameContextFor({ game, setGame, impersonated });
-    saveGame(game);
   }
 
   function setGame(value: Game | null) {

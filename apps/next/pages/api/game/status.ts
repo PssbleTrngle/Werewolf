@@ -1,12 +1,12 @@
 import { GameStatus } from "models";
-import type { NextApiHandler } from "next";
-import { methods } from "../../../lib/methodHandlers";
+import { createApiHandler, methods } from "../../../lib/apiHandlers";
 import { sessionView } from "../../../lib/session";
 
-const GET: NextApiHandler<GameStatus | null> = async (req, res) => {
+const GET = createApiHandler<GameStatus | null>(async (req, res) => {
   const view = await sessionView(req, res);
 
-  res.status(200).json(view.status());
-};
+  const status = view ? view.status() : null;
+  res.status(200).json(status);
+});
 
 export default methods({ GET });

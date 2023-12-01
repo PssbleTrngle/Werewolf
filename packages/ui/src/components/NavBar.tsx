@@ -1,22 +1,22 @@
 import { mix } from "polished";
-import { PropsWithChildren, ReactNode, useCallback } from "react";
+import { PropsWithChildren, ReactNode, useMemo } from "react";
 import styled, { css } from "styled-components";
 import { InvisibleLinkStyle } from "../styles/links";
 import { XS } from "../styles/screens";
-
 export interface NavLink {
   key: string;
   path: string;
 }
 
-export function useIsActive(pathname: string) {
-  return useCallback(
-    (path: string) => {
-      if (path === "/") return path === pathname;
-      return pathname.startsWith(path);
-    },
-    [pathname]
-  );
+function isActive({ path }: NavLink, pathname: string) {
+  if (path === "/") return path === pathname;
+  return pathname.startsWith(path);
+}
+
+export function useActiveLink(links: ReadonlyArray<NavLink>, pathname: string) {
+  return useMemo(() => {
+    return links.find((it) => isActive(it, pathname));
+  }, [pathname, links]);
 }
 
 export function NavBar({

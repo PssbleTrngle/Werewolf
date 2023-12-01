@@ -12,44 +12,35 @@ import { GameReadAccess, GameState } from "./state.js";
 import { calculateWinner } from "./vote/Vote.js";
 import { testWinConditions } from "./winConditions.js";
 
-export class Game implements GameReadAccess {
+export abstract class Game implements GameReadAccess {
   private state: StateHistory;
   private votes = new Map<Id, Vote>();
 
-  private constructor(
-    history: ReadonlyArray<GameState>,
-    public readonly settings: GameSettings
-  ) {
+  public constructor(history: ReadonlyArray<GameState>) {
+    if (history.length === 0) throw new Error("Game history may not be empty");
     this.state = new StateHistory(...history);
+    this.save();
   }
 
-  static create(
+  static createState(
     players: ReadonlyArray<Player>,
     settings: GameSettings = {}
-  ): Game {
-    return new Game(
-      [
-        {
-          players,
-          day: 1,
-          time: "dusk",
-          events: [StartEvent.create(players)],
-          settings,
-        },
-      ],
-      settings
-    );
+  ): ReadonlyArray<GameState> {
+    return [
+      {
+        players,
+        day: 1,
+        time: "dusk",
+        events: [StartEvent.create(players)],
+        settings,
+      },
+    ];
   }
 
-  static read(
-    history: ReadonlyArray<GameState>,
-    settings: Readonly<GameSettings> = {}
-  ): Game {
-    return new Game(history, settings);
-  }
+  abstract onSave(history: ReadonlyArray<GameState>): void;
 
-  save(): ReadonlyArray<GameState> {
-    return this.state.save();
+  private save() {
+    this.onSave(this.state.save());
   }
 
   get players() {
@@ -58,6 +49,10 @@ export class Game implements GameReadAccess {
 
   get events() {
     return this.state.current.events;
+  }
+
+  get settings() {
+    return this.state.current.settings;
   }
 
   get status(): GameStatus {
@@ -138,6 +133,7 @@ export class Game implements GameReadAccess {
     if (dirty.length > 0) {
       const unfrozen = this.checkWin(access);
       this.state.push(unfrozen);
+      this.save();
     }
   }
 

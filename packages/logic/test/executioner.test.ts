@@ -7,6 +7,7 @@ import {
   Werewolf,
   requirePlayer,
 } from "../src/index.js";
+import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { dismiss, playerVote, skipVote } from "./util/votes.js";
 
@@ -30,7 +31,7 @@ function expectExecutionerWin(game: Game) {
 
 describe("tests regarding the executioner", () => {
   it("wins when they get lynched", () => {
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
 

@@ -1,11 +1,11 @@
 import { times } from "lodash-es";
 import { DeathCause, DeathData, RoleGroup } from "models";
-import { Game } from "../src/game/index.js";
 import { inGroup, isNotDead } from "../src/game/player/predicates.js";
 import { Hunter } from "../src/game/role/Hunter.js";
 import { Villager } from "../src/game/role/Villager.js";
 import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
+import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { dismiss, playerVote, skipVote } from "./util/votes.js";
 
@@ -15,7 +15,7 @@ describe("tests regarding the hunter", () => {
       Hunter,
       ...times(4, () => Werewolf),
     ]);
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
     expect(game.status.queue?.past).toBe(1);
@@ -58,7 +58,7 @@ describe("tests regarding the hunter", () => {
       Witch,
       ...times(3, () => Villager),
     ]);
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
 

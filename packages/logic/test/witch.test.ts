@@ -1,9 +1,9 @@
 import { times } from "lodash-es";
-import { Game } from "../src/game/index.js";
 import { isNotDead } from "../src/game/player/predicates.js";
 import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
 import { Seer, Villager } from "../src/index.js";
+import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { dismiss, playerVote, skipVote } from "./util/votes.js";
 
@@ -15,7 +15,7 @@ describe("tests regarding the witch", () => {
       Seer,
       ...times(3, () => Villager),
     ]);
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
 
@@ -46,7 +46,7 @@ describe("tests regarding the witch", () => {
       Witch,
       ...times(3, () => Villager),
     ]);
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
 

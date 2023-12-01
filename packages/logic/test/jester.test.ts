@@ -2,6 +2,7 @@ import { times } from "lodash-es";
 import { WinData } from "models";
 import { Jester } from "../src/game/role/Jester.js";
 import { Game, Villager, Werewolf } from "../src/index.js";
+import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { dismiss, playerVote, skipVote } from "./util/votes.js";
 
@@ -29,7 +30,7 @@ function expectJesterWin(game: Game) {
 
 describe("tests regarding the jester", () => {
   it("wins when they get lynched", () => {
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
 
@@ -48,7 +49,7 @@ describe("tests regarding the jester", () => {
   });
 
   it("does not win when he is eaten", () => {
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
 
@@ -61,7 +62,7 @@ describe("tests regarding the jester", () => {
   });
 
   it("takes priority over a potential wolf win", () => {
-    const game = Game.create(players);
+    const game = TestGame.create(players);
 
     dismiss(game);
 
