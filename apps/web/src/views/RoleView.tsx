@@ -5,15 +5,14 @@ import styled from "styled-components";
 import { useRoles } from "ui";
 
 export default function RoleView() {
-  const { data: roles, isLoading } = useRoles();
+  const { data: roles } = useRoles();
   const { t } = useTranslation();
   const params = useParams();
   const role = useMemo(
-    () => roles?.find((it) => it.type === params.type),
+    () => roles.find((it) => it.type === params.type),
     [roles, params]
   );
 
-  if (isLoading) return <p>...</p>;
   // TODO error?
   if (!role) return <p>Unknown Role</p>;
 

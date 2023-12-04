@@ -10,7 +10,7 @@ export const StartEvents = new EventFactoryBus();
 export class StartEvent extends NoDataEvent {
   static create = registerEventFactory("start", new StartEvent(), () => ({
     choice: DismissChoice,
-    data: undefined,
+    data: null,
   }));
 
   finish() {

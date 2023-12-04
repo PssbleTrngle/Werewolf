@@ -1,7 +1,7 @@
 import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
-import { SubjectMappers } from "../permissions.js";
+import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { GameReadAccess } from "../state.js";
 
@@ -23,7 +23,7 @@ export abstract class EventType<T> {
       data: this.viewData(player, event.data, mapper),
       choice: {
         ...event.choice,
-        players: event.choice?.players?.map((it) => mapper.mapPlayer(it)),
+        players: event.choice?.players?.map((it) => mapper.mapPlayer(it)) ?? [],
       },
     };
   }

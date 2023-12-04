@@ -14,7 +14,7 @@ export default class PotionReviveEvent extends ReviveEvent {
         players: dying,
         canSkip: true,
       },
-      data: undefined,
+      data: null,
     })
   );
 

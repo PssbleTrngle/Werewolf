@@ -4,7 +4,7 @@ import { createGame } from "../../../lib/server/games";
 import { serverSession } from "../../../lib/server/session";
 
 const POST = createApiHandler(async (req, res) => {
-  const session = await serverSession(req, res);
+  const session = await serverSession({ req, res });
 
   const player: Player = {
     // TODO custom session user type
@@ -16,7 +16,6 @@ const POST = createApiHandler(async (req, res) => {
   };
 
   await createGame(player);
-  console.log(`Created Game`);
 
   res.status(204).send(null);
 });

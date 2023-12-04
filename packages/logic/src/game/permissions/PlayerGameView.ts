@@ -1,68 +1,10 @@
-import { Event, GameStatus, Player as IPlayer, Id, Vote } from "models";
-import { EventType } from "./event/Event.js";
-import { EventRegistry } from "./event/EventRegistry.js";
-import { Game } from "./index.js";
-import { Player } from "./player/Player.js";
-import { isNotDead, requirePlayer } from "./player/predicates.js";
-
-export interface SubjectMappers {
-  mapEvent<T>(subject: Event<T>): Event<T>;
-  mapPlayer(subject: IPlayer): IPlayer;
-}
-
-export interface GameView extends SubjectMappers {
-  currentEvent(): Event<unknown>;
-  events(): ReadonlyArray<Event<unknown>>;
-  players(): ReadonlyArray<IPlayer>;
-  status(): GameStatus;
-
-  vote(vote: Vote): Promise<void>;
-  undo(): Promise<void>;
-  redo(): Promise<void>;
-}
-
-export class ModeratorGameView implements GameView {
-  constructor(protected readonly game: Game) {}
-
-  mapPlayer(subject: IPlayer) {
-    return subject;
-  }
-
-  mapEvent<T>(subject: Event<T>) {
-    return subject;
-  }
-
-  currentEvent() {
-    return this.events()[0];
-  }
-
-  events() {
-    return this.game.currentEvents();
-  }
-
-  players() {
-    return this.game.players.map((it) => this.mapPlayer(it));
-  }
-
-  status() {
-    return this.game.status;
-  }
-
-  async vote(vote: Vote) {
-    const event = this.currentEvent();
-    for (const player of event.players) {
-      await this.game.vote(player.id, vote);
-    }
-  }
-
-  async undo() {
-    this.game.undo();
-  }
-
-  async redo() {
-    this.game.redo();
-  }
-}
+import { Event, Player as IPlayer, Id, Vote } from "models";
+import { EventType } from "../event/Event.js";
+import { EventRegistry } from "../event/EventRegistry.js";
+import { Game } from "../index.js";
+import { Player } from "../player/Player.js";
+import { isNotDead, requirePlayer } from "../player/predicates.js";
+import { GameView } from "./index.js";
 
 export class PlayerGameView implements GameView {
   constructor(
@@ -81,12 +23,12 @@ export class PlayerGameView implements GameView {
     return type.view(owner, subject, this);
   }
 
-  private createDeadEvent(): Event<undefined> {
+  private createDeadEvent(): Event<never> {
     const owner = requirePlayer(this.game.players, this.owner);
     return {
       type: "dead",
       players: [owner],
-      data: undefined,
+      data: null as never,
     };
   }
 
@@ -125,7 +67,7 @@ export class PlayerGameView implements GameView {
   }
 }
 
-export function playerViewFor(player: Player, subject: IPlayer): IPlayer {
+function playerViewFor(player: Player, subject: IPlayer): IPlayer {
   const revealed = player.roleData.revealedPlayers[subject.id] ?? {};
 
   const self: Partial<IPlayer> =

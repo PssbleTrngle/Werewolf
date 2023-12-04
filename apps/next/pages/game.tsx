@@ -1,14 +1,28 @@
 import { EventScreen, useActiveEvent, useGameStatus } from "ui";
 import Layout from "../layout/default";
-import { preloadTranslations } from "../lib/server/localization";
+import { withPrefetched } from "../lib/client/hydrateQueries";
+import { prefetchQueries } from "../lib/server/prefetchQueries";
+import { requireSessionView } from "../lib/server/session";
 
-export const getStaticProps = preloadTranslations;
+export const getServerSideProps = prefetchQueries(async (ctx, client) => {
+  const view = await requireSessionView(ctx);
 
-export default function GameView() {
+  await client.prefetchQuery({
+    queryKey: ["screen"],
+    queryFn: () => view.currentEvent(),
+  });
+
+  await client.prefetchQuery({
+    queryKey: ["game"],
+    queryFn: () => view.status(),
+  });
+});
+
+function GameView() {
   const { data: status } = useGameStatus();
   const { data: event } = useActiveEvent();
 
-  if (!status || !event) return <p>...</p>;
+  if (!status) return <p>Not part of a game</p>;
 
   return (
     <Layout>
@@ -16,3 +30,5 @@ export default function GameView() {
     </Layout>
   );
 }
+
+export default withPrefetched(GameView);

@@ -9,7 +9,7 @@ import {
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
-import { SubjectMappers } from "../permissions.js";
+import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
 import { EventType } from "./Event.js";
@@ -45,7 +45,6 @@ export class DeathEvent extends EventType<DeathData> {
   ): DeathData {
     // TODO reveal role depending on settings?
     return {
-      time: undefined,
       deaths: subject.deaths.map((it) => mapper.mapPlayer(it)),
     };
   }

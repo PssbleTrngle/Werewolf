@@ -1,6 +1,6 @@
 import { Event, RevealData, Vote } from "models";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
-import { SubjectMappers } from "../permissions.js";
+import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
 import { EventType } from "./Event.js";
