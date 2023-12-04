@@ -16,7 +16,6 @@ const POST = createApiHandler(async (req, res) => {
   };
 
   await createGame(player);
-  console.log(`Created Game`);
 
   res.status(204).send(null);
 });

@@ -2,7 +2,7 @@ import { Event, KillData, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { KillEffect } from "../effect/KillEffect.js";
-import { SubjectMappers } from "../permissions.js";
+import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { EventType } from "./Event.js";
 

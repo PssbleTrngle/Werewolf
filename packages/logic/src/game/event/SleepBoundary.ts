@@ -2,7 +2,7 @@ import { Event } from "models";
 import { AnnouncementEffect } from "../effect/AnnouncementEffect.js";
 import { EventEffect } from "../effect/EventEffect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
-import { SubjectMappers } from "../permissions.js";
+import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { isAlive } from "../player/predicates.js";
 import { EventFactoryBus } from "./EventBus.js";

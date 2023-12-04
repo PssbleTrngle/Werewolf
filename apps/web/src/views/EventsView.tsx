@@ -13,13 +13,12 @@ import {
 
 export default function EventsView() {
   const { t } = useTranslation();
-  const { data: status, isLoading } = useGameStatus();
+  const { data: status } = useGameStatus();
   const { data: event } = useActiveEvent();
 
   const { mutate: stop } = useStopMutation();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (status && event)
+  if (status)
     return (
       <EventScreen status={status} event={event}>
         <StopButton onClick={stop}> {t("button.game.stop")}</StopButton>

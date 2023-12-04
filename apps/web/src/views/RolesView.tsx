@@ -9,7 +9,7 @@ export default function RolesView() {
 
   return (
     <Grid>
-      {roles?.map((it) => (
+      {roles.map((it) => (
         <InvisibleLink key={it.type} to={it.type}>
           <Panel>
             <span>{t(`role.${it.type}.name`)}</span>

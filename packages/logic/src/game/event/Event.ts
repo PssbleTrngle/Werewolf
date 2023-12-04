@@ -1,7 +1,7 @@
 import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
-import { SubjectMappers } from "../permissions.js";
+import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { GameReadAccess } from "../state.js";
 

@@ -67,9 +67,8 @@ function RandomizeButton({ setName }: Readonly<{ setName: Dispatch<string> }>) {
 }
 
 export default function PlayersView() {
-  const { data, isLoading } = useGameStatus();
+  const { data } = useGameStatus();
 
-  if (isLoading) return <p>...</p>;
   if (data) return <ActivePlayersView />;
   return <PlayersEditView />;
 }
@@ -86,7 +85,7 @@ function ActivePlayersView() {
 
   return (
     <Centered>
-      <Count>{t("player.count", { count: players?.length ?? 0 })}</Count>
+      <Count>{t("player.count", { count: players.length })}</Count>
       <Table>
         <thead>
           <tr>
@@ -96,7 +95,7 @@ function ActivePlayersView() {
           </tr>
         </thead>
         <tbody>
-          {players?.map((it) => (
+          {players.map((it) => (
             <tr key={it.id}>
               <td>{it.name}</td>
               {it.role ? (

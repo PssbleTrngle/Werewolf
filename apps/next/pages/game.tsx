@@ -1,22 +1,10 @@
-import {
-  DehydratedState,
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from "@tanstack/react-query";
-import { GetServerSideProps } from "next";
 import { EventScreen, useActiveEvent, useGameStatus } from "ui";
 import Layout from "../layout/default";
-import { preloadTranslations } from "../lib/server/localization";
+import { withPrefetched } from "../lib/client/hydrateQueries";
+import { prefetchQueries } from "../lib/server/prefetchQueries";
 import { requireSessionView } from "../lib/server/session";
 
-type Props = Readonly<{
-  dehydratedState: DehydratedState;
-}>;
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const client = new QueryClient();
-
+export const getServerSideProps = prefetchQueries(async (ctx, client) => {
   const view = await requireSessionView(ctx);
 
   await client.prefetchQuery({
@@ -24,24 +12,23 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     queryFn: () => view.currentEvent(),
   });
 
-  const { props } = await preloadTranslations(ctx);
+  await client.prefetchQuery({
+    queryKey: ["game"],
+    queryFn: () => view.status(),
+  });
+});
 
-  const dehydratedState = dehydrate(client);
-
-  return { props: { ...props, dehydratedState } };
-};
-
-export default function GameView({ dehydratedState }: Props) {
+function GameView() {
   const { data: status } = useGameStatus();
   const { data: event } = useActiveEvent();
 
-  if (!status || !event) return <p>...</p>;
+  if (!status) return <p>Not part of a game</p>;
 
   return (
-    <HydrationBoundary state={dehydratedState}>
-      <Layout>
-        <EventScreen event={event} status={status} />
-      </Layout>
-    </HydrationBoundary>
+    <Layout>
+      <EventScreen event={event} status={status} />
+    </Layout>
   );
 }
+
+export default withPrefetched(GameView);
