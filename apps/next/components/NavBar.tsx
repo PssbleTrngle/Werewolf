@@ -7,7 +7,7 @@ import ProfileIcon from "./ProfileIcon";
 
 const LINKS: ReadonlyArray<NavTab> = [
   { key: "home", path: "/" },
-  { key: "game" },
+  { key: "settings" },
 ].map((it) => ({
   path: `/${it.key}`,
   ...it,

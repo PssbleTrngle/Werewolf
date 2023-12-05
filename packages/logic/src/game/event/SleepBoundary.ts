@@ -28,9 +28,9 @@ export class SleepBoundary extends NoDataEvent {
 
   view(
     player: Player,
-    event: Event<undefined>,
+    event: Event<never>,
     mapper: SubjectMappers
-  ): Event<undefined> {
+  ): Event<never> {
     return {
       ...super.view(player, event, mapper),
       players: [],

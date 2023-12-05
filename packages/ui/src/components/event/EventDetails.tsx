@@ -22,7 +22,7 @@ const details: Record<string, (props: DetailProps) => ReactNode> = {
   win: WinDetails,
 };
 
-export default function EventDetails({ event }: { event: Event<unknown> }) {
+export default function EventDetails({ event }: { event: Event }) {
   const { t } = useTranslation();
   const type = useMemo(() => baseType(event.type), [event]);
   const component = useMemo(() => details[type], [type]);

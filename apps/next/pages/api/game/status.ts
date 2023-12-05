@@ -1,11 +1,12 @@
-import { GameStatus } from "models";
 import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
-import { sessionView } from "../../../lib/server/session";
+import { statusOf } from "../../../lib/server/games";
+import { requireServerSession } from "../../../lib/server/session";
 
-const GET = createApiHandler<GameStatus | null>(async (req, res) => {
-  const view = await sessionView({ req, res });
+const GET = createApiHandler(async (req, res) => {
+  const session = await requireServerSession({ req, res });
 
-  const status = view ? view.status() : null;
+  const status = await statusOf(session.user.id);
+
   res.status(200).json(status);
 });
 

@@ -37,12 +37,8 @@ export default function ErrorWrapper({
 }
 
 const Style = styled(Centered)`
-  font-family: sans-serif;
-
   color: ${(p) => p.theme.text};
   background: ${(p) => p.theme.bg};
-
-  height: 100dvh;
 `;
 
 const Popup = styled.div`

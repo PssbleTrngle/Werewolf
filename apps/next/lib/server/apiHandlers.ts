@@ -16,6 +16,7 @@ export function createApiHandler<T>(
     } catch (e) {
       const message = e instanceof Error ? e.message : "an error occured";
       const status = e instanceof ApiError ? e.statusCode : 500;
+      console.error(e);
       res.status(status).json({ message });
     }
   };

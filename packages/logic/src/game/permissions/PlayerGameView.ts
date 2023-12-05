@@ -49,7 +49,7 @@ export class PlayerGameView implements GameView {
     throw new Error("not allowed");
   }
 
-  status() {
+  gameInfo() {
     const { day, time } = this.game.status;
     return { day, time };
   }

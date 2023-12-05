@@ -1,7 +1,7 @@
 import { Choice } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useVoteMutation } from "../../hooks/game";
+import { useVoteMutation } from "../../hooks/queries";
 import { XS } from "../../styles/screens";
 import Button from "../Button";
 import PlayerIcon from "../PlayerIcon";

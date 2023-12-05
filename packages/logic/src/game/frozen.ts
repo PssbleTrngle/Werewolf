@@ -19,7 +19,7 @@ export default class FrozenGame implements GameAccess {
   private readonly newEvents: EventFactory[] = [];
   private readonly deaths = new Map<Id, DeathCause>();
   private readonly revives = new Set<Id>();
-  private readonly replaced = new Map<Event<unknown>, EventFactory[]>();
+  private readonly replaced = new Map<Event, EventFactory[]>();
   private readonly pendingReplace = new Set<EventFactory>();
   private clearDeaths = false;
   private readonly timesPassed: Time[] = [];
@@ -41,7 +41,7 @@ export default class FrozenGame implements GameAccess {
     this.pendingReplace.clear();
   }
 
-  hasFinished(event: Event<unknown>) {
+  hasFinished(event: Event) {
     return this.replaced.get(event)?.length === 0;
   }
 

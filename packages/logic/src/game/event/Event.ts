@@ -5,9 +5,7 @@ import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { GameReadAccess } from "../state.js";
 
-export type EventFactory = (
-  game: GameReadAccess
-) => ArrayOrSingle<Event<unknown>>;
+export type EventFactory = (game: GameReadAccess) => ArrayOrSingle<Event>;
 
 export abstract class EventType<T> {
   protected abstract viewData(

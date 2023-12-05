@@ -17,6 +17,7 @@ import {
   usePlayers,
 } from "ui";
 import InvisibleLink from "../components/InivisibleLink";
+import { GAME_ID } from "../hooks/localGame";
 import useLocalStorage from "../hooks/useLocalStorage";
 import randomNames from "../randomNames";
 
@@ -48,7 +49,7 @@ function AddPanel({
         onChange={(e) => setName(e.target.value)}
         required
       />
-      <Button>{t("button.player.add")}</Button>
+      <Button>{t("local:button.player.add")}</Button>
     </Form>
   );
 }
@@ -69,7 +70,7 @@ function RandomizeButton({ setName }: Readonly<{ setName: Dispatch<string> }>) {
 export default function PlayersView() {
   const { data } = useGameStatus();
 
-  if (data) return <ActivePlayersView />;
+  if (data.type === "game") return <ActivePlayersView />;
   return <PlayersEditView />;
 }
 
@@ -81,7 +82,7 @@ const STATUS_ICONS: Record<Status, string> = {
 
 function ActivePlayersView() {
   const { t } = useTranslation();
-  const { data: players } = usePlayers();
+  const { data: players } = usePlayers(GAME_ID);
 
   return (
     <Centered>
@@ -148,12 +149,12 @@ function PlayersEditView() {
             <tr key={it.id}>
               <td>{it.name}</td>
               <ButtonsCell>
-                <IconButton title={t("button.player.rename")}>
+                <IconButton title={t("local:button.player.rename")}>
                   <EditIcon />
                 </IconButton>
                 <IconButton
                   onClick={() => removePlayer(it.id)}
-                  title={t("button.player.remove")}
+                  title={t("local:button.player.remove")}
                 >
                   <TrashIcon />
                 </IconButton>

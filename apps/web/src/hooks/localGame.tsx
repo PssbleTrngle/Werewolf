@@ -8,12 +8,13 @@ import {
   allRoles,
   generateRoles,
 } from "logic";
-import { Id, Player, Vote } from "models";
+import { GameStatus, Id, Player, Vote } from "models";
 import { Dispatch, PropsWithChildren, useMemo, useReducer } from "react";
-import { GameContext, GameProvider, invalidateGameQueries } from "ui";
+import { GameProvider, QueryContext, invalidateGameQueries } from "ui";
 import { ImpersonationProvider } from "./impersonate";
 import { readLocalStorage } from "./useLocalStorage";
 
+export const GAME_ID = "local";
 const STORAGE_KEY = "gamestate";
 
 function saveToLocalStorage(history: ReadonlyArray<GameState> | null) {
@@ -82,13 +83,14 @@ function alreadyRunning(): never {
 
 const localContext = {
   roles: wrap(() => allRoles),
-} satisfies Partial<GameContext>;
+} satisfies Partial<QueryContext>;
 
-function createEmptyContext(startGame: Dispatch<Game>): GameContext {
+function createEmptyContext(startGame: Dispatch<Game>): QueryContext {
   return {
     ...localContext,
     create: wrap(() => startGame(createGame())),
-    game: wrap(() => null),
+    gameStatus: wrap(() => ({ type: "lobby", id: GAME_ID }) as GameStatus),
+    game: requiresGame,
     activeEvent: requiresGame,
     players: requiresGame,
     redo: requiresGame,
@@ -98,7 +100,7 @@ function createEmptyContext(startGame: Dispatch<Game>): GameContext {
   };
 }
 
-export function useLocalGame(): GameContext {
+export function useLocalGame(): QueryContext {
   const [game, setGame] = useReducer((_: Game | null, value: Game | null) => {
     if (!value) saveToLocalStorage(null);
     return value;
@@ -118,7 +120,7 @@ function createGameContextFor({
   game: Game | null;
   setGame: Dispatch<Game | null>;
   impersonated?: Id;
-}): GameContext {
+}): QueryContext {
   if (!game) return createEmptyContext(setGame);
 
   const view = impersonated
@@ -129,7 +131,8 @@ function createGameContextFor({
     ...localContext,
     create: alreadyRunning,
     stop: wrap(() => setGame(null)),
-    game: wrap(() => view.status()),
+    gameStatus: wrap(() => ({ type: "game", id: GAME_ID }) as GameStatus),
+    game: wrap(() => view.gameInfo()),
     players: wrap(() => view.players()),
     activeEvent: wrap(() => view.currentEvent()),
     submitVote: wrap((vote: Vote) => view.vote(vote)),
@@ -138,7 +141,7 @@ function createGameContextFor({
   };
 }
 
-interface ExtendedGameContext extends GameContext {
+interface ExtendedGameContext extends QueryContext {
   impersonate: Dispatch<Id | undefined>;
 }
 
@@ -146,7 +149,7 @@ interface ExtendedGameContext extends GameContext {
  * This is neccessary, because react-client does not recreate query functions once the context changes
  */
 function createLocalGame(): ExtendedGameContext {
-  let actualContext: GameContext = createEmptyContext(() => {});
+  let actualContext: QueryContext = createEmptyContext(() => {});
   let impersonated: Id | undefined = undefined;
   let game: Game | null = null;
 
@@ -156,7 +159,8 @@ function createLocalGame(): ExtendedGameContext {
 
   function setGame(value: Game | null) {
     game = value;
-    game?.save();
+    if (game) game.save();
+    else saveToLocalStorage(null);
     updateContext();
   }
 
@@ -168,10 +172,11 @@ function createLocalGame(): ExtendedGameContext {
   setGame(readSavedGame());
 
   return {
+    gameStatus: () => actualContext.gameStatus(),
     roles: () => actualContext.roles(),
-    players: () => actualContext.players(),
-    game: () => actualContext.game(),
-    activeEvent: () => actualContext.activeEvent(),
+    players: (...args) => actualContext.players(...args),
+    game: (...args) => actualContext.game(...args),
+    activeEvent: (...args) => actualContext.activeEvent(...args),
     submitVote: (vote) => actualContext.submitVote(vote),
     undo: () => actualContext.undo(),
     redo: () => actualContext.redo(),

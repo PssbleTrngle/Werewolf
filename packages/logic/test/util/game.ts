@@ -5,7 +5,7 @@ export class TestGame extends Game {
     return new TestGame(Game.createState(players));
   }
 
-  onSave() {
+  async onSave() {
     // Not needed for now
   }
 }

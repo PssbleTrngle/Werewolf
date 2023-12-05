@@ -1,4 +1,4 @@
-import { GameSettings, GameStatus, Id, Vote } from "models";
+import { GameInfo, GameSettings, Id, Vote } from "models";
 import { notNull } from "../util.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { StartEvent } from "./event/StartEvent.js";
@@ -54,7 +54,7 @@ export abstract class Game implements GameReadAccess {
     return this.state.current.settings;
   }
 
-  get status(): GameStatus {
+  get status(): GameInfo {
     const { day, time } = this.state.current;
     const past = this.state.past;
     const writtenFuture = this.state.future;

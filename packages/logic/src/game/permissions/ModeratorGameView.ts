@@ -25,7 +25,7 @@ export class ModeratorGameView implements GameView {
     return this.game.players.map((it) => this.mapPlayer(it));
   }
 
-  status() {
+  gameInfo() {
     return this.game.status;
   }
 

@@ -8,7 +8,7 @@ export interface EventQueue {
   unknownFuture: number;
 }
 
-export interface GameStatus {
+export interface GameInfo {
   day: number;
   time: Time;
   queue?: EventQueue;

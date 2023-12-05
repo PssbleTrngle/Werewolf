@@ -1,4 +1,4 @@
-import { GameStatus, Time } from "models";
+import { GameInfo, Time } from "models";
 import { useEffect, useMemo, useReducer } from "react";
 
 const TIMES: Time[] = ["dawn", "day", "dusk", "night"];
@@ -11,11 +11,11 @@ export default function useFakeGame() {
     return () => clearInterval(interval);
   }, []);
 
-  return useMemo<GameStatus>(
+  return useMemo<GameInfo>(
     () => ({
       time: TIMES[i % TIMES.length],
       day: Math.floor(i / TIMES.length),
     }),
-    [i],
+    [i]
   );
 }

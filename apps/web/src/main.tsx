@@ -10,10 +10,13 @@ import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { darkTheme } from "ui";
 import ErrorWrapper from "./components/ErrorWrapper";
+import LoadingPage from "./components/LoadingPage";
 import { LocalGameProvider } from "./hooks/localGame";
 import { router } from "./router";
 
-const client = new QueryClient();
+const client = new QueryClient({
+  defaultOptions: { queries: { retry: import.meta.env.PROD, staleTime: 0 } },
+});
 const backend = new LocaleBackend();
 
 const defaultNS = ["common", "local"];
@@ -31,15 +34,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <I18nextProvider i18n={i18n} defaultNS={defaultNS}>
       <ThemeProvider theme={darkTheme}>
-        <Suspense fallback={<p>Loading...</p>}>
-          <ErrorWrapper>
+        <ErrorWrapper>
+          <Suspense fallback={<LoadingPage />}>
             <QueryClientProvider client={client}>
               <LocalGameProvider>
                 <RouterProvider router={router} />
               </LocalGameProvider>
             </QueryClientProvider>
-          </ErrorWrapper>
-        </Suspense>
+          </Suspense>
+        </ErrorWrapper>
       </ThemeProvider>
     </I18nextProvider>
   </React.StrictMode>

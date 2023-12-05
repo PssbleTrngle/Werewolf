@@ -1,6 +1,15 @@
 {
   "nav": {
     "home": "Home",
-    "game": "Game"
+    "settings": "Settings"
+  },
+  "button": {
+    "player": {
+      "join": "Join",
+      "leave": "Leave"
+    },
+    "game": {
+      "start": "Start"
+    }
   }
 }

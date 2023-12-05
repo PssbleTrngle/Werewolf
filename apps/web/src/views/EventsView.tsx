@@ -7,29 +7,37 @@ import {
   EventScreen,
   useActiveEvent,
   useCreateMutation,
+  useGameInfo,
   useGameStatus,
   useStopMutation,
 } from "ui";
+import { GAME_ID } from "../hooks/localGame";
 
 export default function EventsView() {
-  const { t } = useTranslation();
   const { data: status } = useGameStatus();
-  const { data: event } = useActiveEvent();
 
-  const { mutate: stop } = useStopMutation();
-
-  if (status)
-    return (
-      <EventScreen status={status} event={event}>
-        <StopButton onClick={stop}> {t("button.game.stop")}</StopButton>
-      </EventScreen>
-    );
+  if (status.type === "game") return <ActiveEventView />;
   return <CreateGame />;
+}
+
+function ActiveEventView() {
+  const { t } = useTranslation();
+  const { mutate: stop } = useStopMutation();
+  // TODO parallel?
+  const { data: game } = useGameInfo(GAME_ID);
+  const { data: event } = useActiveEvent(GAME_ID);
+
+  return (
+    <EventScreen game={game} event={event}>
+      <StopButton onClick={stop}> {t("button.game.stop")}</StopButton>
+    </EventScreen>
+  );
 }
 
 function CreateGame() {
   const { t } = useTranslation();
   const { mutate: create, error } = useCreateMutation();
+
   return (
     <Centered>
       <p>

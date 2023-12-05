@@ -1,7 +1,13 @@
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { NavBar as Base, NavLinkStyle, useActiveLink, NavTab } from "ui";
+import {
+  NavBar as Base,
+  NavLinkStyle,
+  NavTab,
+  useActiveLink,
+  useGameStatus,
+} from "ui";
 import ImpersonationSelect from "./ImpersonationSelect";
 
 const LINKS: ReadonlyArray<NavTab> = [
@@ -18,6 +24,7 @@ export default function NavBar() {
 
   const location = useLocation();
   const active = useActiveLink(LINKS, location.pathname);
+  const { data: status } = useGameStatus();
 
   return (
     <Base
@@ -27,7 +34,7 @@ export default function NavBar() {
         </NavLink>
       ))}
     >
-      <ImpersonationSelect />
+      {status.type === "game" && <ImpersonationSelect />}
     </Base>
   );
 }

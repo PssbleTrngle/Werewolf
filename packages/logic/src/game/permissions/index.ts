@@ -1,4 +1,4 @@
-import { Event, GameStatus, Player as IPlayer, Vote } from "models";
+import { Event, GameInfo, Player as IPlayer, Vote } from "models";
 
 export interface SubjectMappers {
   mapEvent<T>(subject: Event<T>): Event<T>;
@@ -6,10 +6,10 @@ export interface SubjectMappers {
 }
 
 export interface GameView extends SubjectMappers {
-  currentEvent(): Event<unknown>;
-  events(): ReadonlyArray<Event<unknown>>;
+  currentEvent(): Event;
+  events(): ReadonlyArray<Event>;
   players(): ReadonlyArray<IPlayer>;
-  status(): GameStatus;
+  gameInfo(): GameInfo;
 
   vote(vote: Vote): Promise<void>;
   undo(): Promise<void>;

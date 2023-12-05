@@ -7,16 +7,15 @@ import {
 import { Session, getServerSession } from "next-auth";
 import { ApiError } from "next/dist/server/api-utils";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { statusOf } from "./games";
+import { getGame, statusOf } from "./games";
 
 export async function wrapSessionView(session: Session) {
-  const playerId = session.user!.email!;
-
-  const status = await statusOf(playerId);
+  const status = await statusOf(session.user.id);
 
   if (status?.type !== "game") return null;
+  const game = await getGame(status.id);
 
-  return new PlayerGameView(status.game, playerId);
+  return new PlayerGameView(game, session.user.id);
 }
 
 type SessionContext =
@@ -32,6 +31,12 @@ export async function serverSession(ctx: SessionContext) {
   } else {
     return ctx;
   }
+}
+
+export async function requireServerSession(ctx: SessionContext) {
+  const session = await serverSession(ctx);
+  if (session) return session;
+  throw new ApiError(401, "login required");
 }
 
 export async function sessionView(ctx: SessionContext) {

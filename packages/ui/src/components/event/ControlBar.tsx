@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
-  useGameStatus,
+  useGameInfo,
   useRedoMutation,
   useUndoMutation,
-} from "../../hooks/game";
+} from "../../hooks/queries";
 import { RedoIcon, UndoIcon } from "../../icons";
 import { Buttons, IconButton } from "../Button";
 
@@ -46,7 +46,7 @@ function Queue({ children }: Readonly<{ children: EventQueue }>) {
 
 export default function ControlBar() {
   const { t } = useTranslation();
-  const { data: status } = useGameStatus();
+  const { data: status } = useGameInfo();
   const { mutate: undo } = useUndoMutation();
   const { mutate: redo } = useRedoMutation();
 

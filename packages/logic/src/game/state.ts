@@ -1,12 +1,12 @@
-import { DeathCause, Event, GameSettings, GameStatus, Id, Time } from "models";
+import { DeathCause, Event, GameInfo, GameSettings, Id, Time } from "models";
 import { ArrayOrSingle, PartialOrFactory } from "../util.js";
 import { Effect } from "./effect/Effect.js";
 import { EventFactory } from "./event/Event.js";
 import { Player, RoleData } from "./player/Player.js";
 import "./roleEvents.js";
 
-export interface GameState extends GameStatus, GameReadAccess {
-  events: ReadonlyArray<Event<unknown>>;
+export interface GameState extends GameInfo, GameReadAccess {
+  events: ReadonlyArray<Event>;
 }
 
 export interface GameReadAccess {

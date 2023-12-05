@@ -1,6 +1,6 @@
 import { shuffle, times } from "lodash-es";
-import { Role } from "models";
-import { Player } from "./player/Player.js";
+import { Role, User } from "models";
+import { EMPTY_ROLE_DATA, Player } from "./player/Player.js";
 import { DreamWolf } from "./role/DreamWolf.js";
 import { Executioner } from "./role/Executioner.js";
 import { Eye } from "./role/Eye.js";
@@ -25,7 +25,7 @@ export const allRoles: Role[] = [
 ];
 
 export function generateRoles(
-  players: ReadonlyArray<Omit<Player, "role">>,
+  players: ReadonlyArray<User>,
   // TODO use
   isEnabled: (role: Role) => boolean = () => true
 ): ReadonlyArray<Player> {
@@ -63,5 +63,10 @@ export function generateRoles(
     throw new Error("something went wrong in the role selector");
   }
 
-  return players.map((it, i) => ({ ...it, role: roles[i] }));
+  return players.map((it, i) => ({
+    ...it,
+    role: roles[i],
+    status: "alive",
+    roleData: EMPTY_ROLE_DATA,
+  }));
 }

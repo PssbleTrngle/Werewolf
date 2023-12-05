@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactElement } from "react";
 import { AppInfo, Footer, Globals, Page } from "ui";
 import NavBar from "../components/NavBar";
 
@@ -9,7 +9,9 @@ const appInfo: AppInfo = {
   version: process.env.NEXT_PUBLIC_GIT_VERSION,
 };
 
-export default function Layout({ children }: Readonly<PropsWithChildren>) {
+export default function Layout({
+  children,
+}: Readonly<{ children: ReactElement }>) {
   return (
     <>
       <Head>

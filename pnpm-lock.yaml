@@ -17,6 +17,12 @@ importers:
 
   apps/next:
     dependencies:
+      '@redis/json':
+        specifier: ^1.0.6
+        version: 1.0.6(@redis/client@1.5.12)
+      '@redis/search':
+        specifier: ^1.1.6
+        version: 1.1.6(@redis/client@1.5.12)
       '@tanstack/react-query':
         specifier: ^5.8.4
         version: 5.8.7(react-dom@18.2.0)(react@18.2.0)

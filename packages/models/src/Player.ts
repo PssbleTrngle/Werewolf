@@ -11,9 +11,12 @@ export const enum DeathCause {
   POTION = "potion",
 }
 
-export interface Player {
+export interface User {
   id: Id;
   name: string;
+}
+
+export interface Player extends User {
   role?: Role;
   deathCause?: DeathCause;
   status?: Status;

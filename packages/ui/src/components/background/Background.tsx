@@ -1,4 +1,4 @@
-import { GameStatus, Time } from "models";
+import { GameInfo, Time } from "models";
 import { ReactNode, useMemo } from "react";
 import styled from "styled-components";
 import Clouds from "./Clouds";
@@ -32,27 +32,27 @@ const ANGLES = {
 } satisfies Record<string, Record<Time, number>>;
 
 export default function Background({
-  status,
+  game,
   children,
   ...props
 }: Readonly<{
-  status: GameStatus;
+  game: GameInfo;
   children?: ReactNode;
 }>) {
   const sunAngle = useMemo(() => {
-    const rotation = ANGLES.sun[status.time];
-    return status.day * 360 + rotation;
-  }, [status]);
+    const rotation = ANGLES.sun[game.time];
+    return game.day * 360 + rotation;
+  }, [game]);
 
   const moonAngle = useMemo(() => {
-    const rotation = ANGLES.moon[status.time];
-    return status.day * 360 + rotation;
-  }, [status]);
+    const rotation = ANGLES.moon[game.time];
+    return game.day * 360 + rotation;
+  }, [game]);
 
   return (
-    <Style $time={status.time} {...props}>
-      <Sun $angle={sunAngle} $glow={SUN_GRADIENTS[status.time]} />
-      <Moon $angle={moonAngle} $opacity={status.time === "night" ? 1 : 0.5} />
+    <Style $time={game.time} {...props}>
+      <Sun $angle={sunAngle} $glow={SUN_GRADIENTS[game.time]} />
+      <Moon $angle={moonAngle} $opacity={game.time === "night" ? 1 : 0.5} />
       <Clouds />
       {children}
     </Style>

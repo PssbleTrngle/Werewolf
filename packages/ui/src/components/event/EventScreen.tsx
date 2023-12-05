@@ -1,4 +1,4 @@
-import { Event, GameStatus, Time } from "models";
+import { Event, GameInfo, Time } from "models";
 import { PropsWithChildren, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import darkTheme from "../../theme/dark";
@@ -20,22 +20,22 @@ function themeBy(time: Time) {
 }
 
 export default function EventScreen({
-  status,
+  game,
   event,
   children,
 }: Readonly<
   PropsWithChildren<{
-    status: GameStatus;
-    event: Event<unknown>;
+    game: GameInfo;
+    event: Event;
   }>
 >) {
   // const game = useFakeGame();
 
-  const theme = useMemo(() => themeBy(status?.time ?? "night"), [status]);
+  const theme = useMemo(() => themeBy(game?.time ?? "night"), [game]);
 
   return (
     <ThemeProvider theme={theme}>
-      <Background status={status}>
+      <Background game={game}>
         {children}
         <Style>
           <ControlBar />

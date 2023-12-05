@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
-import { Footer, Globals, Page, AppInfo } from "ui";
+import { useInRouterContext } from "react-router-dom";
+import { AppInfo, Footer, Globals, Page } from "ui";
 import NavBar from "../components/NavBar";
 
 const appInfo: AppInfo = {
@@ -9,11 +10,12 @@ const appInfo: AppInfo = {
 };
 
 export default function Layout({ children }: Readonly<PropsWithChildren>) {
+  const hasRouter = useInRouterContext();
   return (
     <>
       <Globals />
       <Page>
-        <NavBar />
+        {hasRouter && <NavBar />}
         <section>{children}</section>
         <Footer {...appInfo} />
       </Page>
