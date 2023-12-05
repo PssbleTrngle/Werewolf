@@ -51,8 +51,10 @@ export default function Background({
 
   return (
     <Style $time={game.time} {...props}>
-      <Sun $angle={sunAngle} $glow={SUN_GRADIENTS[game.time]} />
-      <Moon $angle={moonAngle} $opacity={game.time === "night" ? 1 : 0.5} />
+      <Horizon>
+        <Sun $angle={sunAngle} $glow={SUN_GRADIENTS[game.time]} />
+        <Moon $angle={moonAngle} $opacity={game.time === "night" ? 1 : 0.5} />
+      </Horizon>
       <Clouds />
       {children}
     </Style>
@@ -69,4 +71,12 @@ const Style = styled.section<{ $time: Time }>`
   transition:
     background 0.5s linear,
     color 0.5s linear;
+`;
+
+const Horizon = styled.section`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  bottom: 0;
 `;

@@ -1,4 +1,5 @@
 import { Id, Time } from "models";
+import { transparentize } from "polished";
 import { PropsWithChildren, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useActiveEvent, useGameInfo } from "../..";
@@ -41,7 +42,7 @@ export default function EventScreen({
         <Style>
           <ControlBar gameId={gameId} />
           <EventWrapper>
-            <ParticipantList size={1} players={event.players} />
+            <EventParticipantList size={1} players={event.players} />
             <EventDetails event={event} />
             {event?.choice && <ChoicePanel choice={event.choice} />}
           </EventWrapper>
@@ -50,6 +51,12 @@ export default function EventScreen({
     </ThemeProvider>
   );
 }
+
+const EventParticipantList = styled(ParticipantList)`
+  & > * {
+    background: ${(p) => transparentize(0.9, p.theme.text)};
+  }
+`;
 
 const Style = styled.section`
   position: relative;

@@ -12,16 +12,18 @@ export default function ChoicePanel({ choice }: { choice: Choice }) {
 
   return (
     <Buttons>
-      <PlayerButtons>
-        {choice.players?.map((player) => (
-          <Button
-            key={player.id}
-            onClick={() => vote({ type: "players", players: [player.id] })}
-          >
-            <PlayerIcon>{player}</PlayerIcon>
-          </Button>
-        ))}
-      </PlayerButtons>
+      {choice.players && (
+        <PlayerButtons $count={choice.players.length}>
+          {choice.players.map((player) => (
+            <Button
+              key={player.id}
+              onClick={() => vote({ type: "players", players: [player.id] })}
+            >
+              <PlayerIcon>{player}</PlayerIcon>
+            </Button>
+          ))}
+        </PlayerButtons>
+      )}
       {choice.canSkip && (
         <Skip onClick={() => vote({ type: "skip" })}>
           {choice.players?.length ? t("button.skip") : t("button.dismiss")}
@@ -31,11 +33,19 @@ export default function ChoicePanel({ choice }: { choice: Choice }) {
   );
 }
 
-const PlayerButtons = styled.ul`
+const optimalColumns = (count: number) => {
+  if (count < 5) return count;
+  return Math.ceil(Math.sqrt(count));
+};
+
+const PlayerButtons = styled.ul<{ $count: number }>`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(${(p) => optimalColumns(p.$count)}, 1fr);
+
   justify-content: center;
   gap: 0.5em;
+
+  margin: 0 auto;
 
   ${XS} {
     grid-template-columns: repeat(2, 1fr);

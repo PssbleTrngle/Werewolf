@@ -1,1 +1,1 @@
-export const XS = "@media (max-width: 500px)";
+export const XS = "@media (max-width: 600px)";

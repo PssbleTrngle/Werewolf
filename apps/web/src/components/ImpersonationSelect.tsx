@@ -34,4 +34,5 @@ export default function ImpersonationSelect() {
 
 const Style = styled.select`
   ${InputStyles}
+  border: none;
 `;

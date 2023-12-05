@@ -7,8 +7,8 @@ const Luminary = styled.div<{ $angle: number; $glow?: string[] }>`
 
   top: 95%;
   left: 50%;
-  transform: translateX(-50%) rotate(${(p) => p.$angle}deg) translateY(30vw)
-    rotate(${(p) => -p.$angle}deg);
+  transform: translateX(-50%) rotate(${(p) => p.$angle}deg)
+    translateY(min(30vw, 30vh)) rotate(${(p) => -p.$angle}deg);
 
   width: ${SIZE}px;
   height: ${SIZE}px;
@@ -30,7 +30,7 @@ const Luminary = styled.div<{ $angle: number; $glow?: string[] }>`
         ?.map((color, i, a) => ({ color, offset: (i + 1) / a.length }))
         ?.map(
           ({ color, offset }) =>
-            `0 ${offset * 400}px ${offset * 300}px ${offset * 500}px ${color}`,
+            `0 ${offset * 400}px ${offset * 300}px ${offset * 500}px ${color}`
         )
         .join(",")};
 

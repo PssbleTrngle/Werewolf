@@ -6,10 +6,10 @@ export default function ParticipantList({
   players,
   size,
   ...props
-}: {
+}: Readonly<{
   players: ReadonlyArray<Player>;
   size?: number;
-}) {
+}>) {
   return (
     <Style {...props}>
       {players.map((player) => (
