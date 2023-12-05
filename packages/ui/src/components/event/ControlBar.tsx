@@ -65,10 +65,20 @@ export default function ControlBar({ gameId }: Readonly<{ gameId: Id }>) {
     <Style>
       {status?.queue && <Queue>{status.queue}</Queue>}
       <Buttons>
-        <IconButton disabled={!canUndo} onClick={undo} title={t("button.undo")}>
+        <IconButton
+          disabled={!canUndo}
+          onClick={undo}
+          data-tooltip-id="tooltip"
+          data-tooltip-content={t("button.undo")}
+        >
           <UndoIcon />
         </IconButton>
-        <IconButton disabled={!canRedo} onClick={redo} title={t("button.redo")}>
+        <IconButton
+          disabled={!canRedo}
+          onClick={redo}
+          data-tooltip-id="tooltip"
+          data-tooltip-content={t("button.redo")}
+        >
           <RedoIcon />
         </IconButton>
       </Buttons>

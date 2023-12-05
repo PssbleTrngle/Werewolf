@@ -34,13 +34,18 @@ export default function GameLobby({ lobbyId }: Readonly<{ lobbyId: Id }>) {
         </Players>
 
         <Buttons>
-          <IconButton onClick={() => leave()} title={t("button.player.leave")}>
+          <IconButton
+            onClick={() => leave()}
+            data-tooltip-id="tooltip"
+            data-tooltip-content={t("button.player.leave")}
+          >
             <LeaveIcon />
           </IconButton>
 
           <IconButton
             onClick={() => start()}
-            title={t("button.game.start")}
+            data-tooltip-id="tooltip"
+            data-tooltip-content={t("button.game.start")}
             $error={!!startError}
           >
             <StartIcon />

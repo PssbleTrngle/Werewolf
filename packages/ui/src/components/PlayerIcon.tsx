@@ -15,7 +15,10 @@ export default function PlayerIcon({
     <Style $size={size} {...props}>
       {children.name}
       {children.role && (
-        <Role title={t(`role.${children.role.type}.name`)}>
+        <Role
+          data-tooltip-id="tooltip"
+          data-tooltip-content={t(`role.${children.role.type}.name`)}
+        >
           {children.role.emoji}
         </Role>
       )}

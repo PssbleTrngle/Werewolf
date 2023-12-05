@@ -51,7 +51,10 @@ function LobbyPanel({ children }: Readonly<{ children: Lobby }>) {
       <td>{children.id}</td>
       <td>({children.players.length}/5)</td>
       <ButtonsCell>
-        <IconButton title={t("button.player.join")}>
+        <IconButton
+          data-tooltip-id="tooltip"
+          data-tooltip-content={t("button.player.join")}
+        >
           <JoinIcon onClick={() => join()} />
         </IconButton>
       </ButtonsCell>

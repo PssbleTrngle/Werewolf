@@ -149,12 +149,16 @@ function PlayersEditView() {
             <tr key={it.id}>
               <td>{it.name}</td>
               <ButtonsCell>
-                <IconButton title={t("local:button.player.rename")}>
+                <IconButton
+                  data-tooltip-id="tooltip"
+                  data-tooltip-content={t("local:button.player.rename")}
+                >
                   <EditIcon />
                 </IconButton>
                 <IconButton
                   onClick={() => removePlayer(it.id)}
-                  title={t("local:button.player.remove")}
+                  data-tooltip-id="tooltip"
+                  data-tooltip-content={t("local:button.player.remove")}
                 >
                   <TrashIcon />
                 </IconButton>

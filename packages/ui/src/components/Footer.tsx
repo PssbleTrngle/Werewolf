@@ -30,14 +30,16 @@ export default function Footer({
         {repository && (
           <IconLink
             href={`https://github.com/${repository}`}
-            title={t("button.source")}
+            data-tooltip-id="tooltip"
+            data-tooltip-content={t("button.source")}
           >
             <GithubIcon />
           </IconLink>
         )}
         <IconLink
           href="https://weblate.macarena.ceo/engage/werewolf"
-          title={t("button.translate")}
+          data-tooltip-id="tooltip"
+          data-tooltip-content={t("button.translate")}
         >
           <WeblateIcon />
         </IconLink>
