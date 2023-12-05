@@ -8,6 +8,7 @@ import {
   IconButton,
   LeaveIcon,
   StartIcon,
+  tooltip,
 } from "ui";
 import Layout from "../../layout/default";
 import {
@@ -36,16 +37,14 @@ export default function GameLobby({ lobbyId }: Readonly<{ lobbyId: Id }>) {
         <Buttons>
           <IconButton
             onClick={() => leave()}
-            data-tooltip-id="tooltip"
-            data-tooltip-content={t("button.player.leave")}
+            {...tooltip(t("button.player.leave"))}
           >
             <LeaveIcon />
           </IconButton>
 
           <IconButton
             onClick={() => start()}
-            data-tooltip-id="tooltip"
-            data-tooltip-content={t("button.game.start")}
+            {...tooltip(t("button.game.start"))}
             $error={!!startError}
           >
             <StartIcon />

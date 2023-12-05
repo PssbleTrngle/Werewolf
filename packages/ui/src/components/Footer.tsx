@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { tooltip } from "..";
 import { GithubIcon, WeblateIcon } from "../icons";
 import { InvisibleLinkStyle, LinkStyle } from "../styles/links";
 import { XS } from "../styles/screens";
@@ -30,16 +31,14 @@ export default function Footer({
         {repository && (
           <IconLink
             href={`https://github.com/${repository}`}
-            data-tooltip-id="tooltip"
-            data-tooltip-content={t("button.source")}
+            {...tooltip(t("button.source"))}
           >
             <GithubIcon />
           </IconLink>
         )}
         <IconLink
           href="https://weblate.macarena.ceo/engage/werewolf"
-          data-tooltip-id="tooltip"
-          data-tooltip-content={t("button.translate")}
+          {...tooltip(t("button.translate"))}
         >
           <WeblateIcon />
         </IconLink>

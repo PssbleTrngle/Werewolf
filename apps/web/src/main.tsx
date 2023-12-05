@@ -39,7 +39,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <QueryClientProvider client={client}>
               <LocalGameProvider>
                 <RouterProvider router={router} />
-                <Tooltip id="tooltip" />
+                <Tooltip />
               </LocalGameProvider>
             </QueryClientProvider>
           </Suspense>

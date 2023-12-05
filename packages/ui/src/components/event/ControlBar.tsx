@@ -9,6 +9,7 @@ import {
 } from "../../hooks/queries";
 import { RedoIcon, UndoIcon } from "../../icons";
 import { Buttons, IconButton } from "../Button";
+import { tooltip } from "../Tooltip";
 
 function times<T>(amount: number, factory: (i: number) => T) {
   return new Array(amount).fill(null).map((_, i) => factory(i));
@@ -68,16 +69,14 @@ export default function ControlBar({ gameId }: Readonly<{ gameId: Id }>) {
         <IconButton
           disabled={!canUndo}
           onClick={undo}
-          data-tooltip-id="tooltip"
-          data-tooltip-content={t("button.undo")}
+          {...tooltip(t("button.undo"))}
         >
           <UndoIcon />
         </IconButton>
         <IconButton
           disabled={!canRedo}
           onClick={redo}
-          data-tooltip-id="tooltip"
-          data-tooltip-content={t("button.redo")}
+          {...tooltip(t("button.redo"))}
         >
           <RedoIcon />
         </IconButton>

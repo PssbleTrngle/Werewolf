@@ -1,6 +1,7 @@
 import { Player } from "models";
 import { useTranslation } from "react-i18next";
-import { styled } from "styled-components";
+import styled from "styled-components";
+import { tooltip } from "..";
 
 export default function PlayerIcon({
   children,
@@ -15,10 +16,7 @@ export default function PlayerIcon({
     <Style $size={size} {...props}>
       {children.name}
       {children.role && (
-        <Role
-          data-tooltip-id="tooltip"
-          data-tooltip-content={t(`role.${children.role.type}.name`)}
-        >
+        <Role {...tooltip(t(`role.${children.role.type}.name`))}>
           {children.role.emoji}
         </Role>
       )}

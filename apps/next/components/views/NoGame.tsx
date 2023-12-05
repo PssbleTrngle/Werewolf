@@ -6,6 +6,7 @@ import {
   Centered,
   IconButton,
   JoinIcon,
+  tooltip,
   useCreateMutation,
 } from "ui";
 import Layout from "../../layout/default";
@@ -51,10 +52,7 @@ function LobbyPanel({ children }: Readonly<{ children: Lobby }>) {
       <td>{children.id}</td>
       <td>({children.players.length}/5)</td>
       <ButtonsCell>
-        <IconButton
-          data-tooltip-id="tooltip"
-          data-tooltip-content={t("button.player.join")}
-        >
+        <IconButton {...tooltip(t("button.player.join"))}>
           <JoinIcon onClick={() => join()} />
         </IconButton>
       </ButtonsCell>

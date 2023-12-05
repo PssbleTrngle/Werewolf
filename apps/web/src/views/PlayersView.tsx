@@ -13,6 +13,7 @@ import {
   Input,
   ShuffleIcon,
   TrashIcon,
+  tooltip,
   useGameStatus,
   usePlayers,
 } from "ui";
@@ -149,16 +150,12 @@ function PlayersEditView() {
             <tr key={it.id}>
               <td>{it.name}</td>
               <ButtonsCell>
-                <IconButton
-                  data-tooltip-id="tooltip"
-                  data-tooltip-content={t("local:button.player.rename")}
-                >
+                <IconButton {...tooltip(t("local:button.player.rename"))}>
                   <EditIcon />
                 </IconButton>
                 <IconButton
                   onClick={() => removePlayer(it.id)}
-                  data-tooltip-id="tooltip"
-                  data-tooltip-content={t("local:button.player.remove")}
+                  {...tooltip(t("local:button.player.remove"))}
                 >
                   <TrashIcon />
                 </IconButton>

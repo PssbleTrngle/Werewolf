@@ -9,7 +9,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <SessionProvider session={session}>
       <Providers>
         <Component {...pageProps} />
-        <Tooltip id="tooltip" />
+        <Tooltip />
       </Providers>
     </SessionProvider>
   );
