@@ -1,31 +1,27 @@
-import { GameInfo, User } from "models";
+import { GameInfo } from "models";
 import { ApiError } from "next/dist/server/api-utils";
 import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
 import { deleteLobby, getLobby, startGame } from "../../../../lib/server/games";
+import { isAdmin } from "../../../../lib/server/permissions";
+import { IdParameter } from "../../../../lib/server/schemas";
 import {
   requireServerSession,
   requireSessionView,
 } from "../../../../lib/server/session";
 
-function isAdmin(user: User) {
-  return process.env.NEXT_ADMIN_EMAIL === user.id;
-}
-
 const GET = createApiHandler<GameInfo>(async (req, res) => {
-  // TODO validate & use
-  const { id } = req.query;
+  const { id } = IdParameter.parse(req.query);
 
-  const view = await requireSessionView({ req, res });
+  const view = await requireSessionView({ req, res }, id);
 
   res.status(200).json(view.gameInfo());
 });
 
 const POST = createApiHandler(async (req, res) => {
   const session = await requireServerSession({ req, res });
-  // TODO validate
-  const { id } = req.query;
+  const { id } = IdParameter.parse(req.query);
 
-  const lobby = await getLobby(id as string);
+  const lobby = await getLobby(id);
 
   if (lobby.owner.id !== session.user.id && !isAdmin(session.user)) {
     throw new ApiError(403, "you are not the owner of this lobby");

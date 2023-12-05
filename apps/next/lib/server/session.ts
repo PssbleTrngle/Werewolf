@@ -1,4 +1,5 @@
-import { PlayerGameView } from "logic";
+import { PlayerGameView, requirePlayer } from "logic";
+import { Id } from "models";
 import {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -8,12 +9,23 @@ import { Session, getServerSession } from "next-auth";
 import { ApiError } from "next/dist/server/api-utils";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 import { getGame, statusOf } from "./games";
+import { isAdmin } from "./permissions";
 
-export async function wrapSessionView(session: Session) {
+async function gameIdOf(session: Session) {
   const status = await statusOf(session.user.id);
-
   if (status?.type !== "game") return null;
-  const game = await getGame(status.id);
+  return status.id;
+}
+
+export async function wrapSessionView(session: Session, gameId?: Id) {
+  const realGameId = gameId ?? (await gameIdOf(session));
+  if (!realGameId) return null;
+
+  const game = await getGame(realGameId);
+
+  if (!requirePlayer(game.players, session.user.id) && !isAdmin(session.user)) {
+    throw new ApiError(302, "You are not part of this game");
+  }
 
   return new PlayerGameView(game, session.user.id);
 }
@@ -39,14 +51,14 @@ export async function requireServerSession(ctx: SessionContext) {
   throw new ApiError(401, "login required");
 }
 
-export async function sessionView(ctx: SessionContext) {
+export async function sessionView(ctx: SessionContext, gameId?: Id) {
   const session = await serverSession(ctx);
   if (!session) return null;
-  return wrapSessionView(session);
+  return wrapSessionView(session, gameId);
 }
 
-export async function requireSessionView(ctx: SessionContext) {
-  const view = await sessionView(ctx);
+export async function requireSessionView(ctx: SessionContext, gameId?: Id) {
+  const view = await sessionView(ctx, gameId);
   if (view) return view;
   throw new ApiError(403, "not part of a game");
 }

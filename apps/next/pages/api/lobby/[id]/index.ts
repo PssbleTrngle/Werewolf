@@ -1,11 +1,11 @@
 import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
 import { Lobby, getLobby } from "../../../../lib/server/games";
+import { IdParameter } from "../../../../lib/server/schemas";
 
 const GET = createApiHandler<Lobby>(async (req, res) => {
-  // TODO validate
-  const { id } = req.query;
+  const { id } = IdParameter.parse(req.query);
 
-  const lobby = await getLobby(id as string);
+  const lobby = await getLobby(id);
 
   res.status(200).json(lobby);
 });

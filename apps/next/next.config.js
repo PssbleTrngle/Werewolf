@@ -1,7 +1,10 @@
 const { i18n } = require("./next-i18next.config");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
 /** @type {import('next').NextConfig} */
-module.exports = {
+module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   transpilePackages: ["ui", "logic", "models"],
   compiler: {
@@ -14,4 +17,4 @@ module.exports = {
     return config;
   },
   i18n,
-};
+});

@@ -1,10 +1,12 @@
 import { NextApiHandler } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { ZodError, ZodIssue } from "zod";
 
 type Method = "GET" | "POST" | "PUT" | "HEAD" | "PATCH" | "DELETE";
 
 interface ErrorResponse {
   message: string;
+  issues?: ZodIssue[];
 }
 
 export function createApiHandler<T>(
@@ -14,6 +16,10 @@ export function createApiHandler<T>(
     try {
       return await handler(req, res);
     } catch (e) {
+      if (e instanceof ZodError) {
+        return res.status(400).json({ message: e.message, issues: e.issues });
+      }
+
       const message = e instanceof Error ? e.message : "an error occured";
       const status = e instanceof ApiError ? e.statusCode : 500;
       console.error(e);

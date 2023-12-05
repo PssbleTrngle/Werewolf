@@ -39,8 +39,6 @@ export const getServerSideProps = prefetchQueries(async (ctx, client) => {
       queryKey: gameInfoKey(status.id),
       queryFn: () => view.gameInfo(),
     });
-
-    console.log(view.gameInfo());
   }
 
   if (status.type === "lobby") {
