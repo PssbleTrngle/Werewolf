@@ -27,12 +27,19 @@ class FetchError extends Error {
 
 const isServer = typeof window === "undefined";
 
-async function request<T, D>(endpoint: string, method = "GET", data?: D) {
+async function request<T, D>(
+  endpoint: string,
+  method = "GET",
+  data?: D,
+  key?: string
+) {
   const url = `/api/${endpoint}`;
 
   if (isServer) {
     throw new Error(
-      `Cannot fetch API server-side, missing prefetched query for '${url}'`
+      `Cannot fetch API server-side, missing prefetched query for '${
+        key ?? url
+      }'`
     );
   }
 
@@ -69,7 +76,13 @@ function createAwareFetcher<R>(
   endpoint: (key: QueryKey) => string,
   method = "GET"
 ): QueryFunction<R> {
-  return ({ queryKey }) => request<R, never>(endpoint(queryKey), method);
+  return ({ queryKey }) =>
+    request<R, never>(
+      endpoint(queryKey),
+      method,
+      undefined,
+      `[${[queryKey.toString()]}]`
+    );
 }
 
 function createMutator<R, D>(endpoint: string, method: string) {
@@ -80,10 +93,10 @@ export default function createRemoteContext(): QueryContext {
   return {
     roles: createFetcher("roles"),
     // TODO game id in path
-    players: createFetcher("game/players"),
-    game: createFetcher("game"),
     gameStatus: createFetcher("game/status"),
-    activeEvent: createFetcher("game/event/active"),
+    players: createAwareFetcher(([, id]) => `game/${id}/players`),
+    game: createAwareFetcher(([, id]) => `game/${id}`),
+    activeEvent: createAwareFetcher(([, id]) => `game/${id}/event/active`),
 
     submitVote: createMutator("game/vote", "POST"),
     undo: createMutator("game/undo", "POST"),

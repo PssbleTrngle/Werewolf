@@ -18,6 +18,8 @@ export function prefetchQueries(
 
     const dehydratedState = dehydrate(client);
 
+    // TODO fail if query failed?
+
     return { props: { ...props, dehydratedState } };
   };
 }

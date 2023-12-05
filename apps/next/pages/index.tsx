@@ -4,8 +4,6 @@ import {
   activeEventKey,
   gameInfoKey,
   gameStatusKey,
-  useActiveEvent,
-  useGameInfo,
   useGameStatus,
 } from "ui";
 import GameLobby from "../components/views/GameLobby";
@@ -41,6 +39,8 @@ export const getServerSideProps = prefetchQueries(async (ctx, client) => {
       queryKey: gameInfoKey(status.id),
       queryFn: () => view.gameInfo(),
     });
+
+    console.log(view.gameInfo());
   }
 
   if (status.type === "lobby") {
@@ -72,12 +72,9 @@ function GameView() {
 }
 
 function ActiveGame({ gameId }: Readonly<{ gameId: Id }>) {
-  const { data: game } = useGameInfo(gameId);
-  const { data: event } = useActiveEvent(gameId);
-
   return (
     <Layout>
-      <EventScreen event={event} game={game} />
+      <EventScreen gameId={gameId} />
     </Layout>
   );
 }

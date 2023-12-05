@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "lint": "eslint \"{src,test}/**/*.{ts,tsx}\""
+    "lint": "eslint \"{src,test}/**/*.{ts,tsx}\"",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@styled-icons/boxicons-regular": "^10.47.0",

@@ -28,9 +28,9 @@ export interface Lobby {
 export async function getGame(id: Id) {
   const redis = await connectRedis();
 
-  const result = (await redis.json.get(`game:${id}`, {
-    path: "$",
-  })) as ReadonlyArray<GameState> | null;
+  const result = (await redis.json.get(
+    `game:${id}`
+  )) as ReadonlyArray<GameState> | null;
 
   if (result) return new RemoteGame(id, result);
   throw new ApiError(404, `Unable to find game with id ${id}`);

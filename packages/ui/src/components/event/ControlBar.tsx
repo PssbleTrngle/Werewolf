@@ -1,4 +1,4 @@
-import { EventQueue } from "models";
+import { EventQueue, Id } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -44,9 +44,9 @@ function Queue({ children }: Readonly<{ children: EventQueue }>) {
   );
 }
 
-export default function ControlBar() {
+export default function ControlBar({ gameId }: Readonly<{ gameId: Id }>) {
   const { t } = useTranslation();
-  const { data: status } = useGameInfo();
+  const { data: status } = useGameInfo(gameId);
   const { mutate: undo } = useUndoMutation();
   const { mutate: redo } = useRedoMutation();
 

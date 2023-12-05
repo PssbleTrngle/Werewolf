@@ -1,11 +1,15 @@
-import { GameInfo } from "models";
+import { GameInfo, User } from "models";
 import { ApiError } from "next/dist/server/api-utils";
-import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
-import { deleteLobby, getLobby, startGame } from "../../../lib/server/games";
+import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
+import { deleteLobby, getLobby, startGame } from "../../../../lib/server/games";
 import {
   requireServerSession,
   requireSessionView,
-} from "../../../lib/server/session";
+} from "../../../../lib/server/session";
+
+function isAdmin(user: User) {
+  return process.env.NEXT_ADMIN_EMAIL === user.id;
+}
 
 const GET = createApiHandler<GameInfo>(async (req, res) => {
   // TODO validate & use
@@ -23,7 +27,7 @@ const POST = createApiHandler(async (req, res) => {
 
   const lobby = await getLobby(id as string);
 
-  if (lobby.owner.id !== session.user.id) {
+  if (lobby.owner.id !== session.user.id && !isAdmin(session.user)) {
     throw new ApiError(403, "you are not the owner of this lobby");
   }
 

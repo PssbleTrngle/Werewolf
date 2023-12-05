@@ -3,7 +3,10 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "seed/user.mjs",
+    "seed/lobby.mjs",
+    "seed/index.mjs"
   ],
   "exclude": [
     "node_modules"

@@ -9,6 +9,7 @@
     "test:ci": "turbo test -- --coverage",
     "build": "turbo build",
     "clean": "turbo clean && rimraf node_modules",
+    "check": "turbo check",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore"
   },
   "devDependencies": {

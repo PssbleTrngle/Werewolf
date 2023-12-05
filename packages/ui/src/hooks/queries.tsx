@@ -1,6 +1,7 @@
 import {
   MutationFunction,
   QueryClient,
+  QueryFunction,
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -9,21 +10,21 @@ import { Event, GameInfo, GameStatus, Id, Player, Role, Vote } from "models";
 import { createContext, useContext } from "react";
 
 export interface QueryContext {
-  roles(): Promise<ReadonlyArray<Role>>;
-  gameStatus(): Promise<GameStatus>;
-  players(gameId: Id): Promise<ReadonlyArray<Player>>;
-  game(id: Id): Promise<GameInfo>;
-  activeEvent(gameId: Id): Promise<Event>;
+  roles: QueryFunction<ReadonlyArray<Role>>;
+  gameStatus: QueryFunction<GameStatus>;
+  players: QueryFunction<ReadonlyArray<Player>>;
+  game: QueryFunction<GameInfo>;
+  activeEvent: QueryFunction<Event>;
 
-  submitVote(vote: Vote): Promise<void>;
-  undo(): Promise<void>;
-  redo(): Promise<void>;
-  stop(): Promise<void>;
-  create(): Promise<void>;
+  submitVote: MutationFunction<unknown, Vote>;
+  undo: MutationFunction;
+  redo: MutationFunction;
+  stop: MutationFunction;
+  create: MutationFunction;
 }
 
 const NOOP = () => {
-  throw new Error("GameContext missing");
+  throw new Error("QueryContext missing");
 };
 
 const CTX = createContext<QueryContext>({
@@ -52,7 +53,7 @@ export function useGameInfo(gameId: Id) {
   const { game } = useContext(CTX);
   return useSuspenseQuery({
     queryKey: gameInfoKey(gameId),
-    queryFn: () => game(gameId),
+    queryFn: game,
   });
 }
 
@@ -61,7 +62,7 @@ export function useActiveEvent(gameId: Id) {
   const { activeEvent } = useContext(CTX);
   return useSuspenseQuery({
     queryKey: activeEventKey(gameId),
-    queryFn: () => activeEvent(gameId),
+    queryFn: activeEvent,
   });
 }
 
@@ -69,7 +70,7 @@ export function usePlayers(gameId: Id) {
   const { players } = useContext(CTX);
   return useSuspenseQuery({
     queryKey: ["players", gameId],
-    queryFn: () => players(gameId),
+    queryFn: players,
   });
 }
 

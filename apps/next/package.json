@@ -7,7 +7,9 @@
     "prepare": "node setup/copyLocales.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "node seed/index.mjs",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@redis/json": "^1.0.6",
@@ -29,6 +31,7 @@
     "ui": "workspace:*"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

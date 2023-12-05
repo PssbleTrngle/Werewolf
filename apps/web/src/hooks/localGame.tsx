@@ -172,16 +172,16 @@ function createLocalGame(): ExtendedGameContext {
   setGame(readSavedGame());
 
   return {
-    gameStatus: () => actualContext.gameStatus(),
-    roles: () => actualContext.roles(),
+    gameStatus: (...args) => actualContext.gameStatus(...args),
+    roles: (...args) => actualContext.roles(...args),
     players: (...args) => actualContext.players(...args),
     game: (...args) => actualContext.game(...args),
     activeEvent: (...args) => actualContext.activeEvent(...args),
-    submitVote: (vote) => actualContext.submitVote(vote),
-    undo: () => actualContext.undo(),
-    redo: () => actualContext.redo(),
-    stop: () => actualContext.stop(),
-    create: () => actualContext.create(),
+    submitVote: (...args) => actualContext.submitVote(...args),
+    undo: (...args) => actualContext.undo(...args),
+    redo: (...args) => actualContext.redo(...args),
+    stop: (...args) => actualContext.stop(...args),
+    create: (...args) => actualContext.create(...args),
     impersonate,
   };
 }

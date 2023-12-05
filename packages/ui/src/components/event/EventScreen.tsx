@@ -1,6 +1,7 @@
-import { Event, GameInfo, Time } from "models";
+import { Id, Time } from "models";
 import { PropsWithChildren, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
+import { useActiveEvent, useGameInfo } from "../..";
 import darkTheme from "../../theme/dark";
 import lightTheme from "../../theme/light";
 import Background from "../background/Background";
@@ -20,16 +21,16 @@ function themeBy(time: Time) {
 }
 
 export default function EventScreen({
-  game,
-  event,
+  gameId,
   children,
 }: Readonly<
   PropsWithChildren<{
-    game: GameInfo;
-    event: Event;
+    gameId: Id;
   }>
 >) {
-  // const game = useFakeGame();
+  // TODO parallel?
+  const { data: game } = useGameInfo(gameId);
+  const { data: event } = useActiveEvent(gameId);
 
   const theme = useMemo(() => themeBy(game?.time ?? "night"), [game]);
 
@@ -38,7 +39,7 @@ export default function EventScreen({
       <Background game={game}>
         {children}
         <Style>
-          <ControlBar />
+          <ControlBar gameId={gameId} />
           <EventWrapper>
             <ParticipantList size={1} players={event.players} />
             <EventDetails event={event} />

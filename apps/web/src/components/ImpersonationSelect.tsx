@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { InputStyles, usePlayers } from "ui";
 import useImpersonation from "../hooks/impersonate";
+import { GAME_ID } from "../hooks/localGame";
 
 function parseValue(value: string) {
   if (value === "") return undefined;
@@ -12,7 +13,7 @@ export default function ImpersonationSelect() {
   const { t } = useTranslation();
 
   const [impersonated, impersonate] = useImpersonation();
-  const { data: players } = usePlayers();
+  const { data: players } = usePlayers(GAME_ID);
 
   if (!players) return null;
 
