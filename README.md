@@ -14,6 +14,14 @@ Currently the only application using these is a simple react web frontend which 
 - a discord bot running games in the chat
 - a react-native app similar to the current standalone frontend
 
+Multiple packages, like the `logic` or `models` package are also planned to be published on an npm registry for them to be usable by anyone.
+
+## Setup
+
+To develop locally, run `pnpm install` once in the project-root directory, which will install all the required dependencies for all sub-projects.
+There are multiple top-level npm scripts, but for now running the `pnpm run dev` command in a specific app directory works too.
+Setup for the specific apps may also be defined in their respective README.
+
 ## Contribution
 
 Since this project is in it's early phases, a lot of conceptual work is yet to be done and contributing to the source code may not be reasonable yet in most cases.
