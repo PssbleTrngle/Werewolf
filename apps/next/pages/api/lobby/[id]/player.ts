@@ -1,5 +1,5 @@
+import { joinLobby, leaveLobby } from "storage";
 import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
-import { joinLobby, leaveLobby } from "../../../../lib/server/games";
 import { IdParameter } from "../../../../lib/server/schemas";
 import { requireServerSession } from "../../../../lib/server/session";
 

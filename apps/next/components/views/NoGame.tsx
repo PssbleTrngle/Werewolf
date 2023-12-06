@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import type { Lobby } from "storage";
 import styled from "styled-components";
 import {
   Button,
@@ -11,7 +12,6 @@ import {
 } from "ui";
 import Layout from "../../layout/default";
 import { useJoinMutation, useLobbies } from "../../lib/client/remoteContext";
-import { Lobby } from "../../lib/server/games";
 
 export default function NoGame() {
   const { mutate: create } = useCreateMutation();

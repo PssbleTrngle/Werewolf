@@ -1,14 +1,13 @@
 import { PlayerGameView, requirePlayer } from "logic";
-import { Id } from "models";
+import { ApiError, Id } from "models";
 import {
   GetServerSidePropsContext,
   NextApiRequest,
   NextApiResponse,
 } from "next";
 import { Session, getServerSession } from "next-auth";
-import { ApiError } from "next/dist/server/api-utils";
+import { getGame, statusOf } from "storage";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { getGame, statusOf } from "./games";
 import { isAdmin } from "./permissions";
 
 async function gameIdOf(session: Session) {

@@ -1,4 +1,5 @@
 import { Id } from "models";
+import { getLobbies, getLobby, statusOf } from "storage";
 import {
   EventScreen,
   activeEventKey,
@@ -11,7 +12,6 @@ import NoGame from "../components/views/NoGame";
 import Layout from "../layout/default";
 import { withPrefetched } from "../lib/client/hydrateQueries";
 import { lobbiesKey, lobbyKey } from "../lib/client/remoteContext";
-import { getLobbies, getLobby, statusOf } from "../lib/server/games";
 import { prefetchQueries } from "../lib/server/prefetchQueries";
 import {
   requireServerSession,

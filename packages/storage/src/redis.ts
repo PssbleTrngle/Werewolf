@@ -26,7 +26,7 @@ export default async function connectRedis(): Promise<RedisClient> {
 
 const SCHEMA_VERSION = 1;
 
-async function setupRedis(client: RedisClient) {
+export async function setupRedis(client: RedisClient): Promise<RedisClient> {
   const schemaVersion = parseInt((await client.get("schema:version")) ?? "0");
 
   if (schemaVersion < 1) {

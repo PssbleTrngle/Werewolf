@@ -6,7 +6,7 @@
     "web": "turbo dev --filter=web...",
     "lint": "turbo lint",
     "test": "turbo test",
-    "test:ci": "turbo test -- --coverage",
+    "test:ci": "turbo test -- --run --coverage",
     "build": "turbo build",
     "clean": "turbo clean && rimraf node_modules",
     "check": "turbo check",

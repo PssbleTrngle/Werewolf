@@ -4,6 +4,7 @@
 
 [![Test status](https://github.com/PssbleTrngle/Werewolf/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/PssbleTrngle/Werewolf/actions/workflows/test.yml)
 [![Translation status](https://weblate.macarena.ceo/widget/werewolf/common/svg-badge.svg)][TRANSLATE]
+[![Coverage](https://sonar.somethingcatchy.net/api/project_badges/measure?project=werewolf&metric=coverage&token=sqb_385be0ef3dd33d42a86ed5a323201f315e1ce70d)](https://sonar.somethingcatchy.net/dashboard?id=werewolf)
 
 ---
 

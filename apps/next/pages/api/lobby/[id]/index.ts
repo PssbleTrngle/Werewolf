@@ -1,5 +1,5 @@
+import { Lobby, getLobby } from "storage";
 import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
-import { Lobby, getLobby } from "../../../../lib/server/games";
 import { IdParameter } from "../../../../lib/server/schemas";
 
 const GET = createApiHandler<Lobby>(async (req, res) => {

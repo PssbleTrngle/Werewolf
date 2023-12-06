@@ -1,7 +1,6 @@
-import { GameInfo } from "models";
-import { ApiError } from "next/dist/server/api-utils";
+import { ApiError, GameInfo } from "models";
+import { getLobby, startGame } from "storage";
 import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
-import { deleteLobby, getLobby, startGame } from "../../../../lib/server/games";
 import { isAdmin } from "../../../../lib/server/permissions";
 import { IdParameter } from "../../../../lib/server/schemas";
 import {
@@ -28,8 +27,6 @@ const POST = createApiHandler(async (req, res) => {
   }
 
   const game = await startGame(lobby);
-
-  await deleteLobby(lobby);
 
   res.status(200).json({ gameId: game.id });
 });

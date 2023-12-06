@@ -1,4 +1,5 @@
 export * from "./Choice.js";
+export * from "./Error.js";
 export * from "./Event.js";
 export * from "./Game.js";
 export * from "./GameStatus.js";

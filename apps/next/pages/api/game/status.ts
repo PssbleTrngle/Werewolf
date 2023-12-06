@@ -1,5 +1,5 @@
+import { statusOf } from "storage";
 import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
-import { statusOf } from "../../../lib/server/games";
 import { requireServerSession } from "../../../lib/server/session";
 
 const GET = createApiHandler(async (req, res) => {

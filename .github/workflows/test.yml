@@ -29,6 +29,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: start test containers
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: |
+            packages/storage/docker-compose.test.yml
+
       - run: pnpm run test:ci
 
       - name: notify sonarqube

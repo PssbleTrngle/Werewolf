@@ -7,22 +7,13 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Id } from "models";
+import { ApiError, Id } from "models";
 import { useMemo } from "react";
+import type { Lobby } from "storage";
 import { QueryContext, gameStatusKey } from "ui";
-import type { Lobby } from "../server/games";
 
-interface ApiError {
+interface ErrorData {
   message?: string;
-}
-
-class FetchError extends Error {
-  constructor(
-    public readonly status: number,
-    message?: string
-  ) {
-    super(message);
-  }
 }
 
 const isServer = typeof window === "undefined";
@@ -63,8 +54,8 @@ async function request<T, D>(
   if (response.ok) {
     return json as T;
   } else {
-    const error = json as ApiError;
-    throw new FetchError(response.status, error.message ?? response.statusText);
+    const error = json as ErrorData;
+    throw new ApiError(response.status, error.message ?? response.statusText);
   }
 }
 

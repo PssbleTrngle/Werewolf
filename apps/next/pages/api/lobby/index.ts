@@ -1,5 +1,5 @@
+import { Lobby, createLobby, getLobbies } from "storage";
 import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
-import { Lobby, createLobby, getLobbies } from "../../../lib/server/games";
 import { requireServerSession } from "../../../lib/server/session";
 
 const POST = createApiHandler(async (req, res) => {

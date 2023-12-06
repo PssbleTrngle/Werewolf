@@ -1,0 +1,16 @@
+{
+  "extends": "tsconfig/base",
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "strict": true,
+    "types": [
+      "vitest/globals"
+    ]
+  }
+}
