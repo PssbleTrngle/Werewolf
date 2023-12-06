@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { Button, Centered, Title } from "ui";
-import { InvisibleLink } from "../components/Link";
-import Layout from "../layout/default";
-import Providers from "../lib/providers";
-import { preloadTranslations } from "../lib/server/localization";
+import { InvisibleLink } from "@/components/Link";
+import Layout from "@/layout/default";
+import Providers from "@/lib/providers";
+import { preloadTranslations } from "@/lib/server/localization";
 
 export const getStaticProps = preloadTranslations;
 

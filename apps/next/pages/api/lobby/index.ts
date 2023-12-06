@@ -1,6 +1,6 @@
 import { Lobby, createLobby, getLobbies } from "storage";
-import { createApiHandler, methods } from "../../../lib/server/apiHandlers";
-import { requireServerSession } from "../../../lib/server/session";
+import { createApiHandler, methods } from "@/lib/server/apiHandlers";
+import { requireServerSession } from "@/lib/server/session";
 
 const POST = createApiHandler(async (req, res) => {
   const session = await requireServerSession({ req, res });

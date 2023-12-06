@@ -1,7 +1,7 @@
 import { joinLobby, leaveLobby } from "storage";
-import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
-import { IdParameter } from "../../../../lib/server/schemas";
-import { requireServerSession } from "../../../../lib/server/session";
+import { createApiHandler, methods } from "@/lib/server/apiHandlers";
+import { IdParameter } from "@/lib/server/schemas";
+import { requireServerSession } from "@/lib/server/session";
 
 const POST = createApiHandler(async (req, res) => {
   const session = await requireServerSession({ req, res });

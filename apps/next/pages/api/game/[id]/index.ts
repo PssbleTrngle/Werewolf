@@ -1,12 +1,12 @@
 import { ApiError, GameInfo } from "models";
 import { getLobby, startGame } from "storage";
-import { createApiHandler, methods } from "../../../../lib/server/apiHandlers";
-import { isAdmin } from "../../../../lib/server/permissions";
-import { IdParameter } from "../../../../lib/server/schemas";
+import { createApiHandler, methods } from "@/lib/server/apiHandlers";
+import { isAdmin } from "@/lib/server/permissions";
+import { IdParameter } from "@/lib/server/schemas";
 import {
   requireServerSession,
   requireSessionView,
-} from "../../../../lib/server/session";
+} from "@/lib/server/session";
 
 const GET = createApiHandler<GameInfo>(async (req, res) => {
   const { id } = IdParameter.parse(req.query);

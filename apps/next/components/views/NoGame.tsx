@@ -10,8 +10,8 @@ import {
   tooltip,
   useCreateMutation,
 } from "ui";
-import Layout from "../../layout/default";
-import { useJoinMutation, useLobbies } from "../../lib/client/remoteContext";
+import Layout from "@/layout/default";
+import { useJoinMutation, useLobbies } from "@/lib/client/remoteContext";
 
 export default function NoGame() {
   const { mutate: create } = useCreateMutation();

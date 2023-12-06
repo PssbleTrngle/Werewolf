@@ -1,5 +1,12 @@
 {
   "extends": "tsconfig/nextjs",
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
   "include": [
     "next-env.d.ts",
     "**/*.ts",

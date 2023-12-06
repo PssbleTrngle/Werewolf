@@ -7,16 +7,16 @@ import {
   gameStatusKey,
   useGameStatus,
 } from "ui";
-import GameLobby from "../components/views/GameLobby";
-import NoGame from "../components/views/NoGame";
-import Layout from "../layout/default";
-import { withPrefetched } from "../lib/client/hydrateQueries";
-import { lobbiesKey, lobbyKey } from "../lib/client/remoteContext";
-import { prefetchQueries } from "../lib/server/prefetchQueries";
+import GameLobby from "@/components/views/GameLobby";
+import NoGame from "@/components/views/NoGame";
+import Layout from "@/layout/default";
+import { withPrefetched } from "@/lib/client/hydrateQueries";
+import { lobbiesKey, lobbyKey } from "@/lib/client/remoteContext";
+import { prefetchQueries } from "@/lib/server/prefetchQueries";
 import {
   requireServerSession,
   requireSessionView,
-} from "../lib/server/session";
+} from "@/lib/server/session";
 
 export const getServerSideProps = prefetchQueries(async (ctx, client) => {
   const session = await requireServerSession(ctx);

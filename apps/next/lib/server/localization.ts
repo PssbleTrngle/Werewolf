@@ -1,5 +1,5 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import i18nextConfig from "../../next-i18next.config";
+import i18nextConfig from "@/next-i18next.config";
 
 export const preloadTranslations = async ({
   locale = i18nextConfig.i18n.defaultLocale,

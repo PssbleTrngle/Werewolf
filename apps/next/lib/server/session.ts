@@ -7,8 +7,8 @@ import {
 } from "next";
 import { Session, getServerSession } from "next-auth";
 import { getGame, statusOf } from "storage";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { isAdmin } from "./permissions";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { isAdmin } from "@/lib/server/permissions";
 
 async function gameIdOf(session: Session) {
   const status = await statusOf(session.user.id);

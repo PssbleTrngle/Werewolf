@@ -10,12 +10,12 @@ import {
   StartIcon,
   tooltip,
 } from "ui";
-import Layout from "../../layout/default";
+import Layout from "@/layout/default";
 import {
   useLeaveMutation,
   useLobby,
   useStartMutation,
-} from "../../lib/client/remoteContext";
+} from "@/lib/client/remoteContext";
 
 export default function GameLobby({ lobbyId }: Readonly<{ lobbyId: Id }>) {
   const { t } = useTranslation("hub");
