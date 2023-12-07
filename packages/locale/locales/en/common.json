@@ -4,6 +4,7 @@
     "dismiss": "Dismiss",
     "undo": "Undo",
     "redo": "Redo",
+    "save": "Save",
     "game": {
       "create": "Create Game",
       "stop": "Stop"

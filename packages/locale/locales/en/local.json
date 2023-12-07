@@ -3,12 +3,17 @@
     "player": {
       "add": "Add Player",
       "remove": "Remove",
-      "rename": "Rename"
+      "rename": "Rename",
+      "select_role": "Select Role"
     }
   },
   "nav": {
     "game": "Game",
     "players": "Players",
     "roles": "Roles"
+  },
+  "dialog": {
+    "rename": "Rename Player",
+    "role_select": "Select Role"
   }
 }

@@ -1,7 +1,7 @@
 import { MIN_PLAYERS } from "logic";
-import { Id, Player, Status } from "models";
+import { Id, Player, Role, Status } from "models";
 import { nanoid } from "nanoid";
-import { Dispatch, FormEvent, useCallback, useState } from "react";
+import { Dispatch, FormEvent, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
@@ -11,6 +11,7 @@ import {
   EditIcon,
   IconButton,
   Input,
+  RoleIcon,
   ShuffleIcon,
   TrashIcon,
   tooltip,
@@ -18,9 +19,35 @@ import {
   usePlayers,
 } from "ui";
 import InvisibleLink from "../components/InivisibleLink";
+import RenameDialog from "../components/dialog/RenameDialog";
+import RoleSelectDialog from "../components/dialog/RoleSelectDialog";
 import { GAME_ID } from "../hooks/localGame";
 import useLocalStorage from "../hooks/useLocalStorage";
 import randomNames from "../randomNames";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function useDialogAction<TState, TArgs extends any[]>(
+  action: (value: TState, ...args: TArgs) => unknown
+) {
+  const [id, open] = useState<TState>();
+
+  const close = useCallback(() => open(undefined), [open]);
+
+  const execute = useCallback(
+    (...args: TArgs) => {
+      if (id) action(id, ...args);
+      close();
+    },
+    [close, id, action]
+  );
+
+  const visible = useMemo(() => !!id, [id]);
+
+  return useMemo(
+    () => ({ execute, open, close, visible }),
+    [execute, open, close, visible]
+  );
+}
 
 function AddPanel({
   onAddPlayer,
@@ -127,7 +154,10 @@ function ActivePlayersView() {
 function PlayersEditView() {
   const { t } = useTranslation();
 
-  const [players, setPlayers] = useLocalStorage<Player[]>("players", () => []);
+  const [players, setPlayers] = useLocalStorage<ReadonlyArray<Player>>(
+    "players",
+    () => []
+  );
   const addPlayer = useCallback(
     (player: Player) => setPlayers((it) => [...it, player]),
     [setPlayers]
@@ -136,9 +166,49 @@ function PlayersEditView() {
     (id: Id) => setPlayers((players) => players.filter((it) => it.id !== id)),
     [setPlayers]
   );
+  const modifyPlayer = useCallback(
+    (id: Id, values: Partial<Player>) =>
+      setPlayers((players) =>
+        players.map((it) => {
+          if (it.id === id) return { ...it, ...values };
+          return it;
+        })
+      ),
+    [setPlayers]
+  );
+
+  const selectRole = useCallback(
+    (id: Id, role?: Role) => {
+      modifyPlayer(id, { role });
+    },
+    [modifyPlayer]
+  );
+
+  const rename = useCallback(
+    (id: Id, name: string) => {
+      modifyPlayer(id, { name });
+    },
+    [modifyPlayer]
+  );
+
+  const roleSelectDialog = useDialogAction(selectRole);
+
+  const renameDialog = useDialogAction(rename);
 
   return (
     <Centered>
+      <RoleSelectDialog
+        visible={roleSelectDialog.visible}
+        onClose={roleSelectDialog.close}
+        onSelect={roleSelectDialog.execute}
+      />
+
+      <RenameDialog
+        visible={renameDialog.visible}
+        onClose={renameDialog.close}
+        onChange={renameDialog.execute}
+      />
+
       {players.length < MIN_PLAYERS && (
         <p>{t("error.min_players_requirement", { count: MIN_PLAYERS })}</p>
       )}
@@ -150,7 +220,10 @@ function PlayersEditView() {
             <tr key={it.id}>
               <td>{it.name}</td>
               <ButtonsCell>
-                <IconButton {...tooltip(t("local:button.player.rename"))}>
+                <IconButton
+                  onClick={() => renameDialog.open(it.id)}
+                  {...tooltip(t("local:button.player.rename"))}
+                >
                   <EditIcon />
                 </IconButton>
                 <IconButton
@@ -158,6 +231,12 @@ function PlayersEditView() {
                   {...tooltip(t("local:button.player.remove"))}
                 >
                   <TrashIcon />
+                </IconButton>
+                <IconButton
+                  onClick={() => roleSelectDialog.open(it.id)}
+                  {...tooltip(t("local:button.player.select_role"))}
+                >
+                  <RoleIcon />
                 </IconButton>
               </ButtonsCell>
             </tr>

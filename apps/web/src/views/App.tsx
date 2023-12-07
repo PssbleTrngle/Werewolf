@@ -1,10 +1,13 @@
 import { Outlet } from "react-router-dom";
+import { DialogTarget } from "../hooks/useDialog";
 import Layout from "./Layout";
 
 function App() {
   return (
     <Layout>
-      <Outlet />
+      <DialogTarget>
+        <Outlet />
+      </DialogTarget>
     </Layout>
   );
 }

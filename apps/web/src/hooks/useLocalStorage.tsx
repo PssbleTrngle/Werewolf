@@ -22,8 +22,8 @@ export default function useLocalStorage<T extends SerializeAble>(
   );
 
   return useReducer((previous: T, value: SetStateAction<T>) => {
-    const readValue = typeof value === "function" ? value(previous) : value;
-    save(readValue);
-    return readValue;
+    const realValue = typeof value === "function" ? value(previous) : value;
+    save(realValue);
+    return realValue;
   }, saved ?? initial());
 }

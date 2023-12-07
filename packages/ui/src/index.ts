@@ -1,5 +1,6 @@
 export { default as Button, Buttons, IconButton } from "./components/Button";
 export { default as Centered } from "./components/Centered";
+export { default as Dialog, type DialogProps } from "./components/Dialog";
 export { default as ErrorMessage } from "./components/ErrorBox";
 export {
   FOOTER_HEIGHT,

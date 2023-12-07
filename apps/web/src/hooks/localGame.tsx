@@ -31,8 +31,12 @@ class LocalGame extends Game {
   }
 }
 
+export function readLocalPlayers() {
+  return readLocalStorage<ReadonlyArray<Player>>("players");
+}
+
 function createGame() {
-  const players = readLocalStorage<ReadonlyArray<Player>>("players");
+  const players = readLocalPlayers();
   if (!players) throw new Error("No players added yet");
   return new LocalGame(
     Game.createState(
