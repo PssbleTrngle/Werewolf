@@ -5,5 +5,7 @@ declare module "styled-components" {
     bg: string;
     text: string;
     accent: string;
+    nav: string;
+    error: string;
   }
 }

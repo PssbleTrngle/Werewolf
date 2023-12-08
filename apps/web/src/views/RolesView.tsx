@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { useRoles } from "ui";
+import { XS, useRoles } from "ui";
 import InvisibleLink from "../components/InivisibleLink";
 
 export default function RolesView() {
@@ -49,6 +49,8 @@ const Emoji = styled.span`
 const Grid = styled.ul`
   --panel-size: 150px;
 
+  height: fit-content;
+
   display: grid;
   gap: 1em;
   padding: 1em;
@@ -56,4 +58,8 @@ const Grid = styled.ul`
   list-style: none;
 
   grid-template-columns: repeat(auto-fill, var(--panel-size));
+
+  ${XS} {
+    justify-content: space-evenly;
+  }
 `;

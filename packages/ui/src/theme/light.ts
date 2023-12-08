@@ -5,4 +5,5 @@ export default <DefaultTheme>{
   accent: "#de913e",
   bg: "#DDD",
   nav: "#AAA",
+  error: "#b53149",
 };

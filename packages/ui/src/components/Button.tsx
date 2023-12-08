@@ -1,17 +1,37 @@
 import { invert, lighten } from "polished";
-import styled, { css } from "styled-components";
+import styled, { ShouldForwardProp, css } from "styled-components";
 import { InputStyles } from "./Input";
 
 const ErrorStyle = css`
-  background: #b53149;
+  background: ${(p) => p.theme.error};
+  border-color: ${(p) => lighten(0.2, p.theme.error)};
 
-  &:hover:not(:disabled) {
-    background: ${lighten(0.1, "#b53149")};
+  &:hover:not(:disp = > abled) {
+    background: ${(p) => lighten(0.1, p.theme.error)};
     color: #eee;
   }
 `;
 
-const Button = styled.button<{ $error?: boolean }>`
+const PrimaryStyle = css`
+  background: ${(p) => p.theme.accent};
+  border-color: ${(p) => lighten(0.2, p.theme.accent)};
+
+  &:hover:not(:disabled) {
+    background: ${(p) => lighten(0.1, p.theme.accent)};
+    color: #eee;
+  }
+`;
+
+export interface ButtonProps {
+  error?: boolean;
+  primary?: boolean;
+}
+
+const shouldForwardProp: ShouldForwardProp<"web"> = (key) => {
+  return key !== "error" && key !== "primary";
+};
+
+const Button = styled.button.withConfig({ shouldForwardProp })<ButtonProps>`
   ${InputStyles};
 
   background: transparent;
@@ -23,11 +43,16 @@ const Button = styled.button<{ $error?: boolean }>`
     color: ${(p) => invert(p.theme.text)};
   }
 
-  ${(p) => p.$error && ErrorStyle}
+  ${(p) => p.error && ErrorStyle}
+  ${(p) => p.primary && PrimaryStyle}
 `;
 
 export const IconButton = styled(Button)`
   padding: 0.3em 0.8em;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 
   svg {
     height: 2.2em;

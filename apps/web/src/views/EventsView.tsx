@@ -1,3 +1,5 @@
+import { MIN_PLAYERS } from "logic";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
@@ -5,11 +7,12 @@ import {
   Centered,
   ErrorMessage,
   EventScreen,
+  Title,
   useCreateMutation,
   useGameStatus,
   useStopMutation,
 } from "ui";
-import { GAME_ID } from "../hooks/localGame";
+import { GAME_ID, readLocalPlayers } from "../hooks/localGame";
 
 export default function EventsView() {
   const { data: status } = useGameStatus();
@@ -32,18 +35,38 @@ function ActiveEventView() {
 function CreateGame() {
   const { t } = useTranslation();
   const { mutate: create, error } = useCreateMutation();
+  const players = readLocalPlayers() ?? [];
+
+  const missingPlayers = players.length < MIN_PLAYERS;
+  const missingRoles = players.some((it) => !it.role);
+
+  const errorMessage = useMemo(() => {
+    if (missingPlayers)
+      return t("local:error.min_players_requirement", { count: MIN_PLAYERS });
+    if (missingRoles) return t("local:error.missing_selected_roles");
+    if (error) return error;
+  }, [t, error, missingPlayers, missingRoles]);
 
   return (
     <Centered>
-      <p>
-        {error ? <ErrorMessage error={error} /> : t("status.game.no_active")}
-      </p>
-      <Button onClick={create} $error={!!error}>
-        {t("button.game.create")}
-      </Button>
+      <InnerCentered>
+        <Title>{t("local:status.game.no_active")}</Title>
+        <ErrorMessage error={errorMessage} />
+        <Button
+          onClick={create}
+          disabled={missingPlayers || missingRoles}
+          error={!!error}
+        >
+          {t("button.game.create")}
+        </Button>
+      </InnerCentered>
     </Centered>
   );
 }
+
+const InnerCentered = styled(Centered)`
+  height: 300px;
+`;
 
 const StopButton = styled(Button)`
   position: absolute;

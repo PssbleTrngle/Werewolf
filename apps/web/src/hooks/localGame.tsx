@@ -2,11 +2,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   EMPTY_ROLE_DATA,
   Game,
+  Player as GamePlayer,
   GameState,
   ModeratorGameView,
   PlayerGameView,
   allRoles,
-  generateRoles,
 } from "logic";
 import { GameStatus, Id, Player, Vote } from "models";
 import { Dispatch, PropsWithChildren, useMemo, useReducer } from "react";
@@ -35,20 +35,20 @@ export function readLocalPlayers() {
   return readLocalStorage<ReadonlyArray<Player>>("players");
 }
 
+export function preparePlayers(
+  players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>
+): ReadonlyArray<GamePlayer> {
+  return players.map(({ role, ...it }) => {
+    if (!role) throw new Error(`Player ${it.name} is missing a role`);
+    return { ...it, roleData: EMPTY_ROLE_DATA, status: "alive", role };
+  });
+}
+
 function createGame() {
   const players = readLocalPlayers();
   if (!players) throw new Error("No players added yet");
-  return new LocalGame(
-    Game.createState(
-      generateRoles(
-        players.map((it) => ({
-          ...it,
-          status: "alive",
-          roleData: EMPTY_ROLE_DATA,
-        }))
-      )
-    )
-  );
+  const prepared = preparePlayers(players);
+  return new LocalGame(Game.createState(prepared));
 }
 
 function readSavedGame() {

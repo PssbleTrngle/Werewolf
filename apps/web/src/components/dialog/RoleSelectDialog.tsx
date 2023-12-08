@@ -1,16 +1,19 @@
 import { Role } from "models";
+import { lighten } from "polished";
 import { Dispatch } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Dialog, DialogProps, tooltip, useRoles } from "ui";
+import { Button, Buttons, Dialog, DialogProps, tooltip, useRoles } from "ui";
 import useDialog from "../../hooks/useDialog";
 
 export default function RoleSelectDialog({
   onSelect,
+  initial,
   ...props
 }: DialogProps &
   Readonly<{
     onSelect: Dispatch<Role>;
+    initial?: string;
   }>) {
   const { t } = useTranslation();
   const { data: roles } = useRoles();
@@ -21,19 +24,38 @@ export default function RoleSelectDialog({
       <h2>{t("local:dialog.role_select")}</h2>
       <Grid>
         {roles.map((it) => (
-          <li
+          <RoleButton
             onClick={() => onSelect(it)}
             key={it.type}
-            role="button"
+            $selected={it.type === initial}
             {...tooltip(t(`role.${it.type}.name`))}
           >
             {it.emoji}
-          </li>
+          </RoleButton>
         ))}
       </Grid>
+      <Buttons>
+        <Button onClick={props.onClose}>{t("button.cancel")}</Button>
+      </Buttons>
     </Dialog>
   );
 }
+
+const RoleButton = styled.li.attrs({ role: "button" })<{ $selected?: boolean }>`
+  background: ${(p) => (p.$selected ? p.theme.accent : "transparent")};
+  border-radius: 0.1em;
+  aspect-ratio: 1 / 1;
+
+  display: grid;
+  align-items: center;
+
+  &:hover {
+    background: ${(p) =>
+      lighten(0.1, p.$selected ? p.theme.accent : p.theme.bg)};
+  }
+
+  transition: background 0.1s linear;
+`;
 
 const Grid = styled.ul`
   list-style: none;

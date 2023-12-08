@@ -10,5 +10,11 @@
     "game": "Dorf",
     "players": "Spieler",
     "roles": "Rollen"
+  },
+  "status": {
+    "game.no_active": "Kein aktives Spiel"
+  },
+  "error": {
+    "min_players_requirement": "Mindestens {{count}} Spieler werden benötigt, um ein Spiel zu starten"
   }
 }

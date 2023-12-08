@@ -1,8 +1,19 @@
-import styled from "styled-components";
+import styled, { ShouldForwardProp, css } from "styled-components";
 
-const Centered = styled.section`
+export const CenteredHorizontal = css`
+  height: fit-content;
+`;
+
+const shouldForwardProp: ShouldForwardProp<"web"> = (key) => {
+  return key !== "horizontalOnly";
+};
+
+const Centered = styled.section.withConfig({ shouldForwardProp })<{
+  horizontalOnly?: boolean;
+}>`
   display: grid;
   place-items: center;
+  ${(p) => p.horizontalOnly && CenteredHorizontal}
 `;
 
 export default Centered;

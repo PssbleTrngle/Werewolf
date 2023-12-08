@@ -10,6 +10,7 @@ import {
   useRef,
 } from "react";
 import { createPortal } from "react-dom";
+import styled from "styled-components";
 
 const CTX = createContext<RefObject<HTMLElement | null>>(createRef());
 
@@ -31,8 +32,12 @@ export function DialogTarget(props: Readonly<PropsWithChildren>) {
 
   return (
     <>
-      <section ref={ref} />
+      <DialogTargetElement ref={ref} />
       <CTX.Provider {...props} value={ref} />
     </>
   );
 }
+
+const DialogTargetElement = styled.section`
+  position: absolute;
+`;

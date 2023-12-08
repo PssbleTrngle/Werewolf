@@ -5,6 +5,7 @@
     "undo": "Undo",
     "redo": "Redo",
     "save": "Save",
+    "cancel": "Cancel",
     "game": {
       "create": "Create Game",
       "stop": "Stop"
@@ -56,7 +57,10 @@
     "gamemaster.title": "Gamemaster",
     "villager": {
       "name": "Villager",
-      "description": "TODO"
+      "description": [
+        "The only sane people in the village simply trying to survive by lynching others based on outdated prejudices.",
+        "The Villager does not possess any abilities and tries to win with the support of other roles which are part of the villager group."
+      ]
     },
     "hunter": {
       "name": "Hunter",
@@ -93,10 +97,11 @@
     "freemason": {
       "name": "Freemason",
       "description": "TODO"
+    },
+    "group": {
+      "villager": "Villagers",
+      "wolf": "Wolfs"
     }
-  },
-  "status": {
-    "game.no_active": "No active Game"
   },
   "player": {
     "name": "Name",
@@ -109,8 +114,5 @@
       "dying": "Dying",
       "dead": "Dead"
     }
-  },
-  "error": {
-    "min_players_requirement": "At least {{count}} players are required to start a game"
   }
 }

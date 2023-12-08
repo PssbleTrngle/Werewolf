@@ -1,20 +1,48 @@
-import { DispatchWithoutAction, PropsWithChildren } from "react";
+import {
+  DispatchWithoutAction,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+} from "react";
 import styled, { css } from "styled-components";
+import { Buttons } from "../components/Button";
 
 export type DialogProps = Readonly<{
   onClose: DispatchWithoutAction;
   visible?: boolean;
 }>;
 
+function useWindowEvent<K extends keyof WindowEventMap>(
+  type: K,
+  listener: (event: WindowEventMap[K]) => void
+) {
+  useEffect(() => {
+    window.addEventListener(type, listener);
+    return () => window.removeEventListener(type, listener);
+  }, [type, listener]);
+}
+
 export default function Dialog({
   onClose,
   visible,
+  children,
   ...props
 }: Readonly<PropsWithChildren<DialogProps>>) {
+  const onKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.code === "Escape") onClose();
+    },
+    [onClose]
+  );
+
+  useWindowEvent("keydown", onKeyDown);
+
   return (
     <>
       <Curtain aria-hidden $visible={visible} onClick={onClose} />
-      <Style $visible={visible} {...props} />
+      <Style $visible={visible} {...props}>
+        {children}
+      </Style>
     </>
   );
 }
@@ -48,15 +76,20 @@ const Style = styled.div<{ $visible?: boolean }>`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  padding: 1em;
-  padding-top: 0;
+  padding: 2em;
+  padding-top: 0em;
 
   background: ${(p) => p.theme.bg};
-  box-shadow: 2px 5px 5px 0 #0005;
+  box-shadow: 2px 5px 20px 0 #000d;
   border-radius: 0.5em;
 
   h2 {
     text-align: center;
+    margin: 1em 0;
+  }
+
+  ${Buttons} {
+    margin-top: 1em;
   }
 
   ${(p) => !p.$visible && HiddenDialog};

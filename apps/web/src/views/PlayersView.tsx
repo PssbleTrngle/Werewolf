@@ -1,4 +1,4 @@
-import { MIN_PLAYERS } from "logic";
+import { MIN_PLAYERS, generateRoles } from "logic";
 import { Id, Player, Role, Status } from "models";
 import { nanoid } from "nanoid";
 import { Dispatch, FormEvent, useCallback, useMemo, useState } from "react";
@@ -41,11 +41,9 @@ function useDialogAction<TState, TArgs extends any[]>(
     [close, id, action]
   );
 
-  const visible = useMemo(() => !!id, [id]);
-
   return useMemo(
-    () => ({ execute, open, close, visible }),
-    [execute, open, close, visible]
+    () => ({ id, execute, open, close, visible: !!id }),
+    [id, execute, open, close]
   );
 }
 
@@ -113,7 +111,7 @@ function ActivePlayersView() {
   const { data: players } = usePlayers(GAME_ID);
 
   return (
-    <Centered>
+    <Centered horizontalOnly>
       <Count>{t("player.count", { count: players.length })}</Count>
       <Table>
         <thead>
@@ -177,6 +175,11 @@ function PlayersEditView() {
     [setPlayers]
   );
 
+  const canRandomize = useMemo(() => players.length >= MIN_PLAYERS, [players]);
+  const randomizeRoles = useCallback(() => {
+    if (canRandomize) setPlayers(generateRoles);
+  }, [setPlayers, canRandomize]);
+
   const selectRole = useCallback(
     (id: Id, role?: Role) => {
       modifyPlayer(id, { role });
@@ -196,29 +199,55 @@ function PlayersEditView() {
   const renameDialog = useDialogAction(rename);
 
   return (
-    <Centered>
+    <Centered horizontalOnly>
       <RoleSelectDialog
         visible={roleSelectDialog.visible}
         onClose={roleSelectDialog.close}
         onSelect={roleSelectDialog.execute}
+        initial={
+          players.find((it) => it.id === roleSelectDialog.id)?.role?.type
+        }
       />
 
       <RenameDialog
         visible={renameDialog.visible}
         onClose={renameDialog.close}
         onChange={renameDialog.execute}
+        initial={players.find((it) => it.id === renameDialog.id)?.name}
       />
 
-      {players.length < MIN_PLAYERS && (
-        <p>{t("error.min_players_requirement", { count: MIN_PLAYERS })}</p>
-      )}
       <AddPanel onAddPlayer={addPlayer} />
       <Count>{t("player.count", { count: players.length })}</Count>
+
+      <Toolbar>
+        <IconButton
+          disabled={!canRandomize}
+          onClick={randomizeRoles}
+          {...(canRandomize
+            ? {}
+            : tooltip(
+                t("local:error.min_players_requirement", {
+                  count: MIN_PLAYERS,
+                })
+              ))}
+        >
+          {t("local:button.player.generate_roles")}
+          <ShuffleIcon />
+        </IconButton>
+      </Toolbar>
+
       <Table>
         <tbody>
           {players.map((it) => (
             <tr key={it.id}>
               <td>{it.name}</td>
+              {it.role ? (
+                <td>
+                  {it.role.emoji} <i>{t(`role.${it.role.type}.name`)}</i>
+                </td>
+              ) : (
+                <td />
+              )}
               <ButtonsCell>
                 <IconButton
                   onClick={() => renameDialog.open(it.id)}
@@ -227,16 +256,17 @@ function PlayersEditView() {
                   <EditIcon />
                 </IconButton>
                 <IconButton
-                  onClick={() => removePlayer(it.id)}
-                  {...tooltip(t("local:button.player.remove"))}
-                >
-                  <TrashIcon />
-                </IconButton>
-                <IconButton
                   onClick={() => roleSelectDialog.open(it.id)}
                   {...tooltip(t("local:button.player.select_role"))}
                 >
                   <RoleIcon />
+                </IconButton>
+                <IconButton
+                  error
+                  onClick={() => removePlayer(it.id)}
+                  {...tooltip(t("local:button.player.remove"))}
+                >
+                  <TrashIcon />
                 </IconButton>
               </ButtonsCell>
             </tr>
@@ -246,6 +276,10 @@ function PlayersEditView() {
     </Centered>
   );
 }
+
+const Toolbar = styled(Buttons)`
+  margin-bottom: 1em;
+`;
 
 const ButtonsCell = styled(Buttons).attrs({ as: "td" })`
   justify-content: end;
@@ -267,7 +301,7 @@ const Form = styled.form`
 const Table = styled.table`
   width: 100%;
   max-width: 800px;
-  margin-bottom: 1em;
+  margin-bottom: 3em;
 
   border-collapse: collapse;
 

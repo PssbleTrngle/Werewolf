@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useRoles } from "ui";
+import { Centered, useRoles } from "ui";
 
 export default function RoleView() {
   const { data: roles } = useRoles();
@@ -17,16 +17,24 @@ export default function RoleView() {
   if (!role) return <p>Unknown Role</p>;
 
   return (
-    <Style>
+    <Centered horizontalOnly>
       <h1>
         {t(`role.${role.type}.name`)} {role.emoji}
       </h1>
+      {!!role.groups?.length && (
+        <p>
+          {role.groups.map((group) => (
+            <Badge key={group}>{t(`role.group.${group}`)}</Badge>
+          ))}
+        </p>
+      )}
       <p>{t(`role.${role.type}.description`)}</p>
-    </Style>
+    </Centered>
   );
 }
 
-const Style = styled.section`
-  display: grid;
-  justify-content: center;
+const Badge = styled.span`
+  background: ${(p) => p.theme.nav};
+  padding: 0.5em;
+  border-radius: 0.5em;
 `;

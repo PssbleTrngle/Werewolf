@@ -1,103 +1,97 @@
 {
-    "event.start.title": "Spiel starten?",
-    "button": {
-        "skip": "Überspringen",
-        "game": {
-            "create": "Spiel erstellen",
-            "stop": "Beenden"
-        },
-        "dismiss": "Passt",
-        "undo": "Undo",
-        "redo": "Redo",
-        "translate": "Hilf beim Übersetzen",
-        "source": "Quellcode"
+  "event.start.title": "Spiel starten?",
+  "button": {
+    "skip": "Überspringen",
+    "game": {
+      "create": "Spiel erstellen",
+      "stop": "Beenden"
     },
-    "event": {
-        "reveal": {
-            "eye.title": "Der Seher ist…",
-            "seer.title": "Deine Kristallkugel zeigt dir…",
-            "executioner.title": "Dein Ziel ist …",
-            "freemason": {
-                "title_one": "Dein Kamerad ist…",
-                "title_other": "Deine Kameraden sind…"
-            }
-        },
-        "kill": {
-            "wolfs.title": "Wen willst du zerfleischen?",
-            "hunter.title": "Wen erwischt dein letzter Schuss?",
-            "lynch.title": "Wer soll gelyncht werden?",
-            "witch.title": "Möchtest du jemanden vergiften?"
-        },
-        "see.title": "Wessen Schicksal willst du erfahren?",
-        "announcement": {
-            "death": {
-                "title_one": "Ein Spieler ist gestorben",
-                "title_other": "{{count}} Spieler sind gestorben"
-            }
-        },
-        "revive": {
-            "witch.title": "Würdest du gerne jemand heilen?"
-        },
-        "win": {
-            "villagers.title": "Die Dorfbewohner haben gesiegt!",
-            "wolfs.title": "Die Wölfe haben gewonnen!",
-            "jester.title": "Der Gerber hat gewonnen!",
-            "couple.title": "Die Liebe hat gesiegt!",
-            "executioner.title": "Der Henker hat gewonnen!",
-            "none.title": "Alle Spieler sind gestorben"
-        },
-        "sleep.title": "Du schläfst",
-        "dead.title": "Du bist gestorben"
+    "dismiss": "Passt",
+    "undo": "Undo",
+    "redo": "Redo",
+    "translate": "Hilf beim Übersetzen",
+    "source": "Quellcode"
+  },
+  "event": {
+    "reveal": {
+      "eye.title": "Der Seher ist…",
+      "seer.title": "Deine Kristallkugel zeigt dir…",
+      "executioner.title": "Dein Ziel ist …",
+      "freemason": {
+        "title_one": "Dein Kamerad ist…",
+        "title_other": "Deine Kameraden sind…"
+      }
     },
-    "role": {
-        "gamemaster.title": "Spielleiter",
-        "jester": {
-            "name": "Gerber"
-        },
-        "title": "Rolle",
-        "villager": {
-            "name": "Dorfbewohner"
-        },
-        "hunter": {
-            "name": "Jäger"
-        },
-        "eye": {
-            "name": "Auge"
-        },
-        "seer": {
-            "name": "Seher"
-        },
-        "witch": {
-            "name": "Hexe"
-        },
-        "werewolf": {
-            "name": "Werwolf"
-        },
-        "executioner": {
-            "name": "Henker"
-        },
-        "dreamwolf": {
-            "name": "Traumwolf"
-        },
-        "freemason": {
-            "name": "Freimaurer"
-        }
+    "kill": {
+      "wolfs.title": "Wen willst du zerfleischen?",
+      "hunter.title": "Wen erwischt dein letzter Schuss?",
+      "lynch.title": "Wer soll gelyncht werden?",
+      "witch.title": "Möchtest du jemanden vergiften?"
     },
-    "status": {
-        "game.no_active": "Kein aktives Spiel"
+    "see.title": "Wessen Schicksal willst du erfahren?",
+    "announcement": {
+      "death": {
+        "title_one": "Ein Spieler ist gestorben",
+        "title_other": "{{count}} Spieler sind gestorben"
+      }
     },
-    "player": {
-        "name": "Name",
-        "count_one": "Ein Spieler",
-        "count_other": "{{count}} Spieler",
-        "status": {
-            "title": "Status",
-            "alive": "Lebendig",
-            "dying": "Im Sterben",
-            "dead": "Verstorben"
-        }
+    "revive": {
+      "witch.title": "Würdest du gerne jemand heilen?"
     },
-    "error": {
-        "min_players_requirement": "Mindestens {{count}} Spieler werden benötigt, um ein Spiel zu starten"
+    "win": {
+      "villagers.title": "Die Dorfbewohner haben gesiegt!",
+      "wolfs.title": "Die Wölfe haben gewonnen!",
+      "jester.title": "Der Gerber hat gewonnen!",
+      "couple.title": "Die Liebe hat gesiegt!",
+      "executioner.title": "Der Henker hat gewonnen!",
+      "none.title": "Alle Spieler sind gestorben"
+    },
+    "sleep.title": "Du schläfst",
+    "dead.title": "Du bist gestorben"
+  },
+  "role": {
+    "gamemaster.title": "Spielleiter",
+    "jester": {
+      "name": "Gerber"
+    },
+    "title": "Rolle",
+    "villager": {
+      "name": "Dorfbewohner"
+    },
+    "hunter": {
+      "name": "Jäger"
+    },
+    "eye": {
+      "name": "Auge"
+    },
+    "seer": {
+      "name": "Seher"
+    },
+    "witch": {
+      "name": "Hexe"
+    },
+    "werewolf": {
+      "name": "Werwolf"
+    },
+    "executioner": {
+      "name": "Henker"
+    },
+    "dreamwolf": {
+      "name": "Traumwolf"
+    },
+    "freemason": {
+      "name": "Freimaurer"
     }
+  },
+  "player": {
+    "name": "Name",
+    "count_one": "Ein Spieler",
+    "count_other": "{{count}} Spieler",
+    "status": {
+      "title": "Status",
+      "alive": "Lebendig",
+      "dying": "Im Sterben",
+      "dead": "Verstorben"
+    }
+  }
 }

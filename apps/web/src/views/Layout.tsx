@@ -11,12 +11,17 @@ const appInfo: AppInfo = {
 
 export default function Layout({ children }: Readonly<PropsWithChildren>) {
   const hasRouter = useInRouterContext();
+
+  if (Array.isArray(children)) {
+    throw new Error("router views should only return a single element");
+  }
+
   return (
     <>
       <Globals />
       <Page>
         {hasRouter && <NavBar />}
-        <section>{children}</section>
+        {children}
         <Footer {...appInfo} />
       </Page>
     </>
