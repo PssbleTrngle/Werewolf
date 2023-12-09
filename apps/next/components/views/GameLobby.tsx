@@ -1,3 +1,9 @@
+import Layout from "@/layout/default";
+import {
+  useLeaveMutation,
+  useLobby,
+  useStartMutation,
+} from "@/lib/client/remoteContext";
 import { Id } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -10,12 +16,6 @@ import {
   StartIcon,
   tooltip,
 } from "ui";
-import Layout from "@/layout/default";
-import {
-  useLeaveMutation,
-  useLobby,
-  useStartMutation,
-} from "@/lib/client/remoteContext";
 
 export default function GameLobby({ lobbyId }: Readonly<{ lobbyId: Id }>) {
   const { t } = useTranslation("hub");
@@ -45,7 +45,7 @@ export default function GameLobby({ lobbyId }: Readonly<{ lobbyId: Id }>) {
           <IconButton
             onClick={() => start()}
             {...tooltip(t("button.game.start"))}
-            $error={!!startError}
+            error={!!startError}
           >
             <StartIcon />
           </IconButton>
