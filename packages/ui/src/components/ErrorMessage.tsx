@@ -21,7 +21,7 @@ const Icon = styled(ErrorIcon)`
 `;
 
 const Style = styled.p`
-  margin: 1em 0;
+  margin: 1em;
   color: #eee;
 
   border: 2px solid ${(p) => p.theme.error};

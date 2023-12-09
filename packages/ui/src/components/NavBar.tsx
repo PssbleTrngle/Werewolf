@@ -7,6 +7,7 @@ import { XS } from "../styles/screens";
 export interface NavTab {
   key: string;
   path: string;
+  icon?: ReactNode;
 }
 
 function isActive({ path }: NavTab, pathname: string) {
@@ -46,6 +47,8 @@ const Links = styled.nav<{ $count: number }>`
   }
 `;
 
+export const MOBILE_NAV_HEIGHT = "5em";
+
 const Style = styled.section`
   grid-area: nav;
 
@@ -55,7 +58,10 @@ const Style = styled.section`
   background-color: ${(p) => p.theme.nav};
 
   ${XS} {
+    height: ${MOBILE_NAV_HEIGHT};
     grid-template-columns: 1fr;
+
+    box-shadow: 0 -0.5em 0.5em 0 ${(p) => p.theme.bg};
 
     select {
       display: none;
@@ -65,6 +71,14 @@ const Style = styled.section`
 
 const ActiveLink = css`
   border-bottom-color: ${(p) => p.theme.accent};
+
+  ${XS} {
+    border-width: 0px;
+    background: ${(p) => p.theme.accent};
+    &:hover {
+      background: ${(p) => p.theme.accent};
+    }
+  }
 `;
 
 export const NavLinkStyle = css<{ $active: boolean }>`
@@ -74,17 +88,32 @@ export const NavLinkStyle = css<{ $active: boolean }>`
 
   padding: 1em;
 
-  ${XS} {
-    padding: 2em;
+  svg {
+    display: none;
   }
 
   background-color: ${(p) => p.theme.nav};
   border-bottom: solid 2px ${(p) => p.theme.nav};
 
-  ${(p) => p.$active && ActiveLink}
-
   &:hover {
     background: ${(p) => mix(0.1, "#777", p.theme.nav)};
+  }
+
+  ${(p) => p.$active && ActiveLink}
+
+  ${XS} {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+
+    &:has(svg) span {
+      display: none;
+    }
+
+    svg {
+      display: initial;
+      height: 2em;
+    }
   }
 
   transition:

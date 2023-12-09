@@ -1,7 +1,7 @@
-import styled, { createGlobalStyle } from "styled-components";
-import { XS } from "./screens";
 import { invert } from "polished";
+import styled, { createGlobalStyle } from "styled-components";
 import { FOOTER_HEIGHT } from "../components/Footer";
+import { XS } from "./screens";
 
 export const Globals = createGlobalStyle`
 html, body, ul {

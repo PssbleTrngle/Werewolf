@@ -3,17 +3,20 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
   NavBar as Base,
+  DocuIcon,
+  HomeIcon,
   NavLinkStyle,
   NavTab,
+  UserIcon,
   useActiveLink,
   useGameStatus,
 } from "ui";
 import ImpersonationSelect from "./ImpersonationSelect";
 
 const LINKS: ReadonlyArray<NavTab> = [
-  { key: "game" },
-  { key: "players" },
-  { key: "roles" },
+  { key: "game", icon: <HomeIcon /> },
+  { key: "players", icon: <UserIcon /> },
+  { key: "roles", icon: <DocuIcon /> },
 ].map((it) => ({
   ...it,
   path: `/${it.key}`,
@@ -28,9 +31,10 @@ export default function NavBar() {
 
   return (
     <Base
-      links={LINKS.map(({ key, path }) => (
+      links={LINKS.map(({ key, path, icon }) => (
         <NavLink key={key} to={path} $active={active?.key === key}>
           <span>{t(`nav.${key}`)}</span>
+          {icon}
         </NavLink>
       ))}
     >

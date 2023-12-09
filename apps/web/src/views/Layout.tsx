@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import { useInRouterContext } from "react-router-dom";
-import { AppInfo, Footer, Globals, Page } from "ui";
+import styled from "styled-components";
+import { AppInfo, Footer, Globals, MOBILE_NAV_HEIGHT, Page, XS } from "ui";
 import NavBar from "../components/NavBar";
 
 const appInfo: AppInfo = {
@@ -12,18 +13,24 @@ const appInfo: AppInfo = {
 export default function Layout({ children }: Readonly<PropsWithChildren>) {
   const hasRouter = useInRouterContext();
 
-  if (Array.isArray(children)) {
-    throw new Error("router views should only return a single element");
-  }
-
   return (
     <>
       <Globals />
       <Page>
-        {hasRouter && <NavBar />}
-        {children}
+        <Content>{children}</Content>
         <Footer {...appInfo} />
+        {hasRouter && <NavBar />}
       </Page>
     </>
   );
 }
+
+const Content = styled.section`
+  height: 100%;
+  width: 100%;
+
+  ${XS} {
+    overflow-y: scroll;
+    max-height: calc(100dvh - ${MOBILE_NAV_HEIGHT});
+  }
+`;

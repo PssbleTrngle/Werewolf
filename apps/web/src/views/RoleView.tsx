@@ -13,6 +13,16 @@ export default function RoleView() {
     [roles, params]
   );
 
+  const description = useMemo<string[]>(() => {
+    if (!role) return [];
+    const translation = t(`role.${role.type}.description`, {
+      returnObjects: true,
+    });
+
+    if (Array.isArray(translation)) return translation;
+    return [translation];
+  }, [t, role]);
+
   // TODO error?
   if (!role) return <p>Unknown Role</p>;
 
@@ -28,10 +38,19 @@ export default function RoleView() {
           ))}
         </p>
       )}
-      <p>{t(`role.${role.type}.description`)}</p>
+      <Description>
+        {description.map((line, i) => (
+          <p key={`line-${i}`}>{line}</p>
+        ))}
+      </Description>
     </Centered>
   );
 }
+
+const Description = styled.div`
+  padding: 0 2em;
+  max-width: 1000px;
+`;
 
 const Badge = styled.span`
   background: ${(p) => p.theme.nav};

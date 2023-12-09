@@ -59,44 +59,79 @@
       "name": "Villager",
       "description": [
         "The only sane people in the village simply trying to survive by lynching others based on outdated prejudices.",
-        "The Villager does not possess any abilities and tries to win with the support of other roles which are part of the villager group."
+        "Villagers do not possess any abilities and try to win with the support of other roles which are part of the villager group."
       ]
     },
     "hunter": {
       "name": "Hunter",
-      "description": "TODO"
+      "description": [
+        "Roaming through the woods at night, the hunter is at great risk of being attacked, but they are not unprepared.",
+        "If the hunter is attacked by wolfs at night, they can fire a dying shot into the dark, potentially killing one of their attackers."
+      ]
     },
     "eye": {
       "name": "Eye",
-      "description": "TODO"
+      "description": [
+        "A slumbering talent for the occult, still unbeknownst to themself.",
+        "At the start of the game, the eye has a singular vision revealing the indentity of the seer."
+      ]
     },
     "seer": {
       "name": "Seer",
-      "description": "TODO"
+      "description": [
+        "Plagued by visions and the like, only they are cursed with the knowledge of who walks among the village.",
+        "Each night the seer chooses a person and learns their intentions.",
+        "Depending on the chosen rules, these intentions are either their role, the group this role is part of, or only wether or not they would be considered evil."
+      ]
     },
     "witch": {
       "name": "Witch",
-      "description": "TODO"
+      "description": [
+        "Untrusted by most, beloved by others, the witch themself also act on two kinds of facettes",
+        "Every night, after the wolfs have attacked someone, the witch awakenes and is shown the victim. Once per game they may choose to heal the dying person and return them to the living.",
+        "They can also once per game kill someone by poisoning them",
+        "The witch tries to support the village using these two powerful abilities"
+      ]
     },
     "werewolf": {
       "name": "Werewolf",
-      "description": "TODO"
+      "description": [
+        "Pretending to be a peaceful villager, the werewolves live amongst us feasting on our flesh.",
+        "Each night all the wolfs wake up together"
+      ]
     },
     "dreamwolf": {
       "name": "Dreamwolf",
-      "description": "TODO"
+      "description": [
+        "A patient killer or just sleepy?",
+        "The dreamwolf only awakens together with all the other players after the first other wolf has been killed.",
+        "Until then them nor the other wolfs know each others identities, which also means they can be attacked and killed by the other wolfs at night before their first awakening."
+      ]
     },
     "jester": {
       "name": "Jester",
-      "description": "TODO"
+      "description": [
+        "His goals are beyong our understanding but they will be the last one laughing.",
+        "The jester is playing solo and only win if they are lynched by the village. No other cause of death validates this win condition.",
+        "Once this happens, they win instantly and everyone else, wolfs or villager, loose"
+      ]
     },
     "executioner": {
       "name": "Executioner",
-      "description": "TODO"
+      "description": [
+        "Blinded by revenge or lead by duty, they will not rest until the deed is done.",
+        "At the beginning of the game, the executioner is told their target for this game",
+        "This target may only be a role of the villagers group and depending on the chosen rules, their role is also revealed to the executioner.",
+        "In order to win, the executioner has to convince the village to lynch their target, in which case, like the jester they alone instantly win.",
+        "Depending on the chosen rules, the exeucutioner becomes a jester, should their target die by any other cause."
+      ]
     },
     "freemason": {
       "name": "Freemason",
-      "description": "TODO"
+      "description": [
+        "A secret society pulling the threads behind the villages very komplex politics.",
+        "At the start of the game, all freemasons awaken together once to learn the identities of their comrades, granting them a bit of knowledge."
+      ]
     },
     "group": {
       "villager": "Villagers",
