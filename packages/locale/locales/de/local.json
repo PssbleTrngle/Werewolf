@@ -1,20 +1,27 @@
 {
-  "button": {
-    "player": {
-      "remove": "Entfernen",
-      "rename": "Umbenennen",
-      "add": "Spieler hinzufügen"
+    "button": {
+        "player": {
+            "remove": "Entfernen",
+            "rename": "Umbenennen",
+            "add": "Spieler hinzufügen",
+            "select_role": "Rolle auswählen",
+            "generate_roles": "Rollen zufällig zuordnen"
+        }
+    },
+    "nav": {
+        "game": "Dorf",
+        "players": "Spieler",
+        "roles": "Rollen"
+    },
+    "status": {
+        "game.no_active": "Kein aktives Spiel"
+    },
+    "error": {
+        "min_players_requirement": "Mindestens {{count}} Spieler werden benötigt, um ein Spiel zu starten",
+        "missing_selected_roles": "Nicht allen Spielern wurde eine Rolle zugenordnet"
+    },
+    "dialog": {
+        "rename": "Spieler umbenennen",
+        "role_select": "Rolle auswählen"
     }
-  },
-  "nav": {
-    "game": "Dorf",
-    "players": "Spieler",
-    "roles": "Rollen"
-  },
-  "status": {
-    "game.no_active": "Kein aktives Spiel"
-  },
-  "error": {
-    "min_players_requirement": "Mindestens {{count}} Spieler werden benötigt, um ein Spiel zu starten"
-  }
 }
