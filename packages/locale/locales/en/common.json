@@ -26,6 +26,7 @@
         "title_other": "You komrades are..."
       }
     },
+    "hallucinate.title": "Hallucinate",
     "kill": {
       "wolfs.title": "Who do you want to eat?",
       "hunter.title": "Where does your dying shot land?",
@@ -131,6 +132,15 @@
       "description": [
         "A secret society pulling the threads behind the villages very komplex politics.",
         "At the start of the game, all freemasons awaken together once to learn the identities of their comrades, granting them a bit of knowledge."
+      ]
+    },
+    "fool": {
+      "name": "Fool",
+      "description": [
+        "Misguided by fake omens and bedazzling herbs, they are too naive to see the reality.",
+        "The fool is one of the only roles to not know of his own true identity. Instead he is told that he is a seer.",
+        "Similar to the seer, they chooses a target not learn about, but instead of receiving divine insight, they are told something completely random. This information could also be randomly true.",
+        "It is important, that they are always told the same information, should the choose a player trice"
       ]
     },
     "group": {

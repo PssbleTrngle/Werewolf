@@ -4,18 +4,16 @@ import { RevealEvent } from "../event/RevealEvent.js";
 import { StartEvents } from "../event/StartEvent.js";
 import { hasRole } from "../player/predicates.js";
 
-export const Eye: Role = {
-  type: "eye",
+export const Freemason: Role = {
+  type: "freemason",
   groups: [RoleGroup.VILLAGER],
-  emoji: "👁️",
+  emoji: "⚒️",
 };
 
-export const registerEyeEvents = (role = "eye", revealedRole = "seer") => {
+export function registerFreemasonEvents(role = Freemason.type) {
   registerEvent(`reveal.${role}`, new RevealEvent());
   StartEvents.registerEvent(({ players }) => {
-    const seers = players.filter(hasRole(revealedRole));
-    return players
-      .filter(hasRole(role))
-      .map((it) => RevealEvent.create("eye", [it], seers));
+    const comrades = players.filter(hasRole(role));
+    return RevealEvent.create("freemason", comrades, comrades);
   });
-};
+}

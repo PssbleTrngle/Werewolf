@@ -4,9 +4,10 @@ import { EMPTY_ROLE_DATA, Player } from "./player/Player.js";
 import { DreamWolf } from "./role/DreamWolf.js";
 import { Executioner } from "./role/Executioner.js";
 import { Eye } from "./role/Eye.js";
+import { Freemason } from "./role/Freemason.js";
 import { Hunter } from "./role/Hunter.js";
 import { Jester } from "./role/Jester.js";
-import { Seer } from "./role/Seer.js";
+import { Fool, Seer } from "./role/Seer.js";
 import { Villager } from "./role/Villager.js";
 import { Witch } from "./role/Witch.js";
 import { Werewolf } from "./role/Wolf.js";
@@ -23,6 +24,8 @@ export const allRoles: Role[] = [
   Executioner,
   Werewolf,
   DreamWolf,
+  Freemason,
+  Fool,
 ];
 
 export function generateRoles(
@@ -45,6 +48,7 @@ export function generateRoles(
 
   const specialRoles: Role[] = shuffle([
     Seer,
+    Fool,
     Eye,
     Hunter,
     Witch,

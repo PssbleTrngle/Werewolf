@@ -5,6 +5,7 @@ import {
   registerExecutionerWinCondition,
 } from "./role/Executioner.js";
 import { registerEyeEvents } from "./role/Eye.js";
+import { registerFreemasonEvents } from "./role/Freemason.js";
 import { registerHunterEvents } from "./role/Hunter.js";
 import { registerJesterWinCondition } from "./role/Jester.js";
 import { registerSeerEvents } from "./role/Seer.js";
@@ -14,6 +15,7 @@ import { registerWolfEvents, registerWolfWinCondition } from "./role/Wolf.js";
 
 registerExecutionEvents();
 registerEyeEvents();
+registerFreemasonEvents();
 
 registerSeerEvents();
 registerWolfEvents();

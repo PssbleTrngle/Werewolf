@@ -5,6 +5,7 @@ export interface RoleData {
   usedKillPotion?: boolean;
   target?: Id;
   revealedPlayers: Record<Id, IPlayer>;
+  hallucinated?: Record<Id, Partial<IPlayer>>;
 }
 
 export interface Player extends IPlayer {

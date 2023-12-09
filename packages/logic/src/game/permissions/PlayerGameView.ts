@@ -4,6 +4,7 @@ import { EventRegistry } from "../event/EventRegistry.js";
 import { Game } from "../index.js";
 import { Player } from "../player/Player.js";
 import { isNotDead, requirePlayer } from "../player/predicates.js";
+import { Fool, Seer } from "../role/Seer.js";
 import { GameView } from "./index.js";
 
 export class PlayerGameView implements GameView {
@@ -70,14 +71,20 @@ export class PlayerGameView implements GameView {
 function playerViewFor(player: Player, subject: IPlayer): IPlayer {
   const revealed = player.roleData.revealedPlayers[subject.id] ?? {};
 
-  const self: Partial<IPlayer> =
-    player.id === subject.id ? { role: player.role } : {};
-
-  return {
-    ...self,
+  const common: IPlayer = {
     ...revealed,
     id: subject.id,
     name: subject.name,
     status: isNotDead(subject) ? "alive" : "dead",
   };
+
+  if (player.id === subject.id) {
+    if (player.role.type === Fool.type) {
+      return { ...common, role: Seer };
+    }
+
+    return { ...common, role: player.role };
+  }
+
+  return common;
 }
