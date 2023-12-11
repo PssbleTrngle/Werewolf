@@ -1,6 +1,8 @@
 export { Play as StartIcon } from "@styled-icons/boxicons-regular/Play";
 export { Redo as RedoIcon } from "@styled-icons/boxicons-regular/Redo";
+export { Reset as ResetIcon } from "@styled-icons/boxicons-regular/Reset";
 export { Shuffle as ShuffleIcon } from "@styled-icons/boxicons-regular/Shuffle";
+export { ToggleLeft as DisabledIcon } from "@styled-icons/boxicons-regular/ToggleLeft";
 export { Undo as UndoIcon } from "@styled-icons/boxicons-regular/Undo";
 export { X as CloseIcon } from "@styled-icons/boxicons-regular/X";
 export { Book as DocuIcon } from "@styled-icons/boxicons-solid/Book";
@@ -8,6 +10,7 @@ export { EditAlt as EditIcon } from "@styled-icons/boxicons-solid/EditAlt";
 export { Error as ErrorIcon } from "@styled-icons/boxicons-solid/Error";
 export { HomeCircle as HomeIcon } from "@styled-icons/boxicons-solid/HomeCircle";
 export { IdCard as RoleIcon } from "@styled-icons/boxicons-solid/IdCard";
+export { ToggleRight as EnabledIcon } from "@styled-icons/boxicons-solid/ToggleRight";
 export { TrashAlt as TrashIcon } from "@styled-icons/boxicons-solid/TrashAlt";
 export { User as UserIcon } from "@styled-icons/boxicons-solid/User";
 export { UserMinus as LeaveIcon } from "@styled-icons/boxicons-solid/UserMinus";

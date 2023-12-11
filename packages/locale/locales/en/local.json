@@ -22,6 +22,7 @@
   },
   "error": {
     "min_players_requirement": "At least {{count}} players are required to start a game",
-    "missing_selected_roles": "Not every player has a role selected"
+    "missing_selected_roles": "Not every player has a role selected",
+    "frozen_role": "This role cannot be disabled"
   }
 }

@@ -6,6 +6,7 @@
     "redo": "Redo",
     "save": "Save",
     "cancel": "Cancel",
+    "reset": "Reset",
     "game": {
       "create": "Create Game",
       "stop": "Stop"
@@ -144,6 +145,7 @@
       ]
     },
     "group": {
+      "title": "Groups",
       "villager": "Villagers",
       "wolf": "Wolfs"
     }

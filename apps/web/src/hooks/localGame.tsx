@@ -38,10 +38,10 @@ function gameOf(history: ReadonlyArray<GameState>, save: GameStore["save"]) {
 }
 
 function createGame(onSave: GameStore["save"]) {
-  const { players } = useLocalStore.getState();
+  const { players, ...settings } = useLocalStore.getState();
   if (!players) throw new Error("No players added yet");
   const prepared = preparePlayers(players);
-  return gameOf(Game.createState(prepared), onSave);
+  return gameOf(Game.createState(prepared, settings), onSave);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,5 +1,5 @@
 import { shuffle, times } from "lodash-es";
-import { Role, User } from "models";
+import { GameSettings, Role, User } from "models";
 import { EMPTY_ROLE_DATA, Player } from "./player/Player.js";
 import { DreamWolf } from "./role/DreamWolf.js";
 import { Executioner } from "./role/Executioner.js";
@@ -31,10 +31,12 @@ export const allRoles: Role[] = [
 export function generateRoles(
   players: ReadonlyArray<User>,
   // TODO use
-  isEnabled: (role: Role) => boolean = () => true
+  disabledRoles?: GameSettings["disabledRoles"]
 ): ReadonlyArray<Player> {
   const count = players.length;
   if (count < MIN_PLAYERS) throw new Error("Not enough players");
+
+  const isEnabled = (role: Role) => !disabledRoles?.includes(role.type);
 
   const specialWolfs = [DreamWolf].filter(isEnabled);
 
@@ -58,10 +60,29 @@ export function generateRoles(
     .filter(isEnabled)
     .slice(0, Math.max(0, count - wolfs.length));
 
+  const villagerCount = count - specialRoles.length - wolfs.length;
+
+  const minFreemasons = 2;
+  const maxFreemasons = Math.min(villagerCount, 3);
+  const generateFreemasons =
+    isEnabled(Freemason) &&
+    maxFreemasons >= minFreemasons &&
+    Math.random() > 0.4;
+
+  const freeMasons = generateFreemasons
+    ? times(
+        Math.round(
+          minFreemasons + (maxFreemasons - minFreemasons) * Math.random()
+        ),
+        () => Freemason
+      )
+    : [];
+
   const roles: Role[] = shuffle([
     ...wolfs,
     ...specialRoles,
-    ...times(count - specialRoles.length - wolfs.length, () => Villager),
+    ...freeMasons,
+    ...times(villagerCount - freeMasons.length, () => Villager),
   ]);
 
   if (roles.length !== players.length) {

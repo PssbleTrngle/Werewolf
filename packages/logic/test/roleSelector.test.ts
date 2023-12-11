@@ -1,9 +1,9 @@
 import { RoleGroup } from "models";
-import { generateRoles, inGroup } from "../src/index.js";
+import { MIN_PLAYERS, generateRoles, inGroup } from "../src/index.js";
 import { createTestPlayers } from "./util/players.js";
 
 it("role selector returns correct count", () => {
-  for (let amount = 5; amount < 30; amount++) {
+  for (let amount = MIN_PLAYERS; amount < 30; amount++) {
     const players = createTestPlayers(amount);
     const roles = generateRoles(players);
 

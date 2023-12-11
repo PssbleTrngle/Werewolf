@@ -1,65 +1,122 @@
+import { Villager, Werewolf } from "logic";
+import { Role } from "models";
+import { Dispatch, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
-import { XS, useRoles } from "ui";
+import styled, { css } from "styled-components";
+import {
+  Buttons,
+  ButtonsCell,
+  Centered,
+  DisabledIcon,
+  EnabledIcon,
+  IconButton,
+  ResetIcon,
+  Table,
+  tooltip,
+  useRoles,
+} from "ui";
 import InvisibleLink from "../components/InivisibleLink";
+import { useLocalStore } from "../hooks/store";
+
+// These roles cannot be disabled
+const frozenRoles = [Villager.type, Werewolf.type];
 
 export default function RolesView() {
   const { data: roles } = useRoles();
   const { t } = useTranslation();
 
+  const disabledRoles = useLocalStore((it) => it.disabledRoles);
+  const toggleRole = useLocalStore((it) => it.toggleRole);
+  const isEnabled = useCallback(
+    (type: string) => !disabledRoles?.includes(type),
+    [disabledRoles]
+  );
+
+  const reset = useCallback(
+    () => disabledRoles?.forEach((it) => toggleRole(it, true)),
+    [toggleRole, disabledRoles]
+  );
+
   return (
-    <Grid>
-      {roles.map((it) => (
-        <InvisibleLink key={it.type} to={it.type}>
-          <Panel>
-            <span>{t(`role.${it.type}.name`)}</span>
-            <Emoji>{it.emoji}</Emoji>
-          </Panel>
-        </InvisibleLink>
-      ))}
-    </Grid>
+    <Centered horizontalOnly>
+      <Toolbar>
+        <IconButton onClick={reset}>
+          {t("button.reset")} <ResetIcon />
+        </IconButton>
+      </Toolbar>
+      <Table>
+        <thead>
+          <tr>
+            <th>{t("role.title")}</th>
+            <th>{t("role.group.title")}</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {roles.map((it) => (
+            <Row
+              key={it.type}
+              role={it}
+              enabled={isEnabled(it.type)}
+              onToggle={(value) => toggleRole(it.type, value)}
+            />
+          ))}
+        </tbody>
+      </Table>
+    </Centered>
   );
 }
 
-const Panel = styled.li`
-  height: var(--panel-size);
-  background: #7772;
-  border-radius: calc(var(--panel-size) / 10);
-
-  text-align: center;
-  align-items: center;
-
-  display: grid;
-  grid-template:
-    "icon" 1fr
-    "name" 2em;
-
-  transition: background 0.1s linear;
-
-  &:hover {
-    background: #7774;
-  }
+const Toolbar = styled(Buttons)`
+  margin: 1em 0;
 `;
 
-const Emoji = styled.span`
-  grid-area: icon;
-  font-size: 3em;
+function Row({
+  role,
+  enabled,
+  onToggle,
+}: Readonly<{ role: Role; enabled: boolean; onToggle: Dispatch<boolean> }>) {
+  const { t } = useTranslation();
+
+  const disabledTooltip = useMemo(() => {
+    if (frozenRoles.includes(role.type)) {
+      return t("local:error.frozen_role");
+    }
+  }, [t, role]);
+
+  return (
+    <tr>
+      <td>
+        <InvisibleLink to={role.type}>
+          {role.emoji}
+          <Name $disabled={!enabled}>{t(`role.${role.type}.name`)}</Name>
+        </InvisibleLink>
+      </td>
+      <td>
+        {role.groups?.map((group) => (
+          <span key={group}>{t(`role.group.${group}`)}</span>
+        ))}
+      </td>
+      <ButtonsCell>
+        <IconButton
+          disabled={!!disabledTooltip}
+          onClick={() => onToggle(!enabled)}
+          {...tooltip(disabledTooltip)}
+        >
+          {enabled ? <EnabledIcon /> : <DisabledIcon />}
+        </IconButton>
+      </ButtonsCell>
+    </tr>
+  );
+}
+
+const DisabledStyle = css`
+  font-style: italic;
+  text-decoration: line-through;
+  opacity: 0.5;
 `;
 
-const Grid = styled.ul`
-  --panel-size: 150px;
-
-  height: fit-content;
-
-  display: grid;
-  gap: 1em;
-  padding: 1em;
-
-  list-style: none;
-
-  grid-template-columns: repeat(auto-fill, var(--panel-size));
-
-  ${XS} {
-    justify-content: space-evenly;
-  }
+const Name = styled.span<{ $disabled: boolean }>`
+  margin-left: 1em;
+  ${(p) => p.$disabled && DisabledStyle}
 `;

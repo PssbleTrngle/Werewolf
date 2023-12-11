@@ -20,6 +20,7 @@ export { default as ControlBar } from "./components/event/ControlBar";
 export { default as EventDetails } from "./components/event/EventDetails";
 export { default as EventScreen } from "./components/event/EventScreen";
 export { default as ParticipantList } from "./components/event/ParticipantList";
+export { default as Table, ButtonsCell } from "./components/Table";
 export * from "./hooks/queries";
 export * from "./icons";
 export * from "./styles/layout";

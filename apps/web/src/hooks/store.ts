@@ -19,8 +19,7 @@ export interface PlayerStore {
   randomizeRoles(): void;
 }
 
-export interface SettingsStore {
-  settings: GameSettings;
+export interface SettingsStore extends GameSettings {
   toggleRole(key: string, enabled: boolean): void;
 }
 
@@ -33,7 +32,9 @@ const createGameStore: StateCreator<GameStore> = (set) => ({
   },
 });
 
-const createPlayerStore: StateCreator<PlayerStore> = (set, get) => ({
+const createPlayerStore: StateCreator<
+  PlayerStore & Pick<SettingsStore, "disabledRoles">
+> = (set, get) => ({
   players: [],
 
   addPlayer(values) {
@@ -55,23 +56,23 @@ const createPlayerStore: StateCreator<PlayerStore> = (set, get) => ({
   },
 
   randomizeRoles() {
-    set({ players: generateRoles(get().players) });
+    const { disabledRoles, players } = get();
+    set({ players: generateRoles(players, disabledRoles) });
   },
 });
 
 const createSettingsStore: StateCreator<SettingsStore> = (set, get) => ({
   settings: {},
   toggleRole(key, enabled) {
-    const { settings } = get();
-    const enabledRoles = [...(settings.enabledRoles ?? [])];
+    const disabledRoles = [...(get().disabledRoles ?? [])];
 
-    const currentlyEnabled = enabledRoles.includes(key);
-    if (currentlyEnabled === enabled) return;
+    const currentlyDisabled = disabledRoles?.includes(key);
+    if (currentlyDisabled !== enabled) return;
 
-    if (enabled) enabledRoles.push(key);
-    else enabledRoles.splice(enabledRoles.indexOf(key), 1);
+    if (enabled) disabledRoles.splice(disabledRoles.indexOf(key), 1);
+    else disabledRoles.push(key);
 
-    set({ settings: { ...settings, enabledRoles } });
+    set({ disabledRoles });
   },
 });
 

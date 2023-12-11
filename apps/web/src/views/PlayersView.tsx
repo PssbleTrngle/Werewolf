@@ -7,12 +7,14 @@ import styled from "styled-components";
 import {
   Button,
   Buttons,
+  ButtonsCell,
   Centered,
   EditIcon,
   IconButton,
   Input,
   RoleIcon,
   ShuffleIcon,
+  Table,
   TrashIcon,
   tooltip,
   useGameStatus,
@@ -258,13 +260,6 @@ const Toolbar = styled(Buttons)`
   margin-bottom: 1em;
 `;
 
-const ButtonsCell = styled(Buttons).attrs({ as: "td" })`
-  justify-content: end;
-  ${IconButton} {
-    font-size: 0.7em;
-  }
-`;
-
 const Count = styled.h2`
   padding: 0.2em;
 `;
@@ -273,26 +268,4 @@ const Form = styled.form`
   margin: 1em 0;
   display: flex;
   gap: 0.5em;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  max-width: 800px;
-  margin-bottom: 3em;
-
-  border-collapse: collapse;
-
-  td,
-  th {
-    padding: 1em;
-  }
-
-  thead {
-    background: #7774;
-    text-align: left;
-  }
-
-  tbody tr:nth-child(odd) {
-    background: #7772;
-  }
 `;
