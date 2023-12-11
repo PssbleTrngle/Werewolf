@@ -1,3 +1,4 @@
 export interface GameSettings {
-  readonly disableLynchSkip?: boolean;
+  disableLynchSkip?: boolean;
+  enabledRoles?: string[];
 }

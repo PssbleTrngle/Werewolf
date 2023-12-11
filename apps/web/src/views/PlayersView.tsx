@@ -1,4 +1,4 @@
-import { MIN_PLAYERS, generateRoles } from "logic";
+import { MIN_PLAYERS } from "logic";
 import { Id, Player, Role, Status } from "models";
 import { nanoid } from "nanoid";
 import { Dispatch, FormEvent, useCallback, useMemo, useState } from "react";
@@ -22,7 +22,7 @@ import InvisibleLink from "../components/InivisibleLink";
 import RenameDialog from "../components/dialog/RenameDialog";
 import RoleSelectDialog from "../components/dialog/RoleSelectDialog";
 import { GAME_ID } from "../hooks/localGame";
-import useLocalStorage from "../hooks/useLocalStorage";
+import { useLocalStore } from "../hooks/store";
 import randomNames from "../randomNames";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -152,33 +152,10 @@ function ActivePlayersView() {
 function PlayersEditView() {
   const { t } = useTranslation();
 
-  const [players, setPlayers] = useLocalStorage<ReadonlyArray<Player>>(
-    "players",
-    () => []
-  );
-  const addPlayer = useCallback(
-    (player: Player) => setPlayers((it) => [...it, player]),
-    [setPlayers]
-  );
-  const removePlayer = useCallback(
-    (id: Id) => setPlayers((players) => players.filter((it) => it.id !== id)),
-    [setPlayers]
-  );
-  const modifyPlayer = useCallback(
-    (id: Id, values: Partial<Player>) =>
-      setPlayers((players) =>
-        players.map((it) => {
-          if (it.id === id) return { ...it, ...values };
-          return it;
-        })
-      ),
-    [setPlayers]
-  );
+  const { players, addPlayer, removePlayer, modifyPlayer, randomizeRoles } =
+    useLocalStore();
 
   const canRandomize = useMemo(() => players.length >= MIN_PLAYERS, [players]);
-  const randomizeRoles = useCallback(() => {
-    if (canRandomize) setPlayers(generateRoles);
-  }, [setPlayers, canRandomize]);
 
   const selectRole = useCallback(
     (id: Id, role?: Role) => {

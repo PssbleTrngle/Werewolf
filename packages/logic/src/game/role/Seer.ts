@@ -54,11 +54,15 @@ export const registerSeerEvents = (
     StartEvents.register(({ players }) => {
       const fools = players.filter(hasRole(fool));
       return fools.map((it) => {
-        const hallucinatedRoles: Record<Id, Partial<Player>> = {};
-        const otherPlayers = players.filter(others(it));
+        const hallucinatedRoles: Record<Id, Partial<Player>> = {
+          [it.id]: { role: Seer },
+        };
         // TODO use all possible roles allowed by the rule set
-        const roles = generateRoles(otherPlayers).map(({ role }) => ({ role }));
-        otherPlayers.forEach(({ id }, i) => (hallucinatedRoles[id] = roles[i]));
+        const roles = generateRoles(players).map(({ role }) => ({ role }));
+        players
+          .filter(others(it))
+          .forEach(({ id }, i) => (hallucinatedRoles[id] = roles[i]));
+
         return new PlayerDataEffect(it.id, { hallucinated: hallucinatedRoles });
       });
     });

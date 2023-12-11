@@ -12,7 +12,8 @@ import {
   useGameStatus,
   useStopMutation,
 } from "ui";
-import { GAME_ID, readLocalPlayers } from "../hooks/localGame";
+import { GAME_ID } from "../hooks/localGame";
+import { useLocalStore } from "../hooks/store";
 
 export default function EventsView() {
   const { data: status } = useGameStatus();
@@ -35,7 +36,7 @@ function ActiveEventView() {
 function CreateGame() {
   const { t } = useTranslation();
   const { mutate: create, error } = useCreateMutation();
-  const players = readLocalPlayers() ?? [];
+  const players = useLocalStore((it) => it.players);
 
   const missingPlayers = players.length < MIN_PLAYERS;
   const missingRoles = players.some((it) => !it.role);

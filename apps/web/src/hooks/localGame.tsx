@@ -9,25 +9,18 @@ import {
   allRoles,
 } from "logic";
 import { GameStatus, Id, Player, Vote } from "models";
-import { Dispatch, PropsWithChildren, useMemo, useReducer } from "react";
+import {
+  Dispatch,
+  DispatchWithoutAction,
+  PropsWithChildren,
+  useMemo,
+  useReducer,
+} from "react";
 import { GameProvider, QueryContext, invalidateGameQueries } from "ui";
 import { ImpersonationProvider } from "./impersonate";
-import { readLocalStorage } from "./useLocalStorage";
+import { GameStore, useLocalStore } from "./store";
 
 export const GAME_ID = "local";
-const STORAGE_KEY = "gamestate";
-
-function saveToLocalStorage(history: ReadonlyArray<GameState> | null) {
-  if (history) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-  } else {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-}
-
-export function readLocalPlayers() {
-  return readLocalStorage<ReadonlyArray<Player>>("players");
-}
 
 export function preparePlayers(
   players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>
@@ -38,26 +31,17 @@ export function preparePlayers(
   });
 }
 
-function gameOf(history: ReadonlyArray<GameState>) {
+function gameOf(history: ReadonlyArray<GameState>, save: GameStore["save"]) {
   const game = new Game(history);
-  game.on("save", saveToLocalStorage);
+  game.on("save", save);
   return game;
 }
 
-function createGame() {
-  const players = readLocalPlayers();
+function createGame(onSave: GameStore["save"]) {
+  const { players } = useLocalStore.getState();
   if (!players) throw new Error("No players added yet");
   const prepared = preparePlayers(players);
-  return gameOf(Game.createState(prepared));
-}
-
-function readSavedGame() {
-  const saved = readLocalStorage<ReadonlyArray<GameState>>(STORAGE_KEY);
-  if (saved) {
-    return gameOf(saved);
-  } else {
-    return null;
-  }
+  return gameOf(Game.createState(prepared), onSave);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,7 +53,7 @@ function wrap<T extends (...args: any[]) => any>(func: T) {
       if (import.meta.env.DEV && e instanceof Error) {
         /* eslint-disable no-console */
         console.error("an error occured in the logic package");
-        console.error(e.message);
+        console.error(e.stack ?? e.message);
         /* eslint-enable no-console */
       }
       throw e;
@@ -89,10 +73,10 @@ const localContext = {
   roles: wrap(() => allRoles),
 } satisfies Partial<QueryContext>;
 
-function createEmptyContext(startGame: Dispatch<Game>): QueryContext {
+function createEmptyContext(createGame: DispatchWithoutAction): QueryContext {
   return {
     ...localContext,
-    create: wrap(() => startGame(createGame())),
+    create: wrap(createGame),
     gameStatus: wrap(() => ({ type: "lobby", id: GAME_ID }) as GameStatus),
     game: requiresGame,
     activeEvent: requiresGame,
@@ -104,28 +88,18 @@ function createEmptyContext(startGame: Dispatch<Game>): QueryContext {
   };
 }
 
-export function useLocalGame(): QueryContext {
-  const [game, setGame] = useReducer((_: Game | null, value: Game | null) => {
-    if (!value) saveToLocalStorage(null);
-    return value;
-  }, readSavedGame());
-
-  return useMemo(
-    () => createGameContextFor({ game, setGame }),
-    [game, setGame]
-  );
-}
-
 function createGameContextFor({
   game,
-  setGame,
+  stopGame,
+  createGame,
   impersonated,
 }: {
   game: Game | null;
-  setGame: Dispatch<Game | null>;
+  stopGame: DispatchWithoutAction;
+  createGame: DispatchWithoutAction;
   impersonated?: Id;
 }): QueryContext {
-  if (!game) return createEmptyContext(setGame);
+  if (!game) return createEmptyContext(createGame);
 
   const view = impersonated
     ? new PlayerGameView(game, impersonated)
@@ -134,7 +108,7 @@ function createGameContextFor({
   return {
     ...localContext,
     create: alreadyRunning,
-    stop: wrap(() => setGame(null)),
+    stop: wrap(stopGame),
     gameStatus: wrap(() => ({ type: "game", id: GAME_ID }) as GameStatus),
     game: wrap(() => view.gameInfo()),
     players: wrap(() => view.players()),
@@ -152,19 +126,31 @@ interface ExtendedGameContext extends QueryContext {
 /**
  * This is neccessary, because react-client does not recreate query functions once the context changes
  */
-function createLocalGame(): ExtendedGameContext {
-  let actualContext: QueryContext = createEmptyContext(() => {});
+
+function createLocalGame(onSave: GameStore["save"]): ExtendedGameContext {
+  const savedHistory = useLocalStore.getState().history;
   let impersonated: Id | undefined = undefined;
-  let game: Game | null = null;
+  let game: Game | null = savedHistory && gameOf(savedHistory, onSave);
+
+  function createScopedContext() {
+    return createGameContextFor({
+      game,
+      impersonated,
+      stopGame: () => setGame(null),
+      createGame: () => setGame(createGame(onSave)),
+    });
+  }
+
+  let actualContext: QueryContext = createScopedContext();
 
   function updateContext() {
-    actualContext = createGameContextFor({ game, setGame, impersonated });
+    actualContext = createScopedContext();
   }
 
   function setGame(value: Game | null) {
     game = value;
     if (game) game.save();
-    else saveToLocalStorage(null);
+    else onSave(null);
     updateContext();
   }
 
@@ -172,8 +158,6 @@ function createLocalGame(): ExtendedGameContext {
     impersonated = value;
     updateContext();
   }
-
-  setGame(readSavedGame());
 
   return {
     gameStatus: (...args) => actualContext.gameStatus(...args),
@@ -190,9 +174,29 @@ function createLocalGame(): ExtendedGameContext {
   };
 }
 
+/*
+export function useLocalGame(): QueryContext {
+  const [game, setGame] = useReducer((_: Game | null, value: Game | null) => {
+    if (!value) saveToLocalStorage(null);
+    return value;
+  }, readSavedGame());
+
+  return useMemo(
+    () => createGameContextFor({ game, setGame }),
+    [game, setGame]
+  );
+}
+*/
+
+function useLocalGame() {
+  const onSave = useLocalStore((it) => it.save);
+  const context = useMemo(() => createLocalGame(onSave), [onSave]);
+  return context;
+}
+
 export function LocalGameProvider(props: Readonly<PropsWithChildren>) {
   const client = useQueryClient();
-  const context = useMemo(() => createLocalGame(), []);
+  const context = useLocalGame();
 
   const impersonateState = useReducer(
     (_: Id | undefined, value: Id | undefined) => {
