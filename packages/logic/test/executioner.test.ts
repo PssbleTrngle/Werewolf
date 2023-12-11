@@ -2,7 +2,6 @@ import { times } from "lodash-es";
 import { WinData } from "models";
 import {
   Executioner,
-  Game,
   Villager,
   Werewolf,
   requirePlayer,
@@ -18,12 +17,11 @@ const players = createTestPlayersWith([
 ]);
 const [executioner, wolf, ...villagers] = players.map((it) => it.id);
 
-function expectExecutionerWin(game: Game) {
-  expect(game.events[0].type).toBe("announcement.death");
-  expect(game.events[1].type).toBe("win");
+function expectExecutionerWin(game: TestGame) {
+  game.expectEvents("announcement.death", "win");
   expect(game.events[1].data).toMatchObject<WinData>({
     state: {
-      type: "executioner",
+      type: Executioner.type,
       winners: [game.players[0]],
     },
   });
@@ -40,14 +38,14 @@ describe("tests regarding the executioner", () => {
     expect(target).not.toBeUndefined();
     assert(target);
 
-    expect(game.events[0].type).toBe("reveal.executioner");
+    game.expectCurrentEvent("reveal.executioner");
     game.vote(executioner, skipVote());
 
     game.vote(wolf, playerVote(villagers[0]));
 
     dismiss(game);
 
-    expect(game.events[0].type).toBe("kill.lynch");
+    game.expectEvents("kill.lynch");
 
     villagers.slice(1).forEach((it) => game.vote(it, playerVote(target)));
 

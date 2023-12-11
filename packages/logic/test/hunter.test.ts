@@ -24,15 +24,13 @@ describe("tests regarding the hunter", () => {
       .filter(inGroup(RoleGroup.WOLF))
       .forEach((it) => game.vote(it.id, playerVote(players[0])));
 
-    expect(game.events[0].type).toBe("kill.hunter");
-    expect(game.events[1].type).toBe("sleep");
-    expect(game.events).toHaveLength(2);
+    game.expectEvents("kill.hunter", "sleep");
 
     expect(game.status.queue?.past).toBe(2);
 
     game.vote(players[0].id, playerVote(players[2]));
 
-    expect(game.events[0].type).toBe("announcement.death");
+    game.expectEvents("announcement.death", "win");
     expect((game.events[0].data as DeathData).deaths).toHaveLength(2);
     expect((game.events[0].data as DeathData).deaths[0].deathCause).toBe(
       DeathCause.WOLFS
@@ -41,7 +39,6 @@ describe("tests regarding the hunter", () => {
       DeathCause.HUNTER
     );
     expect(game.events[0].players).toHaveLength(players.length - 2);
-    expect(game.events[1].type).toBe("win");
 
     expect(game.status.queue?.past).toBe(3);
 
@@ -64,18 +61,13 @@ describe("tests regarding the hunter", () => {
 
     game.vote(players[0].id, playerVote(players[1]));
 
-    expect(game.events[0].type).toBe("kill.hunter");
-    expect(game.events[1].type).toBe("revive.witch");
-    expect(game.events[2].type).toBe("kill.witch");
-    expect(game.events[3].type).toBe("sleep");
-    expect(game.events).toHaveLength(4);
+    game.expectEvents("kill.hunter", "revive.witch", "kill.witch", "sleep");
 
     game.vote(players[1].id, playerVote(players[0]));
     game.vote(players[2].id, playerVote(players[1]));
     game.vote(players[2].id, skipVote());
 
-    expect(game.events[0].type).toBe("announcement.death");
-    expect(game.events[1].type).toBe("win");
+    game.expectEvents("announcement.death", "win");
     expect((game.events[0].data as DeathData).deaths).toHaveLength(1);
     expect(game.events[0].players).toHaveLength(players.length - 1);
 

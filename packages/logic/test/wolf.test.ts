@@ -21,9 +21,7 @@ describe("tests regarding wolf roles", () => {
 
     dismiss(game);
 
-    expect(game.events[0].type).toBe("kill.wolfs");
-    expect(game.events[1].type).toBe("sleep");
-    expect(game.events).toHaveLength(2);
+    game.expectEvents("kill.wolfs", "sleep");
 
     expect(game.status.queue?.past).toBe(1);
 
@@ -31,10 +29,8 @@ describe("tests regarding wolf roles", () => {
       .filter(inGroup(RoleGroup.WOLF))
       .forEach((it) => game.vote(it.id, playerVote(game.players[1])));
 
-    expect(game.events[0].type).toBe("announcement.death");
-    expect(game.events[1].type).toBe("kill.lynch");
+    game.expectEvents("announcement.death", "kill.lynch");
     expect(game.events[1].players).toHaveLength(game.players.length - 1);
-    expect(game.events).toHaveLength(2);
 
     expect(game.status.queue?.past).toBe(2);
 
@@ -65,18 +61,17 @@ describe("tests regarding wolf roles", () => {
 
     dismiss(game);
 
-    expect(game.events[0].type).toBe("kill.wolfs");
+    game.expectCurrentEvent("kill.wolfs");
     expect(game.events[0].players).toHaveLength(1);
     expect(game.events[0].players).toMatchObject([game.players[1]]);
     game.vote(game.players[1].id, skipVote());
 
-    expect(game.events[0].type).toBe("kill.lynch");
+    game.expectEvents("kill.lynch");
     game.players.forEach((it) => game.vote(it.id, playerVote(game.players[1])));
 
-    expect(game.events[0].type).toBe("announcement.death");
+    game.expectEvents("announcement.death", "kill.wolfs", "sleep");
     dismiss(game);
 
-    expect(game.events[0].type).toBe("kill.wolfs");
     expect(game.events[0].players).toHaveLength(1);
     expect(game.events[0].players).toMatchObject([game.players[0]]);
   });

@@ -4,18 +4,10 @@ import { redisJSON } from "./casting.js";
 import { Lobby, deleteLobby } from "./lobbies.js";
 import connectRedis from "./redis.js";
 
-export class RemoteGame extends Game {
-  public constructor(
-    public readonly id: Id,
-    history: ReadonlyArray<GameState>
-  ) {
-    super(history);
-  }
-
-  async onSave(history: readonly GameState[]) {
-    // TODO async?
-    await saveGame(this.id, history);
-  }
+function createRemoteGame(id: Id, history: ReadonlyArray<GameState>) {
+  const game = new Game(history);
+  game.on("save", (history) => saveGame(id, history));
+  return game;
 }
 
 export async function getGame(id: Id) {
@@ -25,7 +17,7 @@ export async function getGame(id: Id) {
     `game:${id}`
   )) as ReadonlyArray<GameState> | null;
 
-  if (result) return new RemoteGame(id, result);
+  if (result) return createRemoteGame(id, result);
   throw new ApiError(404, `Unable to find game with id ${id}`);
 }
 
@@ -47,7 +39,7 @@ export async function startGame(lobby: Lobby) {
   const players = generateRoles(lobby.players);
 
   const id = lobby.id;
-  const game = new RemoteGame(id, Game.createState(players));
+  const game = createRemoteGame(id, Game.createState(players));
   await game.save();
 
   await setGame(

@@ -25,12 +25,6 @@ function saveToLocalStorage(history: ReadonlyArray<GameState> | null) {
   }
 }
 
-class LocalGame extends Game {
-  async onSave(history: ReadonlyArray<GameState>) {
-    saveToLocalStorage(history);
-  }
-}
-
 export function readLocalPlayers() {
   return readLocalStorage<ReadonlyArray<Player>>("players");
 }
@@ -44,17 +38,23 @@ export function preparePlayers(
   });
 }
 
+function gameOf(history: ReadonlyArray<GameState>) {
+  const game = new Game(history);
+  game.on("save", saveToLocalStorage);
+  return game;
+}
+
 function createGame() {
   const players = readLocalPlayers();
   if (!players) throw new Error("No players added yet");
   const prepared = preparePlayers(players);
-  return new LocalGame(Game.createState(prepared));
+  return gameOf(Game.createState(prepared));
 }
 
 function readSavedGame() {
   const saved = readLocalStorage<ReadonlyArray<GameState>>(STORAGE_KEY);
   if (saved) {
-    return new LocalGame(saved);
+    return gameOf(saved);
   } else {
     return null;
   }

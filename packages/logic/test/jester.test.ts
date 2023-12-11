@@ -1,7 +1,7 @@
 import { times } from "lodash-es";
 import { WinData } from "models";
 import { Jester } from "../src/game/role/Jester.js";
-import { Game, Villager, Werewolf } from "../src/index.js";
+import { Villager, Werewolf } from "../src/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { dismiss, playerVote, skipVote } from "./util/votes.js";
@@ -13,12 +13,11 @@ const players = createTestPlayersWith([
 ]);
 const [jester, wolf, ...villagers] = players.map((it) => it.id);
 
-function expectJesterWin(game: Game) {
-  expect(game.events[0].type).toBe("announcement.death");
-  expect(game.events[1].type).toBe("win");
+function expectJesterWin(game: TestGame) {
+  game.expectEvents("announcement.death", "win");
   expect(game.events[1].data).toMatchObject({
     state: {
-      type: "jester",
+      type: Jester.type,
       winners: [
         {
           id: jester,
@@ -38,7 +37,7 @@ describe("tests regarding the jester", () => {
 
     dismiss(game);
 
-    expect(game.events[0].type).toBe("kill.lynch");
+    game.expectEvents("kill.lynch");
 
     villagers.slice(1).forEach((it) => game.vote(it, playerVote(jester)));
 
@@ -57,8 +56,7 @@ describe("tests regarding the jester", () => {
 
     dismiss(game);
 
-    expect(game.events[0].type).toBe("kill.lynch");
-    expect(game.events).toHaveLength(1);
+    game.expectEvents("kill.lynch");
   });
 
   it("takes priority over a potential wolf win", () => {
@@ -71,14 +69,14 @@ describe("tests regarding the jester", () => {
 
       dismiss(game);
 
-      expect(game.events[0].type).toBe("kill.lynch");
+      game.expectEvents("kill.lynch");
 
       dismiss(game);
     }
 
     game.vote(wolf, skipVote());
 
-    expect(game.events[0].type).toBe("kill.lynch");
+    game.expectEvents("kill.lynch");
     game.vote(wolf, playerVote(jester));
     game.vote(jester, playerVote(jester));
 

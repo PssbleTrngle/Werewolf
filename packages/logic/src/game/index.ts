@@ -1,5 +1,6 @@
 import { GameInfo, GameSettings, Id, Vote } from "models";
 import { notNull } from "../util.js";
+import { EventBus } from "./event/EventBus.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { StartEvent } from "./event/StartEvent.js";
 import WinEvent from "./event/WinEvent.js";
@@ -12,9 +13,24 @@ import { GameReadAccess, GameState } from "./state.js";
 import { calculateWinner } from "./vote/Vote.js";
 import { testWinConditions } from "./winConditions.js";
 
-export abstract class Game implements GameReadAccess {
+interface GameHooks {
+  save: ReadonlyArray<GameState>;
+}
+
+type GameHookKey = keyof GameHooks;
+
+type GameHookListener<T extends GameHookKey> = (
+  subject: GameHooks[T]
+) => void | Promise<void>;
+
+export class Game implements GameReadAccess {
   private state: StateHistory;
   private votes = new Map<Id, Vote>();
+
+  private hooks = new Map<
+    GameHookKey,
+    EventBus<GameHookListener<GameHookKey>>
+  >();
 
   public constructor(history: ReadonlyArray<GameState>) {
     if (history.length === 0) throw new Error("Game history may not be empty");
@@ -36,10 +52,22 @@ export abstract class Game implements GameReadAccess {
     ];
   }
 
-  abstract onSave(history: ReadonlyArray<GameState>): Promise<void>;
+  private hookBus<T extends GameHookKey>(
+    event: T
+  ): EventBus<GameHookListener<T>> {
+    const existing = this.hooks.get(event);
+    if (existing) return existing;
+    const created = new EventBus<GameHookListener<GameHookKey>>();
+    this.hooks.set(event, created);
+    return created;
+  }
+
+  public on<T extends GameHookKey>(event: T, listener: GameHookListener<T>) {
+    this.hookBus(event).register(listener);
+  }
 
   async save() {
-    await this.onSave(this.state.save());
+    await Promise.all(this.hookBus("save").notify(this.state.save()));
   }
 
   get players() {
