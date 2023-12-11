@@ -6,7 +6,7 @@ import { Villager } from "../src/game/role/Villager.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayers, createTestPlayersWith } from "./util/players.js";
-import { dismiss, playerVote, skipVote } from "./util/votes.js";
+import { playerVote, skipVote } from "./util/votes.js";
 
 describe("tests regarding wolf roles", () => {
   it("wolfs kill a player an get lynched", () => {
@@ -19,7 +19,7 @@ describe("tests regarding wolf roles", () => {
 
     expect(game.status.queue?.past).toBe(0);
 
-    dismiss(game);
+    game.dismiss();
 
     game.expectEvents("kill.wolfs", "sleep");
 
@@ -34,7 +34,7 @@ describe("tests regarding wolf roles", () => {
 
     expect(game.status.queue?.past).toBe(2);
 
-    dismiss(game);
+    game.dismiss();
 
     expect(game.status.queue?.past).toBe(3);
 
@@ -59,7 +59,7 @@ describe("tests regarding wolf roles", () => {
       createTestPlayersWith([DreamWolf, Werewolf, ...times(5, () => Villager)])
     );
 
-    dismiss(game);
+    game.dismiss();
 
     game.expectCurrentEvent("kill.wolfs");
     expect(game.events[0].players).toHaveLength(1);
@@ -70,7 +70,7 @@ describe("tests regarding wolf roles", () => {
     game.players.forEach((it) => game.vote(it.id, playerVote(game.players[1])));
 
     game.expectEvents("announcement.death", "kill.wolfs", "sleep");
-    dismiss(game);
+    game.dismiss();
 
     expect(game.events[0].players).toHaveLength(1);
     expect(game.events[0].players).toMatchObject([game.players[0]]);

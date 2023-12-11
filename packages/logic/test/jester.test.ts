@@ -4,7 +4,7 @@ import { Jester } from "../src/game/role/Jester.js";
 import { Villager, Werewolf } from "../src/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
-import { dismiss, playerVote, skipVote } from "./util/votes.js";
+import { playerVote, skipVote } from "./util/votes.js";
 
 const players = createTestPlayersWith([
   Jester,
@@ -31,11 +31,11 @@ describe("tests regarding the jester", () => {
   it("wins when they get lynched", () => {
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
 
     game.vote(wolf, playerVote(villagers[0]));
 
-    dismiss(game);
+    game.dismiss();
 
     game.expectEvents("kill.lynch");
 
@@ -50,11 +50,11 @@ describe("tests regarding the jester", () => {
   it("does not win when he is eaten", () => {
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
 
     game.vote(wolf, playerVote(jester));
 
-    dismiss(game);
+    game.dismiss();
 
     game.expectEvents("kill.lynch");
   });
@@ -62,16 +62,16 @@ describe("tests regarding the jester", () => {
   it("takes priority over a potential wolf win", () => {
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
 
     for (const villager of villagers) {
       game.vote(wolf, playerVote(villager));
 
-      dismiss(game);
+      game.dismiss();
 
       game.expectEvents("kill.lynch");
 
-      dismiss(game);
+      game.dismiss();
     }
 
     game.vote(wolf, skipVote());

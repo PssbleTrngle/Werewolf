@@ -2,13 +2,14 @@ import { times } from "lodash-es";
 import { WinData } from "models";
 import {
   Executioner,
+  Jester,
   Villager,
   Werewolf,
   requirePlayer,
 } from "../src/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
-import { dismiss, playerVote, skipVote } from "./util/votes.js";
+import { playerVote, skipVote } from "./util/votes.js";
 
 const players = createTestPlayersWith([
   Executioner,
@@ -27,23 +28,29 @@ function expectExecutionerWin(game: TestGame) {
   });
 }
 
+function requireTarget(game: TestGame) {
+  const target = requirePlayer(game.players, executioner)?.roleData?.target;
+
+  expect(target).not.toBeUndefined();
+  assert(target);
+
+  return target;
+}
+
 describe("tests regarding the executioner", () => {
   it("wins when they get lynched", () => {
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
 
-    const target = requirePlayer(game.players, executioner)?.roleData?.target;
-
-    expect(target).not.toBeUndefined();
-    assert(target);
+    const target = requireTarget(game);
 
     game.expectCurrentEvent("reveal.executioner");
     game.vote(executioner, skipVote());
 
     game.vote(wolf, playerVote(villagers[0]));
 
-    dismiss(game);
+    game.dismiss();
 
     game.expectEvents("kill.lynch");
 
@@ -53,5 +60,22 @@ describe("tests regarding the executioner", () => {
     game.vote(wolf, skipVote());
 
     expectExecutionerWin(game);
+  });
+
+  it("turns into a jester when the target dies without beeing lynched", () => {
+    const game = TestGame.create(players);
+
+    game.dismiss();
+    game.vote(executioner, skipVote());
+
+    const target = requireTarget(game);
+
+    game.vote(wolf, playerVote(target));
+
+    game.expectEvents("announcement.death", "kill.lynch");
+
+    game.dismiss();
+
+    expect(requirePlayer(game.players, executioner).role).toBe(Jester);
   });
 });

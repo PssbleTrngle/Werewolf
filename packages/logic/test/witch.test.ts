@@ -1,11 +1,11 @@
 import { times } from "lodash-es";
-import { isNotDead } from "../src/game/player/predicates.js";
+import { isNotDead, requirePlayer } from "../src/game/player/predicates.js";
 import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
-import { Seer, Villager } from "../src/index.js";
+import { Hunter, Seer, Villager } from "../src/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
-import { dismiss, playerVote, skipVote } from "./util/votes.js";
+import { playerVote, skipVote } from "./util/votes.js";
 
 describe("tests regarding the witch", () => {
   it("witches events get pushed once the first death has occured", () => {
@@ -17,7 +17,7 @@ describe("tests regarding the witch", () => {
     ]);
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
 
     game.vote(players[2].id, playerVote(players[0]));
     game.vote(players[2].id, skipVote());
@@ -44,7 +44,7 @@ describe("tests regarding the witch", () => {
     ]);
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
 
     game.vote(players[0].id, playerVote(players[3]));
 
@@ -56,7 +56,7 @@ describe("tests regarding the witch", () => {
     // No death announcement
     game.expectEvents("kill.lynch");
 
-    dismiss(game);
+    game.dismiss();
 
     game.vote(players[0].id, playerVote(players[4]));
 
@@ -65,13 +65,37 @@ describe("tests regarding the witch", () => {
 
     game.vote(players[1].id, playerVote(players[3]));
 
-    dismiss(game);
+    game.dismiss();
 
-    dismiss(game);
+    game.dismiss();
 
     game.vote(players[0].id, playerVote(players[2]));
 
     // witch has already revived & killed
     game.expectEvents("sleep");
+  });
+
+  it("witches can revive themself after getting shot by the hunter", () => {
+    const players = createTestPlayersWith([
+      Werewolf,
+      Witch,
+      Hunter,
+      ...times(3, () => Villager),
+    ]);
+    const game = TestGame.create(players);
+
+    const [wolf, witch, hunter] = players.map((it) => it.id);
+
+    game.dismiss();
+
+    game.vote(wolf, playerVote(hunter));
+
+    game.vote(hunter, playerVote(witch));
+
+    game.expectEvents("revive.witch", "kill.witch", "sleep");
+    expect(game.events[0].choice?.players).toMatchObject([
+      requirePlayer(game.players, hunter),
+      requirePlayer(game.players, witch),
+    ]);
   });
 });

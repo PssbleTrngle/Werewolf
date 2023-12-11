@@ -7,7 +7,7 @@ import { Witch } from "../src/game/role/Witch.js";
 import { Werewolf } from "../src/game/role/Wolf.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
-import { dismiss, playerVote, skipVote } from "./util/votes.js";
+import { playerVote, skipVote } from "./util/votes.js";
 
 describe("tests regarding the hunter", () => {
   it("hunter gets killed and seeks revenge", () => {
@@ -17,7 +17,7 @@ describe("tests regarding the hunter", () => {
     ]);
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
     expect(game.status.queue?.past).toBe(1);
 
     players
@@ -57,7 +57,7 @@ describe("tests regarding the hunter", () => {
     ]);
     const game = TestGame.create(players);
 
-    dismiss(game);
+    game.dismiss();
 
     game.vote(players[0].id, playerVote(players[1]));
 

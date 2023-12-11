@@ -9,6 +9,7 @@ import { Player } from "../player/Player.js";
 import {
   hasRole,
   inGroup,
+  isAlive,
   others,
   requirePlayer,
 } from "../player/predicates.js";
@@ -58,12 +59,18 @@ export function registerExecutionerWinCondition(role = Executioner.type) {
   WinConditions.register((game) => {
     const users = game.players.filter(hasRole(role));
 
-    const winners = users
+    const withTarget = users
       .filter((it) => it.roleData.target !== undefined)
-      .filter((it) => {
-        const target = requirePlayer(game.players, it.roleData.target!);
-        return target.deathCause === DeathCause.LYNCHED;
+      .map((user) => {
+        const target = requirePlayer(game.players, user.roleData.target!);
+        return { user, target };
       });
+
+    const lostTarget = withTarget.filter((it) => !isAlive(it.target));
+
+    const winners = lostTarget
+      .filter((it) => it.target.deathCause === DeathCause.LYNCHED)
+      .map((it) => it.user);
 
     if (winners.length) {
       return {

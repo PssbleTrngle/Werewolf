@@ -1,6 +1,7 @@
 import { shuffle, times } from "lodash-es";
 import { GameSettings, Role, User } from "models";
 import { EMPTY_ROLE_DATA, Player } from "./player/Player.js";
+import { Cursed } from "./role/Cursed.js";
 import { DreamWolf } from "./role/DreamWolf.js";
 import { Executioner } from "./role/Executioner.js";
 import { Eye } from "./role/Eye.js";
@@ -8,6 +9,7 @@ import { Freemason } from "./role/Freemason.js";
 import { Hunter } from "./role/Hunter.js";
 import { Jester } from "./role/Jester.js";
 import { Fool, Seer } from "./role/Seer.js";
+import { SeerApprentice } from "./role/SeerApprentice.js";
 import { Villager } from "./role/Villager.js";
 import { Witch } from "./role/Witch.js";
 import { Werewolf } from "./role/Wolf.js";
@@ -26,6 +28,8 @@ export const allRoles: Role[] = [
   DreamWolf,
   Freemason,
   Fool,
+  Cursed,
+  SeerApprentice,
 ];
 
 export function generateRoles(

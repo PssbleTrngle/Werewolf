@@ -144,6 +144,12 @@
         "It is important, that they are always told the same information, should the choose a player trice"
       ]
     },
+    "cursed": {
+      "name": "Cursed"
+    },
+    "seer_apprentice": {
+      "name": "Apprentice"
+    },
     "group": {
       "title": "Groups",
       "villager": "Villagers",

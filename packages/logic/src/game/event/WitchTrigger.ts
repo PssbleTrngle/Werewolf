@@ -20,7 +20,6 @@ export class WitchTrigger extends NoDataEvent {
 
   finish(_vote: Vote, event: Event<never>): ArrayOrSingle<Effect> {
     return new EventEffect((game) => {
-      console.log("witch triggered");
       const dying = game.players.filter(isDying);
 
       const alive = game.players.filter(isAlive);

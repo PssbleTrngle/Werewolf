@@ -1,5 +1,6 @@
 import { Event } from "models";
-import { Game, Player } from "../../src/index.js";
+import { Game, Player, isAlive } from "../../src/index.js";
+import { skipVote } from "./votes.js";
 
 export class TestGame extends Game {
   static create(players: ReadonlyArray<Player>) {
@@ -11,12 +12,16 @@ export class TestGame extends Game {
     expect(actual).toMatchObject(expected);
   }
 
-  expectCurrentEvent(expected: string | Partial<Event>) {
+  expectCurrentEvent<D = unknown>(expected: string | Partial<Event<D>>) {
     const actual = this.events[0];
     if (typeof expected === "string") {
       expect(actual.type).toBe(expected);
     } else {
       expect(actual).toMatchObject(expected);
     }
+  }
+
+  dismiss() {
+    this.players.filter(isAlive).forEach((it) => this.vote(it.id, skipVote()));
   }
 }
