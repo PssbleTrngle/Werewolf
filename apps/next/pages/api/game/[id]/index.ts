@@ -1,12 +1,9 @@
-import { ApiError, GameInfo } from "models";
-import { getLobby, startGame } from "storage";
 import { createApiHandler, methods } from "@/lib/server/apiHandlers";
 import { isAdmin } from "@/lib/server/permissions";
 import { IdParameter } from "@/lib/server/schemas";
-import {
-  requireServerSession,
-  requireSessionView,
-} from "@/lib/server/session";
+import { requireServerSession, requireSessionView } from "@/lib/server/session";
+import { ApiError, GameInfo } from "models";
+import { getLobby, startGame } from "storage";
 
 const GET = createApiHandler<GameInfo>(async (req, res) => {
   const { id } = IdParameter.parse(req.query);
@@ -28,7 +25,7 @@ const POST = createApiHandler(async (req, res) => {
 
   const game = await startGame(lobby);
 
-  res.status(200).json({ gameId: game.id });
+  res.status(200).json({ gameId: id });
 });
 
 export default methods({ GET, POST });
