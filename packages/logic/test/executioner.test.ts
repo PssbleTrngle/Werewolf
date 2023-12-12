@@ -54,9 +54,7 @@ describe("tests regarding the executioner", () => {
 
     game.expectEvents("kill.lynch");
 
-    await Promise.all(
-      villagers.slice(1).map((it) => game.vote(it, playerVote(target)))
-    );
+    await game.vote(villagers.slice(1), playerVote(target));
 
     await game.vote(executioner, skipVote());
     await game.vote(wolf, skipVote());

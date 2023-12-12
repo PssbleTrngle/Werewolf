@@ -25,6 +25,7 @@ const PrimaryStyle = css`
 export interface ButtonProps {
   error?: boolean;
   primary?: boolean;
+  id?: string;
 }
 
 const shouldForwardProp: ShouldForwardProp<"web"> = (key) => {

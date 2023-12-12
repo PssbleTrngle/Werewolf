@@ -7,7 +7,7 @@ import {
   Role,
   Vote,
 } from "models";
-import { notNull } from "../util.js";
+import { ArrayOrSingle, arrayOrSelf, notNull } from "../util.js";
 import { EventBus } from "./event/EventBus.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { StartEvent } from "./event/StartEvent.js";
@@ -208,24 +208,27 @@ export class Game implements GameReadAccess {
     return requirePlayer(this.players, id);
   }
 
-  async vote(id: Id, vote: Vote) {
-    const player = this.requirePlayer(id);
+  async vote(playerIds: ArrayOrSingle<Id | IPlayer>, vote: Vote) {
+    arrayOrSelf(playerIds).forEach((it) => {
+      const id = typeof it === "string" ? it : it.id;
+      const player = this.requirePlayer(id);
 
-    const event = this.currentEvent(id);
+      const event = this.currentEvent(id);
 
-    // TODO only here for sanity checks right now, maybe later there will be a role which is allowed to do this
-    if (!event?.choice)
-      throw new Error(
-        `${player.name} cannot vote as he has no choice on ${event?.type}`
-      );
+      // TODO only here for sanity checks right now, maybe later there will be a role which is allowed to do this
+      if (!event?.choice)
+        throw new Error(
+          `${player.name} cannot vote as he has no choice on ${event?.type}`
+        );
 
-    if (player.status === "dead")
-      throw new Error(
-        `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
-      );
+      if (player.status === "dead")
+        throw new Error(
+          `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
+        );
 
-    console.log(player.name, "voted on", event.type);
-    this.votes.set(player.id, vote);
+      console.log(player.name, "voted on", event.type);
+      this.votes.set(player.id, vote);
+    });
 
     await this.check();
   }

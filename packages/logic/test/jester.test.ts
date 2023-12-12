@@ -39,9 +39,7 @@ describe("tests regarding the jester", () => {
 
     game.expectEvents("kill.lynch");
 
-    await Promise.all(
-      villagers.slice(1).map((it) => game.vote(it, playerVote(jester)))
-    );
+    await game.vote(villagers.slice(1), playerVote(jester));
 
     await game.vote(jester, skipVote());
     await game.vote(wolf, skipVote());

@@ -7,6 +7,7 @@ import {
   HomeIcon,
   NavLinkStyle,
   NavTab,
+  SettingsIcon,
   UserIcon,
   useActiveLink,
   useGameStatus,
@@ -17,6 +18,7 @@ const LINKS: ReadonlyArray<NavTab> = [
   { key: "game", icon: <HomeIcon /> },
   { key: "players", icon: <UserIcon /> },
   { key: "roles", icon: <DocuIcon /> },
+  { key: "settings", icon: <SettingsIcon /> },
 ].map((it) => ({
   ...it,
   path: `/${it.key}`,

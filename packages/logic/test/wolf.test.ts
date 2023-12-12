@@ -25,10 +25,9 @@ describe("tests regarding wolf roles", () => {
 
     expect(game.status.queue?.past).toBe(1);
 
-    await Promise.all(
-      game.players
-        .filter(inGroup(RoleGroup.WOLF))
-        .map((it) => game.vote(it.id, playerVote(game.players[1])))
+    await game.vote(
+      game.players.filter(inGroup(RoleGroup.WOLF)),
+      playerVote(game.players[1])
     );
 
     game.expectEvents("announcement.death", "kill.lynch");
@@ -40,18 +39,14 @@ describe("tests regarding wolf roles", () => {
 
     expect(game.status.queue?.past).toBe(3);
 
-    await Promise.all(
-      game.players
-        .filter(isAlive)
-        .filter(inGroup(RoleGroup.WOLF))
-        .map((it) => game.vote(it.id, skipVote()))
+    await game.vote(
+      game.players.filter(isAlive).filter(inGroup(RoleGroup.WOLF)),
+      skipVote()
     );
 
-    await Promise.all(
-      game.players
-        .filter(isAlive)
-        .filter(inGroup(RoleGroup.VILLAGER))
-        .map((it) => game.vote(it.id, playerVote(game.players[0])))
+    await game.vote(
+      game.players.filter(isAlive).filter(inGroup(RoleGroup.VILLAGER)),
+      playerVote(game.players[0])
     );
 
     expect(game.status.queue?.past).toBe(4);
@@ -73,9 +68,7 @@ describe("tests regarding wolf roles", () => {
     await game.vote(game.players[1].id, skipVote());
 
     game.expectEvents("kill.lynch");
-    await Promise.all(
-      game.players.map((it) => game.vote(it.id, playerVote(game.players[1])))
-    );
+    await game.vote(game.players, playerVote(game.players[1]));
 
     game.expectEvents("announcement.death", "kill.wolfs", "sleep");
     await game.dismiss();

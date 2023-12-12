@@ -1,10 +1,16 @@
-import { Player } from "models";
+import { Player, RoleGroup } from "models";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { tooltip } from "..";
 
+const groupEmojis: Record<RoleGroup, string> = {
+  villager: "🌾",
+  wolf: "🐺",
+};
+
 export default function PlayerIcon({
-  children,
+  children: { name, role },
   size = 1,
   ...props
 }: Readonly<{
@@ -12,14 +18,27 @@ export default function PlayerIcon({
   size?: number;
 }>) {
   const { t } = useTranslation();
+
+  const roleTooltip = useMemo(() => {
+    if (role?.type) return t(`role.${role.type}.name`);
+    if (role?.groups) return t(`role.group.${role.groups[0] ?? "unknown"}`);
+    return undefined;
+  }, [t, role]);
+
+  const emoji = useMemo(() => {
+    if (role?.emoji) return role.emoji;
+    if (role?.groups) {
+      if (role.groups.length === 0) return `❔`;
+      const group = role.groups[0];
+      return groupEmojis[group] ?? `[${group.at(0)?.toUpperCase()}]`;
+    }
+    return undefined;
+  }, [role]);
+
   return (
     <Style $size={size} {...props}>
-      {children.name}
-      {children.role && (
-        <Role {...tooltip(t(`role.${children.role.type}.name`))}>
-          {children.role.emoji}
-        </Role>
-      )}
+      {name}
+      {emoji && <Role {...tooltip(roleTooltip)}>{emoji}</Role>}
     </Style>
   );
 }

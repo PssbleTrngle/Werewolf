@@ -24,7 +24,7 @@ export class EventBus<Listener extends (...args: any[]) => any> {
 }
 
 export class EventFactoryBus extends EventBus<
-  (game: GameReadAccess) => ArrayOrSingle<Effect>
+  (game: GameReadAccess) => ArrayOrSingle<Effect> | false
 > {
   registerEvent(factory: EventFactory) {
     this.register(() => new EventEffect(factory));

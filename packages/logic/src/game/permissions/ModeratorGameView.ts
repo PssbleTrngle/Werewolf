@@ -31,9 +31,7 @@ export class ModeratorGameView implements GameView {
 
   async vote(vote: Vote) {
     const event = this.currentEvent();
-    for (const player of event.players) {
-      await this.game.vote(player.id, vote);
-    }
+    await this.game.vote(event.players, vote);
   }
 
   async undo() {

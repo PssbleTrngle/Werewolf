@@ -17,7 +17,7 @@ export interface User {
 }
 
 export interface Player extends User {
-  role?: Role;
+  role?: Partial<Role>;
   deathCause?: DeathCause;
   status?: Status;
 }

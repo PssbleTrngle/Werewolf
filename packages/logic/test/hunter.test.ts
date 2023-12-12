@@ -20,10 +20,9 @@ describe("tests regarding the hunter", () => {
     await game.dismiss();
     expect(game.status.queue?.past).toBe(1);
 
-    await Promise.all(
-      players
-        .filter(inGroup(RoleGroup.WOLF))
-        .map((it) => game.vote(it.id, playerVote(players[0])))
+    await game.vote(
+      players.filter(inGroup(RoleGroup.WOLF)),
+      playerVote(players[0])
     );
 
     game.expectEvents("kill.hunter", "sleep");

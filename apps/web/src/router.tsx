@@ -5,6 +5,7 @@ import NotFound from "./views/NotFound";
 import PlayersView from "./views/PlayersView";
 import RoleView from "./views/RoleView";
 import RolesView from "./views/RolesView";
+import SettingsView from "./views/SettingsView";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
       { path: "players", element: <PlayersView /> },
       { path: "roles", element: <RolesView /> },
       { path: "roles/:type", element: <RoleView /> },
+      { path: "settings", element: <SettingsView /> },
     ],
   },
 ]);

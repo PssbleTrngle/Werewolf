@@ -7,15 +7,13 @@ import {
   Buttons,
   ButtonsCell,
   Centered,
-  DisabledIcon,
-  EnabledIcon,
   IconButton,
   ResetIcon,
   Table,
-  tooltip,
   useRoles,
 } from "ui";
 import InvisibleLink from "../components/InivisibleLink";
+import ToggleButton from "../components/ToggleButton";
 import { useLocalStore } from "../hooks/store";
 
 // These roles cannot be disabled
@@ -98,13 +96,11 @@ function Row({
         ))}
       </td>
       <ButtonsCell>
-        <IconButton
-          disabled={!!disabledTooltip}
-          onClick={() => onToggle(!enabled)}
-          {...tooltip(disabledTooltip)}
-        >
-          {enabled ? <EnabledIcon /> : <DisabledIcon />}
-        </IconButton>
+        <ToggleButton
+          disabledTooltip={disabledTooltip}
+          onChange={onToggle}
+          value={enabled}
+        />
       </ButtonsCell>
     </tr>
   );

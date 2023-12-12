@@ -60,6 +60,8 @@ export function generateRoles(
     Witch,
     Jester,
     Executioner,
+    Cursed,
+    SeerApprentice,
   ])
     .filter(isEnabled)
     .slice(0, Math.max(0, count - wolfs.length));

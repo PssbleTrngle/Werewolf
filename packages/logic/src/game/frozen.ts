@@ -1,5 +1,5 @@
 import { last } from "lodash-es";
-import { DeathCause, Event, Id, Time, Vote } from "models";
+import { DeathCause, Event, Id, PlayerRevealType, Time, Vote } from "models";
 import {
   ArrayOrSingle,
   PartialOrFactory,
@@ -12,6 +12,7 @@ import { EventFactory } from "./event/Event.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { FakeEvent } from "./event/FakeEvent.js";
 import { createFakePlayer } from "./index.js";
+import revealPlayer from "./permissions/playerReveal.js";
 import { Player } from "./player/Player.js";
 import { isAlive, isDying, requirePlayer } from "./player/predicates.js";
 import "./roleEvents.js";
@@ -118,7 +119,11 @@ export default class FrozenGame implements GameAccess {
         return [];
       }
 
-      return DeathEvent.create(alive, unnotifiedDeaths, time);
+      const revealedDeaths = unnotifiedDeaths.map((it) =>
+        revealPlayer(it, this.settings.deathRevealType ?? PlayerRevealType.ROLE)
+      );
+
+      return DeathEvent.create(alive, revealedDeaths, time);
     });
   }
 

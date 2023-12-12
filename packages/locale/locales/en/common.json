@@ -156,6 +156,7 @@
     },
     "group": {
       "title": "Groups",
+      "unknown": "Unknown",
       "villager": "Villagers",
       "wolf": "Wolfs"
     }
@@ -170,6 +171,17 @@
       "alive": "Alive",
       "dying": "Dying",
       "dead": "Dead"
+    }
+  },
+  "settings": {
+    "fake_player_screens": "Create fake-screens for roles without players?",
+    "seer_reveal_type": "What should be revealed to the seer?",
+    "death_reveal_type": "What should be revealed about dead players?",
+    "reveal_type": {
+      "role": "Role",
+      "group": "Group",
+      "aligment": "Alignment",
+      "nothing": "Nothing"
     }
   }
 }

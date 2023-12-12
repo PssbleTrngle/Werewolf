@@ -1,5 +1,6 @@
 import { SleepBoundary, SleepEvents } from "./event/SleepBoundary.js";
 import { isNotDead } from "./player/predicates.js";
+import { registerCursedEvents } from "./role/Cursed.js";
 import {
   registerExecutionEvents,
   registerExecutionerWinCondition,
@@ -9,6 +10,7 @@ import { registerFreemasonEvents } from "./role/Freemason.js";
 import { registerHunterEvents } from "./role/Hunter.js";
 import { registerJesterWinCondition } from "./role/Jester.js";
 import { registerSeerEvents } from "./role/Seer.js";
+import { registerApprenticeEvents } from "./role/SeerApprentice.js";
 import { registerVillagerWinCondition } from "./role/Villager.js";
 import { registerWitchEvents } from "./role/Witch.js";
 import { registerWolfEvents, registerWolfWinCondition } from "./role/Wolf.js";
@@ -19,6 +21,8 @@ registerFreemasonEvents();
 
 registerSeerEvents();
 registerWolfEvents();
+registerCursedEvents();
+registerApprenticeEvents();
 registerWitchEvents();
 
 registerHunterEvents();

@@ -57,14 +57,15 @@ export const registerSeerEvents = (
   const foolEvents = fool ? foolSleepFactory(fool) : () => [];
 
   if (fool) {
-    StartEvents.register(({ players }) => {
+    StartEvents.register(({ players, settings }) => {
       const fools = players.filter(hasRole(fool));
       return fools.map((it) => {
         const hallucinatedRoles: Record<Id, Partial<Player>> = {
           [it.id]: { role: Seer },
         };
-        // TODO use all possible roles allowed by the rule set
-        const roles = generateRoles(players).map(({ role }) => ({ role }));
+        const roles = generateRoles(players, settings.disabledRoles).map(
+          ({ role }) => ({ role })
+        );
         players
           .filter(others(it))
           .forEach(({ id }, i) => (hallucinatedRoles[id] = roles[i]));

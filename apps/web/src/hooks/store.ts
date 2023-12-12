@@ -21,6 +21,7 @@ export interface PlayerStore {
 
 export interface SettingsStore extends GameSettings {
   toggleRole(key: string, enabled: boolean): void;
+  modifySettings(values: Partial<GameSettings>): void;
 }
 
 export type LocalStore = PlayerStore & GameStore & SettingsStore;
@@ -62,8 +63,6 @@ const createPlayerStore: StateCreator<
 });
 
 const createSettingsStore: StateCreator<SettingsStore> = (set, get) => ({
-  fakePlayerScreens: true,
-
   toggleRole(key, enabled) {
     const disabledRoles = [...(get().disabledRoles ?? [])];
 
@@ -74,6 +73,10 @@ const createSettingsStore: StateCreator<SettingsStore> = (set, get) => ({
     else disabledRoles.push(key);
 
     set({ disabledRoles });
+  },
+
+  modifySettings(values) {
+    set(values);
   },
 });
 

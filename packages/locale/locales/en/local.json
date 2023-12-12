@@ -11,7 +11,8 @@
   "nav": {
     "game": "Game",
     "players": "Players",
-    "roles": "Roles"
+    "roles": "Roles",
+    "settings": "Settings"
   },
   "dialog": {
     "rename": "Rename Player",

@@ -8,7 +8,7 @@ import {
   PlayerGameView,
   allRoles,
 } from "logic";
-import { GameStatus, Id, Player, Vote } from "models";
+import { GameStatus, Id, Player, Role, Vote } from "models";
 import {
   Dispatch,
   DispatchWithoutAction,
@@ -27,7 +27,12 @@ export function preparePlayers(
 ): ReadonlyArray<GamePlayer> {
   return players.map(({ role, ...it }) => {
     if (!role) throw new Error(`Player ${it.name} is missing a role`);
-    return { ...it, roleData: EMPTY_ROLE_DATA, status: "alive", role };
+    return {
+      ...it,
+      roleData: EMPTY_ROLE_DATA,
+      status: "alive",
+      role: role as Role,
+    };
   });
 }
 

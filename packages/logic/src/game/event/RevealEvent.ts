@@ -1,4 +1,4 @@
-import { Event, RevealData, Vote } from "models";
+import { Event, Player as IPlayer, RevealData, Vote } from "models";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
@@ -9,7 +9,7 @@ export class RevealEvent extends EventType<RevealData> {
   static create(
     type: string,
     players: ReadonlyArray<Player>,
-    targets: ReadonlyArray<Player>
+    targets: ReadonlyArray<IPlayer>
   ): Event<RevealData> {
     return {
       players,

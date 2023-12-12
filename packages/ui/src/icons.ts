@@ -6,6 +6,7 @@ export { ToggleLeft as DisabledIcon } from "@styled-icons/boxicons-regular/Toggl
 export { Undo as UndoIcon } from "@styled-icons/boxicons-regular/Undo";
 export { X as CloseIcon } from "@styled-icons/boxicons-regular/X";
 export { Book as DocuIcon } from "@styled-icons/boxicons-solid/Book";
+export { Cog as SettingsIcon } from "@styled-icons/boxicons-solid/Cog";
 export { EditAlt as EditIcon } from "@styled-icons/boxicons-solid/EditAlt";
 export { Error as ErrorIcon } from "@styled-icons/boxicons-solid/Error";
 export { HomeCircle as HomeIcon } from "@styled-icons/boxicons-solid/HomeCircle";

@@ -1,5 +1,6 @@
-import { Id } from "models";
+import { Id, PlayerRevealType } from "models";
 import { RevealEvent } from "../event/RevealEvent.js";
+import revealPlayer from "../permissions/playerReveal.js";
 import { requirePlayer } from "../player/predicates.js";
 import { GameAccess } from "../state.js";
 import { Effect } from "./Effect.js";
@@ -22,10 +23,14 @@ export class HallucinateEffect implements Effect {
             `roleData for ${to.name} has not been set correctly, hallucinatedRoles missing`
           );
         }
-        return {
-          ...it,
-          ...hallucinated,
-        };
+
+        return revealPlayer(
+          {
+            ...it,
+            ...hallucinated,
+          },
+          game.settings.seerRevealType ?? PlayerRevealType.ROLE
+        );
       });
 
     game.immediately(() => RevealEvent.create(this.type, [to], targets));
