@@ -1,4 +1,4 @@
-import { GameInfo, GameSettings, Id, Vote } from "models";
+import { Event, GameInfo, GameSettings, Id, Vote } from "models";
 import { notNull } from "../util.js";
 import { EventBus } from "./event/EventBus.js";
 import { EventRegistry } from "./event/EventRegistry.js";
@@ -121,43 +121,51 @@ export class Game implements GameReadAccess {
     }
   }
 
+  private checkEvent(
+    access: FrozenGame,
+    event: Event,
+    index: number
+  ): number | false {
+    const type = EventRegistry.get(event.type);
+
+    const currentEvent = (id: Id) =>
+      this.eventsFor(id).find((it) => !access.hasFinished(it));
+
+    const arrived = event.players.filter((it) => currentEvent(it.id) === event);
+
+    if (!type.isFinished(access, event, index)) return false;
+
+    // some players still have something to do
+    if (arrived.length < event.players.length) return false;
+
+    let vote: Vote = { type: "skip" };
+    if (event.choice) {
+      const votes = event.players
+        .map((it) => this.votes.get(it.id))
+        .filter(notNull);
+
+      // not everybody has voted yet
+      if (votes.length < event.players.length) return false;
+
+      vote = calculateWinner(votes);
+    }
+
+    event.players.forEach((it) => this.votes.delete(it.id));
+    return access.finish(event, vote);
+  }
+
   private async check() {
     const access = this.freeze();
 
-    const dirty = this.events.filter((event, i) => {
-      const type = EventRegistry.get(event.type);
+    let finished = 0;
+    this.events.reduce((prognose, event, index) => {
+      const result = this.checkEvent(access, event, index + prognose);
+      if (result === false) return prognose;
+      finished++;
+      return prognose + result;
+    }, 0);
 
-      const currentEvent = (id: Id) =>
-        this.eventsFor(id).find((it) => !access.hasFinished(it));
-
-      const arrived = event.players.filter(
-        (it) => currentEvent(it.id) === event
-      );
-
-      if (!type.isFinished(access, event, i)) return;
-
-      // some players still have something to do
-      if (arrived.length < event.players.length) return false;
-
-      let vote: Vote = { type: "skip" };
-      if (event.choice) {
-        const votes = event.players
-          .map((it) => this.votes.get(it.id))
-          .filter(notNull);
-
-        // not everybody has voted yet
-        if (votes.length < event.players.length) return false;
-
-        vote = calculateWinner(votes);
-      }
-
-      event.players.forEach((it) => this.votes.delete(it.id));
-      access.finish(event, vote);
-
-      return true;
-    });
-
-    if (dirty.length > 0) {
+    if (finished > 0) {
       const unfrozen = this.checkWin(access);
       this.state.push(unfrozen);
       await this.save();

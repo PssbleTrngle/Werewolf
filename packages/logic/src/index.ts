@@ -1,5 +1,6 @@
 export * from "./game/RoleSelector.js";
 export * from "./game/effect/AnnouncementEffect.js";
+export * from "./game/effect/ChangeRoleEffect.js";
 export * from "./game/effect/Effect.js";
 export * from "./game/effect/EventEffect.js";
 export * from "./game/effect/HallucinateEffect.js";

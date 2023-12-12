@@ -11,7 +11,14 @@ export function arrayOrSelf<T>(input: ArrayOrSingle<T>): ReadonlyArray<T> {
 
 export type PartialOrFactory<T> = Partial<T> | ((previous: T) => Partial<T>);
 
+export function resolvePartialFactory<T>(
+  factory: PartialOrFactory<T>,
+  current: T
+): Partial<T> {
+  return typeof factory === "function" ? factory(current) : factory;
+}
+
 export function resolveFactory<T>(factory: PartialOrFactory<T>, current: T): T {
-  const partial = typeof factory === "function" ? factory(current) : factory;
+  const partial = resolvePartialFactory(factory, current);
   return { ...current, ...partial };
 }

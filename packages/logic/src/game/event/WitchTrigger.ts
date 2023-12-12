@@ -44,11 +44,11 @@ export class WitchTrigger extends NoDataEvent {
   }
 
   isFinished(
-    game: GameReadAccess,
+    _game: GameReadAccess,
     _event: Event<never>,
     index: number
   ): boolean {
-    return index === 0 || game.players.some(isDying);
+    return index === 0; // || game.players.some(isDying);
   }
 
   view(

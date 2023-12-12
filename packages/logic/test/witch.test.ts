@@ -94,8 +94,8 @@ describe("tests regarding the witch", () => {
 
     game.expectEvents("revive.witch", "kill.witch", "sleep");
     expect(game.events[0].choice?.players).toMatchObject([
-      requirePlayer(game.players, hunter),
       requirePlayer(game.players, witch),
+      requirePlayer(game.players, hunter),
     ]);
   });
 });

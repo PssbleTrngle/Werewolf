@@ -11,13 +11,18 @@ import { Effect } from "../effect/Effect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
 import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
+import { GameReadAccess } from "../state.js";
 import { DismissChoice } from "../vote/Choice.js";
 import { EventType } from "./Event.js";
 import { EventBus } from "./EventBus.js";
 import { registerEventFactory } from "./EventRegistry.js";
 
 export const DeathEvents = new EventBus<
-  (player: Player, cause: DeathCause) => ArrayOrSingle<Effect> | false
+  (
+    player: Player,
+    cause: DeathCause,
+    game: GameReadAccess
+  ) => ArrayOrSingle<Effect> | false
 >();
 
 export class DeathEvent extends EventType<DeathData> {

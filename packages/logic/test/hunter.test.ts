@@ -61,9 +61,12 @@ describe("tests regarding the hunter", () => {
 
     game.vote(players[0].id, playerVote(players[1]));
 
-    game.expectEvents("kill.hunter", "revive.witch", "kill.witch", "sleep");
+    game.expectEvents("kill.hunter", "trigger.witch", "sleep");
 
     game.vote(players[1].id, playerVote(players[0]));
+
+    game.expectEvents("revive.witch", "kill.witch", "sleep");
+
     game.vote(players[2].id, playerVote(players[1]));
     game.vote(players[2].id, skipVote());
 

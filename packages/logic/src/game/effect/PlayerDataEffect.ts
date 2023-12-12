@@ -1,5 +1,5 @@
 import { Id } from "models";
-import { PartialOrFactory } from "../../util.js";
+import { PartialOrFactory, resolveFactory } from "../../util.js";
 import { RoleData } from "../player/Player.js";
 import { GameAccess } from "../state.js";
 import { Effect } from "./Effect.js";
@@ -11,6 +11,8 @@ export class PlayerDataEffect implements Effect {
   ) {}
 
   apply(game: GameAccess) {
-    game.modifyPlayerData(this.playerId, this.data);
+    game.modifyPlayer(this.playerId, (it) => ({
+      roleData: resolveFactory(this.data, it.roleData),
+    }));
   }
 }

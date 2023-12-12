@@ -2,7 +2,7 @@ import { DeathCause, Event, GameInfo, GameSettings, Id, Time } from "models";
 import { ArrayOrSingle, PartialOrFactory } from "../util.js";
 import { Effect } from "./effect/Effect.js";
 import { EventFactory } from "./event/Event.js";
-import { Player, RoleData } from "./player/Player.js";
+import { Player } from "./player/Player.js";
 import "./roleEvents.js";
 
 export interface GameState extends GameInfo, GameReadAccess {
@@ -22,5 +22,5 @@ export interface GameAccess extends GameReadAccess {
   broadcastDeaths(time?: Time): void;
   apply(effects: ArrayOrSingle<Effect>): void;
   setTime(time: Time): void;
-  modifyPlayerData(id: Id, data: PartialOrFactory<RoleData>): void;
+  modifyPlayer(id: Id, data: PartialOrFactory<Player>): void;
 }

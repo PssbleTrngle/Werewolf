@@ -4,13 +4,13 @@ import {
   ArrayOrSingle,
   PartialOrFactory,
   arrayOrSelf,
-  resolveFactory,
+  resolvePartialFactory,
 } from "../util.js";
 import { Effect } from "./effect/Effect.js";
 import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
 import { EventFactory } from "./event/Event.js";
 import { EventRegistry } from "./event/EventRegistry.js";
-import { Player, RoleData } from "./player/Player.js";
+import { Player } from "./player/Player.js";
 import { isAlive, isDying, requirePlayer } from "./player/predicates.js";
 import "./roleEvents.js";
 import { GameAccess, GameState } from "./state.js";
@@ -23,7 +23,7 @@ export default class FrozenGame implements GameAccess {
   private readonly pendingReplace = new Set<EventFactory>();
   private clearDeaths = false;
   private readonly timesPassed: Time[] = [];
-  private readonly playerDataModifiers = new Map<Id, Partial<RoleData>[]>();
+  private readonly playerModifiers = new Map<Id, Partial<Player>[]>();
 
   constructor(private readonly initial: GameState) {}
 
@@ -38,7 +38,9 @@ export default class FrozenGame implements GameAccess {
 
     this.replaced.set(event, Array.from(this.pendingReplace));
 
+    const prognose = this.pendingReplace.size;
     this.pendingReplace.clear();
+    return prognose - 1;
   }
 
   hasFinished(event: Event) {
@@ -69,13 +71,13 @@ export default class FrozenGame implements GameAccess {
     return this.initial.settings;
   }
 
-  modifyPlayerData(id: Id, factory: PartialOrFactory<RoleData>) {
+  modifyPlayer(id: Id, factory: PartialOrFactory<Player>) {
     const player = requirePlayer(this.players, id);
-    const data = resolveFactory(factory, player.roleData);
-    if (this.playerDataModifiers.has(id)) {
-      this.playerDataModifiers.get(id)?.push(data);
+    const values = resolvePartialFactory(factory, player);
+    if (this.playerModifiers.has(id)) {
+      this.playerModifiers.get(id)?.push(values);
     } else {
-      this.playerDataModifiers.set(id, [data]);
+      this.playerModifiers.set(id, [values]);
     }
   }
 
@@ -83,7 +85,9 @@ export default class FrozenGame implements GameAccess {
     const target = requirePlayer(this.players, playerId);
     console.log(target.name, "died by", cause);
 
-    const effects = DeathEvents.notify(target, cause).flatMap(arrayOrSelf);
+    const effects = DeathEvents.notify(target, cause, this).flatMap(
+      arrayOrSelf
+    );
     // these should not be called if the target is revived and should therefore be called later
     // TODO
     // ...arrayOrSelf(target.role.onDeath(target)),
@@ -146,12 +150,14 @@ export default class FrozenGame implements GameAccess {
           } else return player;
         })
         .map<Player>((player) => {
-          const modifiers = this.playerDataModifiers.get(player.id) ?? [];
-          const roleData = modifiers.reduce<RoleData>(
-            (previous, values) => ({ ...previous, ...values }),
-            player.roleData
+          const modifiers = this.playerModifiers.get(player.id) ?? [];
+          return modifiers.reduce<Player>(
+            (previous, values) => ({
+              ...previous,
+              ...values,
+            }),
+            player
           );
-          return { ...player, roleData };
         }),
       events,
     };

@@ -1,7 +1,9 @@
 import { shuffle } from "lodash-es";
 import { DeathCause, Role, RoleGroup } from "models";
+import { ChangeRoleEffect } from "../effect/ChangeRoleEffect.js";
 import { EventEffect } from "../effect/EventEffect.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
+import { DeathEvents } from "../event/DeathEvent.js";
 import { registerEvent } from "../event/EventRegistry.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { StartEvents } from "../event/StartEvent.js";
@@ -33,6 +35,8 @@ function isValidTarget(player: Player) {
   return !illegalPredicates.some((test) => test(player));
 }
 
+const WINNING_CAUSES = [DeathCause.LYNCHED];
+
 export function registerExecutionEvents(role = Executioner.type) {
   registerEvent(`reveal.${role}`, new RevealEvent());
 
@@ -53,6 +57,15 @@ export function registerExecutionEvents(role = Executioner.type) {
       ];
     });
   });
+
+  DeathEvents.register((subject, cause, game) => {
+    if (WINNING_CAUSES.includes(cause)) return false;
+
+    const users = game.players.filter(hasRole(role));
+    const targeting = users.filter((it) => it.roleData.target === subject.id);
+
+    return targeting.map((it) => new ChangeRoleEffect(it.id, Jester));
+  });
 }
 
 export function registerExecutionerWinCondition(role = Executioner.type) {
@@ -69,7 +82,7 @@ export function registerExecutionerWinCondition(role = Executioner.type) {
     const lostTarget = withTarget.filter((it) => !isAlive(it.target));
 
     const winners = lostTarget
-      .filter((it) => it.target.deathCause === DeathCause.LYNCHED)
+      .filter((it) => WINNING_CAUSES.includes(it.target.deathCause!))
       .map((it) => it.user);
 
     if (winners.length) {
