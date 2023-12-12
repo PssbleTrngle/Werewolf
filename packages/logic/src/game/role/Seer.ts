@@ -2,7 +2,11 @@ import { Id, Player, Role, RoleGroup } from "models";
 import { arrayOrSelf } from "../../util.js";
 import { generateRoles } from "../RoleSelector.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
-import { EventFactory, individualEvents } from "../event/Event.js";
+import {
+  EventFactory,
+  individualEvents,
+  roleScopedFactory,
+} from "../event/Event.js";
 import { registerEvent } from "../event/EventRegistry.js";
 import { HallucinateEvent } from "../event/HallucinateEvent.js";
 import { RevealEvent } from "../event/RevealEvent.js";
@@ -23,31 +27,31 @@ export const Fool: Role = {
   emoji: "🤡",
 };
 
-function seerSleepFactory(role: string): EventFactory {
-  return ({ players }) => {
+function seerSleepFactory(role: Role): EventFactory {
+  return roleScopedFactory(role, ({ players }) => {
     const alive = players.filter(isAlive);
     const seers = alive.filter(hasRole(role));
     return individualEvents(seers, (it) =>
       SeeEvent.create(it, alive.filter(others(...it)))
     );
-  };
+  });
 }
 
-function foolSleepFactory(role: string): EventFactory {
-  return ({ players }) => {
+function foolSleepFactory(role: Role): EventFactory {
+  return roleScopedFactory(role, ({ players }) => {
     const alive = players.filter(isAlive);
     const fools = alive.filter(hasRole(role));
     return individualEvents(fools, (it) =>
       HallucinateEvent.create(it, alive.filter(others(...it)))
     );
-  };
+  });
 }
 
 export const registerSeerEvents = (
-  seer = Seer.type,
-  fool: string | undefined = Fool.type
+  seer = Seer,
+  fool: Role | undefined = Fool
 ) => {
-  registerEvent(`reveal.${seer}`, new RevealEvent());
+  registerEvent(`reveal.${seer.type}`, new RevealEvent());
 
   const seerEvents = seerSleepFactory(seer);
   const foolEvents = fool ? foolSleepFactory(fool) : () => [];

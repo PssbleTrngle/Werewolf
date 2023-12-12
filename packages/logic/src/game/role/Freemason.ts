@@ -1,4 +1,5 @@
 import { Role, RoleGroup } from "models";
+import { roleScopedFactory } from "../event/Event.js";
 import { registerEvent } from "../event/EventRegistry.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { StartEvents } from "../event/StartEvent.js";
@@ -10,10 +11,12 @@ export const Freemason: Role = {
   emoji: "⚒️",
 };
 
-export function registerFreemasonEvents(role = Freemason.type) {
-  registerEvent(`reveal.${role}`, new RevealEvent());
-  StartEvents.registerEvent(({ players }) => {
-    const comrades = players.filter(hasRole(role));
-    return RevealEvent.create("freemason", comrades, comrades);
-  });
+export function registerFreemasonEvents(role = Freemason) {
+  registerEvent(`reveal.${role.type}`, new RevealEvent());
+  StartEvents.registerEvent(
+    roleScopedFactory(role, ({ players }) => {
+      const comrades = players.filter(hasRole(role));
+      return RevealEvent.create(role.type, comrades, comrades);
+    })
+  );
 }

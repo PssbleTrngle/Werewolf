@@ -15,7 +15,7 @@
     "source": "Source Code"
   },
   "event": {
-    "fake.title": "Faked Event ({{type}})",
+    "fake.title": "Faked Event",
     "start.title": "Start the Game?",
     "sleep.title": "You are sleeping",
     "dead.title": "You are dead",

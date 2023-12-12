@@ -1,4 +1,4 @@
-import { Id, Player, RoleGroup } from "models";
+import { Id, Player, Role, RoleGroup } from "models";
 
 export function inGroup(group: RoleGroup) {
   return (value: Player): boolean => {
@@ -24,8 +24,9 @@ export function isDying(player: Player) {
   return player.status === "dying";
 }
 
-export function hasRole(role: string) {
-  return (player: Player) => player.role?.type === role;
+export function hasRole(role: string | Role) {
+  const type = typeof role === "string" ? role : role.type;
+  return (player: Player) => player.role?.type === type;
 }
 
 export function byId(id: Id) {

@@ -4,6 +4,7 @@ import { ChangeRoleEffect } from "../effect/ChangeRoleEffect.js";
 import { EventEffect } from "../effect/EventEffect.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import { DeathEvents } from "../event/DeathEvent.js";
+import { individualEvents, roleScopedFactory } from "../event/Event.js";
 import { registerEvent } from "../event/EventRegistry.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { StartEvents } from "../event/StartEvent.js";
@@ -37,23 +38,36 @@ function isValidTarget(player: Player) {
 
 const WINNING_CAUSES = [DeathCause.LYNCHED];
 
-export function registerExecutionEvents(role = Executioner.type) {
-  registerEvent(`reveal.${role}`, new RevealEvent());
+export function registerExecutionEvents(role = Executioner) {
+  registerEvent(`reveal.${role.type}`, new RevealEvent());
 
   StartEvents.register((game) => {
     const users = game.players.filter(hasRole(role));
     const possibleTargets = game.players.filter(isValidTarget);
+
+    if (users.length === 0) {
+      return new EventEffect(
+        roleScopedFactory(role, () => RevealEvent.create(role.type, [], []))
+      );
+    }
+
     return users.flatMap((user) => {
       const target = shuffle(possibleTargets).find(others(user));
 
       if (!target) {
         // convert execution to jester or villager?
-        throw new Error(`could not find a valid ${role} target`);
+        throw new Error(`could not find a valid ${role.type} target`);
       }
 
       return [
         new PlayerDataEffect(user.id, { target: target?.id }),
-        new EventEffect(() => RevealEvent.create(role, [user], [target])),
+        new EventEffect(
+          roleScopedFactory(role, () =>
+            individualEvents([user], (it) =>
+              RevealEvent.create(role.type, it, [target])
+            )
+          )
+        ),
       ];
     });
   });

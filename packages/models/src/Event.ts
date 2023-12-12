@@ -1,6 +1,7 @@
 import { Choice } from "./Choice.js";
 import { Time, WinState } from "./Game.js";
 import { DeathCause, Player } from "./Player.js";
+import { Role } from "./Role.js";
 
 export interface Event<T = unknown> {
   type: string;
@@ -8,6 +9,7 @@ export interface Event<T = unknown> {
   choice?: Choice;
   timeLimit?: number;
   data: T;
+  role?: Role;
 }
 
 export interface KillData {

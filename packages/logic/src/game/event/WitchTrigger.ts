@@ -10,7 +10,9 @@ import {
   others,
   requirePlayer,
 } from "../player/predicates.js";
+import { Witch } from "../role/Witch.js";
 import { GameReadAccess } from "../state.js";
+import { roleScopedFactory } from "./Event.js";
 import { NoDataEvent } from "./NoDataEvent.js";
 import PotionKillEvent from "./PotionKillEvent.js";
 import PotionReviveEvent from "./PotionReviveEvent.js";
@@ -19,29 +21,32 @@ export class WitchTrigger extends NoDataEvent {
   static create = this.createFactory("trigger.witch", new WitchTrigger());
 
   finish(_vote: Vote, event: Event<never>): ArrayOrSingle<Effect> {
-    return new EventEffect((game) => {
-      const dying = game.players.filter(isDying);
+    return new EventEffect(
+      roleScopedFactory(Witch, (game) => {
+        const dying = game.players.filter(isDying);
 
-      const alive = game.players.filter(isAlive);
+        const alive = game.players.filter(isAlive);
 
-      const users = event.players.map((it) =>
-        requirePlayer(game.players, it.id)
-      );
+        const users = event.players.map((it) =>
+          requirePlayer(game.players, it.id)
+        );
 
-      const revive = PotionReviveEvent.create(
-        users.filter((it) => !it.roleData.usedRevivePotion),
-        dying
-      );
+        const revive = PotionReviveEvent.create(
+          users.filter((it) => !it.roleData.usedRevivePotion),
+          dying
+        );
 
-      const kill = PotionKillEvent.create(
-        users.filter((it) => !it.roleData.usedKillPotion),
-        alive.filter(others(...users))
-      );
+        const kill = PotionKillEvent.create(
+          users.filter((it) => !it.roleData.usedKillPotion),
+          alive.filter(others(...users))
+        );
 
-      if (dying.length === 0)
-        return [PotionReviveEvent.create([], dying), kill];
-      return [revive, kill];
-    }, true);
+        if (dying.length === 0)
+          return [PotionReviveEvent.create([], dying), kill];
+        return [revive, kill];
+      }),
+      true
+    );
   }
 
   isFinished(

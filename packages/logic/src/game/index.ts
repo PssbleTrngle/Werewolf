@@ -4,6 +4,7 @@ import {
   GameSettings,
   Player as IPlayer,
   Id,
+  Role,
   Vote,
 } from "models";
 import { notNull } from "../util.js";
@@ -30,10 +31,14 @@ type GameHookListener<T extends GameHookKey> = (
   subject: GameHooks[T]
 ) => void | Promise<void>;
 
-export const FAKE_PLAYER: IPlayer = {
-  id: "fake",
-  name: "Noone",
-};
+export const FAKE_PLAYER_ID = "fake";
+export function createFakePlayer(role?: Role): IPlayer {
+  return {
+    role,
+    id: "fake",
+    name: "Noone",
+  };
+}
 
 export class Game implements GameReadAccess {
   private state: StateHistory;
@@ -199,7 +204,7 @@ export class Game implements GameReadAccess {
   }
 
   requirePlayer(id: Id) {
-    if (id === FAKE_PLAYER.id) return FAKE_PLAYER;
+    if (id === FAKE_PLAYER_ID) return createFakePlayer();
     return requirePlayer(this.players, id);
   }
 

@@ -1,5 +1,5 @@
-import { Event, Vote } from "models";
-import { ArrayOrSingle } from "../../util.js";
+import { Event, Role, Vote } from "models";
+import { ArrayOrSingle, arrayOrSelf } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
@@ -32,6 +32,17 @@ export abstract class EventType<T> {
   isFinished(_game: GameReadAccess, _event: Event<T>, _index: number) {
     return true;
   }
+}
+
+export function roleScopedFactory(
+  role: Role,
+  factory: EventFactory
+): EventFactory {
+  return (game) => {
+    if (game.settings.disabledRoles?.includes(role.type)) return [];
+    const created = arrayOrSelf(factory(game));
+    return created.map((it) => ({ ...it, role }));
+  };
 }
 
 export function individualEvents<T>(

@@ -11,7 +11,7 @@ import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
 import { EventFactory } from "./event/Event.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { FakeEvent } from "./event/FakeEvent.js";
-import { FAKE_PLAYER } from "./index.js";
+import { createFakePlayer } from "./index.js";
 import { Player } from "./player/Player.js";
 import { isAlive, isDying, requirePlayer } from "./player/predicates.js";
 import "./roleEvents.js";
@@ -125,7 +125,9 @@ export default class FrozenGame implements GameAccess {
   private fakeEvent(event: Event): Event {
     if (event.players.length > 0 || !this.settings.fakePlayerScreens)
       return event;
-    return FakeEvent.create([FAKE_PLAYER], event, !!event.choice);
+
+    const fakePlayer = createFakePlayer(event.role);
+    return FakeEvent.create([fakePlayer], event, !!event.choice);
   }
 
   private resolveFactory(factory: EventFactory) {
