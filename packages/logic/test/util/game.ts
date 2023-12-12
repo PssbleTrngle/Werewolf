@@ -21,7 +21,9 @@ export class TestGame extends Game {
     }
   }
 
-  dismiss() {
-    this.players.filter(isAlive).forEach((it) => this.vote(it.id, skipVote()));
+  async dismiss() {
+    await Promise.all(
+      this.players.filter(isAlive).map((it) => this.vote(it.id, skipVote()))
+    );
   }
 }

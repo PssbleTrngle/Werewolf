@@ -8,7 +8,7 @@ import { createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";
 
 describe("tests regarding the witch", () => {
-  it("witches events get pushed once the first death has occured", () => {
+  it("witches events get pushed once the first death has occured", async () => {
     const players = createTestPlayersWith([
       Werewolf,
       Witch,
@@ -17,17 +17,17 @@ describe("tests regarding the witch", () => {
     ]);
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(players[2].id, playerVote(players[0]));
-    game.vote(players[2].id, skipVote());
+    await game.vote(players[2].id, playerVote(players[0]));
+    await game.vote(players[2].id, skipVote());
 
-    game.vote(players[0].id, playerVote(players[1]));
+    await game.vote(players[0].id, playerVote(players[1]));
 
     game.expectEvents("revive.witch", "kill.witch", "sleep");
 
-    game.vote(players[1].id, playerVote(players[1]));
-    game.vote(players[1].id, skipVote());
+    await game.vote(players[1].id, playerVote(players[1]));
+    await game.vote(players[1].id, skipVote());
 
     // No death announcement
     game.expectEvents("kill.lynch");
@@ -36,7 +36,7 @@ describe("tests regarding the witch", () => {
     expect(dead).toHaveLength(0);
   });
 
-  it("witches can only revive/kill once", () => {
+  it("witches can only revive/kill once", async () => {
     const players = createTestPlayersWith([
       Werewolf,
       Witch,
@@ -44,38 +44,38 @@ describe("tests regarding the witch", () => {
     ]);
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(players[0].id, playerVote(players[3]));
+    await game.vote(players[0].id, playerVote(players[3]));
 
     game.expectEvents("revive.witch", "kill.witch", "sleep");
 
-    game.vote(players[1].id, playerVote(players[3]));
-    game.vote(players[1].id, skipVote());
+    await game.vote(players[1].id, playerVote(players[3]));
+    await game.vote(players[1].id, skipVote());
 
     // No death announcement
     game.expectEvents("kill.lynch");
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(players[0].id, playerVote(players[4]));
+    await game.vote(players[0].id, playerVote(players[4]));
 
     // witch has already revived
     game.expectEvents("kill.witch", "sleep");
 
-    game.vote(players[1].id, playerVote(players[3]));
+    await game.vote(players[1].id, playerVote(players[3]));
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(players[0].id, playerVote(players[2]));
+    await game.vote(players[0].id, playerVote(players[2]));
 
     // witch has already revived & killed
     game.expectEvents("sleep");
   });
 
-  it("witches can revive themself after getting shot by the hunter", () => {
+  it("witches can revive themself after getting shot by the hunter", async () => {
     const players = createTestPlayersWith([
       Werewolf,
       Witch,
@@ -86,11 +86,11 @@ describe("tests regarding the witch", () => {
 
     const [wolf, witch, hunter] = players.map((it) => it.id);
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(wolf, playerVote(hunter));
+    await game.vote(wolf, playerVote(hunter));
 
-    game.vote(hunter, playerVote(witch));
+    await game.vote(hunter, playerVote(witch));
 
     game.expectEvents("revive.witch", "kill.witch", "sleep");
     expect(game.events[0].choice?.players).toMatchObject([

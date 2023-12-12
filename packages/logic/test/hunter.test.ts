@@ -10,25 +10,27 @@ import { createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";
 
 describe("tests regarding the hunter", () => {
-  it("hunter gets killed and seeks revenge", () => {
+  it("hunter gets killed and seeks revenge", async () => {
     const players = createTestPlayersWith([
       Hunter,
       ...times(4, () => Werewolf),
     ]);
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
     expect(game.status.queue?.past).toBe(1);
 
-    players
-      .filter(inGroup(RoleGroup.WOLF))
-      .forEach((it) => game.vote(it.id, playerVote(players[0])));
+    await Promise.all(
+      players
+        .filter(inGroup(RoleGroup.WOLF))
+        .map((it) => game.vote(it.id, playerVote(players[0])))
+    );
 
     game.expectEvents("kill.hunter", "sleep");
 
     expect(game.status.queue?.past).toBe(2);
 
-    game.vote(players[0].id, playerVote(players[2]));
+    await game.vote(players[0].id, playerVote(players[2]));
 
     game.expectEvents("announcement.death", "win");
     expect((game.events[0].data as DeathData).deaths).toHaveLength(2);
@@ -48,7 +50,7 @@ describe("tests regarding the hunter", () => {
     expect(dead[1].deathCause).toBe(DeathCause.HUNTER);
   });
 
-  it("hunter gets killed and can kill eventhough he is revived", () => {
+  it("hunter gets killed and can kill eventhough he is revived", async () => {
     const players = createTestPlayersWith([
       Werewolf,
       Hunter,
@@ -57,18 +59,18 @@ describe("tests regarding the hunter", () => {
     ]);
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(players[0].id, playerVote(players[1]));
+    await game.vote(players[0].id, playerVote(players[1]));
 
     game.expectEvents("kill.hunter", "trigger.witch", "sleep");
 
-    game.vote(players[1].id, playerVote(players[0]));
+    await game.vote(players[1].id, playerVote(players[0]));
 
     game.expectEvents("revive.witch", "kill.witch", "sleep");
 
-    game.vote(players[2].id, playerVote(players[1]));
-    game.vote(players[2].id, skipVote());
+    await game.vote(players[2].id, playerVote(players[1]));
+    await game.vote(players[2].id, skipVote());
 
     game.expectEvents("announcement.death", "win");
     expect((game.events[0].data as DeathData).deaths).toHaveLength(1);

@@ -9,7 +9,7 @@ import { createTestPlayers, createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";
 
 describe("tests regarding wolf roles", () => {
-  it("wolfs kill a player an get lynched", () => {
+  it("wolfs kill a player an get lynched", async () => {
     const game = TestGame.create(
       createTestPlayers(12, (i) => {
         const role = i % 3 === 0 ? Werewolf : Villager;
@@ -19,34 +19,40 @@ describe("tests regarding wolf roles", () => {
 
     expect(game.status.queue?.past).toBe(0);
 
-    game.dismiss();
+    await game.dismiss();
 
     game.expectEvents("kill.wolfs", "sleep");
 
     expect(game.status.queue?.past).toBe(1);
 
-    game.players
-      .filter(inGroup(RoleGroup.WOLF))
-      .forEach((it) => game.vote(it.id, playerVote(game.players[1])));
+    await Promise.all(
+      game.players
+        .filter(inGroup(RoleGroup.WOLF))
+        .map((it) => game.vote(it.id, playerVote(game.players[1])))
+    );
 
     game.expectEvents("announcement.death", "kill.lynch");
     expect(game.events[1].players).toHaveLength(game.players.length - 1);
 
     expect(game.status.queue?.past).toBe(2);
 
-    game.dismiss();
+    await game.dismiss();
 
     expect(game.status.queue?.past).toBe(3);
 
-    game.players
-      .filter(isAlive)
-      .filter(inGroup(RoleGroup.WOLF))
-      .forEach((it) => game.vote(it.id, skipVote()));
+    await Promise.all(
+      game.players
+        .filter(isAlive)
+        .filter(inGroup(RoleGroup.WOLF))
+        .map((it) => game.vote(it.id, skipVote()))
+    );
 
-    game.players
-      .filter(isAlive)
-      .filter(inGroup(RoleGroup.VILLAGER))
-      .forEach((it) => game.vote(it.id, playerVote(game.players[0])));
+    await Promise.all(
+      game.players
+        .filter(isAlive)
+        .filter(inGroup(RoleGroup.VILLAGER))
+        .map((it) => game.vote(it.id, playerVote(game.players[0])))
+    );
 
     expect(game.status.queue?.past).toBe(4);
 
@@ -54,23 +60,25 @@ describe("tests regarding wolf roles", () => {
     expect(dead).toHaveLength(2);
   });
 
-  it("dreamwolf awakes only once another wolf has died", () => {
+  it("dreamwolf awakes only once another wolf has died", async () => {
     const game = TestGame.create(
       createTestPlayersWith([DreamWolf, Werewolf, ...times(5, () => Villager)])
     );
 
-    game.dismiss();
+    await game.dismiss();
 
     game.expectCurrentEvent("kill.wolfs");
     expect(game.events[0].players).toHaveLength(1);
     expect(game.events[0].players).toMatchObject([game.players[1]]);
-    game.vote(game.players[1].id, skipVote());
+    await game.vote(game.players[1].id, skipVote());
 
     game.expectEvents("kill.lynch");
-    game.players.forEach((it) => game.vote(it.id, playerVote(game.players[1])));
+    await Promise.all(
+      game.players.map((it) => game.vote(it.id, playerVote(game.players[1])))
+    );
 
     game.expectEvents("announcement.death", "kill.wolfs", "sleep");
-    game.dismiss();
+    await game.dismiss();
 
     expect(game.events[0].players).toHaveLength(1);
     expect(game.events[0].players).toMatchObject([game.players[0]]);

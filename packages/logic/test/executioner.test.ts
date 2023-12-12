@@ -38,43 +38,45 @@ function requireTarget(game: TestGame) {
 }
 
 describe("tests regarding the executioner", () => {
-  it("wins when they get lynched", () => {
+  it("wins when they get lynched", async () => {
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
 
     const target = requireTarget(game);
 
     game.expectCurrentEvent("reveal.executioner");
-    game.vote(executioner, skipVote());
+    await game.vote(executioner, skipVote());
 
-    game.vote(wolf, playerVote(villagers[0]));
+    await game.vote(wolf, playerVote(villagers[0]));
 
     game.dismiss();
 
     game.expectEvents("kill.lynch");
 
-    villagers.slice(1).forEach((it) => game.vote(it, playerVote(target)));
+    await Promise.all(
+      villagers.slice(1).map((it) => game.vote(it, playerVote(target)))
+    );
 
-    game.vote(executioner, skipVote());
-    game.vote(wolf, skipVote());
+    await game.vote(executioner, skipVote());
+    await game.vote(wolf, skipVote());
 
     expectExecutionerWin(game);
   });
 
-  it("turns into a jester when the target dies without beeing lynched", () => {
+  it("turns into a jester when the target dies without beeing lynched", async () => {
     const game = TestGame.create(players);
 
-    game.dismiss();
-    game.vote(executioner, skipVote());
+    await game.dismiss();
+    await game.vote(executioner, skipVote());
 
     const target = requireTarget(game);
 
-    game.vote(wolf, playerVote(target));
+    await game.vote(wolf, playerVote(target));
 
     game.expectEvents("announcement.death", "kill.lynch");
 
-    game.dismiss();
+    await game.dismiss();
 
     expect(requirePlayer(game.players, executioner).role).toBe(Jester);
   });

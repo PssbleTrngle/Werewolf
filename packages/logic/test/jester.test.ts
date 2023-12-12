@@ -28,57 +28,59 @@ function expectJesterWin(game: TestGame) {
 }
 
 describe("tests regarding the jester", () => {
-  it("wins when they get lynched", () => {
+  it("wins when they get lynched", async () => {
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(wolf, playerVote(villagers[0]));
+    await game.vote(wolf, playerVote(villagers[0]));
 
-    game.dismiss();
+    await game.dismiss();
 
     game.expectEvents("kill.lynch");
 
-    villagers.slice(1).forEach((it) => game.vote(it, playerVote(jester)));
+    await Promise.all(
+      villagers.slice(1).map((it) => game.vote(it, playerVote(jester)))
+    );
 
-    game.vote(jester, skipVote());
-    game.vote(wolf, skipVote());
+    await game.vote(jester, skipVote());
+    await game.vote(wolf, skipVote());
 
     expectJesterWin(game);
   });
 
-  it("does not win when he is eaten", () => {
+  it("does not win when he is eaten", async () => {
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
 
-    game.vote(wolf, playerVote(jester));
+    await game.vote(wolf, playerVote(jester));
 
-    game.dismiss();
+    await game.dismiss();
 
     game.expectEvents("kill.lynch");
   });
 
-  it("takes priority over a potential wolf win", () => {
+  it("takes priority over a potential wolf win", async () => {
     const game = TestGame.create(players);
 
-    game.dismiss();
+    await game.dismiss();
 
     for (const villager of villagers) {
-      game.vote(wolf, playerVote(villager));
+      await game.vote(wolf, playerVote(villager));
 
-      game.dismiss();
+      await game.dismiss();
 
       game.expectEvents("kill.lynch");
 
-      game.dismiss();
+      await game.dismiss();
     }
 
-    game.vote(wolf, skipVote());
+    await game.vote(wolf, skipVote());
 
     game.expectEvents("kill.lynch");
-    game.vote(wolf, playerVote(jester));
-    game.vote(jester, playerVote(jester));
+    await game.vote(wolf, playerVote(jester));
+    await game.vote(jester, playerVote(jester));
 
     expectJesterWin(game);
   });
