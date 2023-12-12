@@ -49,7 +49,9 @@
             "none.title": "Alle Spieler sind gestorben"
         },
         "sleep.title": "Du schläfst",
-        "dead.title": "Du bist gestorben"
+        "dead.title": "Du bist gestorben",
+        "hallucinate.title": "Halluzinieren",
+        "fake.title": "Fake Event"
     },
     "role": {
         "gamemaster.title": "Spielleiter",
@@ -86,7 +88,17 @@
         },
         "group": {
             "wolf": "Wölfe",
-            "villager": "Dorfbewohner"
+            "villager": "Dorfbewohner",
+            "title": "Gruppen"
+        },
+        "fool": {
+            "name": "Narr"
+        },
+        "seer_apprentice": {
+            "name": "Lehrling"
+        },
+        "cursed": {
+            "name": "Verfluchter"
         }
     },
     "player": {
@@ -98,6 +110,13 @@
             "alive": "Lebendig",
             "dying": "Im Sterben",
             "dead": "Verstorben"
+        }
+    },
+    "settings": {
+        "fake_player_screens": "Events für Rollen, die keinem Spieler zugewiesen wurden erstellen?",
+        "reveal_type": {
+            "group": "Gruppe",
+            "nothing": "Nichts"
         }
     }
 }
