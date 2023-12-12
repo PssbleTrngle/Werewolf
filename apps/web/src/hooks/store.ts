@@ -62,7 +62,8 @@ const createPlayerStore: StateCreator<
 });
 
 const createSettingsStore: StateCreator<SettingsStore> = (set, get) => ({
-  settings: {},
+  fakePlayerScreens: true,
+
   toggleRole(key, enabled) {
     const disabledRoles = [...(get().disabledRoles ?? [])];
 

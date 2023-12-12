@@ -15,6 +15,7 @@
     "source": "Source Code"
   },
   "event": {
+    "fake.title": "Faked Event ({{type}})",
     "start.title": "Start the Game?",
     "sleep.title": "You are sleeping",
     "dead.title": "You are dead",
@@ -44,6 +45,9 @@
     },
     "revive": {
       "witch.title": "Who do you want to heal?"
+    },
+    "trigger": {
+      "witch.title": "The witch is waiting"
     },
     "win": {
       "none.title": "Every body died",

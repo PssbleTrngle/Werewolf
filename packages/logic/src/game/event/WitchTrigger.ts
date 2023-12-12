@@ -38,7 +38,8 @@ export class WitchTrigger extends NoDataEvent {
         alive.filter(others(...users))
       );
 
-      if (dying.length === 0) return kill;
+      if (dying.length === 0)
+        return [PotionReviveEvent.create([], dying), kill];
       return [revive, kill];
     }, true);
   }

@@ -1,8 +1,9 @@
-import { Event } from "models";
+import { FakeData } from "models";
 import { ReactNode, createElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Title } from "../Text";
 import DeathDetails from "./detail/DeathDetails";
+import FakeDetails from "./detail/FakeDetails";
 import RevealDetail from "./detail/RevealDetails";
 import WinDetails from "./detail/WinDetails";
 
@@ -20,9 +21,10 @@ const details: Record<string, (props: DetailProps) => ReactNode> = {
   reveal: RevealDetail,
   announcement: DeathDetails,
   win: WinDetails,
+  fake: FakeDetails,
 };
 
-export default function EventDetails({ event }: { event: Event }) {
+export default function EventDetails({ event }: { event: FakeData }) {
   const { t } = useTranslation();
   const type = useMemo(() => baseType(event.type), [event]);
   const component = useMemo(() => details[type], [type]);

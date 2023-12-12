@@ -26,3 +26,5 @@ export interface DeathData {
 export interface WinData {
   state: WinState;
 }
+
+export type FakeData = Omit<Event, "players">;

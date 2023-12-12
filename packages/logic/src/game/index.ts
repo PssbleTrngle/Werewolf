@@ -1,4 +1,11 @@
-import { Event, GameInfo, GameSettings, Id, Vote } from "models";
+import {
+  Event,
+  GameInfo,
+  GameSettings,
+  Player as IPlayer,
+  Id,
+  Vote,
+} from "models";
 import { notNull } from "../util.js";
 import { EventBus } from "./event/EventBus.js";
 import { EventRegistry } from "./event/EventRegistry.js";
@@ -22,6 +29,11 @@ type GameHookKey = keyof GameHooks;
 type GameHookListener<T extends GameHookKey> = (
   subject: GameHooks[T]
 ) => void | Promise<void>;
+
+export const FAKE_PLAYER: IPlayer = {
+  id: "fake",
+  name: "Noone",
+};
 
 export class Game implements GameReadAccess {
   private state: StateHistory;
@@ -186,8 +198,13 @@ export class Game implements GameReadAccess {
     });
   }
 
+  requirePlayer(id: Id) {
+    if (id === FAKE_PLAYER.id) return FAKE_PLAYER;
+    return requirePlayer(this.players, id);
+  }
+
   async vote(id: Id, vote: Vote) {
-    const player = requirePlayer(this.players, id);
+    const player = this.requirePlayer(id);
 
     const event = this.currentEvent(id);
 

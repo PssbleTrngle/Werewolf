@@ -15,6 +15,7 @@ export class SleepBoundary extends NoDataEvent {
   static create = this.createFactory("sleep", new SleepBoundary());
 
   finish() {
+    console.log("sleep boundary finished");
     return [
       new TimeEffect("dawn"),
       new AnnouncementEffect("day"),

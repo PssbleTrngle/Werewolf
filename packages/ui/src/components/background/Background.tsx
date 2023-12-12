@@ -1,6 +1,8 @@
 import { GameInfo, Time } from "models";
+import { transparentize } from "polished";
 import { ReactNode, useMemo } from "react";
 import styled from "styled-components";
+import Button from "../Button";
 import Clouds from "./Clouds";
 import { Moon, Sun } from "./Luminary";
 
@@ -67,6 +69,11 @@ const Style = styled.section<{ $time: Time }>`
 
   background: ${(p) => BG[p.$time]};
   height: 100%;
+
+  ${Button} {
+    background: ${(p) => transparentize(0.5, BG[p.$time])};
+    backdrop-filter: blur(5px);
+  }
 
   transition:
     background 0.5s linear,

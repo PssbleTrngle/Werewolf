@@ -14,6 +14,7 @@ export abstract class EventType<T> {
     mapper: SubjectMappers
   ): T;
 
+  // TODO check in a while if player is neccessary
   view(player: Player, event: Event<T>, mapper: SubjectMappers): Event<T> {
     return {
       ...event,
@@ -31,4 +32,12 @@ export abstract class EventType<T> {
   isFinished(_game: GameReadAccess, _event: Event<T>, _index: number) {
     return true;
   }
+}
+
+export function individualEvents<T>(
+  players: ReadonlyArray<Player>,
+  factory: (players: ReadonlyArray<Player>) => Event<T>
+): ArrayOrSingle<Event<T>> {
+  if (players.length > 0) return players.map((it) => factory([it]));
+  return factory([]);
 }

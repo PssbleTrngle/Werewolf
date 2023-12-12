@@ -2,7 +2,7 @@ import { Id, Player, Role, RoleGroup } from "models";
 import { arrayOrSelf } from "../../util.js";
 import { generateRoles } from "../RoleSelector.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
-import { EventFactory } from "../event/Event.js";
+import { EventFactory, individualEvents } from "../event/Event.js";
 import { registerEvent } from "../event/EventRegistry.js";
 import { HallucinateEvent } from "../event/HallucinateEvent.js";
 import { RevealEvent } from "../event/RevealEvent.js";
@@ -27,7 +27,9 @@ function seerSleepFactory(role: string): EventFactory {
   return ({ players }) => {
     const alive = players.filter(isAlive);
     const seers = alive.filter(hasRole(role));
-    return seers.map((it) => SeeEvent.create([it], alive.filter(others(it))));
+    return individualEvents(seers, (it) =>
+      SeeEvent.create(it, alive.filter(others(...it)))
+    );
   };
 }
 
@@ -35,8 +37,8 @@ function foolSleepFactory(role: string): EventFactory {
   return ({ players }) => {
     const alive = players.filter(isAlive);
     const fools = alive.filter(hasRole(role));
-    return fools.map((it) =>
-      HallucinateEvent.create([it], alive.filter(others(it)))
+    return individualEvents(fools, (it) =>
+      HallucinateEvent.create(it, alive.filter(others(...it)))
     );
   };
 }

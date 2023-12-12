@@ -10,6 +10,8 @@ import { Effect } from "./effect/Effect.js";
 import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
 import { EventFactory } from "./event/Event.js";
 import { EventRegistry } from "./event/EventRegistry.js";
+import { FakeEvent } from "./event/FakeEvent.js";
+import { FAKE_PLAYER } from "./index.js";
 import { Player } from "./player/Player.js";
 import { isAlive, isDying, requirePlayer } from "./player/predicates.js";
 import "./roleEvents.js";
@@ -88,9 +90,6 @@ export default class FrozenGame implements GameAccess {
     const effects = DeathEvents.notify(target, cause, this).flatMap(
       arrayOrSelf
     );
-    // these should not be called if the target is revived and should therefore be called later
-    // TODO
-    // ...arrayOrSelf(target.role.onDeath(target)),
 
     this.apply(effects);
 
@@ -114,10 +113,24 @@ export default class FrozenGame implements GameAccess {
       const unnotifiedDeaths = players.filter(isDying);
       const alive = players.filter(isAlive);
 
-      if (unnotifiedDeaths.length === 0) return [];
+      if (unnotifiedDeaths.length === 0) {
+        if (time) this.setTime(time);
+        return [];
+      }
 
       return DeathEvent.create(alive, unnotifiedDeaths, time);
     });
+  }
+
+  private fakeEvent(event: Event): Event {
+    if (event.players.length > 0 || !this.settings.fakePlayerScreens)
+      return event;
+    return FakeEvent.create([FAKE_PLAYER], event, !!event.choice);
+  }
+
+  private resolveFactory(factory: EventFactory) {
+    const result = arrayOrSelf(factory(this));
+    return result.map((it) => this.fakeEvent(it));
   }
 
   unfreeze(): GameState {
@@ -129,8 +142,7 @@ export default class FrozenGame implements GameAccess {
     ];
 
     const events = factories
-      .flatMap((factory) => arrayOrSelf(factory(this)))
-      // TODO create "ghost" event for faked roles
+      .flatMap((factory) => this.resolveFactory(factory))
       .filter((it) => it.players.length > 0);
 
     const time = last(this.timesPassed) ?? this.initial.time;
