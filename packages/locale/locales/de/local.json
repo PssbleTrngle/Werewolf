@@ -11,14 +11,16 @@
     "nav": {
         "game": "Dorf",
         "players": "Spieler",
-        "roles": "Rollen"
+        "roles": "Rollen",
+        "settings": "Einstellungen"
     },
     "status": {
         "game.no_active": "Kein aktives Spiel"
     },
     "error": {
         "min_players_requirement": "Mindestens {{count}} Spieler werden benötigt, um ein Spiel zu starten",
-        "missing_selected_roles": "Nicht allen Spielern wurde eine Rolle zugenordnet"
+        "missing_selected_roles": "Nicht allen Spielern wurde eine Rolle zugenordnet",
+        "frozen_role": "Rolle kann nicht deaktiviert werden"
     },
     "dialog": {
         "rename": "Spieler umbenennen",
