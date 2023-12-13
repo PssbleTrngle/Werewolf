@@ -154,6 +154,12 @@
     "seer_apprentice": {
       "name": "Apprentice"
     },
+    "lonely_wolf": {
+      "name": "Lonely Wolf"
+    },
+    "cub": {
+      "name": "Wolf Cub"
+    },
     "group": {
       "title": "Groups",
       "unknown": "Unknown",

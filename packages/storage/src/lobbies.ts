@@ -1,7 +1,7 @@
 import { ApiError, GameSettings, Id, User } from "models";
 import { nanoid } from "nanoid";
 import { redisJSON } from "./casting.js";
-import connectRedis from "./redis.js";
+import { RedisClient } from "./redis.js";
 
 export interface Lobby {
   id: Id;
@@ -10,56 +10,63 @@ export interface Lobby {
   settings: GameSettings;
 }
 
-export async function createLobby(owner: User) {
-  const redis = await connectRedis();
+export default class LobbyStorage {
+  constructor(private readonly redis: RedisClient) {}
 
-  const id = nanoid();
+  async createLobby(owner: User) {
+    const id = nanoid();
 
-  const lobby: Lobby = { id, players: [owner], owner, settings: {} };
-  await Promise.all([
-    redis.json.set(`lobby:${id}`, "$", redisJSON(lobby)),
-    redis.set(`player:${owner.id}:lobby`, id),
-  ]);
+    const lobby: Lobby = { id, players: [owner], owner, settings: {} };
+    await Promise.all([
+      this.redis.json.set(`lobby:${id}`, "$", redisJSON(lobby)),
+      this.redis.set(`player:${owner.id}:lobby`, id),
+    ]);
 
-  return id;
-}
+    return id;
+  }
 
-export async function leaveLobby(user: User, lobbyId: Id) {
-  const redis = await connectRedis();
-  const lobby = await getLobby(lobbyId);
-  const index = lobby.players.findIndex((it) => it.id === user.id);
+  async joinLobby(user: User, lobbyId: Id) {
+    await Promise.all([
+      this.redis.set(`player:${user.id}:lobby`, lobbyId),
+      this.redis.json.arrAppend(
+        `lobby:${lobbyId}`,
+        ".players",
+        redisJSON(user)
+      ),
+    ]);
+  }
 
-  if (index < 0) throw new ApiError(400, "Not part of this lobby");
+  async leaveLobby(user: User, lobbyId: Id) {
+    const lobby = await this.getLobby(lobbyId);
+    const index = lobby.players.findIndex((it) => it.id === user.id);
 
-  if (lobby.players.length === 1) return deleteLobby(lobby);
+    if (index < 0) throw new ApiError(400, "Not part of this lobby");
 
-  await Promise.all([
-    redis.del(`player:${user.id}:lobby`),
-    redis.json.arrPop(`lobby:${lobbyId}`, ".players", index),
-  ]);
-}
+    if (lobby.players.length === 1) return this.deleteLobby(lobby);
 
-export async function getLobby(id: Id) {
-  const redis = await connectRedis();
-  const lobby = (await redis.json.get(`lobby:${id}`)) as Lobby | null;
+    await Promise.all([
+      this.redis.del(`player:${user.id}:lobby`),
+      this.redis.json.arrPop(`lobby:${lobbyId}`, ".players", index),
+    ]);
+  }
 
-  if (lobby) return lobby;
-  throw new ApiError(404, `Unable to find lobby with id ${id}`);
-}
+  async getLobby(id: Id) {
+    const lobby = (await this.redis.json.get(`lobby:${id}`)) as Lobby | null;
 
-export async function deleteLobby(lobby: Lobby) {
-  const redis = await connectRedis();
+    if (lobby) return lobby;
+    throw new ApiError(404, `Unable to find lobby with id ${id}`);
+  }
 
-  await Promise.all([
-    redis.del(`lobby:${lobby.id}`),
-    ...lobby.players.map((it) => redis.del(`player:${it.id}:lobby`)),
-  ]);
-}
+  async deleteLobby(lobby: Lobby) {
+    await Promise.all([
+      this.redis.del(`lobby:${lobby.id}`),
+      ...lobby.players.map((it) => this.redis.del(`player:${it.id}:lobby`)),
+    ]);
+  }
 
-export async function getLobbies() {
-  const redis = await connectRedis();
+  async getLobbies() {
+    const result = await this.redis.ft.search("idx:lobbies", "*");
 
-  const result = await redis.ft.search("idx:lobbies", "*");
-
-  return result.documents.map((it) => it.value as unknown as Lobby);
+    return result.documents.map((it) => it.value as unknown as Lobby);
+  }
 }

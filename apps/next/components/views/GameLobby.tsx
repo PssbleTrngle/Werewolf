@@ -1,4 +1,3 @@
-import Layout from "@/layout/default";
 import {
   useLeaveMutation,
   useLobby,
@@ -24,36 +23,34 @@ export default function GameLobby({ lobbyId }: Readonly<{ lobbyId: Id }>) {
   const { data: lobby } = useLobby(lobbyId);
 
   return (
-    <Layout>
-      <Centered>
-        <p>Lobby {lobbyId}</p>
+    <Centered>
+      <p>Lobby {lobbyId}</p>
 
-        <Players>
-          {lobby.players.map((it) => (
-            <li key={it.id}>{it.name}</li>
-          ))}
-        </Players>
+      <Players>
+        {lobby.players.map((it) => (
+          <li key={it.id}>{it.name}</li>
+        ))}
+      </Players>
 
-        <Buttons>
-          <IconButton
-            onClick={() => leave()}
-            {...tooltip(t("button.player.leave"))}
-          >
-            <LeaveIcon />
-          </IconButton>
+      <Buttons>
+        <IconButton
+          onClick={() => leave()}
+          {...tooltip(t("button.player.leave"))}
+        >
+          <LeaveIcon />
+        </IconButton>
 
-          <IconButton
-            onClick={() => start()}
-            {...tooltip(t("button.game.start"))}
-            error={!!startError}
-          >
-            <StartIcon />
-          </IconButton>
-        </Buttons>
+        <IconButton
+          onClick={() => start()}
+          {...tooltip(t("button.game.start"))}
+          error={!!startError}
+        >
+          <StartIcon />
+        </IconButton>
+      </Buttons>
 
-        <ErrorMessage error={startError} />
-      </Centered>
-    </Layout>
+      <ErrorMessage error={startError} />
+    </Centered>
   );
 }
 

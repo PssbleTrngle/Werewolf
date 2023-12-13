@@ -1,5 +1,12 @@
+import GameLobby from "@/components/views/GameLobby";
+import NoGame from "@/components/views/NoGame";
+import Layout from "@/layout/default";
+import { withPrefetched } from "@/lib/client/hydrateQueries";
+import { lobbiesKey, lobbyKey } from "@/lib/client/remoteContext";
+import { prefetchQueries } from "@/lib/server/prefetchQueries";
+import { requireServerSession, requireSessionView } from "@/lib/server/session";
+import connectStorage from "@/lib/server/storage";
 import { Id } from "models";
-import { getLobbies, getLobby, statusOf } from "storage";
 import {
   EventScreen,
   activeEventKey,
@@ -7,20 +14,11 @@ import {
   gameStatusKey,
   useGameStatus,
 } from "ui";
-import GameLobby from "@/components/views/GameLobby";
-import NoGame from "@/components/views/NoGame";
-import Layout from "@/layout/default";
-import { withPrefetched } from "@/lib/client/hydrateQueries";
-import { lobbiesKey, lobbyKey } from "@/lib/client/remoteContext";
-import { prefetchQueries } from "@/lib/server/prefetchQueries";
-import {
-  requireServerSession,
-  requireSessionView,
-} from "@/lib/server/session";
 
 export const getServerSideProps = prefetchQueries(async (ctx, client) => {
   const session = await requireServerSession(ctx);
-  const status = await statusOf(session.user.id);
+  const storage = await connectStorage();
+  const status = await storage.statusOf(session.user.id);
 
   await client.prefetchQuery({
     queryKey: gameStatusKey(),
@@ -44,14 +42,14 @@ export const getServerSideProps = prefetchQueries(async (ctx, client) => {
   if (status.type === "lobby") {
     await client.prefetchQuery({
       queryKey: lobbyKey(status.id),
-      queryFn: () => getLobby(status.id),
+      queryFn: () => storage.lobbies.getLobby(status.id),
     });
   }
 
   if (status.type === "none") {
     await client.prefetchQuery({
       queryKey: lobbiesKey(),
-      queryFn: () => getLobbies(),
+      queryFn: () => storage.lobbies.getLobbies(),
     });
   }
 });
@@ -70,11 +68,15 @@ function GameView() {
 }
 
 function ActiveGame({ gameId }: Readonly<{ gameId: Id }>) {
+  return <EventScreen gameId={gameId} />;
+}
+
+function GamePage() {
   return (
     <Layout>
-      <EventScreen gameId={gameId} />
+      <GameView />
     </Layout>
   );
 }
 
-export default withPrefetched(GameView);
+export default withPrefetched(GamePage);

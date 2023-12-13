@@ -6,6 +6,5 @@ export default defineConfig({
     coverage: {
       reporter: ["lcov", "html", "text"],
     },
-    setupFiles: "test/setup.ts",
   },
 });

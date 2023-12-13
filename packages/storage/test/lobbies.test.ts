@@ -1,23 +1,18 @@
 import { ApiError, User } from "models";
-import { joinLobby } from "../src/games.js";
-import {
-  createLobby,
-  getLobbies,
-  getLobby,
-  leaveLobby,
-} from "../src/lobbies.js";
-import { statusOf } from "../src/status.js";
+import { createTestStorage } from "./util/storage.js";
 
 const owner: User = { id: "123", name: "Test Owner" };
 const user: User = { id: "456", name: "Test User" };
 
 describe("tests regarding the lobby system", () => {
   it("creates a lobby with the correct owner", async () => {
-    const id = await createLobby(owner);
+    const storage = await createTestStorage();
 
-    const lobby = await getLobby(id);
-    const status = await statusOf(owner.id);
-    const lobbies = await getLobbies();
+    const id = await storage.lobbies.createLobby(owner);
+
+    const lobby = await storage.lobbies.getLobby(id);
+    const status = await storage.statusOf(owner.id);
+    const lobbies = await storage.lobbies.getLobbies();
 
     expect(lobby).toMatchObject({
       owner,
@@ -33,12 +28,14 @@ describe("tests regarding the lobby system", () => {
   });
 
   it("users can join a lobby", async () => {
-    const id = await createLobby(owner);
+    const storage = await createTestStorage();
 
-    await joinLobby(user, id);
+    const id = await storage.lobbies.createLobby(owner);
 
-    const status = await statusOf(user.id);
-    const lobby = await getLobby(id);
+    await storage.lobbies.joinLobby(user, id);
+
+    const status = await storage.statusOf(user.id);
+    const lobby = await storage.lobbies.getLobby(id);
 
     expect(lobby).toMatchObject({
       owner,
@@ -52,14 +49,16 @@ describe("tests regarding the lobby system", () => {
   });
 
   it("users can leave a lobby", async () => {
-    const id = await createLobby(owner);
+    const storage = await createTestStorage();
 
-    await joinLobby(user, id);
+    const id = await storage.lobbies.createLobby(owner);
 
-    await leaveLobby(user, id);
+    await storage.lobbies.joinLobby(user, id);
 
-    const status = await statusOf(user.id);
-    const lobby = await getLobby(id);
+    await storage.lobbies.leaveLobby(user, id);
+
+    const status = await storage.statusOf(user.id);
+    const lobby = await storage.lobbies.getLobby(id);
 
     expect(lobby).toMatchObject({
       owner,
@@ -70,15 +69,17 @@ describe("tests regarding the lobby system", () => {
   });
 
   it("deletes a lobby if the last person leaves", async () => {
-    const id = await createLobby(owner);
+    const storage = await createTestStorage();
 
-    await leaveLobby(owner, id);
+    const id = await storage.lobbies.createLobby(owner);
 
-    const status = await statusOf(owner.id);
-    const lobbies = await getLobbies();
+    await storage.lobbies.leaveLobby(owner, id);
+
+    const status = await storage.statusOf(owner.id);
+    const lobbies = await storage.lobbies.getLobbies();
 
     expect(status.type).toBe("none");
-    await expect(getLobby(id)).rejects.toThrowError(ApiError);
+    await expect(storage.lobbies.getLobby(id)).rejects.toThrowError(ApiError);
     expect(lobbies).toHaveLength(0);
   });
 });

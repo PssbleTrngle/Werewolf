@@ -1,7 +1,8 @@
 {
   "nav": {
     "home": "Home",
-    "settings": "Settings"
+    "settings": "Settings",
+    "impersonated": "impersonating {{user}}"
   },
   "button": {
     "player": {

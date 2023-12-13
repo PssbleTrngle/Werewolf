@@ -1,15 +1,15 @@
 {
-    "nav": {
-        "home": "Start",
-        "settings": "Einstellungen"
+  "nav": {
+    "home": "Start",
+    "settings": "Einstellungen"
+  },
+  "button": {
+    "game": {
+      "start": "Starten"
     },
-    "button": {
-        "game": {
-            "start": "Starten"
-        },
-        "player": {
-            "leave": "Verlassen",
-            "join": "Beitreten"
-        }
+    "player": {
+      "leave": "Verlassen",
+      "join": "Beitreten"
     }
+  }
 }

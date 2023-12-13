@@ -8,8 +8,11 @@ export {
   type AppInfo,
 } from "./components/Footer";
 export { default as Input, InputStyles } from "./components/Input";
+export { default as Loading } from "./components/Loading";
 export * from "./components/NavBar";
 export { default as PlayerIcon } from "./components/PlayerIcon";
+export { default as RolePanel } from "./components/RolePanel";
+export { ButtonsCell, default as Table } from "./components/Table";
 export * from "./components/Text";
 export { default as Tooltip, tooltip } from "./components/Tooltip";
 export { default as Background } from "./components/background/Background";
@@ -20,7 +23,6 @@ export { default as ControlBar } from "./components/event/ControlBar";
 export { default as EventDetails } from "./components/event/EventDetails";
 export { default as EventScreen } from "./components/event/EventScreen";
 export { default as ParticipantList } from "./components/event/ParticipantList";
-export { default as Table, ButtonsCell } from "./components/Table";
 export * from "./hooks/queries";
 export * from "./icons";
 export * from "./styles/layout";

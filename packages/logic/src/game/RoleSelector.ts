@@ -1,5 +1,5 @@
 import { shuffle, times } from "lodash-es";
-import { GameSettings, Role, User } from "models";
+import { ApiError, GameSettings, Role, User } from "models";
 import { EMPTY_ROLE_DATA, Player } from "./player/Player.js";
 import { Cursed } from "./role/Cursed.js";
 import { DreamWolf } from "./role/DreamWolf.js";
@@ -8,6 +8,7 @@ import { Eye } from "./role/Eye.js";
 import { Freemason } from "./role/Freemason.js";
 import { Hunter } from "./role/Hunter.js";
 import { Jester } from "./role/Jester.js";
+import { LonelyWolf } from "./role/LonelyWolf.js";
 import { Fool, Seer } from "./role/Seer.js";
 import { SeerApprentice } from "./role/SeerApprentice.js";
 import { Villager } from "./role/Villager.js";
@@ -30,6 +31,7 @@ export const allRoles: Role[] = [
   Fool,
   Cursed,
   SeerApprentice,
+  LonelyWolf,
 ];
 
 export function generateRoles(
@@ -38,11 +40,11 @@ export function generateRoles(
   disabledRoles?: GameSettings["disabledRoles"]
 ): ReadonlyArray<Player> {
   const count = players.length;
-  if (count < MIN_PLAYERS) throw new Error("Not enough players");
+  if (count < MIN_PLAYERS) throw new ApiError(400, "Not enough players");
 
   const isEnabled = (role: Role) => !disabledRoles?.includes(role.type);
 
-  const specialWolfs = [DreamWolf].filter(isEnabled);
+  const specialWolfs = [DreamWolf, LonelyWolf].filter(isEnabled);
 
   const wolfCount = Math.floor(count / 3);
   const wolfs: Role[] = times(

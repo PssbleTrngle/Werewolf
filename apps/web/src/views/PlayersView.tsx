@@ -13,6 +13,7 @@ import {
   IconButton,
   Input,
   RoleIcon,
+  RolePanel,
   ShuffleIcon,
   Table,
   TrashIcon,
@@ -130,7 +131,7 @@ function ActivePlayersView() {
               {it.role ? (
                 <td>
                   <InvisibleLink to={`/roles/${it.role.type}`}>
-                    {it.role.emoji} {t(`role.${it.role.type}.name`)}
+                    <RolePanel role={it.role} />
                   </InvisibleLink>
                 </td>
               ) : (

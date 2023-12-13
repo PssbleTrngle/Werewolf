@@ -1,13 +1,6 @@
-import { Player, RoleGroup } from "models";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Player } from "models";
 import styled from "styled-components";
-import { tooltip } from "..";
-
-const groupEmojis: Record<RoleGroup, string> = {
-  villager: "🌾",
-  wolf: "🐺",
-};
+import RolePanel from "./RolePanel";
 
 export default function PlayerIcon({
   children: { name, role },
@@ -17,28 +10,10 @@ export default function PlayerIcon({
   children: Player;
   size?: number;
 }>) {
-  const { t } = useTranslation();
-
-  const roleTooltip = useMemo(() => {
-    if (role?.type) return t(`role.${role.type}.name`);
-    if (role?.groups) return t(`role.group.${role.groups[0] ?? "unknown"}`);
-    return undefined;
-  }, [t, role]);
-
-  const emoji = useMemo(() => {
-    if (role?.emoji) return role.emoji;
-    if (role?.groups) {
-      if (role.groups.length === 0) return `❔`;
-      const group = role.groups[0];
-      return groupEmojis[group] ?? `[${group.at(0)?.toUpperCase()}]`;
-    }
-    return undefined;
-  }, [role]);
-
   return (
     <Style $size={size} {...props}>
       {name}
-      {emoji && <Role {...tooltip(roleTooltip)}>{emoji}</Role>}
+      <Role small role={role} />
     </Style>
   );
 }
@@ -57,6 +32,6 @@ const Style = styled.span<{ $size: number }>`
   transition: outline 0.1s linear;
 `;
 
-const Role = styled.span`
+const Role = styled(RolePanel)`
   margin-left: 0.25em;
 `;

@@ -1,20 +1,34 @@
+import { notNull } from "@/lib/util";
 import { AuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
-import DiscordProvider from "next-auth/providers/discord";
+import { OAuthConfig, OAuthUserConfig } from "next-auth/providers";
+import DiscordProvider, { DiscordProfile } from "next-auth/providers/discord";
+import GithubProvider, { GithubProfile } from "next-auth/providers/github";
 
-function requireEnv(key: string) {
-  const value = process.env[key];
-  if (value) return value;
-  throw new Error(`Missing environment variable '${key}'`);
+function optionalProvider<T>(
+  key: string,
+  supplier: (options: OAuthUserConfig<T>) => OAuthConfig<T>
+) {
+  const clientId = process.env[`${key}_CLIENT_ID`];
+  const clientSecret = process.env[`${key}_CLIENT_SECRET`];
+  if (clientId && clientSecret) {
+    return supplier({ clientId, clientSecret });
+  } else {
+    return null;
+  }
+}
+
+const providers = [
+  optionalProvider<DiscordProfile>("DISCORD", DiscordProvider),
+  optionalProvider<GithubProfile>("GITHUB", GithubProvider),
+].filter(notNull);
+
+if (providers.length === 0) {
+  throw new Error("No authentication providers defined");
 }
 
 export const authOptions: AuthOptions = {
-  providers: [
-    DiscordProvider({
-      clientId: requireEnv("DISCORD_CLIENT_ID"),
-      clientSecret: requireEnv("DISCORD_CLIENT_SECRET"),
-    }),
-  ],
+  providers,
   callbacks: {
     async signIn({ user }) {
       return !!user.email;

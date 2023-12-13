@@ -66,6 +66,7 @@ export function useActiveEvent(gameId: Id) {
   });
 }
 
+export const playersKey = () => ["players"];
 export function usePlayers(gameId: Id) {
   const { players } = useContext(CTX);
   return useSuspenseQuery({
@@ -80,11 +81,11 @@ export function useRoles() {
   return useSuspenseQuery({ queryKey: rolesKey(), queryFn: roles });
 }
 
-export function invalidateGameQueries(client: QueryClient) {
-  client.invalidateQueries({ queryKey: ["status"] });
-  client.invalidateQueries({ queryKey: ["screen"] });
-  client.invalidateQueries({ queryKey: ["game"] });
-  client.invalidateQueries({ queryKey: ["players"] });
+export async function invalidateGameQueries(client: QueryClient) {
+  await client.invalidateQueries({ queryKey: gameStatusKey() });
+  await client.invalidateQueries({ queryKey: playersKey() });
+  await client.invalidateQueries({ queryKey: gameInfoKey("").slice(0, 1) });
+  await client.invalidateQueries({ queryKey: activeEventKey("").slice(0, 1) });
 }
 
 export function useInvalidatingMutation<TData, TVariables>(

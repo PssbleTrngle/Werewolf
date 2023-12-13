@@ -22,10 +22,11 @@
     "react": "^18",
     "react-dom": "^18",
     "react-i18next": "^13.5.0",
+    "storage": "workspace:*",
     "styled-components": "^6.1.1",
     "ui": "workspace:*",
-    "storage": "workspace:*",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.3",

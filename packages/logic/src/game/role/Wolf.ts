@@ -1,8 +1,11 @@
-import { DeathCause, Player, Role, RoleGroup } from "models";
+import { DeathCause, Player, PlayerRevealType, Role, RoleGroup } from "models";
+import { EventEffect } from "../effect/EventEffect.js";
+import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import { registerEventFactory } from "../event/EventRegistry.js";
 import { KillEvent } from "../event/KillEvent.js";
 import { SleepEvents } from "../event/SleepBoundary.js";
-import { inGroup, isAlive } from "../player/predicates.js";
+import revealPlayer from "../permissions/playerReveal.js";
+import { inGroup, isAlive, others } from "../player/predicates.js";
 import { WinConditions } from "../winConditions.js";
 
 export const Werewolf: Role = {
@@ -25,7 +28,7 @@ const createKillEvent = registerEventFactory(
 );
 
 export const registerWolfEvents = () =>
-  SleepEvents.registerEvent(({ players }) => {
+  SleepEvents.register(({ players }) => {
     const alive = players.filter(isAlive);
     const hasWolfDied = players
       .filter(inGroup(RoleGroup.WOLF))
@@ -36,7 +39,25 @@ export const registerWolfEvents = () =>
       .filter((it) => hasWolfDied || it.role.type !== "dreamwolf");
 
     const targets = alive.filter((it) => !wolfs.includes(it));
-    return createKillEvent(wolfs, targets);
+    return [
+      ...wolfs.map(
+        (it) =>
+          new PlayerDataEffect(it.id, (data) => ({
+            revealedPlayers: {
+              ...data.revealedPlayers,
+              ...Object.fromEntries(
+                wolfs
+                  .filter(others(it))
+                  .map((it) => [
+                    it.id,
+                    revealPlayer(it, PlayerRevealType.GROUP),
+                  ])
+              ),
+            },
+          }))
+      ),
+      new EventEffect(() => createKillEvent(wolfs, targets)),
+    ];
   });
 
 export function registerWolfWinCondition(

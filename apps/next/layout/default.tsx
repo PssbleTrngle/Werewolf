@@ -1,7 +1,7 @@
+import NavBar from "@/components/NavBar";
 import Head from "next/head";
-import { PropsWithChildren, ReactElement } from "react";
-import { AppInfo, Footer, Globals, Page } from "ui";
-import NavBar from "../components/NavBar";
+import { ReactElement, Suspense } from "react";
+import { AppInfo, Footer, Globals, Loading, Page } from "ui";
 
 const appInfo: AppInfo = {
   repository: process.env.NEXT_PUBLIC_GIT_REPOSITORY,
@@ -23,7 +23,7 @@ export default function Layout({
       <Page>
         <Globals />
         <NavBar />
-        {children}
+        <Suspense fallback={<Loading />}>{children}</Suspense>
         <Footer {...appInfo} />
       </Page>
     </>

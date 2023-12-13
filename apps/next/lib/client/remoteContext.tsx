@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocalStore } from "@/lib/client/store";
 import {
   QueryFunction,
   QueryKey,
@@ -8,6 +9,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { ApiError, Id } from "models";
+import querystring, { ParsedUrlQueryInput } from "querystring";
 import { useMemo } from "react";
 import type { Lobby } from "storage";
 import { QueryContext, gameStatusKey } from "ui";
@@ -76,24 +78,39 @@ function createAwareFetcher<R>(
     );
 }
 
-function createMutator<R, D>(endpoint: string, method: string) {
-  return (data?: D) => request<R, D>(endpoint, method, data);
+function createMutator<R, D>(endpoint: () => string, method: string) {
+  return (data?: D) => request<R, D>(endpoint(), method, data);
 }
+
+function q(values: ParsedUrlQueryInput) {
+  const omitted = Object.fromEntries(
+    Object.entries(values).filter(([, value]) => !!value)
+  );
+  if (Object.keys(omitted).length === 0) return "";
+  return "?" + querystring.stringify(omitted);
+}
+
+const gameQuery = (endpoint: string) => {
+  const { impersonated } = useLocalStore.getState();
+  return endpoint + q({ impersonated });
+};
 
 export default function createRemoteContext(): QueryContext {
   return {
     roles: createFetcher("roles"),
     // TODO game id in path
-    gameStatus: createFetcher("game/status"),
-    players: createAwareFetcher(([, id]) => `game/${id}/players`),
-    game: createAwareFetcher(([, id]) => `game/${id}`),
-    activeEvent: createAwareFetcher(([, id]) => `game/${id}/event/active`),
+    gameStatus: createFetcher(gameQuery("game/status")),
+    players: createAwareFetcher(([, id]) => gameQuery(`game/${id}/players`)),
+    game: createAwareFetcher(([, id]) => gameQuery(`game/${id}`)),
+    activeEvent: createAwareFetcher(([, id]) =>
+      gameQuery(`game/${id}/event/active`)
+    ),
 
-    submitVote: createMutator("game/vote", "POST"),
-    undo: createMutator("game/undo", "POST"),
-    redo: createMutator("game/redo", "POST"),
-    stop: createMutator("game", "DELETE"),
-    create: createMutator("lobby", "POST"),
+    submitVote: createMutator(() => gameQuery("game/vote"), "POST"),
+    undo: createMutator(() => "game/undo", "POST"),
+    redo: createMutator(() => "game/redo", "POST"),
+    stop: createMutator(() => "game", "DELETE"),
+    create: createMutator(() => "lobby", "POST"),
   };
 }
 
@@ -119,15 +136,15 @@ export function useJoinMutation(lobbyId: Id) {
   const client = useQueryClient();
 
   const submit = useMemo(
-    () => createMutator(`lobby/${lobbyId}/player`, "POST"),
+    () => createMutator(() => `lobby/${lobbyId}/player`, "POST"),
     [lobbyId]
   );
 
   return useMutation({
     mutationFn: () => submit(),
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: gameStatusKey() });
-      client.invalidateQueries({ queryKey: lobbiesKey() });
+    onSuccess: async () => {
+      await client.invalidateQueries({ queryKey: gameStatusKey() });
+      await client.invalidateQueries({ queryKey: lobbiesKey() });
     },
   });
 }
@@ -136,15 +153,15 @@ export function useLeaveMutation(lobbyId: Id) {
   const client = useQueryClient();
 
   const submit = useMemo(
-    () => createMutator(`lobby/${lobbyId}/player`, "DELETE"),
+    () => createMutator(() => `lobby/${lobbyId}/player`, "DELETE"),
     [lobbyId]
   );
 
   return useMutation({
     mutationFn: () => submit(),
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: gameStatusKey() });
-      client.invalidateQueries({ queryKey: lobbiesKey() });
+    onSuccess: async () => {
+      await client.invalidateQueries({ queryKey: gameStatusKey() });
+      await client.invalidateQueries({ queryKey: lobbiesKey() });
     },
   });
 }
@@ -153,15 +170,15 @@ export function useStartMutation(lobbyId: Id) {
   const client = useQueryClient();
 
   const submit = useMemo(
-    () => createMutator(`game/${lobbyId}`, "POST"),
+    () => createMutator(() => `game/${lobbyId}`, "POST"),
     [lobbyId]
   );
 
   return useMutation({
     mutationFn: () => submit(),
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: gameStatusKey() });
-      client.invalidateQueries({ queryKey: lobbiesKey() });
+    onSuccess: async () => {
+      await client.invalidateQueries({ queryKey: gameStatusKey() });
+      await client.invalidateQueries({ queryKey: lobbiesKey() });
     },
   });
 }

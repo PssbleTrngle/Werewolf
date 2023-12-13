@@ -1,61 +1,56 @@
 import { Game, GameState, generateRoles } from "logic";
-import { ApiError, Id, User } from "models";
+import { ApiError, Id } from "models";
 import { redisJSON } from "./casting.js";
-import { Lobby, deleteLobby } from "./lobbies.js";
-import connectRedis from "./redis.js";
+import LobbyStorage, { Lobby } from "./lobbies.js";
+import { RedisClient } from "./redis.js";
 
-function createRemoteGame(id: Id, history: ReadonlyArray<GameState>) {
-  const game = new Game(history);
-  game.on("save", (history) => saveGame(id, history));
-  return game;
-}
+export default class GameStorage {
+  constructor(
+    private readonly redis: RedisClient,
+    private readonly lobbies: LobbyStorage
+  ) {}
 
-export async function getGame(id: Id) {
-  const redis = await connectRedis();
+  private createRemoteGame(id: Id, history: ReadonlyArray<GameState>) {
+    const game = new Game(history);
+    game.on("save", (history) => this.saveGame(id, history));
+    return game;
+  }
 
-  const result = (await redis.json.get(
-    `game:${id}`
-  )) as ReadonlyArray<GameState> | null;
+  async getGame(id: Id) {
+    const result = (await this.redis.json.get(
+      `game:${id}`
+    )) as ReadonlyArray<GameState> | null;
 
-  if (result) return createRemoteGame(id, result);
-  throw new ApiError(404, `Unable to find game with id ${id}`);
-}
+    if (result) return this.createRemoteGame(id, result);
+    throw new ApiError(404, `Unable to find game with id ${id}`);
+  }
 
-async function saveGame(id: Id, history: ReadonlyArray<GameState>) {
-  const redis = await connectRedis();
+  private async saveGame(id: Id, history: ReadonlyArray<GameState>) {
+    await this.redis.json.set(`game:${id}`, "$", redisJSON(history));
+  }
 
-  await redis.json.set(`game:${id}`, "$", redisJSON(history));
-}
+  async startGame(lobby: Lobby) {
+    const players = generateRoles(lobby.players);
 
-export async function joinLobby(user: User, lobbyId: Id) {
-  const redis = await connectRedis();
-  await Promise.all([
-    redis.set(`player:${user.id}:lobby`, lobbyId),
-    redis.json.arrAppend(`lobby:${lobbyId}`, ".players", redisJSON(user)),
-  ]);
-}
+    const id = lobby.id;
+    const game = this.createRemoteGame(id, Game.createState(players));
+    await game.save();
 
-export async function startGame(lobby: Lobby) {
-  const players = generateRoles(lobby.players);
+    await this.setGame(
+      players.map((it) => it.id),
+      id
+    );
 
-  const id = lobby.id;
-  const game = createRemoteGame(id, Game.createState(players));
-  await game.save();
+    await this.lobbies.deleteLobby(lobby);
 
-  await setGame(
-    players.map((it) => it.id),
-    id
-  );
+    return game;
+  }
 
-  await deleteLobby(lobby);
-
-  return game;
-}
-
-async function setGame(playerIds: Id[], gameId: Id) {
-  const redis = await connectRedis();
-
-  await Promise.all(
-    playerIds.map((playerId) => redis.set(`player:${playerId}:game`, gameId))
-  );
+  private async setGame(playerIds: Id[], gameId: Id) {
+    await Promise.all(
+      playerIds.map((playerId) =>
+        this.redis.set(`player:${playerId}:game`, gameId)
+      )
+    );
+  }
 }

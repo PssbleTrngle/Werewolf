@@ -1,6 +1,6 @@
 import { GameInfo, Time } from "models";
 import { transparentize } from "polished";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useEffect, useMemo, useReducer } from "react";
 import styled from "styled-components";
 import Button from "../Button";
 import Clouds from "./Clouds";
@@ -51,13 +51,24 @@ export default function Background({
     return game.day * 360 + rotation;
   }, [game]);
 
+  // prevent server-client-missmatch-error due to random positions of clouds
+  const [isClient, loadClient] = useReducer(() => true, false);
+  useEffect(loadClient, [loadClient]);
+
   return (
     <Style $time={game.time} {...props}>
-      <Horizon>
-        <Sun $angle={sunAngle} $glow={SUN_GRADIENTS[game.time]} />
-        <Moon $angle={moonAngle} $opacity={game.time === "night" ? 1 : 0.5} />
-      </Horizon>
-      <Clouds />
+      {isClient && (
+        <>
+          <Horizon>
+            <Sun $angle={sunAngle} $glow={SUN_GRADIENTS[game.time]} />
+            <Moon
+              $angle={moonAngle}
+              $opacity={game.time === "night" ? 1 : 0.5}
+            />
+          </Horizon>
+          <Clouds />
+        </>
+      )}
       {children}
     </Style>
   );

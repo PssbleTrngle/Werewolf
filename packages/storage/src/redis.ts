@@ -1,28 +1,14 @@
 import { SchemaFieldTypes, createClient } from "redis";
 
-function connect() {
+export function connectRedis(): Promise<RedisClient> {
   console.log("Connecting to redis");
   return createClient()
     .on("error", (err) => console.log("Redis Client Error", err))
-    .connect();
+    .connect()
+    .then(setupRedis);
 }
 
-type RedisClient = ReturnType<typeof createClient>;
-
-let cachedClientPromise: Promise<RedisClient> | null = null;
-let cachedClient: RedisClient | null = null;
-
-export default async function connectRedis(): Promise<RedisClient> {
-  if (cachedClient) return cachedClient;
-  if (cachedClientPromise) return cachedClientPromise;
-
-  cachedClientPromise = connect().then(setupRedis);
-
-  const client = await cachedClientPromise;
-  cachedClient = client;
-
-  return client;
-}
+export type RedisClient = ReturnType<typeof createClient>;
 
 const SCHEMA_VERSION = 1;
 
@@ -30,6 +16,8 @@ export async function setupRedis(client: RedisClient): Promise<RedisClient> {
   const schemaVersion = parseInt((await client.get("schema:version")) ?? "0");
 
   if (schemaVersion < 1) {
+    console.log(`Migrating DB to version 1`);
+
     await client.ft.create(
       "idx:lobbies",
       {

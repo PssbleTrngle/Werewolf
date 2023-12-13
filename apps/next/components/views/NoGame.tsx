@@ -1,3 +1,4 @@
+import { useJoinMutation, useLobbies } from "@/lib/client/remoteContext";
 import { useTranslation } from "react-i18next";
 import type { Lobby } from "storage";
 import styled from "styled-components";
@@ -10,26 +11,22 @@ import {
   tooltip,
   useCreateMutation,
 } from "ui";
-import Layout from "@/layout/default";
-import { useJoinMutation, useLobbies } from "@/lib/client/remoteContext";
 
 export default function NoGame() {
   const { mutate: create } = useCreateMutation();
   const { data: lobbies } = useLobbies();
 
   return (
-    <Layout>
-      <Centered>
-        <LobbyTable>
-          <tbody>
-            {lobbies.map((it) => (
-              <LobbyPanel key={it.id}>{it}</LobbyPanel>
-            ))}
-          </tbody>
-        </LobbyTable>
-        <Button onClick={() => create({})}>Create a game</Button>
-      </Centered>
-    </Layout>
+    <Centered>
+      <LobbyTable>
+        <tbody>
+          {lobbies.map((it) => (
+            <LobbyPanel key={it.id}>{it}</LobbyPanel>
+          ))}
+        </tbody>
+      </LobbyTable>
+      <Button onClick={() => create({})}>Create a game</Button>
+    </Centered>
   );
 }
 
