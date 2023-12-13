@@ -92,7 +92,7 @@ function q(values: ParsedUrlQueryInput) {
 
 const gameQuery = (endpoint: string) => {
   const { impersonated } = useLocalStore.getState();
-  return endpoint + q({ impersonated });
+  return endpoint + q({ impersonated: impersonated?.id });
 };
 
 export default function createRemoteContext(): QueryContext {

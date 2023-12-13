@@ -1,9 +1,9 @@
-import { Id } from "models";
+import { User } from "models";
 import { create } from "zustand";
 
 export interface LocalStore {
-  impersonated?: Id | string;
-  impersonate(id: Id | string): void;
+  impersonated?: User;
+  impersonate(id?: User): void;
 }
 
 export const useLocalStore = create<LocalStore>((set) => ({

@@ -2,25 +2,15 @@ import {
   DispatchWithoutAction,
   PropsWithChildren,
   useCallback,
-  useEffect,
 } from "react";
 import styled, { css } from "styled-components";
 import { Buttons } from "../components/Button";
+import { useWindowEvent } from "../hooks/events";
 
 export type DialogProps = Readonly<{
   onClose: DispatchWithoutAction;
   visible?: boolean;
 }>;
-
-function useWindowEvent<K extends keyof WindowEventMap>(
-  type: K,
-  listener: (event: WindowEventMap[K]) => void
-) {
-  useEffect(() => {
-    window.addEventListener(type, listener);
-    return () => window.removeEventListener(type, listener);
-  }, [type, listener]);
-}
 
 export default function Dialog({
   onClose,

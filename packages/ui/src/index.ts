@@ -24,6 +24,7 @@ export { default as EventDetails } from "./components/event/EventDetails";
 export { default as EventScreen } from "./components/event/EventScreen";
 export { default as ParticipantList } from "./components/event/ParticipantList";
 export * from "./hooks/queries";
+export * from "./hooks/events";
 export * from "./icons";
 export * from "./styles/layout";
 export * from "./styles/links";

@@ -1,8 +1,9 @@
+import ImpersonateControl from "@/components/ImpersonateControl";
 import { useLocalStore } from "@/lib/client/store";
 import { signIn, useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Button } from "ui";
+import { Button, useGameStatus } from "ui";
 
 export default function ProfileIcon() {
   const { t } = useTranslation("hub");
@@ -16,11 +17,12 @@ export default function ProfileIcon() {
   if (status === "authenticated") {
     return (
       <Style>
+        <OptionalImpersonateControl />
         <span>{session.user.name}</span>
         <Icon src={session.user.image} />
         {impersonated && (
           <Impersonated>
-            {t("nav.impersonated", { user: impersonated })}
+            {t("nav.impersonated", { user: impersonated.name })}
           </Impersonated>
         )}
       </Style>
@@ -28,6 +30,15 @@ export default function ProfileIcon() {
   }
 
   return null;
+}
+
+function OptionalImpersonateControl() {
+  const { data: status } = useGameStatus();
+  if (status.type === "game") {
+    return <ImpersonateControl gameId={status.id} />;
+  } else {
+    return null;
+  }
 }
 
 const Icon = styled.img`
@@ -41,21 +52,22 @@ const Icon = styled.img`
 
 const Impersonated = styled.i`
   grid-area: impersonated;
+  opacity: 0.7;
 
-  font-size: 0.8em;
-  text-align: center;
+  font-size: 0.7em;
   margin-top: -0.5em;
 `;
 
 const Style = styled.div`
   display: grid;
+  text-align: center;
 
-  grid-template: "name icon";
+  grid-template: "impersonate name icon";
 
   &:has(${Impersonated}) {
     grid-template:
-      "name icon"
-      "impersonated icon";
+      "impersonate name icon"
+      "impersonate impersonated icon";
   }
 
   column-gap: 1em;

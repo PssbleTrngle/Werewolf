@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import Centered from "./Centered";
 
-export default function Loading(props: Readonly<{}>) {
+export default function Loading(props: Readonly<Record<string, unknown>>) {
   return (
     <Centered {...props}>
       <LoadingIcon>

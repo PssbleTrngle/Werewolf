@@ -9,7 +9,6 @@
     "eslint-config-next": "14.0.3",
     "eslint-plugin-no-relative-import-paths": "^1.5.3",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.4",
     "eslint-plugin-require-extensions": "^0.1.3"
   }
 }

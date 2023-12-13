@@ -6,7 +6,7 @@ import { XS } from "../../styles/screens";
 import Button from "../Button";
 import PlayerIcon from "../PlayerIcon";
 
-export default function ChoicePanel({ choice }: { choice: Choice }) {
+export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
   const { t } = useTranslation();
   const { mutate: vote } = useVoteMutation();
 

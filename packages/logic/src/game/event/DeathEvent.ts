@@ -9,7 +9,6 @@ import {
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
-import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
 import { GameReadAccess } from "../state.js";
 import { DismissChoice } from "../vote/Choice.js";
@@ -43,14 +42,7 @@ export class DeathEvent extends EventType<DeathData> {
     return [];
   }
 
-  protected viewData(
-    _player: Player,
-    subject: DeathData,
-    mapper: SubjectMappers
-  ): DeathData {
-    // TODO reveal role depending on settings?
-    return {
-      deaths: subject.deaths.map((it) => mapper.mapPlayer(it)),
-    };
+  protected viewData(_player: Player, subject: DeathData): DeathData {
+    return subject;
   }
 }

@@ -9,9 +9,10 @@ import {
 } from "next";
 import { Session, getServerSession } from "next-auth";
 
+import { IdSchema } from "@/lib/server/schemas";
 import connectStorage from "@/lib/server/storage";
+import { ModeratorUser } from "@/lib/specialUsers";
 import zod from "zod";
-import { IdSchema } from "./schemas";
 
 async function gameIdOf(session: Session) {
   const storage = await connectStorage();
@@ -41,8 +42,11 @@ export async function wrapSessionView(
   const admin = isAdmin(session.user);
 
   if (isAdmin(session.user) && query.impersonated) {
-    if (query.impersonated === "moderator") {
+    if (query.impersonated === ModeratorUser.id) {
       return new ModeratorGameView(game);
+    } else {
+      game.requirePlayer(query.impersonated);
+      return new PlayerGameView(game, query.impersonated);
     }
   }
 
