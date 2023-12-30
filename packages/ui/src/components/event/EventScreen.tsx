@@ -44,7 +44,9 @@ export default function EventScreen({
           <EventWrapper>
             <EventParticipantList size={1} players={event.players} />
             <EventDetails event={event} />
-            {event?.choice && <ChoicePanel choice={event.choice} />}
+            {event?.choice && (
+              <ChoicePanel choice={event.choice} key={event.type} />
+            )}
           </EventWrapper>
         </Style>
       </Background>

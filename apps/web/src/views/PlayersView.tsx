@@ -16,8 +16,8 @@ import {
   RolePanel,
   ShuffleIcon,
   Table,
-  TrashIcon,
   tooltip,
+  TrashIcon,
   useGameStatus,
   usePlayers,
 } from "ui";
@@ -30,7 +30,7 @@ import randomNames from "../randomNames";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useDialogAction<TState, TArgs extends any[]>(
-  action: (value: TState, ...args: TArgs) => unknown
+  action: (value: TState, ...args: TArgs) => unknown,
 ) {
   const [id, open] = useState<TState>();
 
@@ -41,12 +41,12 @@ function useDialogAction<TState, TArgs extends any[]>(
       if (id) action(id, ...args);
       close();
     },
-    [close, id, action]
+    [close, id, action],
   );
 
   return useMemo(
     () => ({ id, execute, open, close, visible: !!id }),
-    [id, execute, open, close]
+    [id, execute, open, close],
   );
 }
 
@@ -65,7 +65,7 @@ function AddPanel({
       onAddPlayer({ id: nanoid(), name });
       setName("");
     },
-    [onAddPlayer, name]
+    [onAddPlayer, name],
   );
 
   return (
@@ -131,7 +131,7 @@ function ActivePlayersView() {
               {it.role ? (
                 <td>
                   <InvisibleLink to={`/roles/${it.role.type}`}>
-                    <RolePanel role={it.role} />
+                    <RolePanel role={it.role} variant={it.variant} />
                   </InvisibleLink>
                 </td>
               ) : (
@@ -164,14 +164,14 @@ function PlayersEditView() {
     (id: Id, role?: Role) => {
       modifyPlayer(id, { role });
     },
-    [modifyPlayer]
+    [modifyPlayer],
   );
 
   const rename = useCallback(
     (id: Id, name: string) => {
       modifyPlayer(id, { name });
     },
-    [modifyPlayer]
+    [modifyPlayer],
   );
 
   const roleSelectDialog = useDialogAction(selectRole);
@@ -208,7 +208,7 @@ function PlayersEditView() {
             : tooltip(
                 t("local:error.min_players_requirement", {
                   count: MIN_PLAYERS,
-                })
+                }),
               ))}
         >
           {t("local:button.player.generate_roles")}
@@ -223,7 +223,7 @@ function PlayersEditView() {
               <td>{it.name}</td>
               {it.role ? (
                 <td>
-                  {it.role.emoji} <i>{t(`role.${it.role.type}.name`)}</i>
+                  <RolePanel role={it.role} variant={it.variant} />
                 </td>
               ) : (
                 <td />

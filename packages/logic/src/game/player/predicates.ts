@@ -26,7 +26,7 @@ export function isDying(player: Player) {
 
 export function hasRole(role: string | Role) {
   const type = typeof role === "string" ? role : role.type;
-  return (player: Player) => player.role?.type === type;
+  return (player: Pick<Player, "role">) => player.role?.type === type;
 }
 
 export function byId(id: Id) {
@@ -35,7 +35,7 @@ export function byId(id: Id) {
 
 export function requirePlayer<T extends Player>(
   players: ReadonlyArray<T>,
-  id: Id
+  id: Id,
 ): T {
   const match = players.find(byId(id));
   if (match) return match;

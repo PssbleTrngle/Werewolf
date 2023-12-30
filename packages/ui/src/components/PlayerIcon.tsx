@@ -3,7 +3,7 @@ import styled from "styled-components";
 import RolePanel from "./RolePanel";
 
 export default function PlayerIcon({
-  children: { name, role },
+  children: { name, role, variant },
   size = 1,
   ...props
 }: Readonly<{
@@ -13,7 +13,7 @@ export default function PlayerIcon({
   return (
     <Style $size={size} {...props}>
       {name}
-      <Role small role={role} />
+      <Role small role={role} variant={variant} />
     </Style>
   );
 }

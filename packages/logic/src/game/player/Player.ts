@@ -1,4 +1,4 @@
-import { Player as IPlayer, Id, Role, Status } from "models";
+import { Id, Player as IPlayer, Role, Status } from "models";
 
 export interface RoleData {
   usedRevivePotion?: boolean;
@@ -6,6 +6,7 @@ export interface RoleData {
   target?: Id;
   revealedPlayers: Record<Id, IPlayer>;
   hallucinated?: Record<Id, Partial<IPlayer>>;
+  loves?: Id;
 }
 
 export interface Player extends IPlayer {

@@ -9,6 +9,7 @@ export const enum DeathCause {
   WOLFS = "wolfs",
   HUNTER = "hunter",
   POTION = "potion",
+  BROKEN_HEART = "broken_heart",
 }
 
 export interface User {
@@ -18,6 +19,7 @@ export interface User {
 
 export interface Player extends User {
   role?: Partial<Role>;
+  variant?: string;
   deathCause?: DeathCause;
   status?: Status;
 }

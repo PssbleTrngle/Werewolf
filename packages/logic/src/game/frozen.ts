@@ -1,9 +1,9 @@
 import { last } from "lodash-es";
 import { DeathCause, Event, Id, PlayerRevealType, Time, Vote } from "models";
 import {
+  arrayOrSelf,
   ArrayOrSingle,
   PartialOrFactory,
-  arrayOrSelf,
   resolvePartialFactory,
 } from "../util.js";
 import { Effect } from "./effect/Effect.js";
@@ -88,13 +88,13 @@ export default class FrozenGame implements GameAccess {
     const target = requirePlayer(this.players, playerId);
     console.log(target.name, "died by", cause);
 
+    this.deaths.set(playerId, cause);
+
     const effects = DeathEvents.notify(target, cause, this).flatMap(
-      arrayOrSelf
+      arrayOrSelf,
     );
 
     this.apply(effects);
-
-    this.deaths.set(playerId, cause);
   }
 
   revive(playerId: Id): void {
@@ -120,7 +120,10 @@ export default class FrozenGame implements GameAccess {
       }
 
       const revealedDeaths = unnotifiedDeaths.map((it) =>
-        revealPlayer(it, this.settings.deathRevealType ?? PlayerRevealType.ROLE)
+        revealPlayer(
+          it,
+          this.settings.deathRevealType ?? PlayerRevealType.ROLE,
+        ),
       );
 
       return DeathEvent.create(alive, revealedDeaths, time);
@@ -175,7 +178,7 @@ export default class FrozenGame implements GameAccess {
               ...previous,
               ...values,
             }),
-            player
+            player,
           );
         }),
       events,

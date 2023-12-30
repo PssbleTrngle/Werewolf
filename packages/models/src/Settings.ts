@@ -9,6 +9,9 @@ export interface GameSettings {
   disableLynchSkip?: boolean;
   disabledRoles?: string[];
   fakePlayerScreens?: boolean;
+  amorCanChooseSelf?: boolean;
   deathRevealType?: PlayerRevealType;
   seerRevealType?: PlayerRevealType;
+  loveRevealType?: PlayerRevealType;
+  brokenHeartHeals?: boolean;
 }

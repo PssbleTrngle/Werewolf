@@ -1,12 +1,12 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
+  allRoles,
   EMPTY_ROLE_DATA,
   Game,
-  Player as GamePlayer,
   GameState,
   ModeratorGameView,
+  Player as GamePlayer,
   PlayerGameView,
-  allRoles,
 } from "logic";
 import { GameStatus, Id, Player, Role, Vote } from "models";
 import {
@@ -16,22 +16,22 @@ import {
   useMemo,
   useReducer,
 } from "react";
-import { GameProvider, QueryContext, invalidateGameQueries } from "ui";
+import { GameProvider, invalidateGameQueries, QueryContext } from "ui";
 import { ImpersonationProvider } from "./impersonate";
 import { GameStore, useLocalStore } from "./store";
 
 export const GAME_ID = "local";
 
 export function preparePlayers(
-  players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>
+  players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>,
 ): ReadonlyArray<GamePlayer> {
   return players.map(({ role, ...it }) => {
     if (!role) throw new Error(`Player ${it.name} is missing a role`);
     return {
-      ...it,
       roleData: EMPTY_ROLE_DATA,
       status: "alive",
       role: role as Role,
+      ...it,
     };
   });
 }
@@ -209,7 +209,7 @@ export function LocalGameProvider(props: Readonly<PropsWithChildren>) {
       invalidateGameQueries(client);
       return value;
     },
-    undefined
+    undefined,
   );
 
   return (

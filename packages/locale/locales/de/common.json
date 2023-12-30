@@ -69,7 +69,8 @@
             "name": "Auge"
         },
         "seer": {
-            "name": "Seher"
+            "name": "Seher",
+            "name_female": "Seherin"
         },
         "witch": {
             "name": "Hexe"

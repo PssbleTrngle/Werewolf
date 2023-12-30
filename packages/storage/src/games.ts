@@ -1,4 +1,4 @@
-import { Game, GameState, generateRoles } from "logic";
+import { Game, GameState, preparePlayers } from "logic";
 import { ApiError, Id } from "models";
 import { redisJSON } from "./casting.js";
 import LobbyStorage, { Lobby } from "./lobbies.js";
@@ -7,7 +7,7 @@ import { RedisClient } from "./redis.js";
 export default class GameStorage {
   constructor(
     private readonly redis: RedisClient,
-    private readonly lobbies: LobbyStorage
+    private readonly lobbies: LobbyStorage,
   ) {}
 
   private createRemoteGame(id: Id, history: ReadonlyArray<GameState>) {
@@ -18,7 +18,7 @@ export default class GameStorage {
 
   async getGame(id: Id) {
     const result = (await this.redis.json.get(
-      `game:${id}`
+      `game:${id}`,
     )) as ReadonlyArray<GameState> | null;
 
     if (result) return this.createRemoteGame(id, result);
@@ -30,7 +30,7 @@ export default class GameStorage {
   }
 
   async startGame(lobby: Lobby) {
-    const players = generateRoles(lobby.players);
+    const players = preparePlayers(lobby.players);
 
     const id = lobby.id;
     const game = this.createRemoteGame(id, Game.createState(players));
@@ -38,7 +38,7 @@ export default class GameStorage {
 
     await this.setGame(
       players.map((it) => it.id),
-      id
+      id,
     );
 
     await this.lobbies.deleteLobby(lobby);
@@ -49,8 +49,8 @@ export default class GameStorage {
   private async setGame(playerIds: Id[], gameId: Id) {
     await Promise.all(
       playerIds.map((playerId) =>
-        this.redis.set(`player:${playerId}:game`, gameId)
-      )
+        this.redis.set(`player:${playerId}:game`, gameId),
+      ),
     );
   }
 }

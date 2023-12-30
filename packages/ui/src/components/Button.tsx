@@ -1,35 +1,49 @@
 import { invert, lighten } from "polished";
-import styled, { ShouldForwardProp, css } from "styled-components";
+import styled, { css, ShouldForwardProp } from "styled-components";
 import { InputStyles } from "./Input";
+import { RuleSet } from "styled-components/dist/types";
+
+export interface ButtonProps {
+  error?: boolean;
+  primary?: boolean;
+  selected?: boolean;
+  id?: string;
+}
+
+export const hoverAndSelect = (
+  styles: RuleSet<ButtonProps>,
+) => css<ButtonProps>`
+  &&:not(:disabled) {
+    &:hover {
+      ${styles}
+    }
+
+    ${(p) => p.selected && styles};
+  }
+`;
 
 const ErrorStyle = css`
   background: ${(p) => p.theme.error};
   border-color: ${(p) => lighten(0.2, p.theme.error)};
 
-  &:hover:not(:disp = > abled) {
+  ${hoverAndSelect(css`
     background: ${(p) => lighten(0.1, p.theme.error)};
     color: #eee;
-  }
+  `)}
 `;
 
 const PrimaryStyle = css`
   background: ${(p) => p.theme.accent};
   border-color: ${(p) => lighten(0.2, p.theme.accent)};
 
-  &:hover:not(:disabled) {
+  ${hoverAndSelect(css`
     background: ${(p) => lighten(0.1, p.theme.accent)};
     color: #eee;
-  }
+  `)}
 `;
 
-export interface ButtonProps {
-  error?: boolean;
-  primary?: boolean;
-  id?: string;
-}
-
 const shouldForwardProp: ShouldForwardProp<"web"> = (key) => {
-  return key !== "error" && key !== "primary";
+  return key !== "error" && key !== "primary" && key !== "selected";
 };
 
 const Button = styled.button.withConfig({ shouldForwardProp })<ButtonProps>`
@@ -39,13 +53,13 @@ const Button = styled.button.withConfig({ shouldForwardProp })<ButtonProps>`
   cursor: pointer;
   padding: 1em 2em;
 
-  &:hover:not(:disabled) {
+  ${hoverAndSelect(css`
     background: ${(p) => p.theme.text};
     color: ${(p) => invert(p.theme.text)};
-  }
+  `)}
 
   ${(p) => p.error && ErrorStyle}
-  ${(p) => p.primary && PrimaryStyle}
+    ${(p) => p.primary && PrimaryStyle}
 `;
 
 export const IconButton = styled(Button)`

@@ -3,9 +3,10 @@ import { Player, PlayerRevealType } from "models";
 
 export default function revealPlayer(
   player: Player,
-  type: PlayerRevealType
+  type: PlayerRevealType,
 ): Player {
   switch (type) {
+    // TODO strip stuff
     case PlayerRevealType.ROLE:
       return player;
     case PlayerRevealType.GROUP:

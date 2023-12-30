@@ -36,7 +36,7 @@ export default function ImpersonateControl({
       showPopup(false);
       await invalidateGameQueries(client);
     },
-    [impersonate, client, showPopup]
+    [impersonate, client, showPopup],
   );
 
   return (
@@ -53,7 +53,7 @@ export default function ImpersonateControl({
               onClick={() => select(it)}
               $selected={impersonated?.id === it.id}
             >
-              {it.name} <RolePanel small role={it.role} />
+              {it.name} <RolePanel small role={it.role} variant={it.variant} />
             </PlayerButton>
           ))}
         </Popup>

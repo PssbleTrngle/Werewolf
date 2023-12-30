@@ -7,4 +7,5 @@ export interface Role {
   type: string;
   emoji: string;
   groups?: ReadonlyArray<RoleGroup>;
+  variants?: string[]
 }

@@ -1,16 +1,15 @@
-import { Event, Player as IPlayer, Id, Vote } from "models";
+import { Event, Id, Player as IPlayer, Vote } from "models";
 import { EventType } from "../event/Event.js";
 import { EventRegistry } from "../event/EventRegistry.js";
 import { Game } from "../index.js";
 import { Player } from "../player/Player.js";
 import { isNotDead, requirePlayer } from "../player/predicates.js";
-import { Fool, Seer } from "../role/Seer.js";
 import { GameView } from "./index.js";
 
 export class PlayerGameView implements GameView {
   constructor(
     protected readonly game: Game,
-    protected readonly owner: Id
+    protected readonly owner: Id,
   ) {}
 
   mapPlayer(subject: IPlayer) {
@@ -79,11 +78,14 @@ function playerViewFor(player: Player, subject: IPlayer): IPlayer {
   };
 
   if (player.id === subject.id) {
-    if (player.role.type === Fool.type) {
-      return { ...common, role: Seer };
-    }
+    const hallucinated = player.roleData.hallucinated?.[subject.id];
 
-    return { ...common, role: player.role };
+    return {
+      ...common,
+      variant: player.variant,
+      role: player.role,
+      ...hallucinated,
+    };
   }
 
   return common;

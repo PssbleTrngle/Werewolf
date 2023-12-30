@@ -1,35 +1,65 @@
-import { Choice } from "models";
+import { Choice, Id } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useVoteMutation } from "../../hooks/queries";
 import { XS } from "../../styles/screens";
-import Button from "../Button";
+import Button, { Buttons } from "../Button";
 import PlayerIcon from "../PlayerIcon";
+import { useCallback, useMemo, useState } from "react";
 
 export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
   const { t } = useTranslation();
   const { mutate: vote } = useVoteMutation();
+  const multiple = useMemo(
+    () => !!choice.players?.length && (choice.voteCount ?? 0) > 1,
+    [choice],
+  );
+
+  const [selected, setSelected] = useState<Id[]>([]);
+
+  const select = useCallback(
+    (player: Id) => {
+      if (multiple)
+        setSelected((ids) => {
+          if (ids.includes(player)) return ids.filter((it) => it !== player);
+          return [...ids, player];
+        });
+      else return vote({ type: "players", players: [player] });
+    },
+    [multiple, vote],
+  );
 
   return (
-    <Buttons>
+    <Style>
       {choice.players && (
         <PlayerButtons $count={choice.players.length}>
           {choice.players.map((player) => (
             <Button
               key={player.id}
-              onClick={() => vote({ type: "players", players: [player.id] })}
+              onClick={() => select(player.id)}
+              selected={selected.includes(player.id)}
             >
               <PlayerIcon>{player}</PlayerIcon>
             </Button>
           ))}
         </PlayerButtons>
       )}
-      {choice.canSkip && (
-        <Skip onClick={() => vote({ type: "skip" })}>
-          {choice.players?.length ? t("button.skip") : t("button.dismiss")}
-        </Skip>
-      )}
-    </Buttons>
+      <Buttons>
+        {choice.canSkip && (
+          <Button onClick={() => vote({ type: "skip" })}>
+            {choice.players?.length ? t("button.skip") : t("button.dismiss")}
+          </Button>
+        )}
+        {multiple && (
+          <Button
+            disabled={selected.length === 0}
+            onClick={() => vote({ type: "players", players: selected })}
+          >
+            {t("button.submit")}
+          </Button>
+        )}
+      </Buttons>
+    </Style>
   );
 }
 
@@ -52,12 +82,8 @@ const PlayerButtons = styled.ul<{ $count: number }>`
   }
 `;
 
-const Buttons = styled.div`
+const Style = styled.div`
   padding: 1em;
   gap: 1em;
   display: grid;
-`;
-
-const Skip = styled(Button)`
-  margin: 0 auto;
 `;

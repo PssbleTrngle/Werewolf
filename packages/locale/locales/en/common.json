@@ -5,6 +5,7 @@
     "undo": "Undo",
     "redo": "Redo",
     "save": "Save",
+    "submit": "Submit",
     "cancel": "Cancel",
     "reset": "Reset",
     "game": {
@@ -26,7 +27,8 @@
       "freemason": {
         "title_one": "You komrade is...",
         "title_other": "You komrades are..."
-      }
+      },
+      "love.title": "You have fallen in love"
     },
     "hallucinate.title": "Hallucinate",
     "kill": {
@@ -56,7 +58,8 @@
       "jester.title": "The jester won!",
       "couple.title": "The couple won!",
       "executioner.title": "The executioner won!"
-    }
+    },
+    "amor.title": "Who will fall in love?"
   },
   "role": {
     "title": "Role",
@@ -84,6 +87,7 @@
     },
     "seer": {
       "name": "Seer",
+      "name_female": "Priestess",
       "description": [
         "Plagued by visions and the like, only they are cursed with the knowledge of who walks among the village.",
         "Each night the seer chooses a person and learns their intentions.",
@@ -154,11 +158,14 @@
     "seer_apprentice": {
       "name": "Apprentice"
     },
-    "lonely_wolf": {
-      "name": "Lonely Wolf"
+    "lone_wolf": {
+      "name": "Lone Wolf"
     },
     "cub": {
       "name": "Wolf Cub"
+    },
+    "amor": {
+      "name": "Amor"
     },
     "group": {
       "title": "Groups",
