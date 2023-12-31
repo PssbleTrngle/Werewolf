@@ -5,8 +5,10 @@ import { registerEventFactory } from "../event/EventRegistry.js";
 import { KillEvent } from "../event/KillEvent.js";
 import { SleepEvents } from "../event/SleepBoundary.js";
 import revealPlayer from "../permissions/playerReveal.js";
-import { inGroup, isAlive, others } from "../player/predicates.js";
+import { hasRole, inGroup, isAlive, others } from "../player/predicates.js";
 import { WinConditions } from "../winConditions.js";
+import { DreamWolf } from './DreamWolf.js';
+import { WolfCub } from './WolfCub.js';
 
 export const Werewolf: Role = {
   type: "werewolf",
@@ -17,26 +19,29 @@ export const Werewolf: Role = {
 const createKillEvent = registerEventFactory(
   "kill.wolfs",
   new KillEvent(),
-  (targets: ReadonlyArray<Player>) => ({
+  (targets: ReadonlyArray<Player>, voteCount: number) => ({
     choice: {
       players: targets,
+      voteCount,
     },
     data: {
       cause: DeathCause.WOLFS,
     },
-  })
+  }),
 );
 
 export const registerWolfEvents = () =>
   SleepEvents.register(({ players }) => {
     const alive = players.filter(isAlive);
-    const hasWolfDied = players
+    const deadWolfs = players
       .filter(inGroup(RoleGroup.WOLF))
-      .some((it) => !isAlive(it));
+      .filter((it) => !isAlive(it));
 
     const wolfs = alive
       .filter(inGroup(RoleGroup.WOLF))
-      .filter((it) => hasWolfDied || it.role.type !== "dreamwolf");
+      .filter((it) => deadWolfs.length > 0 || !hasRole(DreamWolf)(it));
+
+    const voteCount = 1 + deadWolfs.filter(hasRole(WolfCub)).length;
 
     const targets = alive.filter((it) => !wolfs.includes(it));
     return [
@@ -51,18 +56,18 @@ export const registerWolfEvents = () =>
                   .map((it) => [
                     it.id,
                     revealPlayer(it, PlayerRevealType.GROUP),
-                  ])
+                  ]),
               ),
             },
-          }))
+          })),
       ),
-      new EventEffect(() => createKillEvent(wolfs, targets)),
+      new EventEffect(() => createKillEvent(wolfs, targets, voteCount)),
     ];
   });
 
 export function registerWolfWinCondition(
   group: RoleGroup = RoleGroup.WOLF,
-  type: string = "wolfs"
+  type: string = "wolfs",
 ) {
   WinConditions.register(({ players }) => {
     const alive = players.filter(isAlive);

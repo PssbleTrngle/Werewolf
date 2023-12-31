@@ -2,12 +2,12 @@ import {
   Event,
   GameInfo,
   GameSettings,
-  Player as IPlayer,
   Id,
+  Player as IPlayer,
   Role,
   Vote,
 } from "models";
-import { ArrayOrSingle, arrayOrSelf, notNull } from "../util.js";
+import { arrayOrSelf, ArrayOrSingle, notNull } from "../util.js";
 import { EventBus } from "./event/EventBus.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { StartEvent } from "./event/StartEvent.js";
@@ -28,7 +28,7 @@ interface GameHooks {
 type GameHookKey = keyof GameHooks;
 
 type GameHookListener<T extends GameHookKey> = (
-  subject: GameHooks[T]
+  subject: GameHooks[T],
 ) => void | Promise<void>;
 
 export const FAKE_PLAYER_ID = "fake";
@@ -56,7 +56,7 @@ export class Game implements GameReadAccess {
 
   static createState(
     players: ReadonlyArray<Player>,
-    settings: GameSettings = {}
+    settings: GameSettings = {},
   ): ReadonlyArray<GameState> {
     return [
       {
@@ -70,7 +70,7 @@ export class Game implements GameReadAccess {
   }
 
   private hookBus<T extends GameHookKey>(
-    event: T
+    event: T,
   ): EventBus<GameHookListener<T>> {
     const existing = this.hooks.get(event);
     if (existing) return existing;
@@ -130,7 +130,7 @@ export class Game implements GameReadAccess {
 
       const winEvent = WinEvent.create(unfrozen.players, win);
       const keptEvents = unfrozen.events.filter((it) =>
-        it.type.startsWith("announcement.")
+        it.type.startsWith("announcement."),
       );
       return { ...unfrozen, events: [...keptEvents, winEvent] };
     } else {
@@ -141,7 +141,7 @@ export class Game implements GameReadAccess {
   private checkEvent(
     access: FrozenGame,
     event: Event,
-    index: number
+    index: number,
   ): number | false {
     const type = EventRegistry.get(event.type);
 
@@ -164,7 +164,7 @@ export class Game implements GameReadAccess {
       // not everybody has voted yet
       if (votes.length < event.players.length) return false;
 
-      vote = calculateWinner(votes);
+      vote = calculateWinner(event.choice, votes);
     }
 
     event.players.forEach((it) => this.votes.delete(it.id));
@@ -218,12 +218,12 @@ export class Game implements GameReadAccess {
       // TODO only here for sanity checks right now, maybe later there will be a role which is allowed to do this
       if (!event?.choice)
         throw new Error(
-          `${player.name} cannot vote as he has no choice on ${event?.type}`
+          `${player.name} cannot vote as he has no choice on ${event?.type}`,
         );
 
       if (player.status === "dead")
         throw new Error(
-          `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
+          `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`,
         );
 
       console.log(player.name, "voted on", event.type);

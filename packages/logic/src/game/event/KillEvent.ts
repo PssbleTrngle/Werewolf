@@ -9,8 +9,7 @@ import { EventType } from "./Event.js";
 export class KillEvent extends EventType<KillData> {
   finish(vote: Vote, { data }: Event<KillData>): ArrayOrSingle<Effect> {
     if (vote.type === "players") {
-      // TODO vote strategy?
-      return new KillEffect(vote.players[0], data.cause);
+      return vote.players.map((it) => new KillEffect(it, data.cause));
     }
 
     return [];
@@ -19,7 +18,7 @@ export class KillEvent extends EventType<KillData> {
   protected viewData(
     _player: Player,
     subject: KillData,
-    _mapper: SubjectMappers
+    _mapper: SubjectMappers,
   ): KillData {
     // TODO hide death cause depending on setting
     return subject;

@@ -1,6 +1,7 @@
-import { Event, Player as IPlayer, Vote } from "models";
+import { Choice, Event, Player as IPlayer, Vote } from "models";
 import { Game } from "../index.js";
 import { GameView } from "./index.js";
+import { validateVote } from '../vote/Vote.js';
 
 export class ModeratorGameView implements GameView {
   constructor(protected readonly game: Game) {}
@@ -10,15 +11,19 @@ export class ModeratorGameView implements GameView {
   }
 
   mapEvent<T>(subject: Event<T>) {
-    return subject;
+    const choice: Choice = {
+      ...subject.choice,
+      canSkip: subject.choice?.canSkip || subject.players.length > 1,
+    };
+    return { ...subject, choice };
   }
 
   currentEvent() {
-    return this.events()[0];
+    return this.mapEvent(this.events()[0]);
   }
 
   events() {
-    return this.game.currentEvents();
+    return this.game.currentEvents().map((it) => this.mapEvent(it));
   }
 
   players() {
@@ -31,6 +36,7 @@ export class ModeratorGameView implements GameView {
 
   async vote(vote: Vote) {
     const event = this.currentEvent();
+    validateVote(event.choice, vote);
     await this.game.vote(event.players, vote);
   }
 

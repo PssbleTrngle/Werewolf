@@ -8,15 +8,16 @@ import { Eye } from "./role/Eye.js";
 import { Freemason } from "./role/Freemason.js";
 import { Hunter } from "./role/Hunter.js";
 import { Jester } from "./role/Jester.js";
-import { LoneWolf } from './role/LoneWolf.js';
+import { LoneWolf } from "./role/LoneWolf.js";
 import { Fool, Seer } from "./role/Seer.js";
 import { SeerApprentice } from "./role/SeerApprentice.js";
 import { Villager } from "./role/Villager.js";
 import { Witch } from "./role/Witch.js";
 import { Werewolf } from "./role/Wolf.js";
-import { EventBus } from './event/EventBus.js';
-import { others } from './player/predicates.js';
-import { Amor } from './role/Amor.js';
+import { EventBus } from "./event/EventBus.js";
+import { others } from "./player/predicates.js";
+import { Amor } from "./role/Amor.js";
+import { WolfCub } from './role/WolfCub.js';
 
 export const MIN_PLAYERS = 5;
 
@@ -30,6 +31,7 @@ export const allRoles: Role[] = [
   Executioner,
   Werewolf,
   DreamWolf,
+  WolfCub,
   Freemason,
   Fool,
   Cursed,
@@ -57,7 +59,7 @@ export function generateRoles(
   const isEnabled = (role: Role) =>
     !settings.disabledRoles?.includes(role.type);
 
-  const specialWolfs = [DreamWolf, LoneWolf].filter(isEnabled);
+  const specialWolfs = [DreamWolf, LoneWolf, WolfCub].filter(isEnabled);
 
   const wolfCount = Math.floor(count / 3);
   const wolfs: Role[] = times(

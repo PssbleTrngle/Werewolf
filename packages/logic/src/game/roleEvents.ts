@@ -14,8 +14,8 @@ import { registerApprenticeEvents } from "./role/SeerApprentice.js";
 import { registerVillagerWinCondition } from "./role/Villager.js";
 import { registerWitchEvents } from "./role/Witch.js";
 import { registerWolfEvents, registerWolfWinCondition } from "./role/Wolf.js";
-import { registerLoneWolfWinCondition } from './role/LoneWolf.js';
-import { registerAmorEvents } from './role/Amor.js';
+import { registerLoneWolfWinCondition } from "./role/LoneWolf.js";
+import { registerAmorEvents, registerLoversWinCondition } from "./role/Amor.js";
 
 registerExecutionEvents();
 registerEyeEvents();
@@ -36,6 +36,8 @@ SleepEvents.registerEvent(({ players }) =>
 
 registerJesterWinCondition();
 registerExecutionerWinCondition();
+
+registerLoversWinCondition();
 registerLoneWolfWinCondition();
 
 registerWolfWinCondition();

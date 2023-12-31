@@ -5,6 +5,7 @@ import { Game } from "../index.js";
 import { Player } from "../player/Player.js";
 import { isNotDead, requirePlayer } from "../player/predicates.js";
 import { GameView } from "./index.js";
+import { validateVote } from '../vote/Vote.js';
 
 export class PlayerGameView implements GameView {
   constructor(
@@ -63,6 +64,8 @@ export class PlayerGameView implements GameView {
   }
 
   async vote(vote: Vote) {
+    const { choice } = this.currentEvent();
+    if (choice) validateVote(choice, vote);
     await this.game.vote(this.owner, vote);
   }
 }
