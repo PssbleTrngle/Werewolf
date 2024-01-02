@@ -12,7 +12,9 @@
         "translate": "Hilf beim Übersetzen",
         "source": "Quellcode",
         "save": "Speichern",
-        "cancel": "Abbrechen"
+        "cancel": "Abbrechen",
+        "submit": "Bestätigen",
+        "reset": "Zurücksetzen"
     },
     "event": {
         "reveal": {
@@ -22,7 +24,8 @@
             "freemason": {
                 "title_one": "Dein Kamerad ist…",
                 "title_other": "Deine Kameraden sind…"
-            }
+            },
+            "love.title": "Du hast dich verliebt"
         },
         "kill": {
             "wolfs.title": "Wen willst du zerfleischen?",
@@ -46,12 +49,19 @@
             "jester.title": "Der Gerber hat gewonnen!",
             "couple.title": "Die Liebe hat gesiegt!",
             "executioner.title": "Der Henker hat gewonnen!",
-            "none.title": "Alle Spieler sind gestorben"
+            "none.title": "Alle Spieler sind gestorben",
+            "lone_wolf.title": "Der einsame Wolf hat gewonnen!",
+            "lovers.title": "Das Liebespaar hat gewonnen!"
         },
         "sleep.title": "Du schläfst",
         "dead.title": "Du bist gestorben",
         "hallucinate.title": "Halluzinieren",
-        "fake.title": "Fake Event"
+        "fake.title": "Fake Event",
+        "amor.title": "Wen wird Amor's Pfeil treffen?",
+        "trigger": {
+            "witch.title": "Die Hexe wartet ab"
+        },
+        "guard.title": "Wen wirst du heute Nacht beschützen?"
     },
     "role": {
         "gamemaster.title": "Spielleiter",
@@ -90,7 +100,8 @@
         "group": {
             "wolf": "Wölfe",
             "villager": "Dorfbewohner",
-            "title": "Gruppen"
+            "title": "Gruppen",
+            "unknown": "Unbekannt"
         },
         "fool": {
             "name": "Narr"
@@ -100,6 +111,19 @@
         },
         "cursed": {
             "name": "Verfluchter"
+        },
+        "amor": {
+            "name": "Amor"
+        },
+        "guard": {
+            "name": "Leibwächter"
+        },
+        "impact": "Einfluss",
+        "lone_wolf": {
+            "name": "Einsamer Wolf"
+        },
+        "cub": {
+            "name": "Wolfsjunges"
         }
     },
     "player": {
@@ -118,7 +142,15 @@
         "reveal_type": {
             "role": "Rolle",
             "group": "Gruppe",
-            "nothing": "Nichts"
-        }
+            "nothing": "Nichts",
+            "aligment": "Orientierung"
+        },
+        "lynch_skip": "Spielern erlauben, das Lynchen zu überspringen?",
+        "amor_can_choose_self": "Darf der Amor sich selbst mit jemandem verlieben?",
+        "guard_can_choose_self": "Kann sich der Leibwächter selbst schützen?",
+        "broken_heart_heals": "Sollten Spieler sterben, falls deren Liebhaber stirbt?",
+        "death_reveal_type": "Was soll über über verstorbene Spieler enthüllt werden?",
+        "love_reveal_type": "Was soll das Liebespaar übereinander erfahren?",
+        "seer_reveal_type": "Was soll dem Seher enthüllt werden?"
     }
 }
