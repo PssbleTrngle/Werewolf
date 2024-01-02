@@ -7,7 +7,7 @@ import { RevealEvent } from "../event/RevealEvent.js";
 import { DeathEvents } from "../event/DeathEvent.js";
 import { KillEffect } from "../effect/KillEffect.js";
 import { WinConditions } from "../winConditions.js";
-import { roleScopedFactory } from "../event/Event";
+import { roleScopedFactory } from '../event/Event.js';
 
 export const Amor: Role = {
   type: "amor",

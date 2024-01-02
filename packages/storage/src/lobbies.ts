@@ -1,4 +1,4 @@
-import { ApiError, GameSettings, Id, User } from "models";
+import { ApiError, defaultGameSettings, GameSettings, Id, User } from "models";
 import { nanoid } from "nanoid";
 import { redisJSON } from "./casting.js";
 import { RedisClient } from "./redis.js";
@@ -16,7 +16,12 @@ export default class LobbyStorage {
   async createLobby(owner: User) {
     const id = nanoid();
 
-    const lobby: Lobby = { id, players: [owner], owner, settings: {} };
+    const lobby: Lobby = {
+      id,
+      players: [owner],
+      owner,
+      settings: defaultGameSettings,
+    };
     await Promise.all([
       this.redis.json.set(`lobby:${id}`, "$", redisJSON(lobby)),
       this.redis.set(`player:${owner.id}:lobby`, id),
@@ -31,7 +36,7 @@ export default class LobbyStorage {
       this.redis.json.arrAppend(
         `lobby:${lobbyId}`,
         ".players",
-        redisJSON(user)
+        redisJSON(user),
       ),
     ]);
   }
