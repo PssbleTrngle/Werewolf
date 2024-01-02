@@ -1,211 +1,209 @@
 {
-  "button": {
-    "skip": "Skip",
-    "dismiss": "Dismiss",
-    "undo": "Undo",
-    "redo": "Redo",
-    "save": "Save",
-    "submit": "Submit",
-    "cancel": "Cancel",
-    "reset": "Reset",
-    "game": {
-      "create": "Create Game",
-      "stop": "Stop"
+    "button": {
+        "skip": "Skip",
+        "dismiss": "Dismiss",
+        "undo": "Undo",
+        "redo": "Redo",
+        "save": "Save",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "reset": "Reset",
+        "game": {
+            "create": "Create Game",
+            "stop": "Stop"
+        },
+        "translate": "Help Tranlate",
+        "source": "Source Code"
     },
-    "translate": "Help Tranlate",
-    "source": "Source Code"
-  },
-  "event": {
-    "fake.title": "Faked Event",
-    "start.title": "Start the Game?",
-    "sleep.title": "You are sleeping",
-    "dead.title": "You are dead",
-    "reveal": {
-      "eye.title": "The Seer is...",
-      "seer.title": "Your crystal ball reveals...",
-      "executioner.title": "Your target is...",
-      "freemason": {
-        "title_one": "You komrade is...",
-        "title_other": "You komrades are..."
-      },
-      "love.title": "You have fallen in love"
+    "event": {
+        "fake.title": "Faked Event",
+        "start.title": "Start the Game?",
+        "sleep.title": "You are sleeping",
+        "dead.title": "You are dead",
+        "reveal": {
+            "eye.title": "The seer is…",
+            "seer.title": "Your crystal ball reveals…",
+            "executioner.title": "Your target is…",
+            "freemason": {
+                "title_one": "Your comrade is...",
+                "title_other": "You komrades are..."
+            },
+            "love.title": "You have fallen in love"
+        },
+        "hallucinate.title": "Hallucinate",
+        "kill": {
+            "wolfs.title": "Who do you want to eat?",
+            "hunter.title": "Where does your dying shot land?",
+            "lynch.title": "Who do you want to lynch?",
+            "witch.title": "Do you want to kill someone?"
+        },
+        "see.title": "Whose destiny would like to know?",
+        "announcement": {
+            "death": {
+                "title_one": "Someone has died",
+                "title_other": "{{count}} players have died"
+            }
+        },
+        "revive": {
+            "witch.title": "Who do you want to heal?"
+        },
+        "trigger": {
+            "witch.title": "The witch is waiting"
+        },
+        "win": {
+            "none.title": "Every body died",
+            "villagers.title": "The villagers won!",
+            "wolfs.title": "The wolfs won!",
+            "jester.title": "The jester won!",
+            "lovers.title": "The lovers won!",
+            "executioner.title": "The executioner won!",
+            "lone_wolf.title": "The lone wolf won!"
+        },
+        "amor.title": "Who will fall in love?",
+        "guard.title": "Who do you want to protect tonight?"
     },
-    "hallucinate.title": "Hallucinate",
-    "kill": {
-      "wolfs.title": "Who do you want to eat?",
-      "hunter.title": "Where does your dying shot land?",
-      "lynch.title": "Who do you want to lynch?",
-      "witch.title": "Do you want to kill someone?"
+    "role": {
+        "title": "Role",
+        "impact": "Impact",
+        "gamemaster.title": "Gamemaster",
+        "villager": {
+            "name": "Villager",
+            "description": [
+                "The only sane people in the village simply trying to survive by lynching others based on outdated prejudices.",
+                "Villagers do not possess any abilities and try to win with the support of other roles which are part of the villager group."
+            ]
+        },
+        "hunter": {
+            "name": "Hunter",
+            "description": [
+                "Roaming through the woods at night, the hunter is at great risk of being attacked, but they are not unprepared.",
+                "If the hunter is attacked by wolfs at night, they can fire a dying shot into the dark, potentially killing one of their attackers."
+            ]
+        },
+        "eye": {
+            "name": "Eye",
+            "description": [
+                "A slumbering talent for the occult, still unbeknownst to themself.",
+                "At the start of the game, the eye has a singular vision revealing the indentity of the seer."
+            ]
+        },
+        "seer": {
+            "name": "Seer",
+            "name_female": "Priestess",
+            "description": [
+                "Plagued by visions and the like, only they are cursed with the knowledge of who walks among the village.",
+                "Each night the seer chooses a person and learns their intentions.",
+                "Depending on the chosen rules, these intentions are either their role, the group this role is part of, or only wether or not they would be considered evil."
+            ]
+        },
+        "witch": {
+            "name": "Witch",
+            "description": [
+                "Untrusted by most, beloved by others, the witch themself also act on two kinds of facettes",
+                "Every night, after the wolfs have attacked someone, the witch awakenes and is shown the victim. Once per game they may choose to heal the dying person and return them to the living.",
+                "They can also once per game kill someone by poisoning them",
+                "The witch tries to support the village using these two powerful abilities"
+            ]
+        },
+        "werewolf": {
+            "name": "Werewolf",
+            "description": [
+                "Pretending to be a peaceful villager, the werewolves live amongst us feasting on our flesh.",
+                "Each night all the wolfs wake up together"
+            ]
+        },
+        "dreamwolf": {
+            "name": "Dreamwolf",
+            "description": [
+                "A patient killer or just sleepy?",
+                "The dreamwolf only awakens together with all the other players after the first other wolf has been killed.",
+                "Until then them nor the other wolfs know each others identities, which also means they can be attacked and killed by the other wolfs at night before their first awakening."
+            ]
+        },
+        "jester": {
+            "name": "Jester",
+            "description": [
+                "His goals are beyong our understanding but they will be the last one laughing.",
+                "The jester is playing solo and only win if they are lynched by the village. No other cause of death validates this win condition.",
+                "Once this happens, they win instantly and everyone else, wolfs or villager, loose"
+            ]
+        },
+        "executioner": {
+            "name": "Executioner",
+            "description": [
+                "Blinded by revenge or lead by duty, they will not rest until the deed is done.",
+                "At the beginning of the game, the executioner is told their target for this game",
+                "This target may only be a role of the villagers group and depending on the chosen rules, their role is also revealed to the executioner.",
+                "In order to win, the executioner has to convince the village to lynch their target, in which case, like the jester they alone instantly win.",
+                "Depending on the chosen rules, the exeucutioner becomes a jester, should their target die by any other cause."
+            ]
+        },
+        "freemason": {
+            "name": "Freemason",
+            "description": [
+                "A secret society pulling the threads behind the villages very komplex politics.",
+                "At the start of the game, all freemasons awaken together once to learn the identities of their comrades, granting them a bit of knowledge."
+            ]
+        },
+        "fool": {
+            "name": "Fool",
+            "description": [
+                "Misguided by fake omens and bedazzling herbs, they are too naive to see the reality.",
+                "The fool is one of the only roles to not know of his own true identity. Instead he is told that he is a seer.",
+                "Similar to the seer, they chooses a target not learn about, but instead of receiving divine insight, they are told something completely random. This information could also be randomly true.",
+                "It is important, that they are always told the same information, should the choose a player trice"
+            ]
+        },
+        "cursed": {
+            "name": "Cursed"
+        },
+        "seer_apprentice": {
+            "name": "Apprentice"
+        },
+        "lone_wolf": {
+            "name": "Lone Wolf"
+        },
+        "cub": {
+            "name": "Wolf Cub"
+        },
+        "amor": {
+            "name": "Amor"
+        },
+        "guard": {
+            "name": "Guard"
+        },
+        "group": {
+            "title": "Groups",
+            "unknown": "Unknown",
+            "villager": "Villagers",
+            "wolf": "Wolfs"
+        }
     },
-    "see.title": "Whose destiny would like to know?",
-    "announcement": {
-      "death": {
-        "title_zero": "Everybody is alive",
-        "title_one": "Someone has died",
-        "title_other": "{{count}} players have died"
-      }
+    "player": {
+        "name": "Name",
+        "count_one": "One player",
+        "count_other": "{{count}} players",
+        "status": {
+            "title": "Status",
+            "alive": "Alive",
+            "dying": "Dying",
+            "dead": "Dead"
+        }
     },
-    "revive": {
-      "witch.title": "Who do you want to heal?"
-    },
-    "trigger": {
-      "witch.title": "The witch is waiting"
-    },
-    "win": {
-      "none.title": "Every body died",
-      "villagers.title": "The villagers won!",
-      "wolfs.title": "The wolfs won!",
-      "jester.title": "The jester won!",
-      "lovers.title": "The lovers won!",
-      "executioner.title": "The executioner won!",
-      "lone_wolf.title": "The lone wolf won!"
-    },
-    "amor.title": "Who will fall in love?",
-    "guard.title": "Who do you want to protect tonight?"
-  },
-  "role": {
-    "title": "Role",
-    "impact": "Impact",
-    "gamemaster.title": "Gamemaster",
-    "villager": {
-      "name": "Villager",
-      "description": [
-        "The only sane people in the village simply trying to survive by lynching others based on outdated prejudices.",
-        "Villagers do not possess any abilities and try to win with the support of other roles which are part of the villager group."
-      ]
-    },
-    "hunter": {
-      "name": "Hunter",
-      "description": [
-        "Roaming through the woods at night, the hunter is at great risk of being attacked, but they are not unprepared.",
-        "If the hunter is attacked by wolfs at night, they can fire a dying shot into the dark, potentially killing one of their attackers."
-      ]
-    },
-    "eye": {
-      "name": "Eye",
-      "description": [
-        "A slumbering talent for the occult, still unbeknownst to themself.",
-        "At the start of the game, the eye has a singular vision revealing the indentity of the seer."
-      ]
-    },
-    "seer": {
-      "name": "Seer",
-      "name_female": "Priestess",
-      "description": [
-        "Plagued by visions and the like, only they are cursed with the knowledge of who walks among the village.",
-        "Each night the seer chooses a person and learns their intentions.",
-        "Depending on the chosen rules, these intentions are either their role, the group this role is part of, or only wether or not they would be considered evil."
-      ]
-    },
-    "witch": {
-      "name": "Witch",
-      "description": [
-        "Untrusted by most, beloved by others, the witch themself also act on two kinds of facettes",
-        "Every night, after the wolfs have attacked someone, the witch awakenes and is shown the victim. Once per game they may choose to heal the dying person and return them to the living.",
-        "They can also once per game kill someone by poisoning them",
-        "The witch tries to support the village using these two powerful abilities"
-      ]
-    },
-    "werewolf": {
-      "name": "Werewolf",
-      "description": [
-        "Pretending to be a peaceful villager, the werewolves live amongst us feasting on our flesh.",
-        "Each night all the wolfs wake up together"
-      ]
-    },
-    "dreamwolf": {
-      "name": "Dreamwolf",
-      "description": [
-        "A patient killer or just sleepy?",
-        "The dreamwolf only awakens together with all the other players after the first other wolf has been killed.",
-        "Until then them nor the other wolfs know each others identities, which also means they can be attacked and killed by the other wolfs at night before their first awakening."
-      ]
-    },
-    "jester": {
-      "name": "Jester",
-      "description": [
-        "His goals are beyong our understanding but they will be the last one laughing.",
-        "The jester is playing solo and only win if they are lynched by the village. No other cause of death validates this win condition.",
-        "Once this happens, they win instantly and everyone else, wolfs or villager, loose"
-      ]
-    },
-    "executioner": {
-      "name": "Executioner",
-      "description": [
-        "Blinded by revenge or lead by duty, they will not rest until the deed is done.",
-        "At the beginning of the game, the executioner is told their target for this game",
-        "This target may only be a role of the villagers group and depending on the chosen rules, their role is also revealed to the executioner.",
-        "In order to win, the executioner has to convince the village to lynch their target, in which case, like the jester they alone instantly win.",
-        "Depending on the chosen rules, the exeucutioner becomes a jester, should their target die by any other cause."
-      ]
-    },
-    "freemason": {
-      "name": "Freemason",
-      "description": [
-        "A secret society pulling the threads behind the villages very komplex politics.",
-        "At the start of the game, all freemasons awaken together once to learn the identities of their comrades, granting them a bit of knowledge."
-      ]
-    },
-    "fool": {
-      "name": "Fool",
-      "description": [
-        "Misguided by fake omens and bedazzling herbs, they are too naive to see the reality.",
-        "The fool is one of the only roles to not know of his own true identity. Instead he is told that he is a seer.",
-        "Similar to the seer, they chooses a target not learn about, but instead of receiving divine insight, they are told something completely random. This information could also be randomly true.",
-        "It is important, that they are always told the same information, should the choose a player trice"
-      ]
-    },
-    "cursed": {
-      "name": "Cursed"
-    },
-    "seer_apprentice": {
-      "name": "Apprentice"
-    },
-    "lone_wolf": {
-      "name": "Lone Wolf"
-    },
-    "cub": {
-      "name": "Wolf Cub"
-    },
-    "amor": {
-      "name": "Amor"
-    },
-    "guard": {
-      "name": "Guard"
-    },
-    "group": {
-      "title": "Groups",
-      "unknown": "Unknown",
-      "villager": "Villagers",
-      "wolf": "Wolfs"
+    "settings": {
+        "fake_player_screens": "Create fake-screens for roles without players?",
+        "seer_reveal_type": "What should be revealed to the seer?",
+        "death_reveal_type": "What should be revealed about dead players?",
+        "love_reveal_type": "What should be revealed to the lovers about each other?",
+        "amor_can_choose_self": "Can amor choose themselves to fall in love?",
+        "guard_can_choose_self": "Can the guard choose protect themself?",
+        "broken_heart_heals": "Should lovers survive if their partner dies?",
+        "lynch_skip": "Allow players to skip on the lynch vote?",
+        "reveal_type": {
+            "role": "Role",
+            "group": "Group",
+            "aligment": "Alignment",
+            "nothing": "Nothing"
+        }
     }
-  },
-  "player": {
-    "name": "Name",
-    "count_zero": "No players yet",
-    "count_one": "One player",
-    "count_other": "{{count}} players",
-    "status": {
-      "title": "Status",
-      "alive": "Alive",
-      "dying": "Dying",
-      "dead": "Dead"
-    }
-  },
-  "settings": {
-    "fake_player_screens": "Create fake-screens for roles without players?",
-    "seer_reveal_type": "What should be revealed to the seer?",
-    "death_reveal_type": "What should be revealed about dead players?",
-    "love_reveal_type": "What should be revealed to the lovers about each other?",
-    "amor_can_choose_self": "Can amor choose themselves to fall in love?",
-    "guard_can_choose_self": "Can the guard choose protect themself?",
-    "broken_heart_heals": "Should lovers survive if their partner dies?",
-    "lynch_skip": "Allow players to skip on the lynch vote?",
-    "reveal_type": {
-      "role": "Role",
-      "group": "Group",
-      "aligment": "Alignment",
-      "nothing": "Nothing"
-    }
-  }
 }
