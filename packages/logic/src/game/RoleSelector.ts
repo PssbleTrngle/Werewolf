@@ -1,6 +1,12 @@
 import { shuffle, times } from "lodash-es";
-import { ApiError, GameSettings, Role, User } from "models";
-import { EMPTY_ROLE_DATA, Player, RoleData } from "./player/Player.js";
+import {
+  ApiError,
+  defaultGameSettings,
+  GameSettings,
+  Role,
+  User,
+} from "models";
+import { Player, RoleData } from "./player/Player.js";
 import { Cursed } from "./role/Cursed.js";
 import { DreamWolf } from "./role/DreamWolf.js";
 import { Executioner } from "./role/Executioner.js";
@@ -17,7 +23,8 @@ import { Werewolf } from "./role/Wolf.js";
 import { EventBus } from "./event/EventBus.js";
 import { others } from "./player/predicates.js";
 import { Amor } from "./role/Amor.js";
-import { WolfCub } from './role/WolfCub.js';
+import { WolfCub } from "./role/WolfCub.js";
+import { Guard } from "./role/Guard.js";
 
 export const MIN_PLAYERS = 5;
 
@@ -38,6 +45,7 @@ export const allRoles: Role[] = [
   SeerApprentice,
   LoneWolf,
   Amor,
+  Guard,
 ];
 
 type InitialPlayer = Omit<Player, "roleData" | "status">;
@@ -51,7 +59,7 @@ export const InitialDataEvents = new EventBus<
 
 export function generateRoles(
   players: ReadonlyArray<User>,
-  settings: GameSettings = {},
+  settings: GameSettings = defaultGameSettings,
 ): ReadonlyArray<InitialPlayer> {
   const count = players.length;
   if (count < MIN_PLAYERS) throw new ApiError(400, "Not enough players");
@@ -80,6 +88,7 @@ export function generateRoles(
     Cursed,
     SeerApprentice,
     Amor,
+    Guard,
   ])
     .filter(isEnabled)
     .slice(0, Math.max(0, count - wolfs.length));
@@ -125,7 +134,7 @@ export function generateRoles(
 
 export function preparePlayers(
   players: ReadonlyArray<User>,
-  settings: GameSettings = {},
+  settings: GameSettings = defaultGameSettings,
 ): ReadonlyArray<Player> {
   const withRoles = generateRoles(players, settings);
 
@@ -134,7 +143,7 @@ export function preparePlayers(
       it,
       withRoles.filter(others(it)),
       settings,
-    ).reduce<RoleData>((a, b) => ({ ...a, ...b }), EMPTY_ROLE_DATA);
+    ).reduce<RoleData>((a, b) => ({ ...a, ...b }), {});
 
     return {
       ...it,

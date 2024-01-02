@@ -15,6 +15,7 @@ import {
 import InvisibleLink from "../components/InivisibleLink";
 import ToggleButton from "../components/ToggleButton";
 import { useLocalStore } from "../hooks/store";
+import ImpactBadge from "../components/ImpactBadge.tsx";
 
 // These roles cannot be disabled
 const frozenRoles = [Villager.type, Werewolf.type];
@@ -27,12 +28,12 @@ export default function RolesView() {
   const toggleRole = useLocalStore((it) => it.toggleRole);
   const isEnabled = useCallback(
     (type: string) => !disabledRoles?.includes(type),
-    [disabledRoles]
+    [disabledRoles],
   );
 
   const reset = useCallback(
     () => disabledRoles?.forEach((it) => toggleRole(it, true)),
-    [toggleRole, disabledRoles]
+    [toggleRole, disabledRoles],
   );
 
   return (
@@ -46,6 +47,7 @@ export default function RolesView() {
         <thead>
           <tr>
             <th>{t("role.title")}</th>
+            <th>{t("role.impact")}</th>
             <th>{t("role.group.title")}</th>
             <th />
           </tr>
@@ -89,6 +91,9 @@ function Row({
           {role.emoji}
           <Name $disabled={!enabled}>{t(`role.${role.type}.name`)}</Name>
         </InvisibleLink>
+      </td>
+      <td>
+        <ImpactBadge value={role.impact} />
       </td>
       <td>
         {role.groups?.map((group) => (

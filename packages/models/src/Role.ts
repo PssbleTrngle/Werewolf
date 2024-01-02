@@ -6,6 +6,7 @@ export const enum RoleGroup {
 export interface Role {
   type: string;
   emoji: string;
+  impact: number;
   groups?: ReadonlyArray<RoleGroup>;
-  variants?: string[]
+  variants?: string[];
 }

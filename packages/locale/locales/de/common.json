@@ -116,6 +116,7 @@
     "settings": {
         "fake_player_screens": "Events für Rollen, die keinem Spieler zugewiesen wurden erstellen?",
         "reveal_type": {
+            "role": "Rolle",
             "group": "Gruppe",
             "nothing": "Nichts"
         }

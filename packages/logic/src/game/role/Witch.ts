@@ -8,6 +8,7 @@ export const Witch: Role = {
   type: "witch",
   groups: [RoleGroup.VILLAGER],
   emoji: "🧹",
+  impact: 4,
 };
 
 export const registerWitchEvents = (role = "witch") =>

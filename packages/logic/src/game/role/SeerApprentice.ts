@@ -8,6 +8,7 @@ export const SeerApprentice: Role = {
   type: "seer_apprentice",
   groups: [RoleGroup.VILLAGER],
   emoji: "✨",
+  impact: 4,
 };
 
 export function registerApprenticeEvents(role = SeerApprentice, into = Seer) {

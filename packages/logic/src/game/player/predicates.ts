@@ -6,7 +6,7 @@ export function inGroup(group: RoleGroup) {
   };
 }
 
-export function others(...self: Player[]) {
+export function others(...self: Pick<Player, "id">[]) {
   return (player: Player) => {
     return self.every((it) => player.id !== it.id);
   };

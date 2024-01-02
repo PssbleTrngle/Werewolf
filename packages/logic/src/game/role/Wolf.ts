@@ -7,13 +7,14 @@ import { SleepEvents } from "../event/SleepBoundary.js";
 import revealPlayer from "../permissions/playerReveal.js";
 import { hasRole, inGroup, isAlive, others } from "../player/predicates.js";
 import { WinConditions } from "../winConditions.js";
-import { DreamWolf } from './DreamWolf.js';
-import { WolfCub } from './WolfCub.js';
+import { DreamWolf } from "./DreamWolf.js";
+import { WolfCub } from "./WolfCub.js";
 
 export const Werewolf: Role = {
   type: "werewolf",
   groups: [RoleGroup.WOLF],
   emoji: "🐺",
+  impact: -6,
 };
 
 const createKillEvent = registerEventFactory(

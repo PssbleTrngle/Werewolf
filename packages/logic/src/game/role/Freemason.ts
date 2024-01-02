@@ -9,6 +9,7 @@ export const Freemason: Role = {
   type: "freemason",
   groups: [RoleGroup.VILLAGER],
   emoji: "⚒️",
+  impact: +2,
 };
 
 export function registerFreemasonEvents(role = Freemason) {
@@ -17,6 +18,6 @@ export function registerFreemasonEvents(role = Freemason) {
     roleScopedFactory(role, ({ players }) => {
       const comrades = players.filter(hasRole(role));
       return RevealEvent.create(role.type, comrades, comrades);
-    })
+    }),
   );
 }

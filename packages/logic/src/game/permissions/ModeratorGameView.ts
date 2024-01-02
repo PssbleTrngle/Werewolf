@@ -1,7 +1,7 @@
 import { Choice, Event, Player as IPlayer, Vote } from "models";
 import { Game } from "../index.js";
 import { GameView } from "./index.js";
-import { validateVote } from '../vote/Vote.js';
+import { validateVote } from "../vote/Vote.js";
 
 export class ModeratorGameView implements GameView {
   constructor(protected readonly game: Game) {}
@@ -11,9 +11,11 @@ export class ModeratorGameView implements GameView {
   }
 
   mapEvent<T>(subject: Event<T>) {
+    const canTie =
+      subject.players.length > 1 && !!subject.choice?.players?.length;
     const choice: Choice = {
       ...subject.choice,
-      canSkip: subject.choice?.canSkip || subject.players.length > 1,
+      canSkip: subject.choice?.canSkip || canTie,
     };
     return { ...subject, choice };
   }

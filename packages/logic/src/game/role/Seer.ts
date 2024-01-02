@@ -18,12 +18,14 @@ export const Seer: Role = {
   groups: [RoleGroup.VILLAGER],
   emoji: "🔮",
   variants: ["male", "female"],
+  impact: 7,
 };
 
 export const Fool: Role = {
   type: "fool",
   groups: [RoleGroup.VILLAGER],
   emoji: "🤡",
+  impact: -2,
 };
 
 function seerSleepFactory(role: Role): EventFactory {

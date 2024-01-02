@@ -6,6 +6,7 @@ export const LoneWolf: Role = {
   type: "lone_wolf",
   groups: [RoleGroup.WOLF],
   emoji: "🌑",
+  impact: -5,
 };
 
 export function registerLoneWolfWinCondition(role = LoneWolf) {

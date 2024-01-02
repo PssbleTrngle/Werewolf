@@ -57,12 +57,15 @@
       "wolfs.title": "The wolfs won!",
       "jester.title": "The jester won!",
       "lovers.title": "The lovers won!",
-      "executioner.title": "The executioner won!"
+      "executioner.title": "The executioner won!",
+      "lone_wolf.title": "The lone wolf won!"
     },
-    "amor.title": "Who will fall in love?"
+    "amor.title": "Who will fall in love?",
+    "guard.title": "Who do you want to protect tonight?"
   },
   "role": {
     "title": "Role",
+    "impact": "Impact",
     "gamemaster.title": "Gamemaster",
     "villager": {
       "name": "Villager",
@@ -167,6 +170,9 @@
     "amor": {
       "name": "Amor"
     },
+    "guard": {
+      "name": "Guard"
+    },
     "group": {
       "title": "Groups",
       "unknown": "Unknown",
@@ -190,6 +196,11 @@
     "fake_player_screens": "Create fake-screens for roles without players?",
     "seer_reveal_type": "What should be revealed to the seer?",
     "death_reveal_type": "What should be revealed about dead players?",
+    "love_reveal_type": "What should be revealed to the lovers about each other?",
+    "amor_can_choose_self": "Can amor choose themselves to fall in love?",
+    "guard_can_choose_self": "Can the guard choose protect themself?",
+    "broken_heart_heals": "Should lovers survive if their partner dies?",
+    "lynch_skip": "Allow players to skip on the lynch vote?",
     "reveal_type": {
       "role": "Role",
       "group": "Group",

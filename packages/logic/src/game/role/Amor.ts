@@ -6,12 +6,13 @@ import { registerEvent } from "../event/EventRegistry.js";
 import { RevealEvent } from "../event/RevealEvent.js";
 import { DeathEvents } from "../event/DeathEvent.js";
 import { KillEffect } from "../effect/KillEffect.js";
-import { WinConditions } from '../winConditions.js';
+import { WinConditions } from "../winConditions.js";
 
 export const Amor: Role = {
   type: "amor",
   groups: [RoleGroup.VILLAGER],
   emoji: "💘",
+  impact: -3,
 };
 
 export function registerAmorEvents(role = Amor) {
@@ -26,6 +27,7 @@ export function registerAmorEvents(role = Amor) {
   });
 
   DeathEvents.register((player, _cause, game) => {
+    if (game.settings.brokenHeartHeals) return false;
     const lovedBy = game.players
       .filter(isAlive)
       .filter((it) => it.roleData.loves === player.id);
@@ -43,6 +45,10 @@ export function registerLoversWinCondition() {
     if (romeo.roleData.loves !== julia.id) return false;
     if (julia.roleData.loves !== romeo.id) return false;
 
-    return { type: "lovers", winners: alive };
+    const winners = [romeo, julia];
+    const amor = players.find(hasRole(Amor));
+    if (amor) winners.push(amor);
+
+    return { type: "lovers", winners };
   });
 }

@@ -20,8 +20,12 @@ export const DeathEvents = new EventBus<
   (
     player: Player,
     cause: DeathCause,
-    game: GameReadAccess
+    game: GameReadAccess,
   ) => ArrayOrSingle<Effect> | false
+>();
+
+export const ProtectEvents = new EventBus<
+  (player: Player, cause: DeathCause, game: GameReadAccess) => boolean
 >();
 
 export class DeathEvent extends EventType<DeathData> {
@@ -34,7 +38,7 @@ export class DeathEvent extends EventType<DeathData> {
         deaths,
         time,
       },
-    })
+    }),
   );
 
   finish(_vote: Vote, { data }: Event<DeathData>) {

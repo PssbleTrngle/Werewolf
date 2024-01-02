@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
-import styled from "styled-components";
-import { InputStyles, usePlayers } from "ui";
+import { Select, usePlayers } from "ui";
 import useImpersonation from "../hooks/impersonate";
 import { GAME_ID } from "../hooks/localGame";
 
@@ -18,7 +17,7 @@ export default function ImpersonationSelect() {
   if (!players) return null;
 
   return (
-    <Style
+    <Select
       value={impersonated}
       onChange={(e) => impersonate(parseValue(e.target.value))}
     >
@@ -28,11 +27,6 @@ export default function ImpersonationSelect() {
           {it.name}
         </option>
       ))}
-    </Style>
+    </Select>
   );
 }
-
-const Style = styled.select`
-  ${InputStyles}
-  border: none;
-`;

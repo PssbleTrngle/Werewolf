@@ -1,7 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
   allRoles,
-  EMPTY_ROLE_DATA,
   Game,
   GameState,
   ModeratorGameView,
@@ -28,7 +27,7 @@ export function preparePlayers(
   return players.map(({ role, ...it }) => {
     if (!role) throw new Error(`Player ${it.name} is missing a role`);
     return {
-      roleData: EMPTY_ROLE_DATA,
+      roleData: {},
       status: "alive",
       role: role as Role,
       ...it,

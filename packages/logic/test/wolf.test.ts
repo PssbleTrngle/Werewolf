@@ -14,7 +14,7 @@ describe("tests regarding wolf roles", () => {
       createTestPlayers(12, (i) => {
         const role = i % 3 === 0 ? Werewolf : Villager;
         return { role };
-      })
+      }),
     );
 
     expect(game.status.queue?.past).toBe(0);
@@ -27,7 +27,7 @@ describe("tests regarding wolf roles", () => {
 
     await game.vote(
       game.players.filter(inGroup(RoleGroup.WOLF)),
-      playerVote(game.players[1])
+      playerVote(game.players[1]),
     );
 
     game.expectEvents("announcement.death", "kill.lynch");
@@ -41,12 +41,12 @@ describe("tests regarding wolf roles", () => {
 
     await game.vote(
       game.players.filter(isAlive).filter(inGroup(RoleGroup.WOLF)),
-      skipVote()
+      skipVote(),
     );
 
     await game.vote(
       game.players.filter(isAlive).filter(inGroup(RoleGroup.VILLAGER)),
-      playerVote(game.players[0])
+      playerVote(game.players[0]),
     );
 
     expect(game.status.queue?.past).toBe(4);
@@ -57,14 +57,14 @@ describe("tests regarding wolf roles", () => {
 
   it("dreamwolf awakes only once another wolf has died", async () => {
     const game = TestGame.create(
-      createTestPlayersWith([DreamWolf, Werewolf, ...times(5, () => Villager)])
+      createTestPlayersWith([DreamWolf, Werewolf, ...times(5, () => Villager)]),
     );
 
     await game.dismiss();
 
     game.expectCurrentEvent("kill.wolfs");
     expect(game.events[0].players).toHaveLength(1);
-    expect(game.events[0].players).toMatchObject([game.players[1]]);
+    expect(game.events[0].players[0].id).toBe(game.players[1].id);
     await game.vote(game.players[1].id, skipVote());
 
     game.expectEvents("kill.lynch");
@@ -74,6 +74,6 @@ describe("tests regarding wolf roles", () => {
     await game.dismiss();
 
     expect(game.events[0].players).toHaveLength(1);
-    expect(game.events[0].players).toMatchObject([game.players[0]]);
+    expect(game.events[0].players[0].id).toBe(game.players[0].id);
   });
 });

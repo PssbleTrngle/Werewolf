@@ -1,4 +1,4 @@
-import { MIN_PLAYERS } from "logic";
+import { MIN_PLAYERS, notNull } from "logic";
 import { Id, Player, Role, Status } from "models";
 import { nanoid } from "nanoid";
 import { Dispatch, FormEvent, useCallback, useMemo, useState } from "react";
@@ -27,6 +27,7 @@ import RoleSelectDialog from "../components/dialog/RoleSelectDialog";
 import { GAME_ID } from "../hooks/localGame";
 import { useLocalStore } from "../hooks/store";
 import randomNames from "../randomNames";
+import ImpactBadge from "../components/ImpactBadge.tsx";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useDialogAction<TState, TArgs extends any[]>(
@@ -158,6 +159,15 @@ function PlayersEditView() {
   const { players, addPlayer, removePlayer, modifyPlayer, randomizeRoles } =
     useLocalStore();
 
+  const totalImpact = useMemo(
+    () =>
+      players
+        .map((it) => it.role?.impact)
+        .filter(notNull)
+        .reduce((a, b) => a + b, 0),
+    [players],
+  );
+
   const canRandomize = useMemo(() => players.length >= MIN_PLAYERS, [players]);
 
   const selectRole = useCallback(
@@ -197,7 +207,10 @@ function PlayersEditView() {
       />
 
       <AddPanel onAddPlayer={addPlayer} />
-      <Count>{t("player.count", { count: players.length })}</Count>
+      <Count>
+        {t("player.count", { count: players.length })}{" "}
+        <Impact value={totalImpact} />
+      </Count>
 
       <Toolbar>
         <IconButton
@@ -256,13 +269,20 @@ function PlayersEditView() {
     </Centered>
   );
 }
-
 const Toolbar = styled(Buttons)`
   margin-bottom: 1em;
 `;
 
 const Count = styled.h2`
   padding: 0.2em;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+`;
+
+const Impact = styled(ImpactBadge)`
+  font-size: 0.6em;
 `;
 
 const Form = styled.form`

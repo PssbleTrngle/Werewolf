@@ -4,9 +4,10 @@ export interface RoleData {
   usedRevivePotion?: boolean;
   usedKillPotion?: boolean;
   target?: Id;
-  revealedPlayers: Record<Id, IPlayer>;
+  revealedPlayers?: Record<Id, IPlayer>;
   hallucinated?: Record<Id, Partial<IPlayer>>;
   loves?: Id;
+  guarding?: Id;
 }
 
 export interface Player extends IPlayer {
@@ -14,7 +15,3 @@ export interface Player extends IPlayer {
   status: Status;
   roleData: RoleData;
 }
-
-export const EMPTY_ROLE_DATA: RoleData = {
-  revealedPlayers: {},
-};

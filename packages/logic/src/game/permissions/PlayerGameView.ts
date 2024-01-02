@@ -5,7 +5,7 @@ import { Game } from "../index.js";
 import { Player } from "../player/Player.js";
 import { isNotDead, requirePlayer } from "../player/predicates.js";
 import { GameView } from "./index.js";
-import { validateVote } from '../vote/Vote.js';
+import { validateVote } from "../vote/Vote.js";
 
 export class PlayerGameView implements GameView {
   constructor(
@@ -71,7 +71,7 @@ export class PlayerGameView implements GameView {
 }
 
 function playerViewFor(player: Player, subject: IPlayer): IPlayer {
-  const revealed = player.roleData.revealedPlayers[subject.id] ?? {};
+  const revealed = player.roleData.revealedPlayers?.[subject.id] ?? {};
 
   const common: IPlayer = {
     ...revealed,

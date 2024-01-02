@@ -1,4 +1,5 @@
 import {
+  defaultGameSettings,
   Event,
   GameInfo,
   GameSettings,
@@ -56,7 +57,7 @@ export class Game implements GameReadAccess {
 
   static createState(
     players: ReadonlyArray<Player>,
-    settings: GameSettings = {},
+    settings: GameSettings = defaultGameSettings,
   ): ReadonlyArray<GameState> {
     return [
       {

@@ -3,9 +3,9 @@ import { WinData } from "models";
 import {
   Executioner,
   Jester,
+  requirePlayer,
   Villager,
   Werewolf,
-  requirePlayer,
 } from "../src/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
@@ -38,7 +38,7 @@ function requireTarget(game: TestGame) {
 }
 
 describe("tests regarding the executioner", () => {
-  it("wins when they get lynched", async () => {
+  it("wins when their target gets lynched", async () => {
     const game = TestGame.create(players);
 
     await game.dismiss();
@@ -50,7 +50,7 @@ describe("tests regarding the executioner", () => {
 
     await game.vote(wolf, playerVote(villagers[0]));
 
-    game.dismiss();
+    await game.dismiss();
 
     game.expectEvents("kill.lynch");
 
@@ -62,7 +62,7 @@ describe("tests regarding the executioner", () => {
     expectExecutionerWin(game);
   });
 
-  it("turns into a jester when the target dies without beeing lynched", async () => {
+  it("turns into a jester when the target dies without being lynched", async () => {
     const game = TestGame.create(players);
 
     await game.dismiss();

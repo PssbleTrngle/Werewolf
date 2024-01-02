@@ -1,11 +1,12 @@
 import { Role, RoleGroup } from "models";
-import { inGroup, isAlive } from '../player/predicates.js';
-import { WinConditions } from '../winConditions.js';
+import { inGroup, isAlive } from "../player/predicates.js";
+import { WinConditions } from "../winConditions.js";
 
 export const Villager: Role = {
   type: "villager",
   groups: [RoleGroup.VILLAGER],
   emoji: "🌾",
+  impact: 1,
 };
 
 export function registerVillagerWinCondition() {

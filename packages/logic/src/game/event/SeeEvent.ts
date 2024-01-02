@@ -1,4 +1,4 @@
-import { Event, PlayerRevealType, Vote } from "models";
+import { Event, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { RevealEffect } from "../effect/RevealEffect.js";
@@ -13,7 +13,7 @@ export class SeeEvent extends NoDataEvent {
     (targets: ReadonlyArray<Player>) => ({
       choice: { players: targets },
       data: null as never,
-    })
+    }),
   );
 
   finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
@@ -22,7 +22,7 @@ export class SeeEvent extends NoDataEvent {
         "seer",
         event.players[0].id,
         vote.players,
-        (game) => game.settings.seerRevealType ?? PlayerRevealType.ROLE
+        (game) => game.settings.seerRevealType,
       );
     }
 

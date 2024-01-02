@@ -16,12 +16,14 @@ import { registerWitchEvents } from "./role/Witch.js";
 import { registerWolfEvents, registerWolfWinCondition } from "./role/Wolf.js";
 import { registerLoneWolfWinCondition } from "./role/LoneWolf.js";
 import { registerAmorEvents, registerLoversWinCondition } from "./role/Amor.js";
+import { registerGuardEvents } from './role/Guard.js';
 
 registerExecutionEvents();
 registerEyeEvents();
 registerFreemasonEvents();
 registerAmorEvents();
 
+registerGuardEvents();
 registerSeerEvents();
 registerWolfEvents();
 registerCursedEvents();

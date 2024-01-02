@@ -22,11 +22,11 @@ export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
       if (multiple)
         setSelected((ids) => {
           if (ids.includes(player)) return ids.filter((it) => it !== player);
-          return [...ids, player];
+          return [player, ...ids].slice(0, choice.voteCount!);
         });
       else return vote({ type: "players", players: [player] });
     },
-    [multiple, vote],
+    [choice, multiple, vote],
   );
 
   return (

@@ -14,12 +14,12 @@ export default class LynchEvent extends KillEvent {
     (settings: GameSettings, choices: ReadonlyArray<Player>) => ({
       choice: {
         players: choices,
-        canSkip: !settings.disableLynchSkip,
+        canSkip: settings.lynchSkippable,
       },
       data: {
         cause: DeathCause.LYNCHED,
       },
-    })
+    }),
   );
 
   finish(vote: Vote, event: Event<KillData>) {

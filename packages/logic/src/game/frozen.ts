@@ -1,5 +1,5 @@
 import { last } from "lodash-es";
-import { DeathCause, Event, Id, PlayerRevealType, Time, Vote } from "models";
+import { DeathCause, Event, Id, Time, Vote } from "models";
 import {
   arrayOrSelf,
   ArrayOrSingle,
@@ -7,7 +7,7 @@ import {
   resolvePartialFactory,
 } from "../util.js";
 import { Effect } from "./effect/Effect.js";
-import { DeathEvent, DeathEvents } from "./event/DeathEvent.js";
+import { DeathEvent, DeathEvents, ProtectEvents } from "./event/DeathEvent.js";
 import { EventFactory } from "./event/Event.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { FakeEvent } from "./event/FakeEvent.js";
@@ -86,6 +86,16 @@ export default class FrozenGame implements GameAccess {
 
   kill(playerId: Id, cause: DeathCause) {
     const target = requirePlayer(this.players, playerId);
+
+    const guarded = ProtectEvents.notify(target, cause, this).some(
+      (it) => it === true,
+    );
+
+    if (guarded) {
+      console.log(target.name, "was protected against", cause);
+      return;
+    }
+
     console.log(target.name, "died by", cause);
 
     this.deaths.set(playerId, cause);
@@ -120,10 +130,7 @@ export default class FrozenGame implements GameAccess {
       }
 
       const revealedDeaths = unnotifiedDeaths.map((it) =>
-        revealPlayer(
-          it,
-          this.settings.deathRevealType ?? PlayerRevealType.ROLE,
-        ),
+        revealPlayer(it, this.settings.deathRevealType),
       );
 
       return DeathEvent.create(alive, revealedDeaths, time);

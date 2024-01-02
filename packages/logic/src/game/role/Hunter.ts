@@ -9,6 +9,7 @@ export const Hunter: Role = {
   type: "hunter",
   groups: [RoleGroup.VILLAGER],
   emoji: "🔫",
+  impact: 3,
 };
 
 const createKillEvent = registerEventFactory(
@@ -21,7 +22,7 @@ const createKillEvent = registerEventFactory(
     data: {
       cause: DeathCause.HUNTER,
     },
-  })
+  }),
 );
 
 const VALID_DEATH_CAUSES = [DeathCause.WOLFS];

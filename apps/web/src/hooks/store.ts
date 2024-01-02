@@ -1,5 +1,5 @@
 import { GameState, preparePlayers } from "logic";
-import { GameSettings, Id, Player } from "models";
+import { defaultGameSettings, GameSettings, Id, Player } from "models";
 import { nanoid } from "nanoid";
 import { create, type StateCreator } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -22,6 +22,7 @@ export interface PlayerStore {
 export interface SettingsStore extends GameSettings {
   toggleRole(key: string, enabled: boolean): void;
   modifySettings(values: Partial<GameSettings>): void;
+  resetSettings(): void;
 }
 
 export type LocalStore = PlayerStore & GameStore & SettingsStore;
@@ -33,9 +34,12 @@ const createGameStore: StateCreator<GameStore> = (set) => ({
   },
 });
 
-const createPlayerStore: StateCreator<
-  PlayerStore & Pick<SettingsStore, "disabledRoles">
-> = (set, get) => ({
+const createPlayerStore: StateCreator<PlayerStore & GameSettings> = (
+  set,
+  get,
+) => ({
+  ...defaultGameSettings,
+
   players: [],
 
   addPlayer(values) {
@@ -63,6 +67,8 @@ const createPlayerStore: StateCreator<
 });
 
 const createSettingsStore: StateCreator<SettingsStore> = (set, get) => ({
+  ...defaultGameSettings,
+
   toggleRole(key, enabled) {
     const disabledRoles = [...(get().disabledRoles ?? [])];
 
@@ -77,6 +83,12 @@ const createSettingsStore: StateCreator<SettingsStore> = (set, get) => ({
 
   modifySettings(values) {
     set(values);
+  },
+
+  resetSettings() {
+    const defaultValues: Partial<GameSettings> = { ...defaultGameSettings };
+    delete defaultValues.disabledRoles;
+    set(defaultValues);
   },
 });
 

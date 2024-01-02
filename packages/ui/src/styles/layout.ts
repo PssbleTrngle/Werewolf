@@ -18,6 +18,7 @@ export const Page = styled.main`
   background: ${(p) => p.theme.bg};
 
   color: ${(p) => p.theme.text};
+  accent-color: ${(p) => p.theme.accent};
 
   ::selection {
     background: ${(p) => p.theme.text};

@@ -33,4 +33,9 @@ const Input = styled.input`
   ${InputStyles};
 `;
 
+export const Select = styled.select`
+  ${InputStyles}
+  border: none;
+`;
+
 export default Input;
