@@ -7,6 +7,7 @@ import { RevealEvent } from "../event/RevealEvent.js";
 import { DeathEvents } from "../event/DeathEvent.js";
 import { KillEffect } from "../effect/KillEffect.js";
 import { WinConditions } from "../winConditions.js";
+import { roleScopedFactory } from "../event/Event";
 
 export const Amor: Role = {
   type: "amor",
@@ -18,13 +19,15 @@ export const Amor: Role = {
 export function registerAmorEvents(role = Amor) {
   registerEvent(`reveal.love`, new RevealEvent());
 
-  StartEvents.registerEvent(({ players, settings }) => {
-    const cupids = players.filter(hasRole(role));
-    const choices = settings.amorCanChooseSelf
-      ? players
-      : players.filter(others(...cupids));
-    return AmorEvent.create(cupids, choices);
-  });
+  StartEvents.registerEvent(
+    roleScopedFactory(role, ({ players, settings }) => {
+      const cupids = players.filter(hasRole(role));
+      const choices = settings.amorCanChooseSelf
+        ? players
+        : players.filter(others(...cupids));
+      return AmorEvent.create(cupids, choices);
+    }),
+  );
 
   DeathEvents.register((player, _cause, game) => {
     if (game.settings.brokenHeartHeals) return false;

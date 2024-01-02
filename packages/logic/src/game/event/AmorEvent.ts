@@ -43,4 +43,8 @@ export default class AmorEvent extends NoDataEvent {
       ),
     ];
   }
+
+  usableByModerator() {
+    return true;
+  }
 }

@@ -1,5 +1,5 @@
 import { Event, Role, Vote } from "models";
-import { ArrayOrSingle, arrayOrSelf } from "../../util.js";
+import { arrayOrSelf, ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
@@ -11,7 +11,7 @@ export abstract class EventType<T> {
   protected abstract viewData(
     player: Player,
     subject: T,
-    mapper: SubjectMappers
+    mapper: SubjectMappers,
   ): T;
 
   // TODO check in a while if player is neccessary
@@ -32,11 +32,15 @@ export abstract class EventType<T> {
   isFinished(_game: GameReadAccess, _event: Event<T>, _index: number) {
     return true;
   }
+
+  usableByModerator(_game: GameReadAccess, _event: Event<T>) {
+    return false;
+  }
 }
 
 export function roleScopedFactory(
   role: Role,
-  factory: EventFactory
+  factory: EventFactory,
 ): EventFactory {
   return (game) => {
     if (game.settings.disabledRoles?.includes(role.type)) return [];
@@ -47,7 +51,7 @@ export function roleScopedFactory(
 
 export function individualEvents<T>(
   players: ReadonlyArray<Player>,
-  factory: (players: ReadonlyArray<Player>) => Event<T>
+  factory: (players: ReadonlyArray<Player>) => Event<T>,
 ): ArrayOrSingle<Event<T>> {
   if (players.length > 0) return players.map((it) => factory([it]));
   return factory([]);

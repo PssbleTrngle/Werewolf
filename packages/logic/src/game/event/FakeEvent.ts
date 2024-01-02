@@ -17,7 +17,7 @@ export class FakeEvent extends EventType<FakeData> {
         data,
         choice: DismissChoice,
       };
-    }
+    },
   );
 
   finish(_vote: Vote, { data }: Event<FakeData>): ArrayOrSingle<Effect> {
@@ -28,7 +28,7 @@ export class FakeEvent extends EventType<FakeData> {
   protected viewData(
     _player: Player,
     subject: FakeData,
-    _mapper: SubjectMappers
+    _mapper: SubjectMappers,
   ): FakeData {
     return subject;
   }

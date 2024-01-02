@@ -16,7 +16,7 @@ export function registerEvent<TData>(key: string, type: EventType<TData>) {
 export function registerEventFactory<TData, TArgs extends unknown[]>(
   key: string,
   type: EventType<TData>,
-  factory: (...args: TArgs) => BareEvent<TData>
+  factory: (...args: TArgs) => BareEvent<TData>,
 ) {
   registerEvent(key, type);
   return (players: ReadonlyArray<Player>, ...args: TArgs): Event<TData> => {

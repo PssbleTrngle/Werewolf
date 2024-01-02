@@ -142,6 +142,12 @@ export default class FrozenGame implements GameAccess {
       return event;
 
     const fakePlayer = createFakePlayer(event.role);
+    const type = EventRegistry.get(event.type);
+
+    if (type.usableByModerator(this, event)) {
+      return { ...event, players: [fakePlayer] };
+    }
+
     return FakeEvent.create([fakePlayer], event, !!event.choice);
   }
 
