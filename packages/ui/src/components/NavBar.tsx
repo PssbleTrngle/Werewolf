@@ -2,7 +2,7 @@ import { mix } from "polished";
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import styled, { css } from "styled-components";
 import { InvisibleLinkStyle } from "../styles/links";
-import { XS } from "../styles/screens";
+import { XS } from "../styles/screens.ts";
 
 export interface NavTab {
   key: string;

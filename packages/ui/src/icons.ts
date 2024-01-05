@@ -7,6 +7,8 @@ export { Book as DocuIcon } from "@styled-icons/boxicons-solid/Book";
 export { Cog as SettingsIcon } from "@styled-icons/boxicons-solid/Cog";
 export { EditAlt as EditIcon } from "@styled-icons/boxicons-solid/EditAlt";
 export { Error as ErrorIcon } from "@styled-icons/boxicons-solid/Error";
+export { DotsHorizontalRounded as MoreIcon } from "@styled-icons/boxicons-regular/DotsHorizontalRounded";
+export { X as CloseIcon } from "@styled-icons/boxicons-regular/X";
 export { HomeCircle as HomeIcon } from "@styled-icons/boxicons-solid/HomeCircle";
 export { IdCard as RoleIcon } from "@styled-icons/boxicons-solid/IdCard";
 export { TrashAlt as TrashIcon } from "@styled-icons/boxicons-solid/TrashAlt";

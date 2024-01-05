@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { tooltip } from "./Tooltip";
 
-const groupEmojis: Record<RoleGroup, string> = {
+export const groupEmojis: Record<RoleGroup, string> = {
   villager: "🌾",
   wolf: "🐺",
 };

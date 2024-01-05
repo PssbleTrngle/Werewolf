@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Button, Buttons, Dialog, DialogProps, tooltip, useRoles } from "ui";
 import useDialog from "../../hooks/useDialog";
+import { stringifyImpact } from "../ImpactBadge.tsx";
 
 export default function RoleSelectDialog({
   onSelect,
@@ -28,7 +29,9 @@ export default function RoleSelectDialog({
             onClick={() => onSelect(it)}
             key={it.type}
             $selected={it.type === initial}
-            {...tooltip(t(`role.${it.type}.name`))}
+            {...tooltip(
+              `${t(`role.${it.type}.name`)} (${stringifyImpact(it.impact)})`,
+            )}
           >
             {it.emoji}
           </RoleButton>
@@ -37,7 +40,7 @@ export default function RoleSelectDialog({
       <Buttons>
         <Button onClick={props.onClose}>{t("button.cancel")}</Button>
       </Buttons>
-    </Dialog>
+    </Dialog>,
   );
 }
 

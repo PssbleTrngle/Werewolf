@@ -11,7 +11,7 @@ export { default as Input, Select, InputStyles } from "./components/Input";
 export { default as Loading } from "./components/Loading";
 export * from "./components/NavBar";
 export { default as PlayerIcon } from "./components/PlayerIcon";
-export { default as RolePanel } from "./components/RolePanel";
+export { default as RolePanel, groupEmojis } from "./components/RolePanel";
 export { ButtonsCell, default as Table } from "./components/Table";
 export * from "./components/Text";
 export { default as Tooltip, tooltip } from "./components/Tooltip";

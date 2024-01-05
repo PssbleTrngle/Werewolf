@@ -2,7 +2,7 @@ import { Choice, Id } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useVoteMutation } from "../../hooks/queries";
-import { XS } from "../../styles/screens";
+import { XS } from "../../styles/screens.ts";
 import Button, { Buttons } from "../Button";
 import PlayerIcon from "../PlayerIcon";
 import { useCallback, useMemo, useState } from "react";

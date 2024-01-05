@@ -75,7 +75,8 @@ export function generateRoles(
     () => Werewolf,
   );
 
-  if (wolfCount > 1) wolfs.push(...specialWolfs);
+  if (wolfCount > 1)
+    wolfs.push(...shuffle(specialWolfs).slice(0, wolfCount - 1));
 
   const specialRoles: Role[] = shuffle([
     Seer,

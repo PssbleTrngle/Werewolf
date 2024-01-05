@@ -1,7 +1,14 @@
 import { MIN_PLAYERS, notNull } from "logic";
 import { Id, Player, Role, Status } from "models";
 import { nanoid } from "nanoid";
-import { Dispatch, FormEvent, useCallback, useMemo, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
@@ -9,9 +16,11 @@ import {
   Buttons,
   ButtonsCell,
   Centered,
+  CloseIcon,
   EditIcon,
   IconButton,
   Input,
+  MoreIcon,
   RoleIcon,
   RolePanel,
   ShuffleIcon,
@@ -19,7 +28,9 @@ import {
   tooltip,
   TrashIcon,
   useGameStatus,
+  useMedia,
   usePlayers,
+  XS,
 } from "ui";
 import InvisibleLink from "../components/InivisibleLink";
 import RenameDialog from "../components/dialog/RenameDialog";
@@ -233,35 +244,46 @@ function PlayersEditView() {
         <tbody>
           {players.map((it) => (
             <tr key={it.id}>
-              <td>{it.name}</td>
-              {it.role ? (
-                <td>
-                  <RolePanel role={it.role} variant={it.variant} />
-                </td>
-              ) : (
-                <td />
-              )}
-              <ButtonsCell>
-                <IconButton
-                  onClick={() => renameDialog.open(it.id)}
-                  {...tooltip(t("local:button.player.rename"))}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  onClick={() => roleSelectDialog.open(it.id)}
-                  {...tooltip(t("local:button.player.select_role"))}
-                >
-                  <RoleIcon />
-                </IconButton>
-                <IconButton
-                  error
-                  onClick={() => removePlayer(it.id)}
-                  {...tooltip(t("local:button.player.remove"))}
-                >
-                  <TrashIcon />
-                </IconButton>
-              </ButtonsCell>
+              <MoreActions
+                actions={
+                  <>
+                    <IconButton
+                      onClick={() => renameDialog.open(it.id)}
+                      {...tooltip(t("local:button.player.rename"))}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => roleSelectDialog.open(it.id)}
+                      {...tooltip(t("local:button.player.select_role"))}
+                    >
+                      <RoleIcon />
+                    </IconButton>
+                    <IconButton
+                      error
+                      onClick={() => removePlayer(it.id)}
+                      {...tooltip(t("local:button.player.remove"))}
+                    >
+                      <TrashIcon />
+                    </IconButton>
+                  </>
+                }
+              >
+                {(buttons) => (
+                  <>
+                    <td>{it.name}</td>
+                    {it.role ? (
+                      <td>
+                        <RolePanel role={it.role} variant={it.variant} />
+                        <Impact value={it.role.impact!} />
+                      </td>
+                    ) : (
+                      <td />
+                    )}
+                    <ButtonsCell>{buttons}</ButtonsCell>
+                  </>
+                )}
+              </MoreActions>
             </tr>
           ))}
         </tbody>
@@ -269,8 +291,53 @@ function PlayersEditView() {
     </Centered>
   );
 }
+
+function MoreActions({
+  children,
+  actions,
+}: Readonly<{
+  children: (buttons: ReactNode) => ReactNode;
+  actions: ReactNode;
+}>) {
+  const isMobile = useMedia(XS);
+  const [actionsShown, showActions] = useState(false);
+
+  if (!isMobile) {
+    return children(actions);
+  }
+
+  if (actionsShown) {
+    return (
+      <td colSpan={3}>
+        <Actions>
+          {actions}
+          <IconButton primary onClick={() => showActions(false)}>
+            <CloseIcon />
+          </IconButton>
+        </Actions>
+      </td>
+    );
+  }
+
+  return children(
+    <IconButton onClick={() => showActions(true)}>
+      <MoreIcon />
+    </IconButton>,
+  );
+}
+
+const Actions = styled(Buttons)`
+  ${IconButton} {
+    font-size: 0.7em;
+  }
+`;
+
 const Toolbar = styled(Buttons)`
   margin-bottom: 1em;
+`;
+
+const Impact = styled(ImpactBadge)`
+  margin-left: 1em;
 `;
 
 const Count = styled.h2`
@@ -278,11 +345,10 @@ const Count = styled.h2`
 
   display: flex;
   align-items: center;
-  gap: 0.5em;
-`;
 
-const Impact = styled(ImpactBadge)`
-  font-size: 0.6em;
+  ${Impact} {
+    font-size: 0.6em;
+  }
 `;
 
 const Form = styled.form`

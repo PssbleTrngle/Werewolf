@@ -7,10 +7,14 @@ import {
   Buttons,
   ButtonsCell,
   Centered,
+  groupEmojis,
   IconButton,
   ResetIcon,
   Table,
+  tooltip,
+  useMedia,
   useRoles,
+  XS,
 } from "ui";
 import InvisibleLink from "../components/InivisibleLink";
 import ToggleButton from "../components/ToggleButton";
@@ -44,14 +48,14 @@ export default function RolesView() {
         </IconButton>
       </Toolbar>
       <Table>
-        <thead>
+        <Header>
           <tr>
             <th>{t("role.title")}</th>
             <th>{t("role.impact")}</th>
             <th>{t("role.group.title")}</th>
             <th />
           </tr>
-        </thead>
+        </Header>
         <tbody>
           {roles.map((it) => (
             <Row
@@ -71,12 +75,20 @@ const Toolbar = styled(Buttons)`
   margin: 1em 0;
 `;
 
+const Header = styled.thead`
+  ${XS} {
+    display: none;
+  }
+`;
+
 function Row({
   role,
   enabled,
   onToggle,
 }: Readonly<{ role: Role; enabled: boolean; onToggle: Dispatch<boolean> }>) {
   const { t } = useTranslation();
+
+  const isMobile = useMedia(XS);
 
   const disabledTooltip = useMemo(() => {
     if (frozenRoles.includes(role.type)) {
@@ -96,9 +108,15 @@ function Row({
         <ImpactBadge value={role.impact} />
       </td>
       <td>
-        {role.groups?.map((group) => (
-          <span key={group}>{t(`role.group.${group}`)}</span>
-        ))}
+        {role.groups?.map((group) =>
+          isMobile ? (
+            <span key={group} {...tooltip(t(`role.group.${group}`))}>
+              {groupEmojis[group]}
+            </span>
+          ) : (
+            <span key={group}>{t(`role.group.${group}`)}</span>
+          ),
+        )}
       </td>
       <ButtonsCell>
         <ToggleButton
