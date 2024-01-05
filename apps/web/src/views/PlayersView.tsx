@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import {
   Dispatch,
   FormEvent,
-  ReactNode,
+  PropsWithChildren,
   useCallback,
   useMemo,
   useState,
@@ -39,6 +39,7 @@ import { GAME_ID } from "../hooks/localGame";
 import { useLocalStore } from "../hooks/store";
 import randomNames from "../randomNames";
 import ImpactBadge from "../components/ImpactBadge.tsx";
+import { Actions } from "ui/src/components/Table.tsx";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useDialogAction<TState, TArgs extends any[]>(
@@ -243,48 +244,13 @@ function PlayersEditView() {
       <Table>
         <tbody>
           {players.map((it) => (
-            <tr key={it.id}>
-              <MoreActions
-                actions={
-                  <>
-                    <IconButton
-                      onClick={() => renameDialog.open(it.id)}
-                      {...tooltip(t("local:button.player.rename"))}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => roleSelectDialog.open(it.id)}
-                      {...tooltip(t("local:button.player.select_role"))}
-                    >
-                      <RoleIcon />
-                    </IconButton>
-                    <IconButton
-                      error
-                      onClick={() => removePlayer(it.id)}
-                      {...tooltip(t("local:button.player.remove"))}
-                    >
-                      <TrashIcon />
-                    </IconButton>
-                  </>
-                }
-              >
-                {(buttons) => (
-                  <>
-                    <td>{it.name}</td>
-                    {it.role ? (
-                      <td>
-                        <RolePanel role={it.role} variant={it.variant} />
-                        <Impact value={it.role.impact!} />
-                      </td>
-                    ) : (
-                      <td />
-                    )}
-                    <ButtonsCell>{buttons}</ButtonsCell>
-                  </>
-                )}
-              </MoreActions>
-            </tr>
+            <Row
+              key={it.id}
+              player={it}
+              onDelete={removePlayer}
+              onRename={renameDialog.open}
+              onRoleSelect={roleSelectDialog.open}
+            />
           ))}
         </tbody>
       </Table>
@@ -292,26 +258,77 @@ function PlayersEditView() {
   );
 }
 
-function MoreActions({
-  children,
-  actions,
+function Row({
+  player,
+  onDelete,
+  onRename,
+  onRoleSelect,
 }: Readonly<{
-  children: (buttons: ReactNode) => ReactNode;
-  actions: ReactNode;
+  player: Player;
+  onRename: Dispatch<Id>;
+  onRoleSelect: Dispatch<Id>;
+  onDelete: Dispatch<Id>;
 }>) {
-  const isMobile = useMedia(XS);
+  const { t } = useTranslation();
+
   const [actionsShown, showActions] = useState(false);
 
+  return (
+    <tr>
+      <td colSpan={player.role ? 1 : 2}>{player.name}</td>
+      {player.role && !actionsShown && (
+        <td>
+          <RolePanel role={player.role} variant={player.variant} />
+          <Impact value={player.role.impact!} />
+        </td>
+      )}
+      <MoreActions shown={actionsShown} onToggle={showActions}>
+        <IconButton
+          onClick={() => onRename(player.id)}
+          {...tooltip(t("local:button.player.rename"))}
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          onClick={() => onRoleSelect(player.id)}
+          {...tooltip(t("local:button.player.select_role"))}
+        >
+          <RoleIcon />
+        </IconButton>
+        <IconButton
+          error
+          onClick={() => onDelete(player.id)}
+          {...tooltip(t("local:button.player.remove"))}
+        >
+          <TrashIcon />
+        </IconButton>
+      </MoreActions>
+    </tr>
+  );
+}
+
+function MoreActions({
+  children,
+  shown,
+  onToggle,
+}: Readonly<
+  PropsWithChildren<{
+    shown: boolean;
+    onToggle: Dispatch<boolean>;
+  }>
+>) {
+  const isMobile = useMedia(XS);
+
   if (!isMobile) {
-    return children(actions);
+    return <ButtonsCell>{children}</ButtonsCell>;
   }
 
-  if (actionsShown) {
+  if (shown) {
     return (
-      <td colSpan={3}>
+      <td colSpan={2}>
         <Actions>
-          {actions}
-          <IconButton primary onClick={() => showActions(false)}>
+          {children}
+          <IconButton onClick={() => onToggle(false)}>
             <CloseIcon />
           </IconButton>
         </Actions>
@@ -319,18 +336,14 @@ function MoreActions({
     );
   }
 
-  return children(
-    <IconButton onClick={() => showActions(true)}>
-      <MoreIcon />
-    </IconButton>,
+  return (
+    <ButtonsCell>
+      <IconButton onClick={() => onToggle(true)}>
+        <MoreIcon />
+      </IconButton>
+    </ButtonsCell>
   );
 }
-
-const Actions = styled(Buttons)`
-  ${IconButton} {
-    font-size: 0.7em;
-  }
-`;
 
 const Toolbar = styled(Buttons)`
   margin-bottom: 1em;

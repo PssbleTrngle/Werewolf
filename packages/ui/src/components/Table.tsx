@@ -24,11 +24,13 @@ const Table = styled.table`
   }
 `;
 
-export const ButtonsCell = styled(Buttons).attrs({ as: "td" })`
+export const Actions = styled(Buttons)`
   justify-content: end;
   ${IconButton} {
     font-size: 0.7em;
   }
 `;
+
+export const ButtonsCell = styled(Actions).attrs({ as: "td" })``;
 
 export default Table;
