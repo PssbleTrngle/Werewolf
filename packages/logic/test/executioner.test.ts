@@ -44,17 +44,19 @@ describe("tests regarding the executioner", () => {
     await game.dismiss();
 
     const target = requireTarget(game);
+    const otherVillagers = villagers.filter((it) => it !== target);
 
     game.expectCurrentEvent("reveal.executioner");
     await game.vote(executioner, skipVote());
 
-    await game.vote(wolf, playerVote(villagers[0]));
+    await game.vote(wolf, playerVote(otherVillagers[0]));
 
     await game.dismiss();
 
     game.expectEvents("kill.lynch");
 
-    await game.vote(villagers.slice(1), playerVote(target));
+    await game.vote(target, playerVote(target));
+    await game.vote(otherVillagers.slice(1), playerVote(target));
 
     await game.vote(executioner, skipVote());
     await game.vote(wolf, skipVote());
