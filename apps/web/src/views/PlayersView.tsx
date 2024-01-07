@@ -25,25 +25,25 @@ import {
   RolePanel,
   ShuffleIcon,
   Table,
-  tooltip,
   TrashIcon,
+  XS,
+  tooltip,
   useGameStatus,
   useMedia,
   usePlayers,
-  XS,
 } from "ui";
+import { Actions } from "ui/src/components/Table.tsx";
+import ImpactBadge from "../components/ImpactBadge.tsx";
 import InvisibleLink from "../components/InivisibleLink";
 import RenameDialog from "../components/dialog/RenameDialog";
 import RoleSelectDialog from "../components/dialog/RoleSelectDialog";
 import { GAME_ID } from "../hooks/localGame";
 import { useLocalStore } from "../hooks/store";
 import randomNames from "../randomNames";
-import ImpactBadge from "../components/ImpactBadge.tsx";
-import { Actions } from "ui/src/components/Table.tsx";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useDialogAction<TState, TArgs extends any[]>(
-  action: (value: TState, ...args: TArgs) => unknown,
+  action: (value: TState, ...args: TArgs) => unknown
 ) {
   const [id, open] = useState<TState>();
 
@@ -54,12 +54,12 @@ function useDialogAction<TState, TArgs extends any[]>(
       if (id) action(id, ...args);
       close();
     },
-    [close, id, action],
+    [close, id, action]
   );
 
   return useMemo(
     () => ({ id, execute, open, close, visible: !!id }),
-    [id, execute, open, close],
+    [id, execute, open, close]
   );
 }
 
@@ -78,7 +78,7 @@ function AddPanel({
       onAddPlayer({ id: nanoid(), name });
       setName("");
     },
-    [onAddPlayer, name],
+    [onAddPlayer, name]
   );
 
   return (
@@ -177,7 +177,7 @@ function PlayersEditView() {
         .map((it) => it.role?.impact)
         .filter(notNull)
         .reduce((a, b) => a + b, 0),
-    [players],
+    [players]
   );
 
   const canRandomize = useMemo(() => players.length >= MIN_PLAYERS, [players]);
@@ -186,19 +186,21 @@ function PlayersEditView() {
     (id: Id, role?: Role) => {
       modifyPlayer(id, { role });
     },
-    [modifyPlayer],
+    [modifyPlayer]
   );
 
   const rename = useCallback(
     (id: Id, name: string) => {
       modifyPlayer(id, { name });
     },
-    [modifyPlayer],
+    [modifyPlayer]
   );
 
   const roleSelectDialog = useDialogAction(selectRole);
 
   const renameDialog = useDialogAction(rename);
+
+  const [actionsShownOn, showActions] = useState<Id>();
 
   return (
     <Centered horizontalOnly>
@@ -233,7 +235,7 @@ function PlayersEditView() {
             : tooltip(
                 t("local:error.min_players_requirement", {
                   count: MIN_PLAYERS,
-                }),
+                })
               ))}
         >
           {t("local:button.player.generate_roles")}
@@ -250,6 +252,8 @@ function PlayersEditView() {
               onDelete={removePlayer}
               onRename={renameDialog.open}
               onRoleSelect={roleSelectDialog.open}
+              showActions={(show) => showActions(show ? it.id : undefined)}
+              actionsShown={actionsShownOn === it.id}
             />
           ))}
         </tbody>
@@ -263,15 +267,17 @@ function Row({
   onDelete,
   onRename,
   onRoleSelect,
+  actionsShown,
+  showActions,
 }: Readonly<{
   player: Player;
   onRename: Dispatch<Id>;
   onRoleSelect: Dispatch<Id>;
   onDelete: Dispatch<Id>;
+  actionsShown: boolean;
+  showActions: Dispatch<boolean>;
 }>) {
   const { t } = useTranslation();
-
-  const [actionsShown, showActions] = useState(false);
 
   return (
     <tr>

@@ -1,9 +1,10 @@
 import { last } from "lodash-es";
 import { DeathCause, Event, Id, Time, Vote } from "models";
 import {
-  arrayOrSelf,
   ArrayOrSingle,
   PartialOrFactory,
+  arrayOrSelf,
+  notNull,
   resolvePartialFactory,
 } from "../util.js";
 import { Effect } from "./effect/Effect.js";
@@ -88,7 +89,7 @@ export default class FrozenGame implements GameAccess {
     const target = requirePlayer(this.players, playerId);
 
     const guarded = ProtectEvents.notify(target, cause, this).some(
-      (it) => it === true,
+      (it) => it === true
     );
 
     if (guarded) {
@@ -101,7 +102,7 @@ export default class FrozenGame implements GameAccess {
     this.deaths.set(playerId, cause);
 
     const effects = DeathEvents.notify(target, cause, this).flatMap(
-      arrayOrSelf,
+      arrayOrSelf
     );
 
     this.apply(effects);
@@ -130,16 +131,20 @@ export default class FrozenGame implements GameAccess {
       }
 
       const revealedDeaths = unnotifiedDeaths.map((it) =>
-        revealPlayer(it, this.settings.deathRevealType),
+        revealPlayer(it, this.settings.deathRevealType)
       );
 
       return DeathEvent.create(alive, revealedDeaths, time);
     });
   }
 
-  private fakeEvent(event: Event): Event {
+  private fakeEvent(event: Event): Event | null {
     if (event.players.length > 0 || !this.settings.fakePlayerScreens)
       return event;
+
+    if (event.role && this.settings.disabledRoles?.includes(event.role.type)) {
+      return null;
+    }
 
     const fakePlayer = createFakePlayer(event.role);
     const type = EventRegistry.get(event.type);
@@ -151,9 +156,9 @@ export default class FrozenGame implements GameAccess {
     return FakeEvent.create([fakePlayer], event, !!event.choice);
   }
 
-  private resolveFactory(factory: EventFactory) {
+  private resolveFactory(factory: EventFactory): Event[] {
     const result = arrayOrSelf(factory(this));
-    return result.map((it) => this.fakeEvent(it));
+    return result.map((it) => this.fakeEvent(it)).filter(notNull);
   }
 
   unfreeze(): GameState {
@@ -191,7 +196,7 @@ export default class FrozenGame implements GameAccess {
               ...previous,
               ...values,
             }),
-            player,
+            player
           );
         }),
       events,

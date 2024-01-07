@@ -1,7 +1,7 @@
 import { Choice, Event, Player as IPlayer, Vote } from "models";
 import { Game } from "../index.js";
-import { GameView } from "./index.js";
 import { validateVote } from "../vote/Vote.js";
+import { GameView } from "./index.js";
 
 export class ModeratorGameView implements GameView {
   constructor(protected readonly game: Game) {}

@@ -1,8 +1,9 @@
 import { DeathCause, Player, Role, RoleGroup } from "models";
-import { hasRole, isAlive, others } from "../player/predicates.js";
-import { SleepEvents } from "../event/SleepBoundary.js";
+import { ProtectEvents } from "../event/DeathEvent.js";
+import { roleScopedFactory } from "../event/Event.js";
 import GuardEvent from "../event/GuardEvent.js";
-import { ProtectEvents } from '../event/DeathEvent.js';
+import { SleepEvents } from "../event/SleepBoundary.js";
+import { hasRole, isAlive, others } from "../player/predicates.js";
 
 export const Guard: Role = {
   type: "guard",
@@ -14,22 +15,28 @@ export const Guard: Role = {
 const protectsAgainst: DeathCause[] = [DeathCause.WOLFS, DeathCause.HUNTER];
 
 export function registerGuardEvents(role = Guard) {
-  SleepEvents.registerEvent(({ players, settings }) => {
-    const alive = players.filter(isAlive);
-    const guards = alive.filter(hasRole(role));
+  SleepEvents.registerEvent(
+    roleScopedFactory(role, ({ players, settings }) => {
+      const alive = players.filter(isAlive);
+      const guards = alive.filter(hasRole(role));
 
-    return guards.map((it) => {
-      const blocked: Pick<Player, "id">[] = [];
+      if (guards.length === 0) {
+        return GuardEvent.create([], alive);
+      }
 
-      const previous = it.roleData.guarding;
-      if (previous) blocked.push({ id: previous });
+      return guards.map((it) => {
+        const blocked: Pick<Player, "id">[] = [];
 
-      if (!settings.guardCanChooseSelf) blocked.push(it);
+        const previous = it.roleData.guarding;
+        if (previous) blocked.push({ id: previous });
 
-      const choices = alive.filter(others(...blocked));
-      return GuardEvent.create([it], choices);
-    });
-  });
+        if (!settings.guardCanChooseSelf) blocked.push(it);
+
+        const choices = alive.filter(others(...blocked));
+        return GuardEvent.create([it], choices);
+      });
+    })
+  );
 
   ProtectEvents.register((player, cause, game) => {
     if (!protectsAgainst.includes(cause)) return false;

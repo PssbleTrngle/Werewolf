@@ -7,7 +7,7 @@ export default function PlayerIcon({
   size = 1,
   ...props
 }: Readonly<{
-  children: Player;
+  children: Pick<Player, "name" | "role" | "variant">;
   size?: number;
 }>) {
   return (

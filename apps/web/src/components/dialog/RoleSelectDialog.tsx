@@ -1,9 +1,10 @@
 import { Role } from "models";
 import { lighten } from "polished";
-import { Dispatch } from "react";
+import { Dispatch, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Button, Buttons, Dialog, DialogProps, tooltip, useRoles } from "ui";
+import { useLocalStore } from "../../hooks/store.ts";
 import useDialog from "../../hooks/useDialog";
 import { stringifyImpact } from "../ImpactBadge.tsx";
 
@@ -19,18 +20,24 @@ export default function RoleSelectDialog({
   const { t } = useTranslation();
   const { data: roles } = useRoles();
   const { render } = useDialog();
+  const { disabledRoles } = useLocalStore();
+
+  const possible = useMemo(
+    () => roles.filter((it) => !disabledRoles.includes(it.type)),
+    [roles, disabledRoles]
+  );
 
   return render(
     <Dialog {...props}>
       <h2>{t("local:dialog.role_select")}</h2>
       <Grid>
-        {roles.map((it) => (
+        {possible.map((it) => (
           <RoleButton
             onClick={() => onSelect(it)}
             key={it.type}
             $selected={it.type === initial}
             {...tooltip(
-              `${t(`role.${it.type}.name`)} (${stringifyImpact(it.impact)})`,
+              `${t(`role.${it.type}.name`)} (${stringifyImpact(it.impact)})`
             )}
           >
             {it.emoji}
@@ -40,7 +47,7 @@ export default function RoleSelectDialog({
       <Buttons>
         <Button onClick={props.onClose}>{t("button.cancel")}</Button>
       </Buttons>
-    </Dialog>,
+    </Dialog>
   );
 }
 

@@ -77,9 +77,9 @@ export default function Background({
 const Style = styled.section<{ $time: Time }>`
   position: relative;
   overflow: hidden;
+  min-height: 100%;
 
   background: ${(p) => BG[p.$time]};
-  height: 100%;
 
   ${Button} {
     background: ${(p) => transparentize(0.5, BG[p.$time])};

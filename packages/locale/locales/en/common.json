@@ -236,5 +236,8 @@
       "aligment": "Alignment",
       "nothing": "Nothing"
     }
-  }
+  },
+  "more_zero": "no more",
+  "more_one": "one more",
+  "more_other": "{{count}} more"
 }

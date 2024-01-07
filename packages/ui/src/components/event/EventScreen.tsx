@@ -3,6 +3,7 @@ import { transparentize } from "polished";
 import { PropsWithChildren, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useActiveEvent, useGameInfo } from "../..";
+import { XS, useMedia } from "../../styles/screens";
 import darkTheme from "../../theme/dark";
 import lightTheme from "../../theme/light";
 import Background from "../background/Background";
@@ -35,6 +36,12 @@ export default function EventScreen({
 
   const theme = useMemo(() => themeBy(game?.time ?? "night"), [game]);
 
+  const isMobile = useMedia(XS);
+  const sliceParticipants = useMemo(
+    () => isMobile && !!event.choice?.players?.length,
+    [isMobile, event]
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <Background game={game}>
@@ -42,7 +49,11 @@ export default function EventScreen({
         <Style>
           <ControlBar gameId={gameId} />
           <EventWrapper>
-            <EventParticipantList size={1} players={event.players} />
+            <EventParticipantList
+              size={1}
+              players={event.players}
+              max={sliceParticipants ? 5 : undefined}
+            />
             <EventDetails event={event} />
             {event?.choice && (
               <ChoicePanel choice={event.choice} key={event.type} />
@@ -71,4 +82,8 @@ const Style = styled.section`
 const EventWrapper = styled.section`
   padding: 1em;
   margin-top: 5em;
+
+  ${XS} {
+    margin-top: 0em;
+  }
 `;
