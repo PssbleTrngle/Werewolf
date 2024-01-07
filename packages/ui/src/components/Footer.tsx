@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { tooltip } from "..";
 import { GithubIcon, WeblateIcon } from "../icons";
 import { InvisibleLinkStyle, LinkStyle } from "../styles/links";
-import { XS } from "../styles/screens.ts";
+import { XS } from "../styles/screens";
 
 export const FOOTER_HEIGHT = 60;
 

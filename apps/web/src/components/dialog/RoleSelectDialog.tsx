@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Button, Buttons, Dialog, DialogProps, tooltip, useRoles } from "ui";
 import { useLocalStore } from "../../hooks/store.ts";
 import useDialog from "../../hooks/useDialog";
-import { stringifyImpact } from "../ImpactBadge.tsx";
+import { stringifyImpact } from "../ImpactBadge";
 
 export default function RoleSelectDialog({
   onSelect,

@@ -32,8 +32,8 @@ import {
   useMedia,
   usePlayers,
 } from "ui";
-import { Actions } from "ui/src/components/Table.tsx";
-import ImpactBadge from "../components/ImpactBadge.tsx";
+import { Actions } from "ui/src/components/Table";
+import ImpactBadge from "../components/ImpactBadge";
 import InvisibleLink from "../components/InivisibleLink";
 import RenameDialog from "../components/dialog/RenameDialog";
 import RoleSelectDialog from "../components/dialog/RoleSelectDialog";

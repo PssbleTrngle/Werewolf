@@ -7,19 +7,19 @@ import {
   Buttons,
   ButtonsCell,
   Centered,
-  groupEmojis,
   IconButton,
   ResetIcon,
   Table,
+  XS,
+  groupEmojis,
   tooltip,
   useMedia,
   useRoles,
-  XS,
 } from "ui";
+import ImpactBadge from "../components/ImpactBadge";
 import InvisibleLink from "../components/InivisibleLink";
 import ToggleButton from "../components/ToggleButton";
 import { useLocalStore } from "../hooks/store";
-import ImpactBadge from "../components/ImpactBadge.tsx";
 
 // These roles cannot be disabled
 const frozenRoles = [Villager.type, Werewolf.type];
@@ -32,12 +32,12 @@ export default function RolesView() {
   const toggleRole = useLocalStore((it) => it.toggleRole);
   const isEnabled = useCallback(
     (type: string) => !disabledRoles?.includes(type),
-    [disabledRoles],
+    [disabledRoles]
   );
 
   const reset = useCallback(
     () => disabledRoles?.forEach((it) => toggleRole(it, true)),
-    [toggleRole, disabledRoles],
+    [toggleRole, disabledRoles]
   );
 
   return (
@@ -115,7 +115,7 @@ function Row({
             </span>
           ) : (
             <span key={group}>{t(`role.group.${group}`)}</span>
-          ),
+          )
         )}
       </td>
       <ButtonsCell>

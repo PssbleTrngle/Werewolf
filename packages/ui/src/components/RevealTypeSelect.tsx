@@ -1,7 +1,7 @@
 import { PlayerRevealType } from "models";
 import { Dispatch } from "react";
 import { useTranslation } from "react-i18next";
-import { Select } from "./Input.tsx";
+import { Select } from "./Input";
 
 const REVEAL_TYPES: PlayerRevealType[] = [
   PlayerRevealType.ROLE,
