@@ -222,6 +222,7 @@
     }
   },
   "settings": {
+    "language": "Language",
     "fake_player_screens": "Create fake-screens for roles without players?",
     "seer_reveal_type": "What should be revealed to the seer?",
     "death_reveal_type": "What should be revealed about dead players?",
@@ -235,6 +236,13 @@
       "group": "Group",
       "aligment": "Alignment",
       "nothing": "Nothing"
+    }
+  },
+  "meta": {
+    "lang": {
+      "browser": "Browser",
+      "en": "English",
+      "de": "German"
     }
   },
   "more_zero": "no more",

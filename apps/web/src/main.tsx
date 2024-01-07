@@ -8,7 +8,7 @@ import ReactDOM from "react-dom/client";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { darkTheme, Tooltip } from "ui";
+import { Tooltip, darkTheme } from "ui";
 import ErrorWrapper from "./components/ErrorWrapper";
 import LoadingPage from "./components/LoadingPage";
 import { LocalGameProvider } from "./hooks/localGame";
@@ -26,6 +26,7 @@ i18n
   .use(LangDetector)
   .init({
     fallbackLng: "en",
+    supportedLngs: ["en", "de"],
     debug: import.meta.env.DEV,
     defaultNS,
   });
@@ -46,5 +47,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </ErrorWrapper>
       </ThemeProvider>
     </I18nextProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
