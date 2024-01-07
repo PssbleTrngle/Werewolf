@@ -51,6 +51,7 @@ function CreateGame() {
   return (
     <Centered>
       <InnerCentered>
+        <Logo src="/icon.svg" />
         <Title>{t("local:status.game.no_active")}</Title>
         <ErrorMessage error={errorMessage} />
         <Button
@@ -65,8 +66,14 @@ function CreateGame() {
   );
 }
 
+const Logo = styled.img`
+  height: 50vh;
+  max-height: 70vw;
+`;
+
 const InnerCentered = styled(Centered)`
-  height: 300px;
+  height: 500px;
+  padding-top: 100px;
 `;
 
 const StopButton = styled(Button)`

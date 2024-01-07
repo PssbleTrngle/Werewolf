@@ -7,3 +7,9 @@ try {
 } catch (e) {
   console.warn("Failed to copy locales");
 }
+
+try {
+  cpSync("../../assets/icon.svg", "public/icon.svg");
+} catch (e) {
+  console.warn("Failed to copy icon");
+}

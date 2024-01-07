@@ -8,6 +8,11 @@ html, body, ul {
   margin: 0;
   padding: 0; 
 }
+
+html, body {
+  overscroll-behavior-y: none;
+  background: ${p => p.theme.bg};
+}
 `;
 
 export const Page = styled.main`

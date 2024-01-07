@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+  width="512"
+  height="512"
+  viewBox="0 0 135.46667 135.46667"
+  version="1.1"
+  id="svg5"
+  sodipodi:docname="icon.svg"
+  inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+  xml:space="preserve"
+  inkscape:export-filename="..\public\apple-touch-icon.png"
+  inkscape:export-xdpi="33.75"
+  inkscape:export-ydpi="33.75"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview7"
+     pagecolor="#4d5164"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#4d5164"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.2938725"
+     inkscape:cx="33.233569"
+     inkscape:cy="164.6221"
+     inkscape:window-width="2560"
+     inkscape:window-height="1369"
+     inkscape:window-x="1432"
+     inkscape:window-y="626"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" /><defs
+     id="defs2" /><g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"><path
+       style="opacity:1;fill:#a8acbc;fill-opacity:1;stroke:none;stroke-width:0.226309;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:0.202073"
+       d="M 6.4777474,92.143956 C 10.421405,85.094037 16.773654,80.989052 19.781854,75.995382 27.36417,63.408594 27.118376,53.85613 28.380761,51.585712 29.77273,49.082236 31.409489,46.974061 32.429203,44.65593 39.407067,28.793053 32.083067,13.138908 33.856514,9.8639109 42.453841,7.1117134 53.63633,25.164009 62.845794,28.48081 79.39716,17.665402 86.212531,19.750331 95.539262,21.99814 c -2.534449,2.079663 -3.590996,1.326534 -8.857835,8.643559 17.639723,3.776374 25.486163,9.931031 30.438743,16.788454 -5.88676,-2.680339 -12.58066,-2.028515 -19.970392,1.496001 23.897582,9.221612 29.903162,31.013789 32.625082,46.542247 -5.958,-5.671123 -14.9503,-9.603522 -24.5725,-7.646226 11.0032,10.97629 9.26974,23.877945 -0.96631,38.064915 -3.24767,-18.67956 -12.1056,-28.880314 -23.835636,-34.74047 0.880422,4.950764 -0.306121,10.58419 -3.221029,16.78846 C 69.254211,91.338302 63.384404,85.878658 58.1753,83.999061 c 1.421942,6.385775 1.08108,8.2626 0.805258,10.305783 -15.508992,-11.523605 -20.169157,-7.287741 -33.337676,5.152891 -0.719736,0.679955 -2.377273,1.993125 -11.595711,0 C 3.8556424,97.254223 5.3901474,94.088215 6.4777474,92.143956 Z"
+       id="path1076"
+       sodipodi:nodetypes="sssscccccccccccccsss" /></g></svg>

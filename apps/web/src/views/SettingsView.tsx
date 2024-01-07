@@ -163,7 +163,7 @@ function LangSelect(props: Readonly<{ id?: string }>) {
   }, [i18n]);
 
   return (
-    <Select onChange={onChange} {...props}>
+    <Select value={i18n.language} onChange={onChange} {...props}>
       <option value="">{t("meta.lang.browser")}</option>
       {languages.map((lang) => (
         <option key={lang} value={lang}>

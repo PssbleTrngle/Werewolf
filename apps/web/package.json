@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prepare": "node setup/copyLocales.mjs",
+    "prepare": "node setup/copyAssets.mjs",
     "build": "tsc && vite build",
     "lint": "eslint \"{src,test}/**/*.{ts,tsx}\"",
     "preview": "vite preview",
+    "icongen": "pwa-assets-generator",
     "check": "tsc --noEmit"
   },
   "dependencies": {
@@ -33,13 +34,15 @@
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
+    "@vite-pwa/assets-generator": "^0.2.2",
     "@vitejs/plugin-react": "^4.2.0",
     "eslint": "^8.53.0",
     "eslint-config-custom": "workspace:*",
     "locale": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.2",
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "vite-plugin-pwa": "^0.17.4"
   },
   "packageManager": "pnpm@8.11.0"
 }

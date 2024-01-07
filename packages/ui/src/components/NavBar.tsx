@@ -63,6 +63,8 @@ const Style = styled.section`
 
     box-shadow: 0 -0.5em 0.5em 0 ${(p) => p.theme.bg};
 
+    align-items: start;
+
     select {
       display: none;
     }
@@ -73,11 +75,7 @@ const ActiveLink = css`
   border-bottom-color: ${(p) => p.theme.accent};
 
   ${XS} {
-    border-width: 0px;
-    background: ${(p) => p.theme.accent};
-    &:hover {
-      background: ${(p) => p.theme.accent};
-    }
+    color: ${(p) => p.theme.accent};
   }
 `;
 
@@ -102,15 +100,26 @@ export const NavLinkStyle = css<{ $active: boolean }>`
   ${(p) => p.$active && ActiveLink}
 
   ${XS} {
+    padding: 0;
+    padding-top: 0.5em;
     display: grid;
-    align-items: center;
-    justify-content: center;
+    border-width: 0px;
+
+    grid-template: "icon" "title";
+    gap: 0.2em;
 
     &:has(svg) span {
-      display: none;
+      text-align: center;
+      font-size: 0.5em;
+    }
+
+    &:hover {
+      background: ${(p) => p.theme.nav};
     }
 
     svg {
+      justify-self: center;
+      grid-area: icon;
       display: initial;
       height: 2em;
     }
