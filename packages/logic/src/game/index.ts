@@ -258,6 +258,6 @@ export class Game implements GameReadAccess {
     });
 
     await this.check();
-    await this.hookBus("vote").notify([...this.votes.entries()]);
+    await this.hookBus("vote").notify(Array.from(this.votes.entries()));
   }
 }
