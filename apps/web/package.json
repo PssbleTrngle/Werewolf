@@ -5,11 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prepare": "node setup/copyAssets.mjs",
+    "prepare": "node setup/copyAssets.mjs && pwa-assets-generator",
     "build": "tsc && vite build",
     "lint": "eslint \"{src,test}/**/*.{ts,tsx}\"",
     "preview": "vite preview",
-    "icongen": "pwa-assets-generator",
     "check": "tsc --noEmit"
   },
   "dependencies": {

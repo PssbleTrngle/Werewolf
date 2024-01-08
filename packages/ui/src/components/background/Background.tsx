@@ -84,6 +84,8 @@ const Style = styled.section<{ $time: Time }>`
   ${Button} {
     background: ${(p) => transparentize(0.5, BG[p.$time])};
     backdrop-filter: blur(5px);
+
+    will-change: backdrop-filter;
   }
 
   transition:

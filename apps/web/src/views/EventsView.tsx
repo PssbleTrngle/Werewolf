@@ -51,7 +51,7 @@ function CreateGame() {
   return (
     <Centered>
       <InnerCentered>
-        <Logo src="/icon.svg" />
+        <Logo src="/icons/icon.svg" />
         <Title>{t("local:status.game.no_active")}</Title>
         <ErrorMessage error={errorMessage} />
         <Button

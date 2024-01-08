@@ -9,7 +9,7 @@ try {
 }
 
 try {
-  cpSync("../../assets/icon.svg", "public/icon.svg");
+  cpSync("../../assets/icon.svg", "public/icons/icon.svg");
 } catch (e) {
   console.warn("Failed to copy icon");
 }

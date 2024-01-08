@@ -52,6 +52,7 @@ const Cloud = styled.div<CloudProps>`
   will-change: left;
 
   filter: blur(10px);
+  will-change: filter, left;
 `;
 
 const Style = styled.div`

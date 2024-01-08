@@ -24,4 +24,6 @@ dist-ssr
 *.sw?
 
 public/locales
+public/icons
+
 dev-dist

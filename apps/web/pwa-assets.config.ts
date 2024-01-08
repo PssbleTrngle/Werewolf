@@ -2,8 +2,10 @@ import {
   defineConfig,
   minimal2023Preset as preset,
 } from "@vite-pwa/assets-generator/config";
+import { loadEnv } from "vite";
 
-const background = "#4d5164";
+const env = loadEnv("", process.cwd(), "VITE_");
+const background = env.VITE_APP_COLOR;
 
 export default defineConfig({
   headLinkOptions: {
@@ -24,5 +26,5 @@ export default defineConfig({
       },
     },
   },
-  images: ["public/icon.svg"],
+  images: ["public/icons/icon.svg"],
 });
