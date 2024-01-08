@@ -1,3 +1,5 @@
+import { omitBy } from "lodash-es";
+
 export function notNull<T>(value: T | null | undefined): value is T {
   return value !== null && value !== undefined;
 }
@@ -21,4 +23,10 @@ export function resolvePartialFactory<T>(
 export function resolveFactory<T>(factory: PartialOrFactory<T>, current: T): T {
   const partial = resolvePartialFactory(factory, current);
   return { ...current, ...partial };
+}
+
+export function omitByUndefined<T extends Record<string, unknown>>(
+  value: T
+): T {
+  return omitBy(value, (it) => !notNull(it)) as T;
 }

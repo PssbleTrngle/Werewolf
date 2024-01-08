@@ -1,3 +1,4 @@
+import { uniq } from "lodash-es";
 import {
   defaultGameSettings,
   Event,
@@ -22,14 +23,18 @@ import { GameReadAccess, GameState } from "./state.js";
 import { calculateWinner } from "./vote/Vote.js";
 import { testWinConditions } from "./winConditions.js";
 
+export type Votes = ReadonlyArray<[Id, Vote]>;
+
 interface GameHooks {
   save: ReadonlyArray<GameState>;
+  event: Event;
+  vote: Votes;
 }
 
 type GameHookKey = keyof GameHooks;
 
 type GameHookListener<T extends GameHookKey> = (
-  subject: GameHooks[T],
+  subject: GameHooks[T]
 ) => void | Promise<void>;
 
 export const FAKE_PLAYER_ID = "fake";
@@ -43,21 +48,25 @@ export function createFakePlayer(role?: Role): IPlayer {
 
 export class Game implements GameReadAccess {
   private state: StateHistory;
-  private votes = new Map<Id, Vote>();
+  private votes: Map<Id, Vote>;
 
   private hooks = new Map<
     GameHookKey,
     EventBus<GameHookListener<GameHookKey>>
   >();
 
-  public constructor(history: ReadonlyArray<GameState>) {
+  public constructor(
+    history: ReadonlyArray<GameState>,
+    initialVotes: Votes = []
+  ) {
     if (history.length === 0) throw new Error("Game history may not be empty");
     this.state = new StateHistory(...history);
+    this.votes = new Map(initialVotes);
   }
 
   static createState(
     players: ReadonlyArray<Player>,
-    settings: GameSettings = defaultGameSettings,
+    settings: GameSettings = defaultGameSettings
   ): ReadonlyArray<GameState> {
     return [
       {
@@ -71,7 +80,7 @@ export class Game implements GameReadAccess {
   }
 
   private hookBus<T extends GameHookKey>(
-    event: T,
+    event: T
   ): EventBus<GameHookListener<T>> {
     const existing = this.hooks.get(event);
     if (existing) return existing;
@@ -131,7 +140,7 @@ export class Game implements GameReadAccess {
 
       const winEvent = WinEvent.create(unfrozen.players, win);
       const keptEvents = unfrozen.events.filter((it) =>
-        it.type.startsWith("announcement."),
+        it.type.startsWith("announcement.")
       );
       return { ...unfrozen, events: [...keptEvents, winEvent] };
     } else {
@@ -142,7 +151,7 @@ export class Game implements GameReadAccess {
   private checkEvent(
     access: FrozenGame,
     event: Event,
-    index: number,
+    index: number
   ): number | false {
     const type = EventRegistry.get(event.type);
 
@@ -175,18 +184,35 @@ export class Game implements GameReadAccess {
   private async check() {
     const access = this.freeze();
 
-    let finished = 0;
-    this.events.reduce((prognose, event, index) => {
+    const finished: Event[] = [];
+    let prognose = 0;
+
+    this.events.forEach((event, index) => {
       const result = this.checkEvent(access, event, index + prognose);
       if (result === false) return prognose;
-      finished++;
-      return prognose + result;
-    }, 0);
+      finished.push(event);
+      prognose += result;
+    });
 
-    if (finished > 0) {
+    if (finished.length > 0) {
       const unfrozen = this.checkWin(access);
       this.state.push(unfrozen);
-      await this.save();
+
+      const movedPlayers = uniq(
+        finished.flatMap((it) => it.players).map((it) => it.id)
+      );
+
+      const newEvents = this.events
+        .filter((it) =>
+          it.players.every(({ id }) => this.currentEvent(id) === it)
+        )
+        .filter((it) => it.players.some(({ id }) => movedPlayers.includes(id)));
+
+      const eventBus = this.hookBus("event");
+      await Promise.all([
+        this.save(),
+        ...newEvents.map((it) => eventBus.notify(it)),
+      ]);
     }
   }
 
@@ -219,12 +245,12 @@ export class Game implements GameReadAccess {
       // TODO only here for sanity checks right now, maybe later there will be a role which is allowed to do this
       if (!event?.choice)
         throw new Error(
-          `${player.name} cannot vote as he has no choice on ${event?.type}`,
+          `${player.name} cannot vote as he has no choice on ${event?.type}`
         );
 
       if (player.status === "dead")
         throw new Error(
-          `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`,
+          `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
         );
 
       console.log(player.name, "voted on", event.type);
@@ -232,5 +258,6 @@ export class Game implements GameReadAccess {
     });
 
     await this.check();
+    await this.hookBus("vote").notify([...this.votes.entries()]);
   }
 }

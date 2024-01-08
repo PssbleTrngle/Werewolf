@@ -15,6 +15,7 @@ export const enum DeathCause {
 export interface User {
   id: Id;
   name: string;
+  provider?: string;
 }
 
 export interface Player extends User {
