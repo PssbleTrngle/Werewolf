@@ -4,8 +4,10 @@ import { useTranslation } from "react-i18next";
 import { tooltip } from "./Tooltip";
 
 export const groupEmojis: Record<RoleGroup, string> = {
-  villager: "🌾",
-  wolf: "🐺",
+  [RoleGroup.GOOD]: "👍",
+  [RoleGroup.EVIL]: "👎",
+  [RoleGroup.VILLAGER]: "🌾",
+  [RoleGroup.WOLF]: "🐺",
 };
 
 export default function RolePanel({

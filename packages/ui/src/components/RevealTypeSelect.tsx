@@ -6,6 +6,7 @@ import { Select } from "./Input";
 const REVEAL_TYPES: PlayerRevealType[] = [
   PlayerRevealType.ROLE,
   PlayerRevealType.GROUP,
+  PlayerRevealType.ALIGNMENT,
   PlayerRevealType.NOTHING,
 ];
 

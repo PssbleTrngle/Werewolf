@@ -53,6 +53,7 @@ export default function EventScreen({
               size={1}
               players={event.players}
               max={sliceParticipants ? 5 : undefined}
+              hideRoles
             />
             <EventDetails event={event} />
             {event?.choice && (

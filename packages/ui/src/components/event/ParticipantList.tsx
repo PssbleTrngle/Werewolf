@@ -8,11 +8,13 @@ export default function ParticipantList({
   players,
   size,
   max = Infinity,
+  hideRoles = false,
   ...props
 }: Readonly<{
   players: ReadonlyArray<Player>;
   size?: number;
   max?: number;
+  hideRoles?: boolean;
 }>) {
   const { t } = useTranslation();
   const showMore = useMemo(() => players.length > max, [players, max]);
@@ -21,7 +23,7 @@ export default function ParticipantList({
   return (
     <Style {...props}>
       {sliced.map((player) => (
-        <PlayerIcon key={player.id} size={size}>
+        <PlayerIcon key={player.id} size={size} hideRole={hideRoles}>
           {player}
         </PlayerIcon>
       ))}

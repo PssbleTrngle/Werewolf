@@ -5,15 +5,17 @@ import RolePanel from "./RolePanel";
 export default function PlayerIcon({
   children: { name, role, variant },
   size = 1,
+  hideRole = false,
   ...props
 }: Readonly<{
   children: Pick<Player, "name" | "role" | "variant">;
   size?: number;
+  hideRole?: boolean
 }>) {
   return (
     <Style $size={size} {...props}>
       {name}
-      <Role small role={role} variant={variant} />
+      {hideRole || <Role small role={role} variant={variant} />}
     </Style>
   );
 }

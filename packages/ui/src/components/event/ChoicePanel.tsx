@@ -39,7 +39,7 @@ export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
               onClick={() => select(player.id)}
               selected={selected.includes(player.id)}
             >
-              <PlayerIcon>{player}</PlayerIcon>
+              <PlayerIcon hideRole>{player}</PlayerIcon>
             </Button>
           ))}
         </PlayerButtons>

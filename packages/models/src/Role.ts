@@ -1,4 +1,8 @@
 export const enum RoleGroup {
+  // These are only used for alignment reveals
+  GOOD = "good",
+  EVIL = "evil",
+
   WOLF = "wolf",
   VILLAGER = "villager",
 }

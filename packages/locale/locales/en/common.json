@@ -206,6 +206,8 @@
     "group": {
       "title": "Groups",
       "unknown": "Unknown",
+      "good": "Good",
+      "evil": "Evil",
       "villager": "Villagers",
       "wolf": "Wolfs"
     }
@@ -234,7 +236,7 @@
     "reveal_type": {
       "role": "Role",
       "group": "Group",
-      "aligment": "Alignment",
+      "alignment": "Alignment",
       "nothing": "Nothing"
     }
   },
