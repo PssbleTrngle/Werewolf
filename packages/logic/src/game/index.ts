@@ -211,7 +211,7 @@ export class Game implements GameReadAccess {
       const eventBus = this.hookBus("event");
       await Promise.all([
         this.save(),
-        ...newEvents.map((it) => eventBus.notify(it)),
+        ...newEvents.flatMap((it) => eventBus.notify(it)),
       ]);
     }
   }
@@ -258,6 +258,8 @@ export class Game implements GameReadAccess {
     });
 
     await this.check();
-    await this.hookBus("vote").notify(Array.from(this.votes.entries()));
+    await Promise.all(
+      this.hookBus("vote").notify(Array.from(this.votes.entries()))
+    );
   }
 }
