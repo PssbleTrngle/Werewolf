@@ -20,8 +20,8 @@ export const registerEyeEvents = (role = Eye, revealedRole = Seer) => {
       const seers = players.filter(hasRole(revealedRole));
       const users = players.filter(hasRole(role));
       return individualEvents(users, (it) =>
-        RevealEvent.create(role.type, it, seers),
+        RevealEvent.create(role, it, seers)
       );
-    }),
+    })
   );
 };

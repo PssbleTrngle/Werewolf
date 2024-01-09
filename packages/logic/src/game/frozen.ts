@@ -35,6 +35,12 @@ export default class FrozenGame implements GameAccess {
     this.pendingReplace.add(factory);
   }
 
+  private prognose(event: Event) {
+    return this.replaced
+      .get(event)
+      ?.flatMap((factory) => this.resolveFactory(factory))?.length;
+  }
+
   finish<T>(event: Event<T>, vote: Vote) {
     const type = EventRegistry.get(event.type);
     const effects = arrayOrSelf(type.finish(vote, event));
@@ -42,13 +48,13 @@ export default class FrozenGame implements GameAccess {
 
     this.replaced.set(event, Array.from(this.pendingReplace));
 
-    const prognose = this.pendingReplace.size;
     this.pendingReplace.clear();
+    const prognose = this.prognose(event) ?? 0;
     return prognose - 1;
   }
 
   hasFinished(event: Event) {
-    return this.replaced.get(event)?.length === 0;
+    return this.prognose(event) === 0;
   }
 
   apply(effects: ArrayOrSingle<Effect>) {
@@ -142,7 +148,10 @@ export default class FrozenGame implements GameAccess {
     if (event.players.length > 0 || !this.settings.fakePlayerScreens)
       return event;
 
-    if (event.role && this.settings.disabledRoles?.includes(event.role.type)) {
+    if (
+      event.role?.type &&
+      this.settings.disabledRoles?.includes(event.role.type)
+    ) {
       return null;
     }
 
@@ -158,7 +167,10 @@ export default class FrozenGame implements GameAccess {
 
   private resolveFactory(factory: EventFactory): Event[] {
     const result = arrayOrSelf(factory(this));
-    return result.map((it) => this.fakeEvent(it)).filter(notNull);
+    return result
+      .map((it) => this.fakeEvent(it))
+      .filter(notNull)
+      .filter((it) => it.players.length > 0);
   }
 
   unfreeze(): GameState {
@@ -169,10 +181,7 @@ export default class FrozenGame implements GameAccess {
       ...this.newEvents,
     ];
 
-    const events = factories
-      .flatMap((factory) => this.resolveFactory(factory))
-      .filter((it) => it.players.length > 0);
-
+    const events = factories.flatMap((factory) => this.resolveFactory(factory));
     const time = last(this.timesPassed) ?? this.initial.time;
     const day =
       this.initial.day + this.timesPassed.filter((it) => it === "dawn").length;

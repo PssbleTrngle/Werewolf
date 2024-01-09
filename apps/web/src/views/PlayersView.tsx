@@ -144,7 +144,7 @@ function ActivePlayersView() {
               {it.role ? (
                 <td>
                   <InvisibleLink to={`/roles/${it.role.type}`}>
-                    <RolePanel role={it.role} variant={it.variant} />
+                    <RolePanel role={it.role} />
                   </InvisibleLink>
                 </td>
               ) : (
@@ -284,7 +284,7 @@ function Row({
       <td colSpan={player.role ? 1 : 2}>{player.name}</td>
       {player.role && !actionsShown && (
         <td>
-          <RolePanel role={player.role} variant={player.variant} />
+          <RolePanel role={player.role} />
           <Impact value={player.role.impact!} />
         </td>
       )}

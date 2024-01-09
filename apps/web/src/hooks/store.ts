@@ -1,5 +1,5 @@
-import { GameState, preparePlayers } from "logic";
-import { defaultGameSettings, GameSettings, Id, Player } from "models";
+import { GameState, generateRoles } from "logic";
+import { GameSettings, Id, Player, defaultGameSettings } from "models";
 import { nanoid } from "nanoid";
 import { create, type StateCreator } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -36,7 +36,7 @@ const createGameStore: StateCreator<GameStore> = (set) => ({
 
 const createPlayerStore: StateCreator<PlayerStore & GameSettings> = (
   set,
-  get,
+  get
 ) => ({
   ...defaultGameSettings,
 
@@ -62,7 +62,7 @@ const createPlayerStore: StateCreator<PlayerStore & GameSettings> = (
 
   randomizeRoles() {
     const { players, ...settings } = get();
-    set({ players: preparePlayers(players, settings) });
+    set({ players: generateRoles(players, settings) });
   },
 });
 
@@ -102,6 +102,6 @@ export const useLocalStore = create(
     {
       name: "werewolf",
       storage: createJSONStorage(() => localStorage),
-    },
-  ),
+    }
+  )
 );

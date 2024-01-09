@@ -9,7 +9,7 @@ export interface Event<T = unknown> {
   choice?: Choice;
   timeLimit?: number;
   data: T;
-  role?: Role;
+  role?: Partial<Role>;
 }
 
 export interface KillData {

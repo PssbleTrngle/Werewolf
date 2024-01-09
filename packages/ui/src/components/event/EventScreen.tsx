@@ -6,6 +6,7 @@ import { useActiveEvent, useGameInfo } from "../..";
 import { XS, useMedia } from "../../styles/screens";
 import darkTheme from "../../theme/dark";
 import lightTheme from "../../theme/light";
+import RolePanel from "../RolePanel";
 import Background from "../background/Background";
 import ChoicePanel from "./ChoicePanel";
 import ControlBar from "./ControlBar";
@@ -36,6 +37,11 @@ export default function EventScreen({
 
   const theme = useMemo(() => themeBy(game?.time ?? "night"), [game]);
 
+  const participants = useMemo(
+    () => event.players.filter((it) => it.provider !== "fake"),
+    [event]
+  );
+
   const isMobile = useMedia(XS);
   const sliceParticipants = useMemo(
     () => isMobile && !!event.choice?.players?.length,
@@ -49,9 +55,14 @@ export default function EventScreen({
         <Style>
           <ControlBar gameId={gameId} />
           <EventWrapper>
+            {event.role && (
+              <h3>
+                <RolePanel role={event.role} />
+              </h3>
+            )}
             <EventParticipantList
               size={1}
-              players={event.players}
+              players={participants}
               max={sliceParticipants ? 5 : undefined}
               hideRoles
             />

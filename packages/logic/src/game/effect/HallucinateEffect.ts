@@ -1,4 +1,4 @@
-import { Id } from "models";
+import { Id, Role } from "models";
 import { RevealEvent } from "../event/RevealEvent.js";
 import revealPlayer from "../permissions/playerReveal.js";
 import { requirePlayer } from "../player/predicates.js";
@@ -7,9 +7,9 @@ import { Effect } from "./Effect.js";
 
 export class HallucinateEffect implements Effect {
   constructor(
-    private readonly type: string,
+    private readonly type: string | Role,
     private readonly to: Id,
-    private readonly targets: ReadonlyArray<Id>,
+    private readonly targets: ReadonlyArray<Id>
   ) {}
 
   apply(game: GameAccess) {
@@ -20,7 +20,7 @@ export class HallucinateEffect implements Effect {
         const hallucinated = to.roleData.hallucinated?.[it.id];
         if (!hallucinated) {
           throw new Error(
-            `roleData for ${to.name} has not been set correctly, hallucinatedRoles missing`,
+            `roleData for ${to.name} has not been set correctly, hallucinatedRoles missing`
           );
         }
 
@@ -29,7 +29,7 @@ export class HallucinateEffect implements Effect {
             ...it,
             ...hallucinated,
           },
-          game.settings.seerRevealType,
+          game.settings.seerRevealType
         );
       });
 

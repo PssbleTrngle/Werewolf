@@ -12,17 +12,16 @@ export const groupEmojis: Record<RoleGroup, string> = {
 
 export default function RolePanel({
   role,
-  variant,
   small = false,
   ...props
-}: Readonly<{ role?: Partial<Role>; variant?: string; small?: boolean }>) {
+}: Readonly<{ role?: Partial<Role>; small?: boolean }>) {
   const { t } = useTranslation();
 
   const name = useMemo(() => {
-    if (role?.type) return t(`role.${role.type}.name`, { context: variant });
+    if (role?.type) return t(`role.${role.type}.name`, { context: role.variant });
     if (role?.groups) return t(`role.group.${role.groups[0] ?? "unknown"}`);
     return undefined;
-  }, [variant, t, role]);
+  }, [t, role]);
 
   const emoji = useMemo(() => {
     if (role?.emoji) return role.emoji;

@@ -1,6 +1,6 @@
 import { Id, Player, Role, RoleGroup } from "models";
 import { arrayOrSelf } from "../../util.js";
-import { generateRoles, InitialDataEvents } from "../RoleSelector.js";
+import { InitialDataEvents, generateRoles } from "../RoleSelector.js";
 import {
   EventFactory,
   individualEvents,
@@ -33,46 +33,53 @@ function seerSleepFactory(role: Role): EventFactory {
     const alive = players.filter(isAlive);
     const seers = alive.filter(hasRole(role));
     return individualEvents(seers, (it) =>
-      SeeEvent.create(it, alive.filter(others(...it))),
+      SeeEvent.create(it, it[0]?.role ?? role, alive.filter(others(...it)))
     );
   });
 }
 
-function foolSleepFactory(role: Role): EventFactory {
-  return roleScopedFactory(role, ({ players }) => {
+function foolSleepFactory(role: Role, disguiseAs: Role): EventFactory {
+  return roleScopedFactory(disguiseAs, ({ players }) => {
     const alive = players.filter(isAlive);
     const fools = alive.filter(hasRole(role));
     return individualEvents(fools, (it) =>
-      HallucinateEvent.create(it, alive.filter(others(...it))),
+      HallucinateEvent.create(
+        it,
+        it[0]?.roleData?.hallucinated?.[it[0].id]?.role ?? disguiseAs,
+        alive.filter(others(...it))
+      )
     );
   });
 }
 
 export const registerSeerEvents = (
   seer = Seer,
-  fool: Role | undefined = Fool,
+  fool: Role | undefined = Fool
 ) => {
   registerEvent(`reveal.${seer.type}`, new RevealEvent());
 
   const seerEvents = seerSleepFactory(seer);
-  const foolEvents = fool ? foolSleepFactory(fool) : () => [];
+  const foolEvents = fool ? foolSleepFactory(fool, seer) : () => [];
 
   if (fool) {
     InitialDataEvents.register((it, others, settings) => {
       if (!hasRole(fool)(it)) return false;
 
       const seers = others.filter(hasRole(seer));
-      const takenVariants = seers.map((it) => it.variant);
+      const takenVariants = seers.map((it) => it.role.variant);
       const variant = Seer.variants?.find((it) => !takenVariants.includes(it));
 
       const hallucinatedRoles: Record<Id, Partial<Player>> = {
-        [it.id]: { role: Seer, variant },
+        [it.id]: { role: { ...Seer, variant } },
       };
-      const roles = generateRoles([it, ...others], settings).map(
-        ({ role }) => ({ role }),
-      );
+
+      const roles = generateRoles([it, ...others], {
+        ...settings,
+        disabledRoles: [...settings.disabledRoles, seer.type, fool.type],
+      }).map(({ role }) => ({ role }));
 
       others.forEach(({ id }, i) => (hallucinatedRoles[id] = roles[i]));
+      seers.forEach(({ id }) => (hallucinatedRoles[id] = { role: fool }));
 
       return { hallucinated: hallucinatedRoles };
     });

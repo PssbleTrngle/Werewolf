@@ -1,4 +1,4 @@
-import { Game, GameState, Votes, preparePlayers } from "logic";
+import { Game, GameState, Votes, generateRoles, preparePlayers } from "logic";
 import { ApiError, Id } from "models";
 import { redisJSON } from "./casting.js";
 import LobbyStorage, { Lobby } from "./lobbies.js";
@@ -63,7 +63,7 @@ export default class GameStorage {
   }
 
   async startGame(lobby: Lobby) {
-    const players = preparePlayers(lobby.players);
+    const players = preparePlayers(generateRoles(lobby.players));
 
     const id = lobby.id;
     const game = await this.createRemoteGame(id, Game.createState(players));

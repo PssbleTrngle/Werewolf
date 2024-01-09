@@ -1,4 +1,4 @@
-import { Event, Player as IPlayer, RevealData, Vote } from "models";
+import { Event, Player as IPlayer, RevealData, Role, Vote } from "models";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import { SubjectMappers } from "../permissions/index.js";
 import { Player } from "../player/Player.js";
@@ -7,11 +7,14 @@ import { EventType } from "./Event.js";
 
 export class RevealEvent extends EventType<RevealData> {
   static create(
-    type: string,
+    typeOrRole: string | Role,
     players: ReadonlyArray<Player>,
     targets: ReadonlyArray<IPlayer>
   ): Event<RevealData> {
+    const role = typeof typeOrRole === "string" ? undefined : typeOrRole;
+    const type = typeof typeOrRole === "string" ? typeOrRole : typeOrRole.type;
     return {
+      role,
       players,
       type: `reveal.${type}`,
       choice: DismissChoice,

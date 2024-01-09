@@ -17,7 +17,10 @@ export class ModeratorGameView implements GameView {
       ...subject.choice,
       canSkip: subject.choice?.canSkip || canTie,
     };
-    return { ...subject, choice };
+
+    const players = subject.players.map((it) => this.mapPlayer(it));
+
+    return { ...subject, choice, players };
   }
 
   currentEvent() {

@@ -1,21 +1,26 @@
 import { Player } from "models";
+import { useMemo } from "react";
 import styled from "styled-components";
+import Button from "./Button";
 import RolePanel from "./RolePanel";
 
 export default function PlayerIcon({
-  children: { name, role, variant },
+  children: { name, role },
   size = 1,
   hideRole = false,
   ...props
 }: Readonly<{
-  children: Pick<Player, "name" | "role" | "variant">;
+  children: Pick<Player, "name" | "role">;
   size?: number;
-  hideRole?: boolean
+  hideRole?: boolean;
 }>) {
+  const hasName = useMemo(() => !!name, [name]);
   return (
     <Style $size={size} {...props}>
       {name}
-      {hideRole || <Role small role={role} variant={variant} />}
+      {(hideRole && hasName) || (
+        <Role small={hasName} role={role} />
+      )}
     </Style>
   );
 }
@@ -31,7 +36,11 @@ const Style = styled.span<{ $size: number }>`
     outline-color: ${(p) => p.theme.text};
   }
 
-  transition: outline 0.1s linear;
+  ${Button} & {
+    outline: none;
+  }
+
+  transition: outline 0.1s ease;
 `;
 
 const Role = styled(RolePanel)`

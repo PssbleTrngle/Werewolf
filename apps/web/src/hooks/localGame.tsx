@@ -1,11 +1,12 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  allRoles,
   Game,
+  Player as GamePlayer,
   GameState,
   ModeratorGameView,
-  Player as GamePlayer,
   PlayerGameView,
+  allRoles,
+  preparePlayers,
 } from "logic";
 import { GameStatus, Id, Player, Role, Vote } from "models";
 import {
@@ -15,24 +16,24 @@ import {
   useMemo,
   useReducer,
 } from "react";
-import { GameProvider, invalidateGameQueries, QueryContext } from "ui";
+import { GameProvider, QueryContext, invalidateGameQueries } from "ui";
 import { ImpersonationProvider } from "./impersonate";
 import { GameStore, useLocalStore } from "./store";
 
 export const GAME_ID = "local";
 
-export function preparePlayers(
-  players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>,
+export function checkPlayers(
+  players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>
 ): ReadonlyArray<GamePlayer> {
-  return players.map(({ role, ...it }) => {
-    if (!role) throw new Error(`Player ${it.name} is missing a role`);
-    return {
-      roleData: {},
-      status: "alive",
-      role: role as Role,
-      ...it,
-    };
-  });
+  return preparePlayers(
+    players.map(({ role, ...it }) => {
+      if (!role) throw new Error(`Player ${it.name} is missing a role`);
+      return {
+        role: role as Role,
+        ...it,
+      };
+    })
+  );
 }
 
 function gameOf(history: ReadonlyArray<GameState>, save: GameStore["save"]) {
@@ -44,7 +45,7 @@ function gameOf(history: ReadonlyArray<GameState>, save: GameStore["save"]) {
 function createGame(onSave: GameStore["save"]) {
   const { players, ...settings } = useLocalStore.getState();
   if (!players) throw new Error("No players added yet");
-  const prepared = preparePlayers(players);
+  const prepared = checkPlayers(players);
   return gameOf(Game.createState(prepared, settings), onSave);
 }
 
@@ -208,7 +209,7 @@ export function LocalGameProvider(props: Readonly<PropsWithChildren>) {
       invalidateGameQueries(client);
       return value;
     },
-    undefined,
+    undefined
   );
 
   return (

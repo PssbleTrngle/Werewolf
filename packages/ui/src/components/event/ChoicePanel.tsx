@@ -10,6 +10,7 @@ import PlayerIcon from "../PlayerIcon";
 export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
   const { t } = useTranslation();
   const { mutate: vote } = useVoteMutation();
+
   const multiple = useMemo(
     () => !!choice.players?.length && (choice.voteCount ?? 0) > 1,
     [choice]
@@ -52,7 +53,7 @@ export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
         )}
         {multiple && (
           <Button
-            disabled={selected.length === 0}
+            disabled={selected.length !== (choice?.voteCount ?? 1)}
             onClick={() => vote({ type: "players", players: selected })}
           >
             {t("button.submit")}

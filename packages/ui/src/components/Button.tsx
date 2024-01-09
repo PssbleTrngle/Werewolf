@@ -1,7 +1,7 @@
 import { invert, lighten } from "polished";
-import styled, { css, ShouldForwardProp } from "styled-components";
-import { InputStyles } from "./Input";
+import styled, { ShouldForwardProp, css } from "styled-components";
 import { RuleSet } from "styled-components/dist/types";
+import { InputStyles } from "./Input";
 
 export interface ButtonProps {
   error?: boolean;
@@ -11,7 +11,7 @@ export interface ButtonProps {
 }
 
 export const hoverAndSelect = (
-  styles: RuleSet<ButtonProps>,
+  styles: RuleSet<ButtonProps>
 ) => css<ButtonProps>`
   &&:not(:disabled) {
     &:hover {

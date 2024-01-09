@@ -14,13 +14,12 @@ export const enum DeathCause {
 
 export interface User {
   id: Id;
-  name: string;
+  name?: string;
   provider?: string;
 }
 
 export interface Player extends User {
   role?: Partial<Role>;
-  variant?: string;
   deathCause?: DeathCause;
   status?: Status;
 }

@@ -22,6 +22,7 @@ const createKillEvent = registerEventFactory(
   "kill.wolfs",
   new KillEvent(),
   (targets: ReadonlyArray<Player>, voteCount: number) => ({
+    role: { groups: [RoleGroup.WOLF] },
     choice: {
       players: targets,
       voteCount,

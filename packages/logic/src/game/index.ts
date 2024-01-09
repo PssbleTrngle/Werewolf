@@ -38,11 +38,12 @@ type GameHookListener<T extends GameHookKey> = (
 ) => void | Promise<void>;
 
 export const FAKE_PLAYER_ID = "fake";
-export function createFakePlayer(role?: Role): IPlayer {
+export function createFakePlayer(role?: Partial<Role>): IPlayer {
   return {
+    name: "Noone",
     role,
     id: "fake",
-    name: "Noone",
+    provider: "fake",
   };
 }
 

@@ -1,4 +1,4 @@
-import { Event, Vote } from "models";
+import { Event, Role, Vote } from "models";
 import { ArrayOrSingle } from "../../util.js";
 import { Effect } from "../effect/Effect.js";
 import { HallucinateEffect } from "../effect/HallucinateEffect.js";
@@ -11,7 +11,8 @@ export class HallucinateEvent extends NoDataEvent {
   static create = registerEventFactory(
     "hallucinate",
     new HallucinateEvent(),
-    (targets: ReadonlyArray<Player>) => ({
+    (role: Partial<Role>, targets: ReadonlyArray<Player>) => ({
+      role,
       choice: { players: targets },
       data: null as never,
     })
@@ -19,7 +20,11 @@ export class HallucinateEvent extends NoDataEvent {
 
   finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
     if (vote.type === "players") {
-      return new HallucinateEffect("seer", event.players[0].id, vote.players);
+      return new HallucinateEffect(
+        event.role as Role,
+        event.players[0].id,
+        vote.players
+      );
     }
 
     return [];

@@ -13,4 +13,5 @@ export interface Role {
   impact: number;
   groups?: ReadonlyArray<RoleGroup>;
   variants?: string[];
+  variant?: string;
 }

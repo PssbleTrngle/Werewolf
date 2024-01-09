@@ -53,7 +53,7 @@ export default function ImpersonateControl({
               onClick={() => select(it)}
               $selected={impersonated?.id === it.id}
             >
-              {it.name} <RolePanel small role={it.role} variant={it.variant} />
+              {it.name} <RolePanel small role={it.role} />
             </PlayerButton>
           ))}
         </Popup>

@@ -72,7 +72,7 @@ describe("tests regarding the witch", () => {
     await game.vote(players[0].id, playerVote(players[2]));
 
     // witch has already revived & killed
-    game.expectEvents("sleep");
+    game.expectEvents("announcement.death", "kill.lynch");
   });
 
   it("witches can revive themself after getting shot by the hunter", async () => {

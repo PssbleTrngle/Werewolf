@@ -1,17 +1,21 @@
 import { shuffle, times } from "lodash-es";
 import {
   ApiError,
-  defaultGameSettings,
   GameSettings,
   Role,
   User,
+  defaultGameSettings,
 } from "models";
+import { EventBus } from "./event/EventBus.js";
 import { Player, RoleData } from "./player/Player.js";
+import { others } from "./player/predicates.js";
+import { Amor } from "./role/Amor.js";
 import { Cursed } from "./role/Cursed.js";
 import { DreamWolf } from "./role/DreamWolf.js";
 import { Executioner } from "./role/Executioner.js";
 import { Eye } from "./role/Eye.js";
 import { Freemason } from "./role/Freemason.js";
+import { Guard } from "./role/Guard.js";
 import { Hunter } from "./role/Hunter.js";
 import { Jester } from "./role/Jester.js";
 import { LoneWolf } from "./role/LoneWolf.js";
@@ -20,11 +24,7 @@ import { SeerApprentice } from "./role/SeerApprentice.js";
 import { Villager } from "./role/Villager.js";
 import { Witch } from "./role/Witch.js";
 import { Werewolf } from "./role/Wolf.js";
-import { EventBus } from "./event/EventBus.js";
-import { others } from "./player/predicates.js";
-import { Amor } from "./role/Amor.js";
 import { WolfCub } from "./role/WolfCub.js";
-import { Guard } from "./role/Guard.js";
 
 export const MIN_PLAYERS = 5;
 
@@ -53,13 +53,13 @@ export const InitialDataEvents = new EventBus<
   (
     player: InitialPlayer,
     others: InitialPlayer[],
-    settings: GameSettings,
+    settings: GameSettings
   ) => Partial<RoleData> | false
 >();
 
 export function generateRoles(
   players: ReadonlyArray<User>,
-  settings: GameSettings = defaultGameSettings,
+  settings: GameSettings = defaultGameSettings
 ): ReadonlyArray<InitialPlayer> {
   const count = players.length;
   if (count < MIN_PLAYERS) throw new ApiError(400, "Not enough players");
@@ -72,7 +72,7 @@ export function generateRoles(
   const wolfCount = Math.floor(count / 3);
   const wolfs: Role[] = times(
     Math.max(1, wolfCount - specialWolfs.length),
-    () => Werewolf,
+    () => Werewolf
   );
 
   if (wolfCount > 1)
@@ -106,9 +106,9 @@ export function generateRoles(
   const freeMasons = generateFreemasons
     ? times(
         Math.round(
-          minFreemasons + (maxFreemasons - minFreemasons) * Math.random(),
+          minFreemasons + (maxFreemasons - minFreemasons) * Math.random()
         ),
-        () => Freemason,
+        () => Freemason
       )
     : [];
 
@@ -129,21 +129,19 @@ export function generateRoles(
     const role = roles[i];
     const variant =
       role.variants && role.variants[indizes[i] % role.variants.length];
-    return { ...it, role, variant };
+    return { ...it, role: { ...role, variant } };
   });
 }
 
 export function preparePlayers(
-  players: ReadonlyArray<User>,
-  settings: GameSettings = defaultGameSettings,
+  players: ReadonlyArray<InitialPlayer>,
+  settings: GameSettings = defaultGameSettings
 ): ReadonlyArray<Player> {
-  const withRoles = generateRoles(players, settings);
-
-  return withRoles.map((it) => {
+  return players.map((it) => {
     const roleData = InitialDataEvents.notify(
       it,
-      withRoles.filter(others(it)),
-      settings,
+      players.filter(others(it)),
+      settings
     ).reduce<RoleData>((a, b) => ({ ...a, ...b }), {});
 
     return {

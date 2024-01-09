@@ -17,7 +17,7 @@ export function registerFreemasonEvents(role = Freemason) {
   StartEvents.registerEvent(
     roleScopedFactory(role, ({ players }) => {
       const comrades = players.filter(hasRole(role));
-      return RevealEvent.create(role.type, comrades, comrades);
-    }),
+      return RevealEvent.create(role, comrades, comrades);
+    })
   );
 }

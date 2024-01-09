@@ -67,7 +67,7 @@ function CreateGame() {
 }
 
 const Logo = styled.img`
-  height: 50vh;
+  height: 40vh;
   max-height: 70vw;
 `;
 

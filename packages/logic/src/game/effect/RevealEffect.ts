@@ -1,4 +1,4 @@
-import { Id, PlayerRevealType } from "models";
+import { Id, PlayerRevealType, Role } from "models";
 import { RevealEvent } from "../event/RevealEvent.js";
 import revealPlayer from "../permissions/playerReveal.js";
 import { requirePlayer } from "../player/predicates.js";
@@ -7,7 +7,7 @@ import { Effect } from "./Effect.js";
 
 export class RevealEffect implements Effect {
   constructor(
-    private readonly type: string,
+    private readonly type: string | Role,
     private readonly to: Id,
     private readonly targets: ReadonlyArray<Id>,
     private readonly revealType:

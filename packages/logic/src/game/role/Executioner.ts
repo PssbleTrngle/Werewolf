@@ -48,7 +48,7 @@ export function registerExecutionEvents(role = Executioner) {
 
     if (users.length === 0) {
       return new EventEffect(
-        roleScopedFactory(role, () => RevealEvent.create(role.type, [], [])),
+        roleScopedFactory(role, () => RevealEvent.create(role, [], []))
       );
     }
 
@@ -65,9 +65,9 @@ export function registerExecutionEvents(role = Executioner) {
         new EventEffect(
           roleScopedFactory(role, () =>
             individualEvents([user], (it) =>
-              RevealEvent.create(role.type, it, [target]),
-            ),
-          ),
+              RevealEvent.create(role, it, [target])
+            )
+          )
         ),
       ];
     });

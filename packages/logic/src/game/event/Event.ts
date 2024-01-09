@@ -44,7 +44,7 @@ export function roleScopedFactory(
 ): EventFactory {
   return (game) => {
     const created = arrayOrSelf(factory(game));
-    return created.map((it) => ({ ...it, role }));
+    return created.map((it) => ({ ...it, role: it.role ?? role }));
   };
 }
 

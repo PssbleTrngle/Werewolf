@@ -1,9 +1,8 @@
-import { Event, Id, Player as IPlayer, Vote } from "models";
+import { Event, Id, Player as IPlayer, Player, Vote } from "models";
 import { omitByUndefined } from "../../util.js";
 import { EventType } from "../event/Event.js";
 import { EventRegistry } from "../event/EventRegistry.js";
 import { Game } from "../index.js";
-import { Player } from "../player/Player.js";
 import { isNotDead, requirePlayer } from "../player/predicates.js";
 import { validateVote } from "../vote/Vote.js";
 import { GameView } from "./index.js";
@@ -71,8 +70,8 @@ export class PlayerGameView implements GameView {
   }
 }
 
-function playerViewFor(player: Player, subject: IPlayer): IPlayer {
-  const revealed = player.roleData.revealedPlayers?.[subject.id] ?? {};
+export function playerViewFor(player: Player, subject: IPlayer): IPlayer {
+  const revealed = player.roleData?.revealedPlayers?.[subject.id] ?? {};
 
   const common: IPlayer = {
     ...revealed,
@@ -82,11 +81,10 @@ function playerViewFor(player: Player, subject: IPlayer): IPlayer {
   };
 
   if (player.id === subject.id) {
-    const hallucinated = player.roleData.hallucinated?.[subject.id];
+    const hallucinated = player.roleData?.hallucinated?.[subject.id];
 
     return omitByUndefined({
       ...common,
-      variant: player.variant,
       role: player.role,
       ...hallucinated,
     });
