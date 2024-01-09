@@ -11,6 +11,7 @@ export * from "./game/effect/ReviveEffect.js";
 export * from "./game/effect/TimeEffect.js";
 export * from "./game/event/DeathEvent.js";
 export * from "./game/event/Event.js";
+export * from "./game/event/EventBus.js";
 export * from "./game/event/HallucinateEvent.js";
 export * from "./game/event/KillEvent.js";
 export * from "./game/event/LynchEvent.js";

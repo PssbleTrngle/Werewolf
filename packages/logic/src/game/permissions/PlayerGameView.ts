@@ -1,8 +1,9 @@
-import { Event, Id, Player as IPlayer, Player, Vote } from "models";
+import { Event, Id, Player as IPlayer, Vote } from "models";
 import { omitByUndefined } from "../../util.js";
 import { EventType } from "../event/Event.js";
 import { EventRegistry } from "../event/EventRegistry.js";
 import { Game } from "../index.js";
+import { Player } from "../player/Player.js";
 import { isNotDead, requirePlayer } from "../player/predicates.js";
 import { validateVote } from "../vote/Vote.js";
 import { GameView } from "./index.js";

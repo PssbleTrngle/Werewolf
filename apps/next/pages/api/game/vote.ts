@@ -8,7 +8,7 @@ const POST = createApiHandler(async (req, res) => {
 
   const vote: Vote = VoteSchema.parse(req.body);
 
-  view.vote(vote);
+  await view.vote(vote);
 
   res.status(204).send(null);
 });

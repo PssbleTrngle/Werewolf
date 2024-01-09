@@ -31,9 +31,9 @@ interface GameHooks {
   vote: Votes;
 }
 
-type GameHookKey = keyof GameHooks;
+export type GameHookKey = keyof GameHooks;
 
-type GameHookListener<T extends GameHookKey> = (
+export type GameHookListener<T extends GameHookKey> = (
   subject: GameHooks[T]
 ) => void | Promise<void>;
 
@@ -90,12 +90,16 @@ export class Game implements GameReadAccess {
     return created;
   }
 
+  private async notify<T extends GameHookKey>(event: T, subject: GameHooks[T]) {
+    await Promise.all(this.hookBus(event).notify(subject));
+  }
+
   public on<T extends GameHookKey>(event: T, listener: GameHookListener<T>) {
     this.hookBus(event).register(listener);
   }
 
   async save() {
-    await Promise.all(this.hookBus("save").notify(this.state.save()));
+    await this.notify("save", this.state.save());
   }
 
   get players() {
@@ -209,10 +213,9 @@ export class Game implements GameReadAccess {
         )
         .filter((it) => it.players.some(({ id }) => movedPlayers.includes(id)));
 
-      const eventBus = this.hookBus("event");
       await Promise.all([
         this.save(),
-        ...newEvents.flatMap((it) => eventBus.notify(it)),
+        ...newEvents.map((it) => this.notify("event", it)),
       ]);
     }
   }
@@ -259,8 +262,6 @@ export class Game implements GameReadAccess {
     });
 
     await this.check();
-    await Promise.all(
-      this.hookBus("vote").notify(Array.from(this.votes.entries()))
-    );
+    await this.notify("vote", Array.from(this.votes.entries()));
   }
 }

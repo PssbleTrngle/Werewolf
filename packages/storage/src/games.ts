@@ -1,14 +1,33 @@
-import { Game, GameState, Votes, generateRoles, preparePlayers } from "logic";
+import {
+  Game,
+  GameHookKey,
+  GameHookListener,
+  GameState,
+  Votes,
+  generateRoles,
+  preparePlayers,
+} from "logic";
 import { ApiError, Id } from "models";
 import { redisJSON } from "./casting.js";
 import LobbyStorage, { Lobby } from "./lobbies.js";
 import { RedisClient } from "./redis.js";
+
+type ListenerWithGame<T extends GameHookKey = GameHookKey> = (
+  game: Game,
+  ...args: Parameters<GameHookListener<T>>
+) => ReturnType<GameHookListener<T>>;
 
 export default class GameStorage {
   constructor(
     private readonly redis: RedisClient,
     private readonly lobbies: LobbyStorage
   ) {}
+
+  private hooks: [GameHookKey, ListenerWithGame][] = [];
+
+  async on<T extends GameHookKey>(event: T, listener: ListenerWithGame<T>) {
+    this.hooks.push([event, listener as ListenerWithGame]);
+  }
 
   private async createRemoteGame(
     id: Id,
@@ -23,24 +42,8 @@ export default class GameStorage {
       await this.setVotes(id, votes);
     });
 
-    game.on("event", async ({ players, choice }) => {
-      const seededUsers = players.filter((it) => it.provider === "seeded");
-
-      if (choice) {
-        await Promise.all(
-          seededUsers.map(({ id }) => {
-            if (choice.canSkip && Math.random() > 0.8)
-              return game.vote(id, { type: "skip" });
-            if (choice.players) {
-              const targets = [...choice.players]
-                .sort(() => Math.random() - 0.5)
-                .slice(0, choice.voteCount ?? 1)
-                .map((it) => it.id);
-              return game.vote(id, { type: "players", players: targets });
-            }
-          })
-        );
-      }
+    this.hooks.forEach(([event, listener]) => {
+      game.on(event, (...args) => listener(game, ...args));
     });
 
     return game;
