@@ -1,4 +1,3 @@
-import { GameStatus, Id } from "models";
 import GameStorage from "./games.js";
 import LobbyStorage from "./lobbies.js";
 import { RedisClient, connectRedis, setupRedis } from "./redis.js";
@@ -24,31 +23,6 @@ export class Storage {
 
   async disconnect() {
     await this.redis.disconnect();
-  }
-
-  async statusOf(playerId: Id): Promise<GameStatus> {
-    const [lobbyId, gameId] = await Promise.all([
-      this.redis.get(`player:${playerId}:lobby`),
-      this.redis.get(`player:${playerId}:game`),
-    ]);
-
-    if (gameId) {
-      return {
-        type: "game",
-        id: gameId,
-      };
-    }
-
-    if (lobbyId) {
-      return {
-        type: "lobby",
-        id: lobbyId,
-      };
-    }
-
-    return {
-      type: "none",
-    };
   }
 }
 

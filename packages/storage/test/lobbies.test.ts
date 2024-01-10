@@ -11,7 +11,7 @@ describe("tests regarding the lobby system", () => {
     const id = await storage.lobbies.createLobby(owner);
 
     const lobby = await storage.lobbies.getLobby(id);
-    const status = await storage.statusOf(owner.id);
+    const userLobby = await storage.lobbies.lobbyOf(owner.id);
     const lobbies = await storage.lobbies.getLobbies();
 
     expect(lobby).toMatchObject({
@@ -19,10 +19,7 @@ describe("tests regarding the lobby system", () => {
       players: [owner],
     });
 
-    expect(status).toMatchObject({
-      type: "lobby",
-      id,
-    });
+    expect(userLobby?.id).toBe(id);
 
     expect(lobbies).toEqual([lobby]);
   });
@@ -34,7 +31,7 @@ describe("tests regarding the lobby system", () => {
 
     await storage.lobbies.joinLobby(user, id);
 
-    const status = await storage.statusOf(user.id);
+    const userLobby = await storage.lobbies.lobbyOf(user.id);
     const lobby = await storage.lobbies.getLobby(id);
 
     expect(lobby).toMatchObject({
@@ -42,10 +39,7 @@ describe("tests regarding the lobby system", () => {
       players: [owner, user],
     });
 
-    expect(status).toMatchObject({
-      type: "lobby",
-      id,
-    });
+    expect(userLobby?.id).toBe(id);
   });
 
   it("users can leave a lobby", async () => {
@@ -57,7 +51,7 @@ describe("tests regarding the lobby system", () => {
 
     await storage.lobbies.leaveLobby(user, id);
 
-    const status = await storage.statusOf(user.id);
+    const userLobby = await storage.lobbies.lobbyOf(user.id);
     const lobby = await storage.lobbies.getLobby(id);
 
     expect(lobby).toMatchObject({
@@ -65,7 +59,7 @@ describe("tests regarding the lobby system", () => {
       players: [owner],
     });
 
-    expect(status.type).toBe("none");
+    expect(userLobby).toBeNull();
   });
 
   it("deletes a lobby if the last person leaves", async () => {
@@ -75,10 +69,10 @@ describe("tests regarding the lobby system", () => {
 
     await storage.lobbies.leaveLobby(owner, id);
 
-    const status = await storage.statusOf(owner.id);
+    const userLobby = await storage.lobbies.lobbyOf(owner.id);
     const lobbies = await storage.lobbies.getLobbies();
 
-    expect(status.type).toBe("none");
+    expect(userLobby).toBeNull();
     await expect(storage.lobbies.getLobby(id)).rejects.toThrowError(ApiError);
     expect(lobbies).toHaveLength(0);
   });

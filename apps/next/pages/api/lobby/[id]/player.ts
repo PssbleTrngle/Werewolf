@@ -3,6 +3,7 @@ import { IdParameter } from "@/lib/server/schemas";
 import { requireServerSession } from "@/lib/server/session";
 import connectStorage from "@/lib/server/storage";
 
+// TODO move to user/me
 const POST = createApiHandler(async (req, res) => {
   const session = await requireServerSession({ req, res });
   const { id } = IdParameter.parse(req.query);

@@ -9,7 +9,7 @@ import {
 } from "logic";
 import { ApiError, Id } from "models";
 import { redisJSON } from "./casting.js";
-import LobbyStorage, { Lobby } from "./lobbies.js";
+import LobbyStorage, { GameStatus, Lobby } from "./lobbies.js";
 import { RedisClient } from "./redis.js";
 
 type ListenerWithGame<T extends GameHookKey = GameHookKey> = (
@@ -70,24 +70,13 @@ export default class GameStorage {
 
     const id = lobby.id;
     const game = await this.createRemoteGame(id, Game.createState(players));
-    await game.save();
 
-    await this.setGame(
-      players.map((it) => it.id),
-      id
-    );
-
-    await this.lobbies.deleteLobby(lobby);
+    await Promise.all([
+      this.lobbies.updateStatus(id, GameStatus.RUNNING),
+      game.start(),
+    ]);
 
     return game;
-  }
-
-  private async setGame(playerIds: Id[], gameId: Id) {
-    await Promise.all(
-      playerIds.map((playerId) =>
-        this.redis.set(`player:${playerId}:game`, gameId)
-      )
-    );
   }
 
   private async setVotes(gameId: Id, votes: Votes) {

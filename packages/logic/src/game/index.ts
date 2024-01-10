@@ -56,10 +56,7 @@ export class Game implements GameReadAccess {
     EventBus<GameHookListener<GameHookKey>>
   >();
 
-  public constructor(
-    history: ReadonlyArray<GameState>,
-    initialVotes: Votes = []
-  ) {
+  constructor(history: ReadonlyArray<GameState>, initialVotes: Votes = []) {
     if (history.length === 0) throw new Error("Game history may not be empty");
     this.state = new StateHistory(...history);
     this.votes = new Map(initialVotes);
@@ -98,8 +95,17 @@ export class Game implements GameReadAccess {
     this.hookBus(event).register(listener);
   }
 
-  async save() {
+  private async save() {
     await this.notify("save", this.state.save());
+  }
+
+  async start() {
+    const [event, ...rest] = this.events;
+    if (rest.length > 0 || event.type !== "start") {
+      throw new Error("game has already started");
+    }
+
+    await Promise.all([this.save(), this.notify("event", event)]);
   }
 
   get players() {
@@ -257,7 +263,7 @@ export class Game implements GameReadAccess {
           `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`
         );
 
-      console.log(player.name, "voted on", event.type);
+      console.log(player.name, "voted", vote, "on", event.type);
       this.votes.set(player.id, vote);
     });
 

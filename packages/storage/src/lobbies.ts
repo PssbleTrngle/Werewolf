@@ -3,11 +3,18 @@ import { nanoid } from "nanoid";
 import { redisJSON } from "./casting.js";
 import { RedisClient } from "./redis.js";
 
+export const enum GameStatus {
+  NONE = "none",
+  RUNNING = "running",
+  FINISHED = "finished",
+}
+
 export interface Lobby {
   id: Id;
   players: ReadonlyArray<User>;
   owner: User;
   settings: GameSettings;
+  status: GameStatus;
 }
 
 export default class LobbyStorage {
@@ -21,6 +28,7 @@ export default class LobbyStorage {
       players: [owner],
       owner,
       settings: defaultGameSettings,
+      status: GameStatus.NONE,
     };
     await Promise.all([
       this.redis.json.set(`lobby:${id}`, "$", redisJSON(lobby)),
@@ -36,12 +44,20 @@ export default class LobbyStorage {
       this.redis.json.arrAppend(
         `lobby:${lobbyId}`,
         ".players",
-        redisJSON(user),
+        redisJSON(user)
       ),
     ]);
   }
 
+  async lobbyOf(playerId: Id) {
+    const lobbyId = await this.redis.get(`player:${playerId}:lobby`);
+    if (!lobbyId) return null;
+    return await this.getLobby(lobbyId);
+  }
+
   async leaveLobby(user: User, lobbyId: Id) {
+    // TODO replace with bot if still running
+
     const lobby = await this.getLobby(lobbyId);
     const index = lobby.players.findIndex((it) => it.id === user.id);
 
@@ -73,5 +89,9 @@ export default class LobbyStorage {
     const result = await this.redis.ft.search("idx:lobbies", "*");
 
     return result.documents.map((it) => it.value as unknown as Lobby);
+  }
+
+  async updateStatus(lobbyId: Id, status: GameStatus) {
+    await this.redis.json.set(`lobby:${lobbyId}`, ".status", status);
   }
 }

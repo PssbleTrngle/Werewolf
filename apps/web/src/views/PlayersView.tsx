@@ -28,7 +28,6 @@ import {
   TrashIcon,
   XS,
   tooltip,
-  useGameStatus,
   useMedia,
   usePlayers,
 } from "ui";
@@ -37,7 +36,7 @@ import ImpactBadge from "../components/ImpactBadge";
 import InvisibleLink from "../components/InivisibleLink";
 import RenameDialog from "../components/dialog/RenameDialog";
 import RoleSelectDialog from "../components/dialog/RoleSelectDialog";
-import { GAME_ID } from "../hooks/localGame";
+import { GAME_ID, useGameRunning } from "../hooks/localGame";
 import { useLocalStore } from "../hooks/store";
 import randomNames from "../randomNames";
 
@@ -110,9 +109,9 @@ function RandomizeButton({ setName }: Readonly<{ setName: Dispatch<string> }>) {
 }
 
 export default function PlayersView() {
-  const { data } = useGameStatus();
+  const isRunning = useGameRunning();
 
-  if (data.type === "game") return <ActivePlayersView />;
+  if (isRunning) return <ActivePlayersView />;
   return <PlayersEditView />;
 }
 

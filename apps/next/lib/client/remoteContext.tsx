@@ -12,7 +12,7 @@ import { ApiError, Id } from "models";
 import querystring, { ParsedUrlQueryInput } from "querystring";
 import { useMemo } from "react";
 import type { Lobby } from "storage";
-import { QueryContext, gameStatusKey } from "ui";
+import { QueryContext } from "ui";
 
 interface ErrorData {
   message?: string;
@@ -98,8 +98,6 @@ const gameQuery = (endpoint: string) => {
 export default function createRemoteContext(): QueryContext {
   return {
     roles: createFetcher("roles"),
-    // TODO game id in path
-    gameStatus: createFetcher(gameQuery("game/status")),
     players: createAwareFetcher(([, id]) => gameQuery(`game/${id}/players`)),
     game: createAwareFetcher(([, id]) => gameQuery(`game/${id}`)),
     activeEvent: createAwareFetcher(([, id]) =>
@@ -132,6 +130,17 @@ export function useLobby(id: Id) {
   });
 }
 
+const fetchUserLobby = createAwareFetcher<Lobby>(
+  ([, id]) => `user/${id}/lobby`
+);
+export const selfLobbyKey = () => ["user", "me", "lobby"];
+export function useSelfLobby() {
+  return useSuspenseQuery({
+    queryKey: selfLobbyKey(),
+    queryFn: fetchUserLobby,
+  });
+}
+
 export function useJoinMutation(lobbyId: Id) {
   const client = useQueryClient();
 
@@ -143,7 +152,7 @@ export function useJoinMutation(lobbyId: Id) {
   return useMutation({
     mutationFn: () => submit(),
     onSuccess: async () => {
-      await client.invalidateQueries({ queryKey: gameStatusKey() });
+      await client.invalidateQueries({ queryKey: selfLobbyKey() });
       await client.invalidateQueries({ queryKey: lobbiesKey() });
     },
   });
@@ -160,7 +169,7 @@ export function useLeaveMutation(lobbyId: Id) {
   return useMutation({
     mutationFn: () => submit(),
     onSuccess: async () => {
-      await client.invalidateQueries({ queryKey: gameStatusKey() });
+      await client.invalidateQueries({ queryKey: selfLobbyKey() });
       await client.invalidateQueries({ queryKey: lobbiesKey() });
     },
   });
@@ -177,7 +186,7 @@ export function useStartMutation(lobbyId: Id) {
   return useMutation({
     mutationFn: () => submit(),
     onSuccess: async () => {
-      await client.invalidateQueries({ queryKey: gameStatusKey() });
+      await client.invalidateQueries({ queryKey: selfLobbyKey() });
       await client.invalidateQueries({ queryKey: lobbiesKey() });
     },
   });

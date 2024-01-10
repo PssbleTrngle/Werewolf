@@ -10,8 +10,8 @@ import {
   SettingsIcon,
   UserIcon,
   useActiveLink,
-  useGameStatus,
 } from "ui";
+import { useGameRunning } from "../hooks/localGame";
 import ImpersonationSelect from "./ImpersonationSelect";
 
 const LINKS: ReadonlyArray<NavTab> = [
@@ -29,7 +29,7 @@ export default function NavBar() {
 
   const location = useLocation();
   const active = useActiveLink(LINKS, location.pathname);
-  const { data: status } = useGameStatus();
+  const isRunning = useGameRunning();
 
   return (
     <Base
@@ -40,7 +40,7 @@ export default function NavBar() {
         </NavLink>
       ))}
     >
-      {status.type === "game" && <ImpersonationSelect />}
+      {isRunning && <ImpersonationSelect />}
     </Base>
   );
 }

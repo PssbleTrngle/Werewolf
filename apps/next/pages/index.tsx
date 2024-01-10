@@ -2,51 +2,46 @@ import GameLobby from "@/components/views/GameLobby";
 import NoGame from "@/components/views/NoGame";
 import Layout from "@/layout/default";
 import { withPrefetched } from "@/lib/client/hydrateQueries";
-import { lobbiesKey, lobbyKey } from "@/lib/client/remoteContext";
+import {
+  lobbiesKey,
+  selfLobbyKey,
+  useLeaveMutation,
+  useSelfLobby,
+} from "@/lib/client/remoteContext";
 import { prefetchQueries } from "@/lib/server/prefetchQueries";
 import { requireServerSession, requireSessionView } from "@/lib/server/session";
 import connectStorage from "@/lib/server/storage";
 import { Id } from "models";
-import {
-  EventScreen,
-  activeEventKey,
-  gameInfoKey,
-  gameStatusKey,
-  useGameStatus,
-} from "ui";
+import { useTranslation } from "react-i18next";
+import { GameStatus } from "storage/src/lobbies";
+import styled from "styled-components";
+import { Button, EventScreen, activeEventKey, gameInfoKey } from "ui";
 
 export const getServerSideProps = prefetchQueries(async (ctx, client) => {
   const session = await requireServerSession(ctx);
   const storage = await connectStorage();
-  const status = await storage.statusOf(session.user.id);
+  const lobby = await storage.lobbies.lobbyOf(session.user.id);
 
   await client.prefetchQuery({
-    queryKey: gameStatusKey(),
-    queryFn: () => status,
+    queryKey: selfLobbyKey(),
+    queryFn: () => lobby,
   });
 
-  if (status.type === "game") {
-    const view = await requireSessionView(session);
+  if (lobby) {
+    if (lobby.status !== GameStatus.NONE) {
+      const view = await requireSessionView(session);
 
-    await client.prefetchQuery({
-      queryKey: activeEventKey(status.id),
-      queryFn: () => view.currentEvent(),
-    });
+      await client.prefetchQuery({
+        queryKey: activeEventKey(lobby.id),
+        queryFn: () => view.currentEvent(),
+      });
 
-    await client.prefetchQuery({
-      queryKey: gameInfoKey(status.id),
-      queryFn: () => view.gameInfo(),
-    });
-  }
-
-  if (status.type === "lobby") {
-    await client.prefetchQuery({
-      queryKey: lobbyKey(status.id),
-      queryFn: () => storage.lobbies.getLobby(status.id),
-    });
-  }
-
-  if (status.type === "none") {
+      await client.prefetchQuery({
+        queryKey: gameInfoKey(lobby.id),
+        queryFn: () => view.gameInfo(),
+      });
+    }
+  } else {
     await client.prefetchQuery({
       queryKey: lobbiesKey(),
       queryFn: () => storage.lobbies.getLobbies(),
@@ -55,21 +50,43 @@ export const getServerSideProps = prefetchQueries(async (ctx, client) => {
 });
 
 function GameView() {
-  const { data: status } = useGameStatus();
+  const { data: lobby } = useSelfLobby();
 
-  switch (status.type) {
-    case "game":
-      return <ActiveGame gameId={status.id} />;
-    case "lobby":
-      return <GameLobby lobbyId={status.id} />;
-    case "none":
-      return <NoGame />;
+  if (lobby) {
+    if (lobby.status === GameStatus.NONE) {
+      return <GameLobby lobby={lobby} />;
+    }
+
+    return <ActiveGame gameId={lobby.id} />;
   }
+
+  return <NoGame />;
 }
 
 function ActiveGame({ gameId }: Readonly<{ gameId: Id }>) {
-  return <EventScreen gameId={gameId} />;
+  const { t } = useTranslation("hub");
+
+  // TODO confirm dialog?
+  const { mutate: leave } = useLeaveMutation(gameId);
+
+  return (
+    <EventScreen gameId={gameId}>
+      <LeaveButton onClick={() => leave()}>
+        {t("button.player.leave")}
+      </LeaveButton>
+    </EventScreen>
+  );
 }
+
+const LeaveButton = styled(Button)`
+  position: absolute;
+  z-index: 100;
+
+  bottom: 1em;
+  right: 1em;
+
+  font-size: 0.5em;
+`;
 
 function GamePage() {
   return (

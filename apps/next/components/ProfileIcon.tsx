@@ -1,9 +1,11 @@
 import ImpersonateControl from "@/components/ImpersonateControl";
+import { useSelfLobby } from "@/lib/client/remoteContext";
 import { useLocalStore } from "@/lib/client/store";
 import { signIn, useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
+import { GameStatus } from "storage/src/lobbies";
 import styled from "styled-components";
-import { Button, useGameStatus } from "ui";
+import { Button } from "ui";
 
 export default function ProfileIcon() {
   const { t } = useTranslation("hub");
@@ -33,9 +35,9 @@ export default function ProfileIcon() {
 }
 
 function OptionalImpersonateControl() {
-  const { data: status } = useGameStatus();
-  if (status.type === "game") {
-    return <ImpersonateControl gameId={status.id} />;
+  const { data: lobby } = useSelfLobby();
+  if (lobby && lobby.status !== GameStatus.NONE) {
+    return <ImpersonateControl gameId={lobby.id} />;
   } else {
     return null;
   }

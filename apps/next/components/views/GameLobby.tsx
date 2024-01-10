@@ -1,10 +1,6 @@
-import {
-  useLeaveMutation,
-  useLobby,
-  useStartMutation,
-} from "@/lib/client/remoteContext";
-import { Id } from "models";
+import { useLeaveMutation, useStartMutation } from "@/lib/client/remoteContext";
 import { useTranslation } from "react-i18next";
+import { Lobby } from "storage";
 import styled from "styled-components";
 import {
   Buttons,
@@ -16,15 +12,14 @@ import {
   tooltip,
 } from "ui";
 
-export default function GameLobby({ lobbyId }: Readonly<{ lobbyId: Id }>) {
+export default function GameLobby({ lobby }: Readonly<{ lobby: Lobby }>) {
   const { t } = useTranslation("hub");
-  const { mutate: leave } = useLeaveMutation(lobbyId);
-  const { mutate: start, error: startError } = useStartMutation(lobbyId);
-  const { data: lobby } = useLobby(lobbyId);
+  const { mutate: leave } = useLeaveMutation(lobby.id);
+  const { mutate: start, error: startError } = useStartMutation(lobby.id);
 
   return (
     <Centered>
-      <p>Lobby {lobbyId}</p>
+      <p>Lobby {lobby.id}</p>
 
       <Players>
         {lobby.players.map((it) => (

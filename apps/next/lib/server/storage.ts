@@ -1,6 +1,11 @@
+import { Player } from "models";
 import { Storage } from "storage";
 
+const cacheStorage = process.env.CACHE_STORAGE !== "false";
+
 export default async function connectStorage(): Promise<Storage> {
+  if (!cacheStorage) return createStorage();
+
   if (global.cachedStorage?.resolved) return global.cachedStorage.resolved;
   if (global.cachedStorage?.promise) return global.cachedStorage.promise;
 
@@ -13,31 +18,36 @@ export default async function connectStorage(): Promise<Storage> {
   return resolved;
 }
 
+function isBot(player: Player) {
+  return ["bot", "seeded"].includes(player.provider!);
+}
+
 async function createStorage() {
   const storage = await Storage.create();
 
   storage.games.on("event", async (game, { players, choice }) => {
-    const seededUsers = players.filter((it) => it.provider === "seeded");
+    const seededUsers = players.filter(isBot);
+    console.log(`Found ${seededUsers.length} seeded users`);
 
     if (choice) {
       await Promise.all(
         seededUsers.map(({ id }) => {
-          if (choice.canSkip && Math.random() > 0.8)
+          const canVotePlayer = choice.players?.length;
+          const wouldSkip = Math.random() > 0.8 || !canVotePlayer;
+          if (choice.canSkip && wouldSkip)
             return game.vote(id, { type: "skip" });
-          if (choice.players) {
-            const targets = [...choice.players]
+
+          if (canVotePlayer) {
+            const targets = [...choice.players!]
               .sort(() => Math.random() - 0.5)
               .slice(0, choice.voteCount ?? 1)
               .map((it) => it.id);
+
             return game.vote(id, { type: "players", players: targets });
           }
         })
       );
     }
-  });
-
-  storage.games.on("event", async (_, event) => {
-    console.log("new event", event.type);
   });
 
   return storage;

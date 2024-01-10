@@ -6,12 +6,11 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Event, GameInfo, GameStatus, Id, Player, Role, Vote } from "models";
+import { Event, GameInfo, Id, Player, Role, Vote } from "models";
 import { createContext, useContext } from "react";
 
 export interface QueryContext {
   roles: QueryFunction<ReadonlyArray<Role>>;
-  gameStatus: QueryFunction<GameStatus>;
   players: QueryFunction<ReadonlyArray<Player>>;
   game: QueryFunction<GameInfo>;
   activeEvent: QueryFunction<Event>;
@@ -31,7 +30,6 @@ const CTX = createContext<QueryContext>({
   roles: NOOP,
   players: NOOP,
   game: NOOP,
-  gameStatus: NOOP,
   activeEvent: NOOP,
   submitVote: NOOP,
   undo: NOOP,
@@ -41,12 +39,6 @@ const CTX = createContext<QueryContext>({
 });
 
 export const GameProvider = CTX.Provider;
-
-export const gameStatusKey = () => ["status"];
-export function useGameStatus() {
-  const { gameStatus } = useContext(CTX);
-  return useSuspenseQuery({ queryKey: gameStatusKey(), queryFn: gameStatus });
-}
 
 export const gameInfoKey = (gameId: Id) => ["game", gameId];
 export function useGameInfo(gameId: Id) {
@@ -66,11 +58,11 @@ export function useActiveEvent(gameId: Id) {
   });
 }
 
-export const playersKey = () => ["players"];
+export const playersKey = (gameId: Id) => ["players", gameId];
 export function usePlayers(gameId: Id) {
   const { players } = useContext(CTX);
   return useSuspenseQuery({
-    queryKey: ["players", gameId],
+    queryKey: playersKey(gameId),
     queryFn: players,
   });
 }
@@ -82,8 +74,7 @@ export function useRoles() {
 }
 
 export async function invalidateGameQueries(client: QueryClient) {
-  await client.invalidateQueries({ queryKey: gameStatusKey() });
-  await client.invalidateQueries({ queryKey: playersKey() });
+  await client.invalidateQueries({ queryKey: playersKey("").slice(0, 1) });
   await client.invalidateQueries({ queryKey: gameInfoKey("").slice(0, 1) });
   await client.invalidateQueries({ queryKey: activeEventKey("").slice(0, 1) });
 }

@@ -6,9 +6,10 @@ import {
   ModeratorGameView,
   PlayerGameView,
   allRoles,
+  notNull,
   preparePlayers,
 } from "logic";
-import { GameStatus, Id, Player, Role, Vote } from "models";
+import { Id, Player, Role, Vote } from "models";
 import {
   Dispatch,
   DispatchWithoutAction,
@@ -82,7 +83,6 @@ function createEmptyContext(createGame: DispatchWithoutAction): QueryContext {
   return {
     ...localContext,
     create: wrap(createGame),
-    gameStatus: wrap(() => ({ type: "lobby", id: GAME_ID }) as GameStatus),
     game: requiresGame,
     activeEvent: requiresGame,
     players: requiresGame,
@@ -114,7 +114,6 @@ function createGameContextFor({
     ...localContext,
     create: alreadyRunning,
     stop: wrap(stopGame),
-    gameStatus: wrap(() => ({ type: "game", id: GAME_ID }) as GameStatus),
     game: wrap(() => view.gameInfo()),
     players: wrap(() => view.players()),
     activeEvent: wrap(() => view.currentEvent()),
@@ -154,7 +153,7 @@ function createLocalGame(onSave: GameStore["save"]): ExtendedGameContext {
 
   function setGame(value: Game | null) {
     game = value;
-    if (game) game.save();
+    if (game) game.start();
     else onSave(null);
     updateContext();
   }
@@ -165,7 +164,6 @@ function createLocalGame(onSave: GameStore["save"]): ExtendedGameContext {
   }
 
   return {
-    gameStatus: (...args) => actualContext.gameStatus(...args),
     roles: (...args) => actualContext.roles(...args),
     players: (...args) => actualContext.players(...args),
     game: (...args) => actualContext.game(...args),
@@ -217,4 +215,9 @@ export function LocalGameProvider(props: Readonly<PropsWithChildren>) {
       <GameProvider {...props} value={context} />
     </ImpersonationProvider>
   );
+}
+
+export function useGameRunning() {
+  const state = useLocalStore((store) => store.history);
+  return useMemo(() => notNull(state), [state]);
 }

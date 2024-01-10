@@ -9,16 +9,15 @@ import {
   EventScreen,
   Title,
   useCreateMutation,
-  useGameStatus,
   useStopMutation,
 } from "ui";
-import { GAME_ID } from "../hooks/localGame";
+import { GAME_ID, useGameRunning } from "../hooks/localGame";
 import { useLocalStore } from "../hooks/store";
 
 export default function EventsView() {
-  const { data: status } = useGameStatus();
+  const isRunning = useGameRunning();
 
-  if (status.type === "game") return <ActiveEventView />;
+  if (isRunning) return <ActiveEventView />;
   return <CreateGame />;
 }
 

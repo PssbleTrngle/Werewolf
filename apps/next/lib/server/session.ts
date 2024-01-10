@@ -12,14 +12,15 @@ import { Session, getServerSession } from "next-auth";
 import { IdSchema } from "@/lib/server/schemas";
 import connectStorage from "@/lib/server/storage";
 import { ModeratorUser } from "@/lib/specialUsers";
+import { GameStatus } from "storage/src/lobbies";
 import zod from "zod";
+import {useSelfLobby } from '@/lib/client/remoteContext'
 
 async function gameIdOf(session: Session) {
   const storage = await connectStorage();
-
-  const status = await storage.statusOf(session.user.id);
-  if (status?.type !== "game") return null;
-  return status.id;
+  const lobby = await storage.lobbies.lobbyOf(session.user.id);
+  if (!lobby || lobby.status === GameStatus.NONE) return null;
+  return lobby.id;
 }
 
 const ViewQuerySchema = zod.object({

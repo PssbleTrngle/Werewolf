@@ -10,5 +10,6 @@ export default function fakeLobby(faker) {
     players,
     owner: players[0],
     settings: {},
+    status: "none"
   };
 }
