@@ -18,7 +18,8 @@ export default function RolePanel({
   const { t } = useTranslation();
 
   const name = useMemo(() => {
-    if (role?.type) return t(`role.${role.type}.name`, { context: role.variant });
+    if (role?.type)
+      return t(`role.${role.type}.name`, { context: role.variant });
     if (role?.groups) return t(`role.group.${role.groups[0] ?? "unknown"}`);
     return undefined;
   }, [t, role]);

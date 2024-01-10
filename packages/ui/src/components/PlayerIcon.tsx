@@ -18,9 +18,7 @@ export default function PlayerIcon({
   return (
     <Style $size={size} {...props}>
       {name}
-      {(hideRole && hasName) || (
-        <Role small={hasName} role={role} />
-      )}
+      {(hideRole && hasName) || <Role small={hasName} role={role} />}
     </Style>
   );
 }

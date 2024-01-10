@@ -22,7 +22,7 @@ describe("tests regarding the hunter", () => {
 
     await game.vote(
       players.filter(inGroup(RoleGroup.WOLF)),
-      playerVote(players[0])
+      playerVote(players[0]),
     );
 
     game.expectEvents("kill.hunter", "sleep");
@@ -34,10 +34,10 @@ describe("tests regarding the hunter", () => {
     game.expectEvents("announcement.death", "win");
     expect((game.events[0].data as DeathData).deaths).toHaveLength(2);
     expect((game.events[0].data as DeathData).deaths[0].deathCause).toBe(
-      DeathCause.WOLFS
+      DeathCause.WOLFS,
     );
     expect((game.events[0].data as DeathData).deaths[1].deathCause).toBe(
-      DeathCause.HUNTER
+      DeathCause.HUNTER,
     );
     expect(game.events[0].players).toHaveLength(players.length - 2);
 

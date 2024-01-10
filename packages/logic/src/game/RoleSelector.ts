@@ -53,13 +53,13 @@ export const InitialDataEvents = new EventBus<
   (
     player: InitialPlayer,
     others: InitialPlayer[],
-    settings: GameSettings
+    settings: GameSettings,
   ) => Partial<RoleData> | false
 >();
 
 export function generateRoles(
   players: ReadonlyArray<User>,
-  settings: GameSettings = defaultGameSettings
+  settings: GameSettings = defaultGameSettings,
 ): ReadonlyArray<InitialPlayer> {
   const count = players.length;
   if (count < MIN_PLAYERS) throw new ApiError(400, "Not enough players");
@@ -72,7 +72,7 @@ export function generateRoles(
   const wolfCount = Math.floor(count / 3);
   const wolfs: Role[] = times(
     Math.max(1, wolfCount - specialWolfs.length),
-    () => Werewolf
+    () => Werewolf,
   );
 
   if (wolfCount > 1)
@@ -106,9 +106,9 @@ export function generateRoles(
   const freeMasons = generateFreemasons
     ? times(
         Math.round(
-          minFreemasons + (maxFreemasons - minFreemasons) * Math.random()
+          minFreemasons + (maxFreemasons - minFreemasons) * Math.random(),
         ),
-        () => Freemason
+        () => Freemason,
       )
     : [];
 
@@ -135,13 +135,13 @@ export function generateRoles(
 
 export function preparePlayers(
   players: ReadonlyArray<InitialPlayer>,
-  settings: GameSettings = defaultGameSettings
+  settings: GameSettings = defaultGameSettings,
 ): ReadonlyArray<Player> {
   return players.map((it) => {
     const roleData = InitialDataEvents.notify(
       it,
       players.filter(others(it)),
-      settings
+      settings,
     ).reduce<RoleData>((a, b) => ({ ...a, ...b }), {});
 
     return {

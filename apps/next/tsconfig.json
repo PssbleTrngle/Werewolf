@@ -2,9 +2,7 @@
   "extends": "tsconfig/nextjs",
   "compilerOptions": {
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -15,7 +13,5 @@
     "seed/lobby.mjs",
     "seed/index.mjs"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

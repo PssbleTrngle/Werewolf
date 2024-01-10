@@ -23,7 +23,7 @@ export class TestGame extends Game {
 
   async dismiss() {
     await Promise.all(
-      this.players.filter(isAlive).map((it) => this.vote(it.id, skipVote()))
+      this.players.filter(isAlive).map((it) => this.vote(it.id, skipVote())),
     );
   }
 }

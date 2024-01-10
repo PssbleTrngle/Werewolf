@@ -33,7 +33,7 @@ function seerSleepFactory(role: Role): EventFactory {
     const alive = players.filter(isAlive);
     const seers = alive.filter(hasRole(role));
     return individualEvents(seers, (it) =>
-      SeeEvent.create(it, it[0]?.role ?? role, alive.filter(others(...it)))
+      SeeEvent.create(it, it[0]?.role ?? role, alive.filter(others(...it))),
     );
   });
 }
@@ -46,15 +46,15 @@ function foolSleepFactory(role: Role, disguiseAs: Role): EventFactory {
       HallucinateEvent.create(
         it,
         it[0]?.roleData?.hallucinated?.[it[0].id]?.role ?? disguiseAs,
-        alive.filter(others(...it))
-      )
+        alive.filter(others(...it)),
+      ),
     );
   });
 }
 
 export const registerSeerEvents = (
   seer = Seer,
-  fool: Role | undefined = Fool
+  fool: Role | undefined = Fool,
 ) => {
   registerEvent(`reveal.${seer.type}`, new RevealEvent());
 

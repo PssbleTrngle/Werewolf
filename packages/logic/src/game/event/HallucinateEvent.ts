@@ -15,7 +15,7 @@ export class HallucinateEvent extends NoDataEvent {
       role,
       choice: { players: targets },
       data: null as never,
-    })
+    }),
   );
 
   finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
@@ -23,7 +23,7 @@ export class HallucinateEvent extends NoDataEvent {
       return new HallucinateEffect(
         event.role as Role,
         event.players[0].id,
-        vote.players
+        vote.players,
       );
     }
 
@@ -33,7 +33,7 @@ export class HallucinateEvent extends NoDataEvent {
   view(
     player: Player,
     event: Event<never>,
-    mapper: SubjectMappers
+    mapper: SubjectMappers,
   ): Event<never> {
     return { ...super.view(player, event, mapper), type: "see" };
   }

@@ -27,7 +27,7 @@ export default function RenameDialog({
       onChange(value);
       setValue("");
     },
-    [onChange, value, setValue]
+    [onChange, value, setValue],
   );
 
   return render(
@@ -45,7 +45,7 @@ export default function RenameDialog({
           <Button onClick={props.onClose}>{t("button.cancel")}</Button>
         </DialogButtons>
       </Form>
-    </Dialog>
+    </Dialog>,
   );
 }
 

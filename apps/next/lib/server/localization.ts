@@ -6,7 +6,7 @@ export const preloadTranslations = async ({
 }) => {
   const translations = await serverSideTranslations(
     locale,
-    i18nextConfig.ns as string[]
+    i18nextConfig.ns as string[],
   );
   return {
     props: {

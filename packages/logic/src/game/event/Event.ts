@@ -11,7 +11,7 @@ export abstract class EventType<T> {
   protected abstract viewData(
     player: Player,
     subject: T,
-    mapper: SubjectMappers
+    mapper: SubjectMappers,
   ): T;
 
   // TODO check in a while if player is neccessary
@@ -40,7 +40,7 @@ export abstract class EventType<T> {
 
 export function roleScopedFactory(
   role: Role,
-  factory: EventFactory
+  factory: EventFactory,
 ): EventFactory {
   return (game) => {
     const created = arrayOrSelf(factory(game));
@@ -50,7 +50,7 @@ export function roleScopedFactory(
 
 export function individualEvents<T>(
   players: ReadonlyArray<Player>,
-  factory: (players: ReadonlyArray<Player>) => Event<T>
+  factory: (players: ReadonlyArray<Player>) => Event<T>,
 ): ArrayOrSingle<Event<T>> {
   if (players.length > 0) return players.map((it) => factory([it]));
   return factory([]);

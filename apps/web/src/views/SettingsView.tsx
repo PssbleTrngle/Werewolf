@@ -153,7 +153,7 @@ function LangSelect(props: Readonly<{ id?: string }>) {
       const { value } = e.currentTarget;
       await i18n.changeLanguage(value || undefined);
     },
-    [i18n]
+    [i18n],
   );
 
   const languages = useMemo(() => {

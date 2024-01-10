@@ -42,7 +42,7 @@ import randomNames from "../randomNames";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useDialogAction<TState, TArgs extends any[]>(
-  action: (value: TState, ...args: TArgs) => unknown
+  action: (value: TState, ...args: TArgs) => unknown,
 ) {
   const [id, open] = useState<TState>();
 
@@ -53,12 +53,12 @@ function useDialogAction<TState, TArgs extends any[]>(
       if (id) action(id, ...args);
       close();
     },
-    [close, id, action]
+    [close, id, action],
   );
 
   return useMemo(
     () => ({ id, execute, open, close, visible: !!id }),
-    [id, execute, open, close]
+    [id, execute, open, close],
   );
 }
 
@@ -77,7 +77,7 @@ function AddPanel({
       onAddPlayer({ id: nanoid(), name });
       setName("");
     },
-    [onAddPlayer, name]
+    [onAddPlayer, name],
   );
 
   return (
@@ -176,7 +176,7 @@ function PlayersEditView() {
         .map((it) => it.role?.impact)
         .filter(notNull)
         .reduce((a, b) => a + b, 0),
-    [players]
+    [players],
   );
 
   const canRandomize = useMemo(() => players.length >= MIN_PLAYERS, [players]);
@@ -185,14 +185,14 @@ function PlayersEditView() {
     (id: Id, role?: Role) => {
       modifyPlayer(id, { role });
     },
-    [modifyPlayer]
+    [modifyPlayer],
   );
 
   const rename = useCallback(
     (id: Id, name: string) => {
       modifyPlayer(id, { name });
     },
-    [modifyPlayer]
+    [modifyPlayer],
   );
 
   const roleSelectDialog = useDialogAction(selectRole);
@@ -234,7 +234,7 @@ function PlayersEditView() {
             : tooltip(
                 t("local:error.min_players_requirement", {
                   count: MIN_PLAYERS,
-                })
+                }),
               ))}
         >
           {t("local:button.player.generate_roles")}

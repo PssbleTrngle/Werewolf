@@ -18,6 +18,6 @@ export function registerFreemasonEvents(role = Freemason) {
     roleScopedFactory(role, ({ players }) => {
       const comrades = players.filter(hasRole(role));
       return RevealEvent.create(role, comrades, comrades);
-    })
+    }),
   );
 }

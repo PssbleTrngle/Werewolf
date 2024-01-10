@@ -24,7 +24,7 @@ async function request<T, D>(
   endpoint: string,
   method = "GET",
   data?: D,
-  key?: string
+  key?: string,
 ) {
   const url = `/api/${endpoint}`;
 
@@ -32,7 +32,7 @@ async function request<T, D>(
     throw new Error(
       `Cannot fetch API server-side, missing prefetched query for '${
         key ?? url
-      }'`
+      }'`,
     );
   }
 
@@ -67,14 +67,14 @@ function createFetcher<R>(endpoint: string, method = "GET") {
 
 function createAwareFetcher<R>(
   endpoint: (key: QueryKey) => string,
-  method = "GET"
+  method = "GET",
 ): QueryFunction<R> {
   return ({ queryKey }) =>
     request<R, never>(
       endpoint(queryKey),
       method,
       undefined,
-      `[${[queryKey.toString()]}]`
+      `[${[queryKey.toString()]}]`,
     );
 }
 
@@ -84,7 +84,7 @@ function createMutator<R, D>(endpoint: () => string, method: string) {
 
 function q(values: ParsedUrlQueryInput) {
   const omitted = Object.fromEntries(
-    Object.entries(values).filter(([, value]) => !!value)
+    Object.entries(values).filter(([, value]) => !!value),
   );
   if (Object.keys(omitted).length === 0) return "";
   return "?" + querystring.stringify(omitted);
@@ -101,7 +101,7 @@ export default function createRemoteContext(): QueryContext {
     players: createAwareFetcher(([, id]) => gameQuery(`game/${id}/players`)),
     game: createAwareFetcher(([, id]) => gameQuery(`game/${id}`)),
     activeEvent: createAwareFetcher(([, id]) =>
-      gameQuery(`game/${id}/event/active`)
+      gameQuery(`game/${id}/event/active`),
     ),
 
     submitVote: createMutator(() => gameQuery("game/vote"), "POST"),
@@ -131,7 +131,7 @@ export function useLobby(id: Id) {
 }
 
 const fetchUserLobby = createAwareFetcher<Lobby>(
-  ([, id]) => `user/${id}/lobby`
+  ([, id]) => `user/${id}/lobby`,
 );
 export const selfLobbyKey = () => ["user", "me", "lobby"];
 export function useSelfLobby() {
@@ -146,7 +146,7 @@ export function useJoinMutation(lobbyId: Id) {
 
   const submit = useMemo(
     () => createMutator(() => `lobby/${lobbyId}/player`, "POST"),
-    [lobbyId]
+    [lobbyId],
   );
 
   return useMutation({
@@ -163,7 +163,7 @@ export function useLeaveMutation(lobbyId: Id) {
 
   const submit = useMemo(
     () => createMutator(() => `lobby/${lobbyId}/player`, "DELETE"),
-    [lobbyId]
+    [lobbyId],
   );
 
   return useMutation({
@@ -180,7 +180,7 @@ export function useStartMutation(lobbyId: Id) {
 
   const submit = useMemo(
     () => createMutator(() => `game/${lobbyId}`, "POST"),
-    [lobbyId]
+    [lobbyId],
   );
 
   return useMutation({

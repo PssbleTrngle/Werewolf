@@ -44,7 +44,7 @@ export default class LobbyStorage {
       this.redis.json.arrAppend(
         `lobby:${lobbyId}`,
         ".players",
-        redisJSON(user)
+        redisJSON(user),
       ),
     ]);
   }

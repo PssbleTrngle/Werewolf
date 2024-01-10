@@ -39,13 +39,13 @@ export default function EventScreen({
 
   const participants = useMemo(
     () => event.players.filter((it) => it.provider !== "fake"),
-    [event]
+    [event],
   );
 
   const isMobile = useMedia(XS);
   const sliceParticipants = useMemo(
     () => isMobile && !!event.choice?.players?.length,
-    [isMobile, event]
+    [isMobile, event],
   );
 
   return (

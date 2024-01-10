@@ -6,14 +6,14 @@ import { Effect } from "./Effect.js";
 export class ChangeRoleEffect implements Effect {
   constructor(
     private readonly playerId: Id,
-    private readonly role: Role
+    private readonly role: Role,
   ) {}
 
   apply(game: GameAccess) {
     console.log(
       requirePlayer(game.players, this.playerId).name,
       "turned into",
-      this.role.type
+      this.role.type,
     );
     game.modifyPlayer(this.playerId, { role: this.role });
   }

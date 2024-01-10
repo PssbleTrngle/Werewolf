@@ -1,7 +1,7 @@
 import { WinState } from "models";
 import { isAlive, requirePlayer } from "./player/predicates.js";
 import { GameReadAccess } from "./state.js";
-import { notNull } from '../util.js';
+import { notNull } from "../util.js";
 import { uniqBy } from "lodash-es";
 
 type WinConditionChecker = (game: GameReadAccess) => WinState | false;

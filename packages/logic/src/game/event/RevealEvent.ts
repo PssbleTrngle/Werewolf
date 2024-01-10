@@ -9,7 +9,7 @@ export class RevealEvent extends EventType<RevealData> {
   static create(
     typeOrRole: string | Role,
     players: ReadonlyArray<Player>,
-    targets: ReadonlyArray<IPlayer>
+    targets: ReadonlyArray<IPlayer>,
   ): Event<RevealData> {
     const role = typeof typeOrRole === "string" ? undefined : typeOrRole;
     const type = typeof typeOrRole === "string" ? typeOrRole : typeOrRole.type;
@@ -32,14 +32,14 @@ export class RevealEvent extends EventType<RevealData> {
             ...data.revealedPlayers,
             ...Object.fromEntries(event.data.targets.map((it) => [it.id, it])),
           },
-        }))
+        })),
     );
   }
 
   protected viewData(
     _player: Player,
     subject: RevealData,
-    _mapper: SubjectMappers
+    _mapper: SubjectMappers,
   ): RevealData {
     // TODO only reveal role/role group depending on setting
     return subject;

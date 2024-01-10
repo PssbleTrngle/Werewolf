@@ -13,7 +13,7 @@ export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
 
   const multiple = useMemo(
     () => !!choice.players?.length && (choice.voteCount ?? 0) > 1,
-    [choice]
+    [choice],
   );
 
   const [selected, setSelected] = useState<Id[]>([]);
@@ -27,7 +27,7 @@ export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
         });
       else return vote({ type: "players", players: [player] });
     },
-    [choice, multiple, vote]
+    [choice, multiple, vote],
   );
 
   return (

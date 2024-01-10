@@ -2,7 +2,7 @@ import { DehydratedState, HydrationBoundary } from "@tanstack/react-query";
 import { FC, createElement } from "react";
 
 export function withPrefetched<T extends Record<string, unknown>>(
-  component: FC<T>
+  component: FC<T>,
 ) {
   const wrapped = ({
     dehydratedState,

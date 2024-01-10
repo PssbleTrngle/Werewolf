@@ -10,7 +10,7 @@ interface ErrorResponse {
 }
 
 export function createApiHandler<T>(
-  handler: NextApiHandler<T>
+  handler: NextApiHandler<T>,
 ): NextApiHandler<T | ErrorResponse> {
   return async (req, res) => {
     try {
@@ -29,7 +29,7 @@ export function createApiHandler<T>(
 }
 
 export function methods(
-  handlers: Partial<Record<Method, NextApiHandler>>
+  handlers: Partial<Record<Method, NextApiHandler>>,
 ): NextApiHandler {
   return (req, res) => {
     const method = req.method?.toUpperCase() ?? "GET";

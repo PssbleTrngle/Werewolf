@@ -16,7 +16,7 @@ export default class StateHistory {
   get current(): GameState {
     if (this.cursor >= this.history.length) {
       throw new Error(
-        `Illegal cursor position ${this.cursor} for history with length ${this.history.length}`
+        `Illegal cursor position ${this.cursor} for history with length ${this.history.length}`,
       );
     }
     return this.history[this.cursor];

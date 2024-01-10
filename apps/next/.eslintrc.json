@@ -1,6 +1,4 @@
 {
   "root": true,
-  "extends": [
-    "custom/nextjs"
-  ]
+  "extends": ["custom/nextjs"]
 }

@@ -15,7 +15,7 @@ export type PartialOrFactory<T> = Partial<T> | ((previous: T) => Partial<T>);
 
 export function resolvePartialFactory<T>(
   factory: PartialOrFactory<T>,
-  current: T
+  current: T,
 ): Partial<T> {
   return typeof factory === "function" ? factory(current) : factory;
 }
@@ -26,7 +26,7 @@ export function resolveFactory<T>(factory: PartialOrFactory<T>, current: T): T {
 }
 
 export function omitByUndefined<T extends Record<string, unknown>>(
-  value: T
+  value: T,
 ): T {
   return omitBy(value, (it) => !notNull(it)) as T;
 }

@@ -15,7 +15,7 @@ export default class PotionReviveEvent extends ReviveEvent {
         canSkip: true,
       },
       data: null,
-    })
+    }),
   );
 
   finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
@@ -24,7 +24,7 @@ export default class PotionReviveEvent extends ReviveEvent {
     return [
       ...parentEffects,
       ...event.players.map(
-        (it) => new PlayerDataEffect(it.id, { usedRevivePotion: true })
+        (it) => new PlayerDataEffect(it.id, { usedRevivePotion: true }),
       ),
     ];
   }

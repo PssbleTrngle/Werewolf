@@ -45,7 +45,7 @@ async function createStorage() {
 
             return game.vote(id, { type: "players", players: targets });
           }
-        })
+        }),
       );
     }
   });

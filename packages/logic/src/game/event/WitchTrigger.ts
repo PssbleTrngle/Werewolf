@@ -28,31 +28,31 @@ export class WitchTrigger extends NoDataEvent {
         const alive = game.players.filter(isAlive);
 
         const users = event.players.map((it) =>
-          requirePlayer(game.players, it.id)
+          requirePlayer(game.players, it.id),
         );
 
         const revive = PotionReviveEvent.create(
           users.filter((it) => !it.roleData.usedRevivePotion),
-          dying
+          dying,
         );
 
         const kill = PotionKillEvent.create(
           users.filter((it) => !it.roleData.usedKillPotion),
-          alive.filter(others(...users))
+          alive.filter(others(...users)),
         );
 
         if (dying.length === 0)
           return [PotionReviveEvent.create([], dying), kill];
         return [revive, kill];
       }),
-      true
+      true,
     );
   }
 
   isFinished(
     _game: GameReadAccess,
     _event: Event<never>,
-    index: number
+    index: number,
   ): boolean {
     return index === 0; // || game.players.some(isDying);
   }
@@ -60,7 +60,7 @@ export class WitchTrigger extends NoDataEvent {
   view(
     _player: Player,
     _event: Event<never>,
-    _mapper: SubjectMappers
+    _mapper: SubjectMappers,
   ): Event<never> {
     return {
       type: "sleep",

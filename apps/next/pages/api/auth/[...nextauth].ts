@@ -7,7 +7,7 @@ import GithubProvider, { GithubProfile } from "next-auth/providers/github";
 
 function optionalProvider<T>(
   key: string,
-  supplier: (options: OAuthUserConfig<T>) => OAuthConfig<T>
+  supplier: (options: OAuthUserConfig<T>) => OAuthConfig<T>,
 ) {
   const clientId = process.env[`${key}_CLIENT_ID`];
   const clientSecret = process.env[`${key}_CLIENT_SECRET`];

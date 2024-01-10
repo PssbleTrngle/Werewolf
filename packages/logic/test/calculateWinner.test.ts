@@ -1,5 +1,5 @@
-import { calculateWinner, validateVote } from '../src/index.js';
-import { playerVote, skipVote } from './util/votes.js';
+import { calculateWinner, validateVote } from "../src/index.js";
+import { playerVote, skipVote } from "./util/votes.js";
 import { expect } from "vitest";
 import { Choice, Player } from "models";
 

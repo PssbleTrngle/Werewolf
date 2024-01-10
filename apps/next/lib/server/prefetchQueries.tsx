@@ -3,7 +3,7 @@ import { QueryClient, dehydrate } from "@tanstack/react-query";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 export function prefetchQueries<T>(
-  fetcher: (ctx: GetServerSidePropsContext, client: QueryClient) => Promise<T>
+  fetcher: (ctx: GetServerSidePropsContext, client: QueryClient) => Promise<T>,
 ): GetServerSideProps {
   return async (ctx) => {
     const client = new QueryClient();

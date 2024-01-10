@@ -11,7 +11,7 @@ export default function RoleView() {
   const params = useParams();
   const role = useMemo(
     () => roles.find((it) => it.type === params.type),
-    [roles, params]
+    [roles, params],
   );
 
   const [lore, ...description] = useMemo<string[]>(() => {

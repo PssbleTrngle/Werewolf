@@ -12,7 +12,7 @@ export class RevealEffect implements Effect {
     private readonly targets: ReadonlyArray<Id>,
     private readonly revealType:
       | PlayerRevealType
-      | ((game: GameReadAccess) => PlayerRevealType) = PlayerRevealType.ROLE
+      | ((game: GameReadAccess) => PlayerRevealType) = PlayerRevealType.ROLE,
   ) {}
 
   apply(game: GameAccess) {

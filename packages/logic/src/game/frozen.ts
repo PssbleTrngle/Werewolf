@@ -95,7 +95,7 @@ export default class FrozenGame implements GameAccess {
     const target = requirePlayer(this.players, playerId);
 
     const guarded = ProtectEvents.notify(target, cause, this).some(
-      (it) => it === true
+      (it) => it === true,
     );
 
     if (guarded) {
@@ -108,7 +108,7 @@ export default class FrozenGame implements GameAccess {
     this.deaths.set(playerId, cause);
 
     const effects = DeathEvents.notify(target, cause, this).flatMap(
-      arrayOrSelf
+      arrayOrSelf,
     );
 
     this.apply(effects);
@@ -137,7 +137,7 @@ export default class FrozenGame implements GameAccess {
       }
 
       const revealedDeaths = unnotifiedDeaths.map((it) =>
-        revealPlayer(it, this.settings.deathRevealType)
+        revealPlayer(it, this.settings.deathRevealType),
       );
 
       return DeathEvent.create(alive, revealedDeaths, time);
@@ -205,7 +205,7 @@ export default class FrozenGame implements GameAccess {
               ...previous,
               ...values,
             }),
-            player
+            player,
           );
         }),
       events,

@@ -32,12 +32,12 @@ export default function RolesView() {
   const toggleRole = useLocalStore((it) => it.toggleRole);
   const isEnabled = useCallback(
     (type: string) => !disabledRoles?.includes(type),
-    [disabledRoles]
+    [disabledRoles],
   );
 
   const reset = useCallback(
     () => disabledRoles?.forEach((it) => toggleRole(it, true)),
-    [toggleRole, disabledRoles]
+    [toggleRole, disabledRoles],
   );
 
   return (
@@ -115,7 +115,7 @@ function Row({
             </span>
           ) : (
             <span key={group}>{t(`role.group.${group}`)}</span>
-          )
+          ),
         )}
       </td>
       <ButtonsCell>

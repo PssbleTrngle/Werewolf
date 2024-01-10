@@ -11,7 +11,7 @@ import { GameView } from "./index.js";
 export class PlayerGameView implements GameView {
   constructor(
     protected readonly game: Game,
-    protected readonly owner: Id
+    protected readonly owner: Id,
   ) {}
 
   mapPlayer(subject: IPlayer) {

@@ -24,7 +24,7 @@ export default function RoleSelectDialog({
 
   const possible = useMemo(
     () => roles.filter((it) => !disabledRoles.includes(it.type)),
-    [roles, disabledRoles]
+    [roles, disabledRoles],
   );
 
   return render(
@@ -37,7 +37,7 @@ export default function RoleSelectDialog({
             key={it.type}
             $selected={it.type === initial}
             {...tooltip(
-              `${t(`role.${it.type}.name`)} (${stringifyImpact(it.impact)})`
+              `${t(`role.${it.type}.name`)} (${stringifyImpact(it.impact)})`,
             )}
           >
             {it.emoji}
@@ -47,7 +47,7 @@ export default function RoleSelectDialog({
       <Buttons>
         <Button onClick={props.onClose}>{t("button.cancel")}</Button>
       </Buttons>
-    </Dialog>
+    </Dialog>,
   );
 }
 

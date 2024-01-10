@@ -31,7 +31,7 @@ export default function EventDetails({ event }: { event: FakeData }) {
 
   const createTitle = useCallback<DetailProps["createTitle"]>(
     (args) => <Title>{t(`event.${event.type}.title`, args)}</Title>,
-    [event, t]
+    [event, t],
   );
 
   return component

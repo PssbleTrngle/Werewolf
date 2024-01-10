@@ -13,7 +13,7 @@ const alignment = (role: Partial<Role>): Partial<Role> => {
 
 export default function revealPlayer(
   player: Player,
-  type: PlayerRevealType
+  type: PlayerRevealType,
 ): Player {
   switch (type) {
     // TODO strip stuff

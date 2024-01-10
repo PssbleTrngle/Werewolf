@@ -24,7 +24,7 @@ import { GameStore, useLocalStore } from "./store";
 export const GAME_ID = "local";
 
 export function checkPlayers(
-  players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>
+  players: ReadonlyArray<Player & Partial<Omit<GamePlayer, keyof Player>>>,
 ): ReadonlyArray<GamePlayer> {
   return preparePlayers(
     players.map(({ role, ...it }) => {
@@ -33,7 +33,7 @@ export function checkPlayers(
         role: role as Role,
         ...it,
       };
-    })
+    }),
   );
 }
 
@@ -207,7 +207,7 @@ export function LocalGameProvider(props: Readonly<PropsWithChildren>) {
       invalidateGameQueries(client);
       return value;
     },
-    undefined
+    undefined,
   );
 
   return (

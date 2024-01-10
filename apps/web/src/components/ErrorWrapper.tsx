@@ -7,7 +7,7 @@ import Layout from "../views/Layout";
 function ErrorPage({ error, resetErrorBoundary }: Readonly<FallbackProps>) {
   const realError = useMemo(
     () => (error instanceof Error ? error : new Error(error)),
-    [error]
+    [error],
   );
   return (
     <Layout>

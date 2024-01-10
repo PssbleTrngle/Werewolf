@@ -20,7 +20,7 @@ type ListenerWithGame<T extends GameHookKey = GameHookKey> = (
 export default class GameStorage {
   constructor(
     private readonly redis: RedisClient,
-    private readonly lobbies: LobbyStorage
+    private readonly lobbies: LobbyStorage,
   ) {}
 
   private hooks: [GameHookKey, ListenerWithGame][] = [];
@@ -32,7 +32,7 @@ export default class GameStorage {
   private async createRemoteGame(
     id: Id,
     history: ReadonlyArray<GameState>,
-    votes: Votes = []
+    votes: Votes = [],
   ) {
     const game = new Game(history, votes);
 
@@ -52,7 +52,7 @@ export default class GameStorage {
   async getGame(id: Id) {
     const [result, votes] = await Promise.all([
       this.redis.json.get(
-        `game:${id}`
+        `game:${id}`,
       ) as Promise<ReadonlyArray<GameState> | null>,
       this.getVotes(id),
     ]);
@@ -85,7 +85,7 @@ export default class GameStorage {
 
   private async getVotes(gameId: Id) {
     const result = (await this.redis.json.get(
-      `game:${gameId}:votes`
+      `game:${gameId}:votes`,
     )) as Votes | null;
     return result ?? [];
   }

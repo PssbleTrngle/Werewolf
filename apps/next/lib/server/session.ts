@@ -14,7 +14,7 @@ import connectStorage from "@/lib/server/storage";
 import { ModeratorUser } from "@/lib/specialUsers";
 import { GameStatus } from "storage/src/lobbies";
 import zod from "zod";
-import {useSelfLobby } from '@/lib/client/remoteContext'
+import { useSelfLobby } from "@/lib/client/remoteContext";
 
 async function gameIdOf(session: Session) {
   const storage = await connectStorage();
@@ -32,7 +32,7 @@ export type ViewQuery = zod.infer<typeof ViewQuerySchema>;
 export async function wrapSessionView(
   session: Session,
   gameId?: Id,
-  query: ViewQuery = {}
+  query: ViewQuery = {},
 ) {
   const storage = await connectStorage();
 

@@ -1,8 +1,4 @@
-import {
-  DispatchWithoutAction,
-  PropsWithChildren,
-  useCallback,
-} from "react";
+import { DispatchWithoutAction, PropsWithChildren, useCallback } from "react";
 import styled, { css } from "styled-components";
 import { Buttons } from "../components/Button";
 import { useWindowEvent } from "../hooks/events";
@@ -22,7 +18,7 @@ export default function Dialog({
     (event: KeyboardEvent) => {
       if (event.code === "Escape") onClose();
     },
-    [onClose]
+    [onClose],
   );
 
   useWindowEvent("keydown", onKeyDown);

@@ -47,5 +47,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </ErrorWrapper>
       </ThemeProvider>
     </I18nextProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

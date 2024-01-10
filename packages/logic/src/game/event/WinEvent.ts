@@ -13,7 +13,7 @@ export default class WinEvent extends EventType<WinData> {
     new WinEvent(),
     (state: WinState) => ({
       data: { state },
-    })
+    }),
   );
 
   finish(): ArrayOrSingle<Effect> {
@@ -27,7 +27,7 @@ export default class WinEvent extends EventType<WinData> {
   protected viewData(
     _player: Player,
     { state }: WinData,
-    _mapper: SubjectMappers
+    _mapper: SubjectMappers,
   ): WinData {
     // no player mapping since roles are reveal on the win screen
     return { state };

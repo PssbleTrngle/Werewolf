@@ -57,7 +57,7 @@ export default function ControlBar({ gameId }: Readonly<{ gameId: Id }>) {
 
   const canRedo = useMemo(
     () => (status?.queue?.writtenFuture ?? 0) > 0,
-    [status]
+    [status],
   );
 
   if (!isModerator) return null;

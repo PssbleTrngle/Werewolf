@@ -14,7 +14,7 @@ export class SeeEvent extends NoDataEvent {
       role,
       choice: { players: targets },
       data: null as never,
-    })
+    }),
   );
 
   finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
@@ -23,7 +23,7 @@ export class SeeEvent extends NoDataEvent {
         event.role as Role,
         event.players[0].id,
         vote.players,
-        (game) => game.settings.seerRevealType
+        (game) => game.settings.seerRevealType,
       );
     }
 

@@ -30,7 +30,7 @@ const createKillEvent = registerEventFactory(
     data: {
       cause: DeathCause.WOLFS,
     },
-  })
+  }),
 );
 
 export const registerWolfEvents = () =>
@@ -59,10 +59,10 @@ export const registerWolfEvents = () =>
                   .map((it) => [
                     it.id,
                     revealPlayer(it, PlayerRevealType.GROUP),
-                  ])
+                  ]),
               ),
             },
-          }))
+          })),
       ),
       new EventEffect(() => createKillEvent(wolfs, targets, voteCount)),
     ];
@@ -70,7 +70,7 @@ export const registerWolfEvents = () =>
 
 export function registerWolfWinCondition(
   group: RoleGroup = RoleGroup.WOLF,
-  type: string = "wolfs"
+  type: string = "wolfs",
 ) {
   WinConditions.register(({ players }) => {
     const alive = players.filter(isAlive);

@@ -36,7 +36,7 @@ const createGameStore: StateCreator<GameStore> = (set) => ({
 
 const createPlayerStore: StateCreator<PlayerStore & GameSettings> = (
   set,
-  get
+  get,
 ) => ({
   ...defaultGameSettings,
 
@@ -102,6 +102,6 @@ export const useLocalStore = create(
     {
       name: "werewolf",
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );

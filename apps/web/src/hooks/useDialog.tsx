@@ -21,7 +21,7 @@ export default function useDialog() {
     (node: ReactNode) => {
       return target.current && createPortal(node, target.current);
     },
-    [target]
+    [target],
   );
 
   return useMemo(() => ({ render }), [render]);

@@ -16,7 +16,7 @@ export default class PotionKillEvent extends KillEvent {
       data: {
         cause: DeathCause.POTION,
       },
-    })
+    }),
   );
 
   finish(vote: Vote, event: Event<KillData>) {
@@ -25,7 +25,7 @@ export default class PotionKillEvent extends KillEvent {
     return [
       ...parentEffects,
       ...event.players.map(
-        (it) => new PlayerDataEffect(it.id, { usedKillPotion: true })
+        (it) => new PlayerDataEffect(it.id, { usedKillPotion: true }),
       ),
     ];
   }

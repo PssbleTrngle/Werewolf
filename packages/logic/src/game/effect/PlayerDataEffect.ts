@@ -7,7 +7,7 @@ import { Effect } from "./Effect.js";
 export class PlayerDataEffect implements Effect {
   constructor(
     private readonly playerId: Id,
-    private readonly data: PartialOrFactory<RoleData>
+    private readonly data: PartialOrFactory<RoleData>,
   ) {}
 
   apply(game: GameAccess) {

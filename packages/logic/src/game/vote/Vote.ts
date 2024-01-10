@@ -21,14 +21,14 @@ export function validateVote(choice: Choice, vote: Vote) {
     if (uniq(vote.players).length !== vote.players.length) {
       throw new ApiError(
         400,
-        "vote contains the same selection mulitple times"
+        "vote contains the same selection mulitple times",
       );
     }
 
     if (vote.players.length !== voteCount) {
       throw new ApiError(
         400,
-        `expected a choice of ${voteCount} players, ${vote.players.length} given`
+        `expected a choice of ${voteCount} players, ${vote.players.length} given`,
       );
     }
   }
@@ -36,7 +36,7 @@ export function validateVote(choice: Choice, vote: Vote) {
 
 export function calculateWinner(
   choice: Choice,
-  votes: ReadonlyArray<Vote>
+  votes: ReadonlyArray<Vote>,
 ): Vote {
   const skipVotes = votes.filter((it) => it.type === "skip");
 

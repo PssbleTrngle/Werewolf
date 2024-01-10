@@ -26,7 +26,7 @@ export async function setupRedis(client: RedisClient): Promise<RedisClient> {
       {
         ON: "JSON",
         PREFIX: "lobby:",
-      }
+      },
     );
   }
 

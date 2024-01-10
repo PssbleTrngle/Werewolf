@@ -11,7 +11,7 @@ export interface ButtonProps {
 }
 
 export const hoverAndSelect = (
-  styles: RuleSet<ButtonProps>
+  styles: RuleSet<ButtonProps>,
 ) => css<ButtonProps>`
   &&:not(:disabled) {
     &:hover {

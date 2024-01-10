@@ -35,7 +35,7 @@ export function registerGuardEvents(role = Guard) {
         const choices = alive.filter(others(...blocked));
         return GuardEvent.create([it], choices);
       });
-    })
+    }),
   );
 
   ProtectEvents.register((player, cause, game) => {

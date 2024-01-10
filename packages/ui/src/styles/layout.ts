@@ -11,7 +11,7 @@ html, body, ul {
 
 html, body {
   overscroll-behavior-y: none;
-  background: ${p => p.theme.bg};
+  background: ${(p) => p.theme.bg};
 }
 `;
 
