@@ -14,7 +14,6 @@ import connectStorage from "@/lib/server/storage";
 import { ModeratorUser } from "@/lib/specialUsers";
 import { GameStatus } from "storage/src/lobbies";
 import zod from "zod";
-import { useSelfLobby } from "@/lib/client/remoteContext";
 
 async function gameIdOf(session: Session) {
   const storage = await connectStorage();

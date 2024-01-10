@@ -1,6 +1,7 @@
 import { Role, RoleGroup } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 import { tooltip } from "./Tooltip";
 
 export const groupEmojis: Record<RoleGroup, string> = {
@@ -36,15 +37,19 @@ export default function RolePanel({
 
   if (small) {
     return (
-      <span {...props} {...tooltip(name)}>
+      <Emoji {...props} {...tooltip(name)}>
         {emoji}
-      </span>
+      </Emoji>
     );
   } else {
     return (
       <span {...props}>
-        {emoji} {name}
+        <Emoji>{emoji}</Emoji> {name}
       </span>
     );
   }
 }
+
+const Emoji = styled.span`
+  cursor: default;
+`;

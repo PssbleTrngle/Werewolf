@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useVoteMutation } from "../../hooks/queries";
 import { XS } from "../../styles/screens";
 import Button, { Buttons } from "../Button";
-import PlayerIcon from "../PlayerIcon";
+import PlayerPanel from "../PlayerPanel";
 
 export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
   const { t } = useTranslation();
@@ -40,7 +40,7 @@ export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
               onClick={() => select(player.id)}
               selected={selected.includes(player.id)}
             >
-              <PlayerIcon hideRole>{player}</PlayerIcon>
+              <PlayerPanel hideRole>{player}</PlayerPanel>
             </Button>
           ))}
         </PlayerButtons>

@@ -1,3 +1,4 @@
+import ActiveGame from "@/components/views/ActiveGame";
 import GameLobby from "@/components/views/GameLobby";
 import NoGame from "@/components/views/NoGame";
 import Layout from "@/layout/default";
@@ -5,17 +6,13 @@ import { withPrefetched } from "@/lib/client/hydrateQueries";
 import {
   lobbiesKey,
   selfLobbyKey,
-  useLeaveMutation,
   useSelfLobby,
 } from "@/lib/client/remoteContext";
 import { prefetchQueries } from "@/lib/server/prefetchQueries";
 import { requireServerSession, requireSessionView } from "@/lib/server/session";
 import connectStorage from "@/lib/server/storage";
-import { Id } from "models";
-import { useTranslation } from "react-i18next";
 import { GameStatus } from "storage/src/lobbies";
-import styled from "styled-components";
-import { Button, EventScreen, activeEventKey, gameInfoKey } from "ui";
+import { activeEventKey, gameInfoKey, playersKey } from "ui";
 
 export const getServerSideProps = prefetchQueries(async (ctx, client) => {
   const session = await requireServerSession(ctx);
@@ -40,6 +37,11 @@ export const getServerSideProps = prefetchQueries(async (ctx, client) => {
         queryKey: gameInfoKey(lobby.id),
         queryFn: () => view.gameInfo(),
       });
+
+      await client.prefetchQuery({
+        queryKey: playersKey(lobby.id),
+        queryFn: () => view.players(),
+      });
     }
   } else {
     await client.prefetchQuery({
@@ -62,31 +64,6 @@ function GameView() {
 
   return <NoGame />;
 }
-
-function ActiveGame({ gameId }: Readonly<{ gameId: Id }>) {
-  const { t } = useTranslation("hub");
-
-  // TODO confirm dialog?
-  const { mutate: leave } = useLeaveMutation(gameId);
-
-  return (
-    <EventScreen gameId={gameId}>
-      <LeaveButton onClick={() => leave()}>
-        {t("button.player.leave")}
-      </LeaveButton>
-    </EventScreen>
-  );
-}
-
-const LeaveButton = styled(Button)`
-  position: absolute;
-  z-index: 100;
-
-  bottom: 1em;
-  right: 1em;
-
-  font-size: 0.5em;
-`;
 
 function GamePage() {
   return (

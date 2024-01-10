@@ -1,7 +1,6 @@
 import { SchemaFieldTypes, createClient } from "redis";
 
 export function connectRedis(): Promise<RedisClient> {
-  console.log("Connecting to redis");
   return createClient()
     .on("error", (err) => console.log("Redis Client Error", err))
     .connect()

@@ -2,6 +2,7 @@ import ImpersonateControl from "@/components/ImpersonateControl";
 import { useSelfLobby } from "@/lib/client/remoteContext";
 import { useLocalStore } from "@/lib/client/store";
 import { signIn, useSession } from "next-auth/react";
+import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { GameStatus } from "storage/src/lobbies";
 import styled from "styled-components";
@@ -37,7 +38,11 @@ export default function ProfileIcon() {
 function OptionalImpersonateControl() {
   const { data: lobby } = useSelfLobby();
   if (lobby && lobby.status !== GameStatus.NONE) {
-    return <ImpersonateControl gameId={lobby.id} />;
+    return (
+      <Suspense>
+        <ImpersonateControl gameId={lobby.id} />
+      </Suspense>
+    );
   } else {
     return null;
   }

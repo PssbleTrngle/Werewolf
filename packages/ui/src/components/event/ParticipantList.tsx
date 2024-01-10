@@ -2,7 +2,7 @@ import { Player } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import PlayerIcon from "../PlayerIcon";
+import PlayerPanel from "../PlayerPanel";
 
 export default function ParticipantList({
   players,
@@ -23,9 +23,9 @@ export default function ParticipantList({
   return (
     <Style {...props}>
       {sliced.map((player) => (
-        <PlayerIcon key={player.id} size={size} hideRole={hideRoles}>
+        <PlayerPanel key={player.id} size={size} hideRole={hideRoles}>
           {player}
-        </PlayerIcon>
+        </PlayerPanel>
       ))}
       {showMore && (
         <More size={size}>
@@ -36,7 +36,7 @@ export default function ParticipantList({
   );
 }
 
-const More = styled(PlayerIcon)`
+const More = styled(PlayerPanel)`
   font-style: italic;
 `;
 
@@ -48,4 +48,13 @@ const Style = styled.ul`
   align-items: baseline;
   gap: 1em;
   padding: 0.5em;
+
+  & > * {
+    outline: 2px solid transparent;
+
+    &:hover {
+      outline-color: ${(p) => p.theme.text};
+    }
+    transition: outline 0.1s ease;
+  }
 `;

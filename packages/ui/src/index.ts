@@ -10,7 +10,7 @@ export {
 export { default as Input, InputStyles, Select } from "./components/Input";
 export { default as Loading } from "./components/Loading";
 export * from "./components/NavBar";
-export { default as PlayerIcon } from "./components/PlayerIcon";
+export { default as PlayerPanel } from "./components/PlayerPanel";
 export { default as RevealTypeSelect } from "./components/RevealTypeSelect";
 export { default as RolePanel, groupEmojis } from "./components/RolePanel";
 export { ButtonsCell, default as Table } from "./components/Table";

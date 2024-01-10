@@ -25,13 +25,13 @@ function isBot(player: Player) {
 async function createStorage() {
   const storage = await Storage.create();
 
-  storage.games.on("event", async (game, { players, choice }) => {
-    const seededUsers = players.filter(isBot);
-    console.log(`Found ${seededUsers.length} seeded users`);
+  storage.games.on("event", async (game, { type, players, choice }) => {
+    const bots = players.filter(isBot);
+    console.group(`Found ${bots.length} bot users for ${type}`);
 
     if (choice) {
       await Promise.all(
-        seededUsers.map(({ id }) => {
+        bots.map(({ id }) => {
           const canVotePlayer = choice.players?.length;
           const wouldSkip = Math.random() > 0.8 || !canVotePlayer;
           if (choice.canSkip && wouldSkip)
@@ -48,6 +48,8 @@ async function createStorage() {
         }),
       );
     }
+
+    console.groupEnd();
   });
 
   return storage;

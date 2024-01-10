@@ -1,9 +1,16 @@
+import ProfileIcon from "@/components/ProfileIcon";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { NavBar as Base, NavLinkStyle, NavTab, useActiveLink } from "ui";
-import ProfileIcon from "@/components/ProfileIcon";
+import {
+  NavBar as Base,
+  Loading,
+  NavLinkStyle,
+  NavTab,
+  useActiveLink,
+} from "ui";
 
 const LINKS: ReadonlyArray<NavTab> = [
   { key: "home", path: "/" },
@@ -27,7 +34,9 @@ export default function NavBar() {
         </NavLink>
       ))}
     >
-      <ProfileIcon />
+      <Suspense fallback={<Loading />}>
+        <ProfileIcon />
+      </Suspense>
     </Base>
   );
 }
