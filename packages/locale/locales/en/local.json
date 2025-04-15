@@ -16,7 +16,8 @@
   },
   "dialog": {
     "rename": "Rename Player",
-    "role_select": "Select Role"
+    "role_select": "Select Role",
+    "nfc": "Reading NFC Tag"
   },
   "status": {
     "game.no_active": "No active Game"

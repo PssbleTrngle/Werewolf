@@ -25,7 +25,12 @@ export interface SettingsStore extends GameSettings {
   resetSettings(): void;
 }
 
-export type LocalStore = PlayerStore & GameStore & SettingsStore;
+export interface DialogStore {
+  savedRoleDialog?: Id;
+  saveRoleDialog(playerId?: Id): void;
+}
+
+export type LocalStore = PlayerStore & GameStore & SettingsStore & DialogStore;
 
 const createGameStore: StateCreator<GameStore> = (set) => ({
   history: null,
@@ -36,7 +41,7 @@ const createGameStore: StateCreator<GameStore> = (set) => ({
 
 const createPlayerStore: StateCreator<PlayerStore & GameSettings> = (
   set,
-  get,
+  get
 ) => ({
   ...defaultGameSettings,
 
@@ -92,16 +97,23 @@ const createSettingsStore: StateCreator<SettingsStore> = (set, get) => ({
   },
 });
 
+const createDialogStore: StateCreator<DialogStore> = (set) => ({
+  saveRoleDialog(playerId) {
+    set({ savedRoleDialog: playerId });
+  },
+});
+
 export const useLocalStore = create(
   persist<LocalStore>(
     (...args) => ({
       ...createGameStore(...args),
       ...createPlayerStore(...args),
       ...createSettingsStore(...args),
+      ...createDialogStore(...args),
     }),
     {
       name: "werewolf",
       storage: createJSONStorage(() => localStorage),
-    },
-  ),
+    }
+  )
 );

@@ -7,6 +7,7 @@ import {
   PropsWithChildren,
   useCallback,
   useMemo,
+  useReducer,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,17 +35,27 @@ import {
 import { Actions } from "ui/src/components/Table";
 import ImpactBadge from "../components/ImpactBadge";
 import InvisibleLink from "../components/InivisibleLink";
+import TagDataProcessor from "../components/TagDataProcessor";
 import RenameDialog from "../components/dialog/RenameDialog";
 import RoleSelectDialog from "../components/dialog/RoleSelectDialog";
 import { GAME_ID, useGameRunning } from "../hooks/localGame";
 import { useLocalStore } from "../hooks/store";
+import useTagData from "../hooks/tagData";
 import randomNames from "../randomNames";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useDialogAction<TState, TArgs extends any[]>(
   action: (value: TState, ...args: TArgs) => unknown,
+  initial?: TState,
+  save?: Dispatch<TState | undefined>
 ) {
-  const [id, open] = useState<TState>();
+  const [id, open] = useReducer(
+    (_: TState | undefined, value: TState | undefined) => {
+      save?.(value);
+      return value;
+    },
+    initial
+  );
 
   const close = useCallback(() => open(undefined), [open]);
 
@@ -53,12 +64,12 @@ function useDialogAction<TState, TArgs extends any[]>(
       if (id) action(id, ...args);
       close();
     },
-    [close, id, action],
+    [close, id, action]
   );
 
   return useMemo(
     () => ({ id, execute, open, close, visible: !!id }),
-    [id, execute, open, close],
+    [id, execute, open, close]
   );
 }
 
@@ -77,7 +88,7 @@ function AddPanel({
       onAddPlayer({ id: nanoid(), name });
       setName("");
     },
-    [onAddPlayer, name],
+    [onAddPlayer, name]
   );
 
   return (
@@ -110,7 +121,9 @@ function RandomizeButton({ setName }: Readonly<{ setName: Dispatch<string> }>) {
 
 export default function PlayersView() {
   const isRunning = useGameRunning();
+  const tagData = useTagData();
 
+  if (tagData) return <TagDataProcessor data={tagData} />;
   if (isRunning) return <ActivePlayersView />;
   return <PlayersEditView />;
 }
@@ -167,8 +180,15 @@ function ActivePlayersView() {
 function PlayersEditView() {
   const { t } = useTranslation();
 
-  const { players, addPlayer, removePlayer, modifyPlayer, randomizeRoles } =
-    useLocalStore();
+  const {
+    players,
+    addPlayer,
+    removePlayer,
+    modifyPlayer,
+    randomizeRoles,
+    savedRoleDialog,
+    saveRoleDialog,
+  } = useLocalStore();
 
   const totalImpact = useMemo(
     () =>
@@ -176,7 +196,7 @@ function PlayersEditView() {
         .map((it) => it.role?.impact)
         .filter(notNull)
         .reduce((a, b) => a + b, 0),
-    [players],
+    [players]
   );
 
   const canRandomize = useMemo(() => players.length >= MIN_PLAYERS, [players]);
@@ -185,17 +205,21 @@ function PlayersEditView() {
     (id: Id, role?: Role) => {
       modifyPlayer(id, { role });
     },
-    [modifyPlayer],
+    [modifyPlayer]
   );
 
   const rename = useCallback(
     (id: Id, name: string) => {
       modifyPlayer(id, { name });
     },
-    [modifyPlayer],
+    [modifyPlayer]
   );
 
-  const roleSelectDialog = useDialogAction(selectRole);
+  const roleSelectDialog = useDialogAction(
+    selectRole,
+    savedRoleDialog,
+    saveRoleDialog
+  );
 
   const renameDialog = useDialogAction(rename);
 
@@ -234,7 +258,7 @@ function PlayersEditView() {
             : tooltip(
                 t("local:error.min_players_requirement", {
                   count: MIN_PLAYERS,
-                }),
+                })
               ))}
         >
           {t("local:button.player.generate_roles")}
