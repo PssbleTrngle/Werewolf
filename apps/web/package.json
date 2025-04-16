@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-    "@vite-pwa/assets-generator": "^0.2.2",
+    "@vite-pwa/assets-generator": "^1.0.0",
     "@vitejs/plugin-react": "^4.2.0",
     "eslint": "^8.53.0",
     "eslint-config-custom": "workspace:*",
@@ -42,6 +42,9 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-pwa": "^0.17.4"
+  },
+  "overrides": {
+    "sharp": "0.34.1"
   },
   "packageManager": "pnpm@8.11.0"
 }
