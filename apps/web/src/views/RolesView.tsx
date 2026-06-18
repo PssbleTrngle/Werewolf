@@ -1,6 +1,6 @@
-import { Villager, Werewolf } from "logic";
-import { Role } from "models";
-import { Dispatch, useCallback, useMemo } from "react";
+import type { Role } from "models";
+import type { Dispatch} from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 import {
@@ -22,7 +22,9 @@ import ToggleButton from "../components/ToggleButton";
 import { useLocalStore } from "../hooks/store";
 
 // These roles cannot be disabled
-const frozenRoles = [Villager.type, Werewolf.type];
+// TODO export these roles again?
+// or add a flag in the role itself?
+const frozenRoles = ["villager", "werewolf"];
 
 export default function RolesView() {
   const { data: roles } = useRoles();

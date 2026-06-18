@@ -1,4 +1,4 @@
-import { Player } from "./Player.js";
+import type { Player } from "./Player.js";
 
 export interface Choice {
   canSkip?: boolean;

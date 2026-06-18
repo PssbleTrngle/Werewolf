@@ -1,14 +1,17 @@
-import { PropsWithChildren, useMemo } from "react";
-import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+import type { PropsWithChildren } from "react";
+import { useMemo } from "react";
+import type { FallbackProps } from "react-error-boundary";
+import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
 import { Button, Centered } from "ui";
 import Layout from "../views/Layout";
 
 function ErrorPage({ error, resetErrorBoundary }: Readonly<FallbackProps>) {
-  const realError = useMemo(
-    () => (error instanceof Error ? error : new Error(error)),
-    [error],
-  );
+  const realError = useMemo(() => {
+    if (error instanceof Error) return error;
+    if (typeof error === "string") return new Error(error);
+    return new Error("an unknown error occured");
+  }, [error]);
   return (
     <Layout>
       <Style>
@@ -19,7 +22,9 @@ function ErrorPage({ error, resetErrorBoundary }: Readonly<FallbackProps>) {
             {realError.stack
               ?.split("\n")
               ?.slice(1)
-              .map((it, i) => <p key={`line-${i}`}>{it}</p>)}
+              .map((it, i) => (
+                <p key={`line-${i}`}>{it}</p>
+              ))}
           </small>
           <Button onClick={resetErrorBoundary}>Dismiss</Button>
         </Popup>

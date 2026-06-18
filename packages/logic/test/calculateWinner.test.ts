@@ -1,7 +1,7 @@
+import { describe, expect, it } from "bun:test";
+import type { Choice, Player } from "models";
 import { calculateWinner, validateVote } from "../src/index.js";
 import { playerVote, skipVote } from "./util/votes.js";
-import { expect } from "vitest";
-import { Choice, Player } from "models";
 
 const choiceOf = (letters: string, voteCount = 1, canSkip = true): Choice => ({
   players: letters.split("").map((id) => ({ id }) as Player),

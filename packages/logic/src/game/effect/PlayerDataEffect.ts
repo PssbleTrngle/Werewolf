@@ -1,8 +1,9 @@
-import { Id } from "models";
-import { PartialOrFactory, resolveFactory } from "../../util.js";
-import { RoleData } from "../player/Player.js";
-import { GameAccess } from "../state.js";
-import { Effect } from "./Effect.js";
+import type { Id } from "models";
+import type { PartialOrFactory} from "../../util.js";
+import { resolveFactory } from "../../util.js";
+import type { RoleData } from "../player/Player.js";
+import type { GameAccess } from "../state.js";
+import type { Effect } from "./Effect.js";
 
 export class PlayerDataEffect implements Effect {
   constructor(

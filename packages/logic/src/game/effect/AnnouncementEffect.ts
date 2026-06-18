@@ -1,8 +1,8 @@
-import { Time } from "models";
+import type { Time } from "models";
 import { arrayOrSelf } from "../../util.js";
 import { EventFactoryBus } from "../event/EventBus.js";
-import { GameAccess } from "../state.js";
-import { Effect } from "./Effect.js";
+import type { GameAccess } from "../state.js";
+import type { Effect } from "./Effect.js";
 
 export const AnnouncementEvents = new EventFactoryBus();
 

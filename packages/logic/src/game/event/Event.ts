@@ -1,9 +1,10 @@
-import { Event, Role, Vote } from "models";
-import { ArrayOrSingle, arrayOrSelf } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
-import { SubjectMappers } from "../permissions/index.js";
-import { Player } from "../player/Player.js";
-import { GameReadAccess } from "../state.js";
+import type { Event, Role, Vote } from "models";
+import type { ArrayOrSingle} from "../../util.js";
+import { arrayOrSelf } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
+import type { SubjectMappers } from "../permissions/index.js";
+import type { Player } from "../player/Player.js";
+import type { GameReadAccess } from "../state.js";
 
 export type EventFactory = (game: GameReadAccess) => ArrayOrSingle<Event>;
 

@@ -1,12 +1,14 @@
-import {
+import type {
   MutationFunction,
   QueryClient,
   QueryFunction,
+} from "@tanstack/react-query";
+import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { Event, GameInfo, Id, Player, Role, Vote } from "models";
+import type { Event, GameInfo, Id, Player, Role, Vote } from "models";
 import { createContext, useContext } from "react";
 
 export interface QueryContext {
@@ -26,7 +28,7 @@ const NOOP = () => {
   throw new Error("QueryContext missing");
 };
 
-const CTX = createContext<QueryContext>({
+const Context = createContext<QueryContext>({
   roles: NOOP,
   players: NOOP,
   game: NOOP,
@@ -38,11 +40,11 @@ const CTX = createContext<QueryContext>({
   create: NOOP,
 });
 
-export const GameProvider = CTX.Provider;
+export const GameProvider = Context.Provider;
 
 export const gameInfoKey = (gameId: Id) => ["game", gameId];
 export function useGameInfo(gameId: Id) {
-  const { game } = useContext(CTX);
+  const { game } = useContext(Context);
   return useSuspenseQuery({
     queryKey: gameInfoKey(gameId),
     queryFn: game,
@@ -51,7 +53,7 @@ export function useGameInfo(gameId: Id) {
 
 export const activeEventKey = (gameId: Id) => ["game", gameId, "screen"];
 export function useActiveEvent(gameId: Id) {
-  const { activeEvent } = useContext(CTX);
+  const { activeEvent } = useContext(Context);
   return useSuspenseQuery({
     queryKey: activeEventKey(gameId),
     queryFn: activeEvent,
@@ -60,7 +62,7 @@ export function useActiveEvent(gameId: Id) {
 
 export const playersKey = (gameId: Id) => ["players", gameId];
 export function usePlayers(gameId: Id) {
-  const { players } = useContext(CTX);
+  const { players } = useContext(Context);
   return useSuspenseQuery({
     queryKey: playersKey(gameId),
     queryFn: players,
@@ -69,7 +71,7 @@ export function usePlayers(gameId: Id) {
 
 export const rolesKey = () => ["roles"];
 export function useRoles() {
-  const { roles } = useContext(CTX);
+  const { roles } = useContext(Context);
   return useSuspenseQuery({ queryKey: rolesKey(), queryFn: roles });
 }
 
@@ -90,26 +92,26 @@ export function useInvalidatingMutation<TData, TVariables>(
 }
 
 export function useVoteMutation() {
-  const { submitVote } = useContext(CTX);
+  const { submitVote } = useContext(Context);
   return useInvalidatingMutation(submitVote);
 }
 
 export function useUndoMutation() {
-  const { undo } = useContext(CTX);
+  const { undo } = useContext(Context);
   return useInvalidatingMutation(undo);
 }
 
 export function useRedoMutation() {
-  const { redo } = useContext(CTX);
+  const { redo } = useContext(Context);
   return useInvalidatingMutation(redo);
 }
 
 export function useStopMutation() {
-  const { stop } = useContext(CTX);
+  const { stop } = useContext(Context);
   return useInvalidatingMutation(stop);
 }
 
 export function useCreateMutation() {
-  const { create } = useContext(CTX);
+  const { create } = useContext(Context);
   return useInvalidatingMutation(create);
 }

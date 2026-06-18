@@ -1,9 +1,9 @@
-import { Id, Role } from "models";
+import type { Id, Role } from "models";
 import { RevealEvent } from "../event/RevealEvent.js";
 import revealPlayer from "../permissions/playerReveal.js";
 import { requirePlayer } from "../player/predicates.js";
-import { GameAccess } from "../state.js";
-import { Effect } from "./Effect.js";
+import type { GameAccess } from "../state.js";
+import type { Effect } from "./Effect.js";
 
 export class HallucinateEffect implements Effect {
   constructor(

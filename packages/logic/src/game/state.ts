@@ -1,8 +1,9 @@
-import { DeathCause, Event, GameInfo, GameSettings, Id, Time } from "models";
-import { ArrayOrSingle, PartialOrFactory } from "../util.js";
-import { Effect } from "./effect/Effect.js";
-import { EventFactory } from "./event/Event.js";
-import { Player } from "./player/Player.js";
+import type { DeathCause, Event, GameInfo, GameSettings, Id, Time } from "models";
+import type { Logger } from "../logging.js";
+import type { ArrayOrSingle, PartialOrFactory } from "../util.js";
+import type { Effect } from "./effect/Effect.js";
+import type { EventFactory } from "./event/Event.js";
+import type { Player } from "./player/Player.js";
 import "./roleEvents.js";
 
 export interface GameState extends GameInfo, GameReadAccess {
@@ -23,4 +24,5 @@ export interface GameAccess extends GameReadAccess {
   apply(effects: ArrayOrSingle<Effect>): void;
   setTime(time: Time): void;
   modifyPlayer(id: Id, data: PartialOrFactory<Player>): void;
+  readonly logger: Logger;
 }

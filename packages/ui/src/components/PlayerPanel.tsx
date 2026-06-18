@@ -1,4 +1,4 @@
-import { Player } from "models";
+import type { Player } from "models";
 import { useMemo } from "react";
 import styled from "styled-components";
 import RolePanel from "./RolePanel";

@@ -1,7 +1,0 @@
-{
-  "root": true,
-  "extends": ["custom/base"],
-  "rules": {
-    "no-console": "off"
-  }
-}

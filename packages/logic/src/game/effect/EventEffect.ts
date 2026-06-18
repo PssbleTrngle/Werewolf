@@ -1,6 +1,6 @@
-import { EventFactory } from "../event/Event.js";
-import { GameAccess } from "../state.js";
-import { Effect } from "./Effect.js";
+import type { EventFactory } from "../event/Event.js";
+import type { GameAccess } from "../state.js";
+import type { Effect } from "./Effect.js";
 
 export class EventEffect implements Effect {
   constructor(

@@ -1,5 +1,5 @@
-import { DeathData } from "models";
-import { DetailProps } from "../EventDetails";
+import type { DeathData } from "models";
+import type { DetailProps } from "../EventDetails";
 import ParticipantList from "../ParticipantList";
 
 export default function DeathDetails({

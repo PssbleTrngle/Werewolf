@@ -1,7 +1,9 @@
-import { Dispatch, FormEvent, useCallback, useEffect, useState } from "react";
+import type { Dispatch, FormEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import { Button, Buttons, Dialog, DialogProps, Input } from "ui";
+import type { DialogProps } from "ui";
+import { Button, Buttons, Dialog, Input } from "ui";
 import useDialog from "../../hooks/useDialog";
 
 export default function RenameDialog({

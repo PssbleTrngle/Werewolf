@@ -1,4 +1,4 @@
-import {
+import type {
   DeathCause,
   DeathData,
   Event,
@@ -6,11 +6,11 @@ import {
   Time,
   Vote,
 } from "models";
-import { ArrayOrSingle } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
+import type { ArrayOrSingle } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
 import { TimeEffect } from "../effect/TimeEffect.js";
-import { Player } from "../player/Player.js";
-import { GameReadAccess } from "../state.js";
+import type { Player } from "../player/Player.js";
+import type { GameReadAccess } from "../state.js";
 import { DismissChoice } from "../vote/Choice.js";
 import { EventType } from "./Event.js";
 import { EventBus } from "./EventBus.js";

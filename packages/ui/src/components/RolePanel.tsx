@@ -1,4 +1,5 @@
-import { Role, RoleGroup } from "models";
+import type { Role } from "models";
+import { RoleGroup } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -28,8 +29,8 @@ export default function RolePanel({
   const emoji = useMemo(() => {
     if (role?.emoji) return role.emoji;
     if (role?.groups) {
-      if (role.groups.length === 0) return `❔`;
-      const group = role.groups[0];
+      const [group] = role.groups;
+      if (!group) return `❔`;
       return groupEmojis[group] ?? `[${group.at(0)?.toUpperCase()}]`;
     }
     return undefined;

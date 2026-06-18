@@ -1,7 +1,8 @@
-import { Id } from "models";
-import { Dispatch, createContext, useContext } from "react";
+import type { Id } from "models";
+import type { Dispatch } from "react";
+import { createContext, useContext } from "react";
 
-const CTX = createContext<[Id | undefined, Dispatch<Id | undefined>]>([
+const Context = createContext<[Id | undefined, Dispatch<Id | undefined>]>([
   undefined,
   () => {
     throw new Error("missing impersonation context");
@@ -9,7 +10,7 @@ const CTX = createContext<[Id | undefined, Dispatch<Id | undefined>]>([
 ]);
 
 export default function useImpersonation() {
-  return useContext(CTX);
+  return useContext(Context);
 }
 
-export const ImpersonationProvider = CTX.Provider;
+export const ImpersonationProvider = Context.Provider;

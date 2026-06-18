@@ -1,8 +1,8 @@
-import { Dispatch } from "react";
-import { tooltip } from "ui";
-import { ButtonProps } from "ui/src/components/Button";
-import styled from "styled-components";
 import { mix } from "polished";
+import type { Dispatch } from "react";
+import styled from "styled-components";
+import type { ButtonProps } from "ui";
+import { tooltip } from "ui";
 
 export default function ToggleButton({
   disabledTooltip,

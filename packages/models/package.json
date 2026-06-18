@@ -4,14 +4,13 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "clean": "rimraf dist",
-    "lint": "eslint \"{src,test}/**/*.ts\""
+    "lint": "eslint src",
+    "check": "tsc --noEmit"
   },
   "devDependencies": {
-    "eslint": "^8.53.0",
-    "tsconfig": "workspace:*",
-    "eslint-config-custom": "workspace:*",
-    "tsup": "^8.0.1",
-    "typescript": "^5.2.2"
+    "@werewolf/configs": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }

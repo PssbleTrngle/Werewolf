@@ -10,7 +10,7 @@ export default class Registry<T> implements FrozenRegistry<T> {
 
   register(key: string, value: T) {
     if (this.values.has(key)) {
-      console.log(`Overwriting ${this.type} '${key}'`);
+      throw new Error(`trying to verwrite ${this.type} '${key}'`);
     }
 
     this.values.set(key, value);

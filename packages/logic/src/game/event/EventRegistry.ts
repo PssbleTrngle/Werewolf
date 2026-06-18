@@ -1,6 +1,6 @@
-import { Event, Player } from "models";
+import type { Event, Player } from "models";
 import Registry from "../../Registry.js";
-import { EventType } from "./Event.js";
+import type { EventType } from "./Event.js";
 
 const REGISTRY = new Registry<EventType<unknown>>("event type");
 

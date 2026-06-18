@@ -1,5 +1,5 @@
-import { Event, Vote } from "models";
-import { Player } from "../player/Player.js";
+import type { Event, Vote } from "models";
+import type { Player } from "../player/Player.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import { NoDataEvent } from "./NoDataEvent.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";

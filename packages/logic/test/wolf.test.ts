@@ -1,9 +1,10 @@
+import { describe, expect, it } from "bun:test";
 import { times } from "lodash-es";
 import { RoleGroup } from "models";
 import { inGroup, isAlive, isNotDead } from "../src/game/player/predicates.js";
-import { DreamWolf } from "../src/game/role/DreamWolf.js";
-import { Villager } from "../src/game/role/Villager.js";
-import { Werewolf } from "../src/game/role/Wolf.js";
+import { DreamWolf } from "../src/game/role/dreamWolf/index.js";
+import { Villager } from "../src/game/role/villager";
+import { Werewolf } from "../src/game/role/wolf";
 import { TestGame } from "./util/game.js";
 import { createTestPlayers, createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";

@@ -1,7 +1,8 @@
-import { ApiError, defaultGameSettings, GameSettings, Id, User } from "models";
+import type { GameSettings, Id, User } from "models";
+import { ApiError, defaultGameSettings } from "models";
 import { nanoid } from "nanoid";
 import { redisJSON } from "./casting.js";
-import { RedisClient } from "./redis.js";
+import type { RedisClient } from "./redis.js";
 
 export const enum GameStatus {
   NONE = "none",

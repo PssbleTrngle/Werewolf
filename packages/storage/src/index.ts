@@ -1,6 +1,7 @@
 import GameStorage from "./games.js";
 import LobbyStorage from "./lobbies.js";
-import { RedisClient, connectRedis, setupRedis } from "./redis.js";
+import type { RedisClient} from "./redis.js";
+import { connectRedis, setupRedis } from "./redis.js";
 
 export class Storage {
   readonly games: GameStorage;

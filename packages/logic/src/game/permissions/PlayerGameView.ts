@@ -1,12 +1,12 @@
-import { Event, Id, Player as IPlayer, Vote } from "models";
+import type { Event, Id, Player as IPlayer, Vote } from "models";
 import { omitByUndefined } from "../../util.js";
-import { EventType } from "../event/Event.js";
+import type { EventType } from "../event/Event.js";
 import { EventRegistry } from "../event/EventRegistry.js";
-import { Game } from "../index.js";
-import { Player } from "../player/Player.js";
+import type { Game } from "../index.js";
+import type { Player } from "../player/Player.js";
 import { isNotDead, requirePlayer } from "../player/predicates.js";
 import { validateVote } from "../vote/Vote.js";
-import { GameView } from "./index.js";
+import type { GameView } from "./index.js";
 
 export class PlayerGameView implements GameView {
   constructor(

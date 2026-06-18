@@ -1,0 +1,16 @@
+import { roleScopedFactory } from "../../event/Event.js";
+import { registerEvent } from "../../event/EventRegistry.js";
+import { RevealEvent } from "../../event/RevealEvent.js";
+import { StartEvents } from "../../event/StartEvent.js";
+import { hasRole } from "../../player/predicates.js";
+import { Freemason } from "./index.js";
+
+export function registerFreemasonEvents(role = Freemason) {
+  registerEvent(`reveal.${role.type}`, new RevealEvent());
+  StartEvents.registerEvent(
+    roleScopedFactory(role, ({ players }) => {
+      const comrades = players.filter(hasRole(role));
+      return RevealEvent.create(role, comrades, comrades);
+    }),
+  );
+}

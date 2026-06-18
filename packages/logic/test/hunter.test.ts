@@ -1,10 +1,12 @@
+import { describe, expect, it } from "bun:test";
 import { times } from "lodash-es";
-import { DeathCause, DeathData, RoleGroup } from "models";
+import type { DeathData } from "models";
+import { DeathCause, RoleGroup } from "models";
 import { inGroup, isNotDead } from "../src/game/player/predicates.js";
-import { Hunter } from "../src/game/role/Hunter.js";
-import { Villager } from "../src/game/role/Villager.js";
-import { Witch } from "../src/game/role/Witch.js";
-import { Werewolf } from "../src/game/role/Wolf.js";
+import { Hunter } from "../src/game/role/hunter/index.js";
+import { Villager } from "../src/game/role/villager/index.js";
+import { Witch } from "../src/game/role/witch/index.js";
+import { Werewolf } from "../src/game/role/wolf/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";

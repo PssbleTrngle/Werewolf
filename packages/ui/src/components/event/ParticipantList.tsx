@@ -1,4 +1,4 @@
-import { Player } from "models";
+import type { Player } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";

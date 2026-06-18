@@ -1,4 +1,4 @@
-import { Event, GameInfo, Player as IPlayer, Vote } from "models";
+import type { Event, GameInfo, Player as IPlayer, Vote } from "models";
 
 export interface SubjectMappers {
   mapEvent<T>(subject: Event<T>): Event<T>;

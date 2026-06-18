@@ -1,5 +1,6 @@
-import { FakeData } from "models";
-import { ReactNode, createElement, useCallback, useMemo } from "react";
+import type { FakeData } from "models";
+import type { ReactNode } from "react";
+import { createElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Title } from "../Text";
 import DeathDetails from "./detail/DeathDetails";
@@ -9,7 +10,7 @@ import WinDetails from "./detail/WinDetails";
 
 function baseType(type: string) {
   const [base] = type.split(".");
-  return base;
+  return base!!;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

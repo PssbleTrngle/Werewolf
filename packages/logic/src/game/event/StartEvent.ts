@@ -13,8 +13,7 @@ export class StartEvent extends NoDataEvent {
     data: null,
   }));
 
-  finish() {
-    console.log("Game Started");
+  override finish() {
     return [
       new TimeEffect("night"),
       ...StartEvents.createEffects(),

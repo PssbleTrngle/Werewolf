@@ -1,7 +1,7 @@
-import { Choice } from "./Choice.js";
-import { Time, WinState } from "./Game.js";
-import { DeathCause, Player } from "./Player.js";
-import { Role } from "./Role.js";
+import type { Choice } from "./Choice.js";
+import type { Time, WinState } from "./Game.js";
+import type { DeathCause, Player } from "./Player.js";
+import type { Role } from "./Role.js";
 
 export interface Event<T = unknown> {
   type: string;

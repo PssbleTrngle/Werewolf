@@ -1,6 +1,7 @@
-import { Event, Player, Vote } from "models";
-import { ArrayOrSingle, arrayOrSelf } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
+import type { Event, Player, Vote } from "models";
+import type { ArrayOrSingle } from "../../util.js";
+import { arrayOrSelf } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import { ReviveEvent } from "./ReviveEvent.js";
@@ -18,7 +19,7 @@ export default class PotionReviveEvent extends ReviveEvent {
     }),
   );
 
-  finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
+  override finish(vote: Vote, event: Event<undefined>): ArrayOrSingle<Effect> {
     const parentEffects = arrayOrSelf(super.finish(vote, event));
     if (vote.type === "skip") return parentEffects;
     return [

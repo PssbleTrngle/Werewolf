@@ -1,7 +1,7 @@
-import { Id, Role } from "models";
+import type { Id, Role } from "models";
 import { requirePlayer } from "../player/predicates.js";
-import { GameAccess } from "../state.js";
-import { Effect } from "./Effect.js";
+import type { GameAccess } from "../state.js";
+import type { Effect } from "./Effect.js";
 
 export class ChangeRoleEffect implements Effect {
   constructor(
@@ -10,10 +10,8 @@ export class ChangeRoleEffect implements Effect {
   ) {}
 
   apply(game: GameAccess) {
-    console.log(
-      requirePlayer(game.players, this.playerId).name,
-      "turned into",
-      this.role.type,
+    game.logger.info(
+      ` ${requirePlayer(game.players, this.playerId).name} turned into ${this.role.type}`,
     );
     game.modifyPlayer(this.playerId, { role: this.role });
   }

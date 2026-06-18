@@ -1,12 +1,11 @@
+import { describe, expect, it } from "bun:test";
 import { times } from "lodash-es";
-import { WinData } from "models";
-import {
-  Executioner,
-  Jester,
-  requirePlayer,
-  Villager,
-  Werewolf,
-} from "../src/index.js";
+import type { WinData } from "models";
+import { Executioner } from "../src/game/role/executioner/index.js";
+import { Jester } from "../src/game/role/jester/index.js";
+import { Villager } from "../src/game/role/villager/index.js";
+import { Werewolf } from "../src/game/role/wolf/index.js";
+import { requirePlayer } from "../src/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";
@@ -20,21 +19,21 @@ const [executioner, wolf, ...villagers] = players.map((it) => it.id);
 
 function expectExecutionerWin(game: TestGame) {
   game.expectEvents("announcement.death", "win");
-  expect(game.events[1].data).toMatchObject<WinData>({
+  expect(game.events[1].data).toMatchObject({
     state: {
       type: Executioner.type,
       winners: [game.players[0]],
     },
-  });
+  } satisfies WinData);
 }
 
 function requireTarget(game: TestGame) {
   const target = requirePlayer(game.players, executioner)?.roleData?.target;
 
   expect(target).not.toBeUndefined();
-  assert(target);
 
-  return target;
+  // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
+  return target!!;
 }
 
 describe("tests regarding the executioner", () => {

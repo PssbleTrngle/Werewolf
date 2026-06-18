@@ -1,7 +1,9 @@
+import { describe, expect, it } from "bun:test";
 import { times } from "lodash-es";
-import { WinData } from "models";
-import { Jester } from "../src/game/role/Jester.js";
-import { Villager, Werewolf } from "../src/index.js";
+import type { WinData } from "models";
+import { Jester } from "../src/game/role/jester/index.js";
+import { Villager } from "../src/game/role/villager/index.js";
+import { Werewolf } from "../src/game/role/wolf/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";

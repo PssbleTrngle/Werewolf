@@ -1,6 +1,7 @@
-import { Id, Time } from "models";
+import type { Id, Time } from "models";
 import { transparentize } from "polished";
-import { PropsWithChildren, useMemo } from "react";
+import type { PropsWithChildren} from "react";
+import { useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useActiveEvent, useGameInfo } from "../..";
 import { XS, useMedia } from "../../styles/screens";

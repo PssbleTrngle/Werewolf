@@ -1,5 +1,5 @@
 import { PlayerRevealType } from "models";
-import { Dispatch } from "react";
+import type { Dispatch } from "react";
 import { useTranslation } from "react-i18next";
 import { Select } from "./Input";
 

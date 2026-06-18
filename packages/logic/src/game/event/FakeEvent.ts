@@ -1,8 +1,8 @@
-import { Event, FakeData, Vote } from "models";
-import { ArrayOrSingle } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
-import { SubjectMappers } from "../permissions/index.js";
-import { Player } from "../player/Player.js";
+import type { Event, FakeData, Vote } from "models";
+import type { ArrayOrSingle } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
+import type { SubjectMappers } from "../permissions/index.js";
+import type { Player } from "../player/Player.js";
 import { DismissChoice } from "../vote/Choice.js";
 import { EventType } from "./Event.js";
 import { EventRegistry, registerEventFactory } from "./EventRegistry.js";

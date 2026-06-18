@@ -1,9 +1,9 @@
-import { WinData, WinState } from "models";
-import { ArrayOrSingle } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
-import { SubjectMappers } from "../permissions/index.js";
-import { Player } from "../player/Player.js";
-import { GameReadAccess } from "../state.js";
+import type { WinData, WinState } from "models";
+import type { ArrayOrSingle } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
+import type { SubjectMappers } from "../permissions/index.js";
+import type { Player } from "../player/Player.js";
+import type { GameReadAccess } from "../state.js";
 import { EventType } from "./Event.js";
 import { registerEventFactory } from "./EventRegistry.js";
 
@@ -16,11 +16,11 @@ export default class WinEvent extends EventType<WinData> {
     }),
   );
 
-  finish(): ArrayOrSingle<Effect> {
+  override finish(): ArrayOrSingle<Effect> {
     throw new Error("This should never be called");
   }
 
-  isFinished(_game: GameReadAccess): boolean {
+  override isFinished(_game: GameReadAccess): boolean {
     return false;
   }
 

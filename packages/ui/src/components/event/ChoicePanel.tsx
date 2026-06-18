@@ -1,4 +1,4 @@
-import { Choice, Id } from "models";
+import type { Choice, Id } from "models";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";

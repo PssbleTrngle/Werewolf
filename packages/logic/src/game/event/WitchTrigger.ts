@@ -1,17 +1,17 @@
-import { Event, Vote } from "models";
-import { ArrayOrSingle } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
+import type { Event, Vote } from "models";
+import type { ArrayOrSingle } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";
-import { SubjectMappers } from "../permissions/index.js";
-import { Player } from "../player/Player.js";
+import type { SubjectMappers } from "../permissions/index.js";
+import type { Player } from "../player/Player.js";
 import {
   isAlive,
   isDying,
   others,
   requirePlayer,
 } from "../player/predicates.js";
-import { Witch } from "../role/Witch.js";
-import { GameReadAccess } from "../state.js";
+import { Witch } from "../role/witch/index.js";
+import type { GameReadAccess } from "../state.js";
 import { roleScopedFactory } from "./Event.js";
 import { NoDataEvent } from "./NoDataEvent.js";
 import PotionKillEvent from "./PotionKillEvent.js";
@@ -49,7 +49,7 @@ export class WitchTrigger extends NoDataEvent {
     );
   }
 
-  isFinished(
+  override isFinished(
     _game: GameReadAccess,
     _event: Event<never>,
     index: number,
@@ -57,7 +57,7 @@ export class WitchTrigger extends NoDataEvent {
     return index === 0; // || game.players.some(isDying);
   }
 
-  view(
+  override view(
     _player: Player,
     _event: Event<never>,
     _mapper: SubjectMappers,

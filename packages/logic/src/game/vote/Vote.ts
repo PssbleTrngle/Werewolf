@@ -1,5 +1,6 @@
 import { maxBy, orderBy, uniq } from "lodash-es";
-import { ApiError, Choice, PlayerVote, Vote } from "models";
+import type { Choice, PlayerVote, Vote } from "models";
+import { ApiError } from "models";
 import { byId } from "../player/predicates.js";
 
 function isPlayerVote(vote: Vote): vote is PlayerVote {

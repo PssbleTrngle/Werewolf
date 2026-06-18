@@ -1,4 +1,5 @@
-import styled, { ShouldForwardProp, css } from "styled-components";
+import type { ShouldForwardProp} from "styled-components";
+import styled, { css } from "styled-components";
 
 export const CenteredHorizontal = css`
   height: fit-content;

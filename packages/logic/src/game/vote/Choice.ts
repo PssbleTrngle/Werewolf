@@ -1,4 +1,4 @@
-import { Choice } from "models";
+import type { Choice } from "models";
 
 export const DismissChoice: Choice = {
   canSkip: true,

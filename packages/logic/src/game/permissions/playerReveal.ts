@@ -1,5 +1,6 @@
 import { omit } from "lodash-es";
-import { Player, PlayerRevealType, Role, RoleGroup } from "models";
+import type { Player, Role} from "models";
+import { PlayerRevealType, RoleGroup } from "models";
 
 const evilGroups = [RoleGroup.EVIL, RoleGroup.WOLF];
 

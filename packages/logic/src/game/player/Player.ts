@@ -1,4 +1,4 @@
-import { Id, Player as IPlayer, Role, Status } from "models";
+import type { Id, Player as IPlayer, Role, Status } from "models";
 
 export interface RoleData {
   usedRevivePotion?: boolean;

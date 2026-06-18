@@ -12,6 +12,7 @@ export function useMedia(query: string) {
 
   useEffect(() => {
     q.addEventListener?.("change", updateMatches);
+    return () => q.removeEventListener?.("change", updateMatches);
   }, [q]);
 
   return matches;

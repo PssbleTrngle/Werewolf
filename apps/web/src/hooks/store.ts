@@ -1,5 +1,7 @@
-import { GameState, generateRoles } from "logic";
-import { GameSettings, Id, Player, defaultGameSettings } from "models";
+import type { GameState} from "logic";
+import { generateRoles } from "logic";
+import type { GameSettings, Id, Player} from "models";
+import { defaultGameSettings } from "models";
 import { nanoid } from "nanoid";
 import { create, type StateCreator } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";

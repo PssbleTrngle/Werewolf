@@ -1,25 +1,29 @@
 import { useQueryClient } from "@tanstack/react-query";
+import type {
+  Player as GamePlayer,
+  GameState} from "logic";
 import {
   Game,
-  Player as GamePlayer,
-  GameState,
   ModeratorGameView,
   PlayerGameView,
   allRoles,
   notNull,
   preparePlayers,
 } from "logic";
-import { Id, Player, Role, Vote } from "models";
-import {
+import type { Id, Player, Role, Vote } from "models";
+import type {
   Dispatch,
   DispatchWithoutAction,
-  PropsWithChildren,
+  PropsWithChildren} from "react";
+import {
   useMemo,
   useReducer,
 } from "react";
-import { GameProvider, QueryContext, invalidateGameQueries } from "ui";
+import type { QueryContext} from "ui";
+import { GameProvider, invalidateGameQueries } from "ui";
 import { ImpersonationProvider } from "./impersonate";
-import { GameStore, useLocalStore } from "./store";
+import type { GameStore} from "./store";
+import { useLocalStore } from "./store";
 
 export const GAME_ID = "local";
 
@@ -57,10 +61,10 @@ function wrap<T extends (...args: any[]) => any>(func: T) {
       return await func(...args);
     } catch (e) {
       if (import.meta.env.DEV && e instanceof Error) {
-        /* eslint-disable no-console */
+         
         console.error("an error occured in the logic package");
         console.error(e.stack ?? e.message);
-        /* eslint-enable no-console */
+         
       }
       throw e;
     }

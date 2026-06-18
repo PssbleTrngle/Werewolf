@@ -1,6 +1,6 @@
-import { DeathCause, Id } from "models";
-import { GameAccess } from "../state.js";
-import { Effect } from "./Effect.js";
+import type { DeathCause, Id } from "models";
+import type { GameAccess } from "../state.js";
+import type { Effect } from "./Effect.js";
 
 export class KillEffect implements Effect {
   constructor(

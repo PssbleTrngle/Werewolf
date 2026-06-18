@@ -1,4 +1,4 @@
-import { Player } from "./Player.js";
+import type { Player } from "./Player.js";
 
 export type Time = "day" | "night" | "dawn" | "dusk";
 

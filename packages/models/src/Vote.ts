@@ -1,4 +1,4 @@
-import { Id } from "./Player.js";
+import type { Id } from "./Player.js";
 
 export interface SkipVote {
   type: "skip";

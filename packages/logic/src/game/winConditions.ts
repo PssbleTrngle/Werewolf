@@ -1,6 +1,6 @@
-import { WinState } from "models";
+import type { WinState } from "models";
 import { isAlive, requirePlayer } from "./player/predicates.js";
-import { GameReadAccess } from "./state.js";
+import type { GameReadAccess } from "./state.js";
 import { notNull } from "../util.js";
 import { uniqBy } from "lodash-es";
 

@@ -1,12 +1,12 @@
-import { Vote } from "models";
-import { Player } from "../player/Player.js";
+import type { Vote } from "models";
+import { EventEffect } from "../effect/EventEffect.js";
+import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
+import revealPlayer from "../permissions/playerReveal.js";
+import type { Player } from "../player/Player.js";
+import { requirePlayer } from "../player/predicates.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import { NoDataEvent } from "./NoDataEvent.js";
 import { RevealEvent } from "./RevealEvent.js";
-import { EventEffect } from "../effect/EventEffect.js";
-import { requirePlayer } from "../player/predicates.js";
-import revealPlayer from "../permissions/playerReveal.js";
-import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 
 export default class AmorEvent extends NoDataEvent {
   static create = registerEventFactory(
@@ -44,7 +44,7 @@ export default class AmorEvent extends NoDataEvent {
     ];
   }
 
-  usableByModerator() {
+  override usableByModerator() {
     return true;
   }
 }

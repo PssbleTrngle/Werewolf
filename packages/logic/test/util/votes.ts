@@ -1,5 +1,5 @@
-import { Id, PlayerVote, SkipVote } from "models";
-import { Player } from "../../src/game/player/Player.js";
+import type { Id, PlayerVote, SkipVote } from "models";
+import type { Player } from "../../src/game/player/Player.js";
 
 export const skipVote = (): SkipVote => ({ type: "skip" });
 

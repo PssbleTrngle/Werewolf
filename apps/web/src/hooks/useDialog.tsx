@@ -1,7 +1,5 @@
+import type { PropsWithChildren, ReactNode, RefObject } from "react";
 import {
-  PropsWithChildren,
-  ReactNode,
-  RefObject,
   createContext,
   createRef,
   useCallback,
@@ -12,10 +10,10 @@ import {
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 
-const CTX = createContext<RefObject<HTMLElement | null>>(createRef());
+const Context = createContext<RefObject<HTMLElement | null>>(createRef());
 
 export default function useDialog() {
-  const target = useContext(CTX);
+  const target = useContext(Context);
 
   const render = useCallback(
     (node: ReactNode) => {
@@ -33,7 +31,7 @@ export function DialogTarget(props: Readonly<PropsWithChildren>) {
   return (
     <>
       <DialogTargetElement ref={ref} />
-      <CTX.Provider {...props} value={ref} />
+      <Context.Provider {...props} value={ref} />
     </>
   );
 }

@@ -1,25 +1,28 @@
 import { uniq } from "lodash-es";
-import {
-  defaultGameSettings,
+import type {
   Event,
   GameInfo,
   GameSettings,
   Id,
   Player as IPlayer,
   Role,
-  Vote,
+  Vote} from "models";
+import {
+  defaultGameSettings
 } from "models";
-import { arrayOrSelf, ArrayOrSingle, notNull } from "../util.js";
+import { createConsoleLogger, type Logger } from "../logging.js";
+import type { ArrayOrSingle} from "../util.js";
+import { arrayOrSelf, notNull } from "../util.js";
 import { EventBus } from "./event/EventBus.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { StartEvent } from "./event/StartEvent.js";
 import WinEvent from "./event/WinEvent.js";
 import FrozenGame from "./frozen.js";
 import StateHistory from "./history.js";
-import { Player } from "./player/Player.js";
+import type { Player } from "./player/Player.js";
 import { isDying, requirePlayer } from "./player/predicates.js";
 import "./roleEvents.js";
-import { GameReadAccess, GameState } from "./state.js";
+import type { GameReadAccess, GameState } from "./state.js";
 import { calculateWinner } from "./vote/Vote.js";
 import { testWinConditions } from "./winConditions.js";
 
@@ -48,10 +51,11 @@ export function createFakePlayer(role?: Partial<Role>): IPlayer {
 }
 
 export class Game implements GameReadAccess {
-  private state: StateHistory;
-  private votes: Map<Id, Vote>;
+  private readonly state: StateHistory;
+  private readonly votes: Map<Id, Vote>;
+  protected logger: Logger;
 
-  private hooks = new Map<
+  private readonly hooks = new Map<
     GameHookKey,
     EventBus<GameHookListener<GameHookKey>>
   >();
@@ -60,6 +64,7 @@ export class Game implements GameReadAccess {
     if (history.length === 0) throw new Error("Game history may not be empty");
     this.state = new StateHistory(...history);
     this.votes = new Map(initialVotes);
+    this.logger = createConsoleLogger();
   }
 
   static createState(
@@ -101,6 +106,10 @@ export class Game implements GameReadAccess {
 
   async start() {
     const [event, ...rest] = this.events;
+    if (!event) {
+      throw new Error("starting event is missing");
+    }
+
     if (rest.length > 0 || event.type !== "start") {
       throw new Error("game has already started");
     }
@@ -137,7 +146,7 @@ export class Game implements GameReadAccess {
   }
 
   private freeze(): FrozenGame {
-    return new FrozenGame(this.state.current);
+    return new FrozenGame(this.state.current, this.logger);
   }
 
   private checkWin(access: FrozenGame): GameState {
@@ -147,7 +156,7 @@ export class Game implements GameReadAccess {
     const win = !dying && testWinConditions(unfrozen);
 
     if (win) {
-      console.log(`We have a winner: ${win.type}`);
+      this.logger.info(`We have a winner: ${win.type}`);
 
       const winEvent = WinEvent.create(unfrozen.players, win);
       const keptEvents = unfrozen.events.filter((it) =>
@@ -263,7 +272,7 @@ export class Game implements GameReadAccess {
           `dead players cannot vote: ${player.name} tried to vote on ${event?.type}`,
         );
 
-      console.log(player.name, "voted", vote, "on", event.type);
+      this.logger.info(`${player.name} voted ${vote} on ${event.type}`);
       this.votes.set(player.id, vote);
     });
 

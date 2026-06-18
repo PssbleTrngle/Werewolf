@@ -1,9 +1,9 @@
-import { Event, Role, Vote } from "models";
-import { ArrayOrSingle } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
+import type { Event, Role, Vote } from "models";
+import type { ArrayOrSingle } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
 import { HallucinateEffect } from "../effect/HallucinateEffect.js";
-import { SubjectMappers } from "../permissions/index.js";
-import { Player } from "../player/Player.js";
+import type { SubjectMappers } from "../permissions/index.js";
+import type { Player } from "../player/Player.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import { NoDataEvent } from "./NoDataEvent.js";
 
@@ -22,7 +22,7 @@ export class HallucinateEvent extends NoDataEvent {
     if (vote.type === "players") {
       return new HallucinateEffect(
         event.role as Role,
-        event.players[0].id,
+        event.players[0]!!.id,
         vote.players,
       );
     }
@@ -30,7 +30,7 @@ export class HallucinateEvent extends NoDataEvent {
     return [];
   }
 
-  view(
+  override view(
     player: Player,
     event: Event<never>,
     mapper: SubjectMappers,

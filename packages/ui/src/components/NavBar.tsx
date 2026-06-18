@@ -1,5 +1,6 @@
 import { mix } from "polished";
-import { PropsWithChildren, ReactNode, useMemo } from "react";
+import type { PropsWithChildren, ReactNode} from "react";
+import { useMemo } from "react";
 import styled, { css } from "styled-components";
 import { InvisibleLinkStyle } from "../styles/links";
 import { XS } from "../styles/screens";

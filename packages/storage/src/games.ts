@@ -1,16 +1,20 @@
-import {
-  Game,
+import type {
   GameHookKey,
   GameHookListener,
   GameState,
-  Votes,
+  Votes} from "logic";
+import {
+  Game,
   generateRoles,
   preparePlayers,
 } from "logic";
-import { ApiError, Id } from "models";
+import type { Id } from "models";
+import { ApiError } from "models";
 import { redisJSON } from "./casting.js";
-import LobbyStorage, { GameStatus, Lobby } from "./lobbies.js";
-import { RedisClient } from "./redis.js";
+import type { Lobby } from "./lobbies.js";
+import type LobbyStorage from "./lobbies.js";
+import { GameStatus } from "./lobbies.js";
+import type { RedisClient } from "./redis.js";
 
 type ListenerWithGame<T extends GameHookKey = GameHookKey> = (
   game: Game,

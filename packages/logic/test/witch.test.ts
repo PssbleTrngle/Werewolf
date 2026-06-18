@@ -1,8 +1,11 @@
+import { describe, expect, it } from "bun:test";
 import { times } from "lodash-es";
 import { isNotDead, requirePlayer } from "../src/game/player/predicates.js";
-import { Witch } from "../src/game/role/Witch.js";
-import { Werewolf } from "../src/game/role/Wolf.js";
-import { Hunter, Seer, Villager } from "../src/index.js";
+import { Hunter } from "../src/game/role/hunter/index.js";
+import { Seer } from "../src/game/role/seer/index.js";
+import { Villager } from "../src/game/role/villager/index.js";
+import { Witch } from "../src/game/role/witch/index.js";
+import { Werewolf } from "../src/game/role/wolf/index.js";
 import { TestGame } from "./util/game.js";
 import { createTestPlayersWith } from "./util/players.js";
 import { playerVote, skipVote } from "./util/votes.js";

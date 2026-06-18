@@ -1,4 +1,4 @@
-import { Id, Player, Role, RoleGroup } from "models";
+import type { Id, Player, Role, RoleGroup } from "models";
 
 export function inGroup(group: RoleGroup) {
   return (value: Player): boolean => {

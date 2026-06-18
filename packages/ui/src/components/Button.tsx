@@ -1,6 +1,7 @@
 import { invert, lighten } from "polished";
-import styled, { ShouldForwardProp, css } from "styled-components";
-import { RuleSet } from "styled-components/dist/types";
+import type { ShouldForwardProp} from "styled-components";
+import styled, { css } from "styled-components";
+import type { RuleSet } from "styled-components/dist/types";
 import { InputStyles } from "./Input";
 
 export interface ButtonProps {

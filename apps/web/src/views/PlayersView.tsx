@@ -1,17 +1,12 @@
 import { MIN_PLAYERS, notNull } from "logic";
-import { Id, Player, Role, Status } from "models";
+import type { Id, Player, Role, Status } from "models";
 import { nanoid } from "nanoid";
-import {
-  Dispatch,
-  FormEvent,
-  PropsWithChildren,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import type { Dispatch, FormEvent, PropsWithChildren } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
+  Actions,
   Button,
   Buttons,
   ButtonsCell,
@@ -31,7 +26,6 @@ import {
   useMedia,
   usePlayers,
 } from "ui";
-import { Actions } from "ui/src/components/Table";
 import ImpactBadge from "../components/ImpactBadge";
 import InvisibleLink from "../components/InivisibleLink";
 import RenameDialog from "../components/dialog/RenameDialog";

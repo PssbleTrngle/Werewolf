@@ -1,4 +1,4 @@
-import { EventQueue, Id } from "models";
+import type { EventQueue, Id } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";

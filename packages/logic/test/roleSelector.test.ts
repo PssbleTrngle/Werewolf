@@ -1,3 +1,4 @@
+import { expect, it } from "bun:test";
 import { RoleGroup } from "models";
 import {
   generateRoles,
@@ -15,7 +16,7 @@ it("role selector returns correct count", () => {
     const wolfs = roles.filter(inGroup(RoleGroup.WOLF));
     const villagers = roles.filter(inGroup(RoleGroup.VILLAGER));
     expect(roles).toHaveLength(players.length);
-    expect(wolfs.length).greaterThan(0);
-    expect(villagers.length).greaterThan(0);
+    expect(wolfs.length).toBeGreaterThan(0);
+    expect(villagers.length).toBeGreaterThan(0);
   }
 });

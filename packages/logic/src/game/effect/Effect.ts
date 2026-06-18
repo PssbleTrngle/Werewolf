@@ -1,4 +1,4 @@
-import { GameAccess } from "../state.js";
+import type { GameAccess } from "../state.js";
 
 export interface Effect {
   apply(game: GameAccess): void;

@@ -1,7 +1,7 @@
 import { times } from "lodash-es";
-import { Role } from "models";
-import { Player } from "../../src/game/player/Player.js";
-import { Villager } from "../../src/game/role/Villager.js";
+import type { Role } from "models";
+import type { Player } from "../../src/game/player/Player.js";
+import { Villager } from "../../src/game/role/villager/index.js";
 
 export function createTestPlayers(
   amount: number,

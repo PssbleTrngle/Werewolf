@@ -1,7 +1,7 @@
-import { Choice, Event, Player as IPlayer, Vote } from "models";
-import { Game } from "../index.js";
+import type { Choice, Event, Player as IPlayer, Vote } from "models";
+import type { Game } from "../index.js";
 import { validateVote } from "../vote/Vote.js";
-import { GameView } from "./index.js";
+import type { GameView } from "./index.js";
 
 export class ModeratorGameView implements GameView {
   constructor(protected readonly game: Game) {}
@@ -24,7 +24,9 @@ export class ModeratorGameView implements GameView {
   }
 
   currentEvent() {
-    return this.mapEvent(this.events()[0]);
+    const [first] = this.events();
+    if (!first) throw new Error("no events found");
+    return this.mapEvent(first);
   }
 
   events() {

@@ -1,9 +1,9 @@
-import { Event, KillData, Vote } from "models";
-import { ArrayOrSingle } from "../../util.js";
-import { Effect } from "../effect/Effect.js";
+import type { Event, KillData, Vote } from "models";
+import type { ArrayOrSingle } from "../../util.js";
+import type { Effect } from "../effect/Effect.js";
 import { KillEffect } from "../effect/KillEffect.js";
-import { SubjectMappers } from "../permissions/index.js";
-import { Player } from "../player/Player.js";
+import type { SubjectMappers } from "../permissions/index.js";
+import type { Player } from "../player/Player.js";
 import { EventType } from "./Event.js";
 
 export class KillEvent extends EventType<KillData> {

@@ -1,30 +1,25 @@
 import { shuffle, times } from "lodash-es";
-import {
-  ApiError,
-  GameSettings,
-  Role,
-  User,
-  defaultGameSettings,
-} from "models";
+import type { GameSettings, Role, User } from "models";
+import { ApiError, defaultGameSettings } from "models";
 import { EventBus } from "./event/EventBus.js";
-import { Player, RoleData } from "./player/Player.js";
+import type { Player, RoleData } from "./player/Player.js";
 import { others } from "./player/predicates.js";
-import { Amor } from "./role/Amor.js";
-import { Cursed } from "./role/Cursed.js";
-import { DreamWolf } from "./role/DreamWolf.js";
-import { Executioner } from "./role/Executioner.js";
-import { Eye } from "./role/Eye.js";
-import { Freemason } from "./role/Freemason.js";
-import { Guard } from "./role/Guard.js";
-import { Hunter } from "./role/Hunter.js";
-import { Jester } from "./role/Jester.js";
-import { LoneWolf } from "./role/LoneWolf.js";
-import { Fool, Seer } from "./role/Seer.js";
-import { SeerApprentice } from "./role/SeerApprentice.js";
-import { Villager } from "./role/Villager.js";
-import { Witch } from "./role/Witch.js";
-import { Werewolf } from "./role/Wolf.js";
-import { WolfCub } from "./role/WolfCub.js";
+import { Amor } from "./role/amor/index.js";
+import { Cursed } from "./role/cursed/index.js";
+import { DreamWolf } from "./role/dreamWolf/index.js";
+import { Executioner } from "./role/executioner/index.js";
+import { Eye } from "./role/eye/index.js";
+import { Freemason } from "./role/freemason/index.js";
+import { Guard } from "./role/guard/index.js";
+import { Hunter } from "./role/hunter/index.js";
+import { Jester } from "./role/jester/index.js";
+import { LoneWolf } from "./role/loneWolf/index.js";
+import { Fool, Seer } from "./role/seer/index.js";
+import { SeerApprentice } from "./role/seerApprentice/index.js";
+import { Villager } from "./role/villager/index.js";
+import { Witch } from "./role/witch/index.js";
+import { Werewolf } from "./role/wolf/index.js";
+import { WolfCub } from "./role/wolfCub/index.js";
 
 export const MIN_PLAYERS = 5;
 
@@ -126,9 +121,9 @@ export function generateRoles(
   const indizes = shuffle(times(players.length, (i) => i));
 
   return players.map((it, i) => {
-    const role = roles[i];
+    const role = roles[i]!!;
     const variant =
-      role.variants && role.variants[indizes[i] % role.variants.length];
+      role.variants && role.variants[indizes[i]!! % role.variants.length];
     return { ...it, role: { ...role, variant } };
   });
 }

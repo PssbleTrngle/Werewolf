@@ -1,10 +1,18 @@
-import { Event } from "models";
-import { Game, Player, isAlive } from "../../src/index.js";
+import { expect } from "bun:test";
+import type { Event } from "models";
+import type { GameState, Player} from "../../src/index.js";
+import { Game, isAlive } from "../../src/index.js";
+import createTestLogger from "./logger.js";
 import { skipVote } from "./votes.js";
 
 export class TestGame extends Game {
   static create(players: ReadonlyArray<Player>) {
     return new TestGame(Game.createState(players));
+  }
+
+  constructor(state: ReadonlyArray<GameState>) {
+    super(state);
+    this.logger = createTestLogger();
   }
 
   expectEvents(...expected: string[]) {

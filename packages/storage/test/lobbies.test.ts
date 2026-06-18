@@ -1,4 +1,6 @@
-import { ApiError, User } from "models";
+import { describe, expect, it } from "bun:test";
+import type { User } from "models";
+import { ApiError } from "models";
 import { createTestStorage } from "./util/storage.js";
 
 const owner: User = { id: "123", name: "Test Owner" };

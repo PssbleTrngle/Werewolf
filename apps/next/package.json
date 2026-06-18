@@ -11,32 +11,24 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.8.4",
-    "i18next": "^23.7.6",
     "logic": "workspace:*",
     "models": "workspace:*",
     "next": "14.0.3",
     "next-auth": "^4.24.5",
     "next-i18next": "^15.0.0",
-    "polished": "^4.2.2",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-i18next": "^13.5.0",
+    "react-dom": "^19.2.7",
     "storage": "workspace:*",
-    "styled-components": "^6.1.1",
     "ui": "workspace:*",
     "zod": "^3.22.4",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.3",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-custom": "workspace:*",
-    "locale": "workspace:*",
-    "tsconfig": "workspace:*",
-    "typescript": "^5.2.2"
+    "@types/react-dom": "^19.2.3",
+    "@werewolf/configs": "workspace:*",
+    "locale": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }

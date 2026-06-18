@@ -1,4 +1,5 @@
-import { DeathCause, Event, KillData, Player, Vote } from "models";
+import type { Event, KillData, Player, Vote } from "models";
+import { DeathCause } from "models";
 import { arrayOrSelf } from "../../util.js";
 import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import { registerEventFactory } from "./EventRegistry.js";
@@ -19,7 +20,7 @@ export default class PotionKillEvent extends KillEvent {
     }),
   );
 
-  finish(vote: Vote, event: Event<KillData>) {
+  override finish(vote: Vote, event: Event<KillData>) {
     const parentEffects = arrayOrSelf(super.finish(vote, event));
     if (vote.type === "skip") return parentEffects;
     return [

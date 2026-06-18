@@ -1,6 +1,7 @@
-import { GameInfo, Time } from "models";
+import type { GameInfo, Time } from "models";
 import { transparentize } from "polished";
-import { ReactNode, useEffect, useMemo, useReducer } from "react";
+import type { ReactNode} from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import styled from "styled-components";
 import Button from "../Button";
 import Clouds from "./Clouds";

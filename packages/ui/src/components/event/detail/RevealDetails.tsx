@@ -1,5 +1,5 @@
-import { RevealData } from "models";
-import { DetailProps } from "../EventDetails";
+import type { RevealData } from "models";
+import type { DetailProps } from "../EventDetails";
 import ParticipantList from "../ParticipantList";
 
 export default function RevealDetails({

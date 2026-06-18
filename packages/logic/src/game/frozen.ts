@@ -1,23 +1,19 @@
 import { last } from "lodash-es";
-import { DeathCause, Event, Id, Time, Vote } from "models";
-import {
-  ArrayOrSingle,
-  PartialOrFactory,
-  arrayOrSelf,
-  notNull,
-  resolvePartialFactory,
-} from "../util.js";
-import { Effect } from "./effect/Effect.js";
+import type { DeathCause, Event, Id, Time, Vote } from "models";
+import type { Logger } from "../logging.js";
+import type { ArrayOrSingle, PartialOrFactory } from "../util.js";
+import { arrayOrSelf, notNull, resolvePartialFactory } from "../util.js";
+import type { Effect } from "./effect/Effect.js";
 import { DeathEvent, DeathEvents, ProtectEvents } from "./event/DeathEvent.js";
-import { EventFactory } from "./event/Event.js";
+import type { EventFactory } from "./event/Event.js";
 import { EventRegistry } from "./event/EventRegistry.js";
 import { FakeEvent } from "./event/FakeEvent.js";
 import { createFakePlayer } from "./index.js";
 import revealPlayer from "./permissions/playerReveal.js";
-import { Player } from "./player/Player.js";
+import type { Player } from "./player/Player.js";
 import { isAlive, isDying, requirePlayer } from "./player/predicates.js";
 import "./roleEvents.js";
-import { GameAccess, GameState } from "./state.js";
+import type { GameAccess, GameState } from "./state.js";
 
 export default class FrozenGame implements GameAccess {
   private readonly newEvents: EventFactory[] = [];
@@ -29,7 +25,10 @@ export default class FrozenGame implements GameAccess {
   private readonly timesPassed: Time[] = [];
   private readonly playerModifiers = new Map<Id, Partial<Player>[]>();
 
-  constructor(private readonly initial: GameState) {}
+  constructor(
+    private readonly initial: GameState,
+    public readonly logger: Logger,
+  ) {}
 
   immediately(factory: EventFactory) {
     this.pendingReplace.add(factory);
@@ -99,11 +98,11 @@ export default class FrozenGame implements GameAccess {
     );
 
     if (guarded) {
-      console.log(target.name, "was protected against", cause);
+      this.logger.info(`${target.name} was protected against ${cause}`);
       return;
     }
 
-    console.log(target.name, "died by", cause);
+    this.logger.info(`${target.name} died by ${cause}`);
 
     this.deaths.set(playerId, cause);
 
@@ -116,7 +115,7 @@ export default class FrozenGame implements GameAccess {
 
   revive(playerId: Id): void {
     const target = requirePlayer(this.players, playerId);
-    console.log(target.name, "was revived");
+    this.logger.info(`${target.name} was revived`);
     this.revives.add(playerId);
   }
 
