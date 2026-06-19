@@ -1,45 +1,42 @@
 name: Test
+
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, synchronize]
   push:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    permissions:
-      contents: read
-      packages: read
-
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
-      - uses: pnpm/action-setup@v2
-        with:
-          run_install: |
-            - recursive: true
-              args: [--frozen-lockfile, --strict-peer-dependencies]
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
 
-      - name: start test containers
-        uses: isbang/compose-action@v1.5.1
+      - name: Start test containers
+        uses: isbang/compose-action@v3
         with:
           compose-file: |
             packages/storage/docker-compose.test.yml
 
-      - run: pnpm run test:ci
+      - name: Run tests
+        run: bun run test:ci
 
-      - name: notify sonarqube
+      - name: Notify sonarqube
         if: ${{ github.event_name == 'push' }}
-        uses: sonarsource/sonarqube-scan-action@master
+        uses: SonarSource/sonarqube-scan-action@v7
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

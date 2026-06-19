@@ -6,6 +6,10 @@ env:
   REGISTRY: ghcr.io
   GITHUB_REPO: ${{ github.repository }}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   docker:
     permissions:
@@ -14,30 +18,24 @@ jobs:
 
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
-      - uses: pnpm/action-setup@v2
-        with:
-          run_install: |
-            - recursive: true
-              args: [--frozen-lockfile, --strict-peer-dependencies]
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
 
-      - run: pnpm run build --filter=web...
+      - run: bun run build --filter=web...
         env:
           VITE_REPOSITORY: ${{ env.GITHUB_REPO }}
           VITE_SHA: ${{ github.sha }}
           VITE_VERSION: ${{ github.ref_name }}
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -45,12 +43,12 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.GITHUB_REPO }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: apps/web
           file: apps/web/Dockerfile.prebuild
