@@ -54,6 +54,7 @@
         "logic": "workspace:*",
         "models": "workspace:*",
         "nanoid": "^5.1.11",
+        "polished": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
         "react-error-boundary": "^6.1.2",
@@ -64,6 +65,7 @@
         "zustand": "catalog:",
       },
       "devDependencies": {
+        "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "@vite-pwa/assets-generator": "^1.0.2",
         "@vitejs/plugin-react": "^6.0.2",
