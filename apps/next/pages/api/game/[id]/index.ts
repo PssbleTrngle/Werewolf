@@ -1,10 +1,10 @@
+import type { GameInfo } from "models";
+import { ApiError } from "models";
 import { createApiHandler, methods } from "@/lib/server/apiHandlers";
 import { isAdmin } from "@/lib/server/permissions";
 import { IdParameter } from "@/lib/server/schemas";
 import { requireServerSession, requireSessionView } from "@/lib/server/session";
 import connectStorage from "@/lib/server/storage";
-import type { GameInfo } from "models";
-import { ApiError } from "models";
 
 const GET = createApiHandler<GameInfo>(async (req, res) => {
   const { id } = IdParameter.parse(req.query);

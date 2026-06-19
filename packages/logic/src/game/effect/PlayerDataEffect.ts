@@ -1,5 +1,5 @@
 import type { Id } from "models";
-import type { PartialOrFactory} from "../../util.js";
+import type { PartialOrFactory } from "../../util.js";
 import { resolveFactory } from "../../util.js";
 import type { RoleData } from "../player/Player.js";
 import type { GameAccess } from "../state.js";

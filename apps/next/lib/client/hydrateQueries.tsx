@@ -1,6 +1,6 @@
-import type { DehydratedState} from "@tanstack/react-query";
+import type { DehydratedState } from "@tanstack/react-query";
 import { HydrationBoundary } from "@tanstack/react-query";
-import type { FC} from "react";
+import type { FC } from "react";
 import { createElement } from "react";
 
 export function withPrefetched<T extends Record<string, unknown>>(

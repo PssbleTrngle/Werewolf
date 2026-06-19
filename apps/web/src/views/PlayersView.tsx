@@ -21,15 +21,15 @@ import {
   ShuffleIcon,
   Table,
   TrashIcon,
-  XS,
   tooltip,
   useMedia,
   usePlayers,
+  XS,
 } from "ui";
-import ImpactBadge from "../components/ImpactBadge";
-import InvisibleLink from "../components/InivisibleLink";
 import RenameDialog from "../components/dialog/RenameDialog";
 import RoleSelectDialog from "../components/dialog/RoleSelectDialog";
+import ImpactBadge from "../components/ImpactBadge";
+import InvisibleLink from "../components/InivisibleLink";
 import { GAME_ID, useGameRunning } from "../hooks/localGame";
 import { useLocalStore } from "../hooks/store";
 import randomNames from "../randomNames";

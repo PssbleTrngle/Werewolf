@@ -6,12 +6,11 @@ import type {
   Id,
   Player as IPlayer,
   Role,
-  Vote} from "models";
-import {
-  defaultGameSettings
+  Vote,
 } from "models";
+import { defaultGameSettings } from "models";
 import { createConsoleLogger, type Logger } from "../logging.js";
-import type { ArrayOrSingle} from "../util.js";
+import type { ArrayOrSingle } from "../util.js";
 import { arrayOrSelf, notNull } from "../util.js";
 import { EventBus } from "./event/EventBus.js";
 import { EventRegistry } from "./event/EventRegistry.js";

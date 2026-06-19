@@ -1,4 +1,4 @@
-import type { Role} from "models";
+import type { Role } from "models";
 import { RoleGroup } from "models";
 
 export const WolfCub: Role = {

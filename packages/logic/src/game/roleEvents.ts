@@ -6,8 +6,8 @@ import {
 } from "./role/amor/events.js";
 import { registerCursedEvents } from "./role/cursed/events.js";
 import {
-  registerExecutionerWinCondition,
   registerExecutionEvents,
+  registerExecutionerWinCondition,
 } from "./role/executioner/events.js";
 import { registerEyeEvents } from "./role/eye/events.js";
 import { registerFreemasonEvents } from "./role/freemason/events.js";

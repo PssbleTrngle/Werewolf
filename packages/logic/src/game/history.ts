@@ -20,7 +20,7 @@ export default class StateHistory {
         `Illegal cursor position ${this.cursor} for history with length ${this.history.length}`,
       );
     }
-    return this.history[this.cursor]!!;
+    return this.history[this.cursor]!;
   }
 
   push(factory: PartialOrFactory<GameState>) {

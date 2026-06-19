@@ -1,10 +1,10 @@
 import type { Role } from "models";
 import { lighten } from "polished";
-import type { Dispatch} from "react";
+import type { Dispatch } from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import type { DialogProps} from "ui";
+import type { DialogProps } from "ui";
 import { Button, Buttons, Dialog, tooltip, useRoles } from "ui";
 import { useLocalStore } from "../../hooks/store.ts";
 import useDialog from "../../hooks/useDialog";

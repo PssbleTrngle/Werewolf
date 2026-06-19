@@ -3,8 +3,8 @@ import App from "./views/App";
 import EventsView from "./views/EventsView";
 import NotFound from "./views/NotFound";
 import PlayersView from "./views/PlayersView";
-import RoleView from "./views/RoleView";
 import RolesView from "./views/RolesView";
+import RoleView from "./views/RoleView";
 import SettingsView from "./views/SettingsView";
 
 export const router = createBrowserRouter([

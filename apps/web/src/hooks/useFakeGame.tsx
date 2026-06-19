@@ -13,7 +13,7 @@ export default function useFakeGame() {
 
   return useMemo<GameInfo>(
     () => ({
-      time: TIMES[i % TIMES.length]!!,
+      time: TIMES[i % TIMES.length]!,
       day: Math.floor(i / TIMES.length),
     }),
     [i],

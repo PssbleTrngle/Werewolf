@@ -1,8 +1,8 @@
-import { useLeaveMutation } from "@/lib/client/remoteContext";
 import type { Id } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Button, EventScreen, PlayerPanel, RolePanel, usePlayers } from "ui";
+import { useLeaveMutation } from "@/lib/client/remoteContext";
 
 export default function ActiveGame({ gameId }: Readonly<{ gameId: Id }>) {
   const { t } = useTranslation("hub");

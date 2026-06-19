@@ -1,5 +1,3 @@
-import { useLocalStore } from "@/lib/client/store";
-import { ModeratorUser } from "@/lib/specialUsers";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Player, User } from "models";
 import { lighten } from "polished";
@@ -7,11 +5,13 @@ import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import {
   IconButton,
-  RolePanel,
   invalidateGameQueries,
+  RolePanel,
   usePlayers,
   useWindowEvent,
 } from "ui";
+import { useLocalStore } from "@/lib/client/store";
+import { ModeratorUser } from "@/lib/specialUsers";
 
 export default function ImpersonateControl({
   gameId,

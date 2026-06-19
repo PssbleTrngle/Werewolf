@@ -1,4 +1,4 @@
-export const enum RoleGroup {
+export enum RoleGroup {
   // These are only used for alignment reveals
   GOOD = "good",
   EVIL = "evil",

@@ -1,28 +1,20 @@
 import { useQueryClient } from "@tanstack/react-query";
-import type {
-  Player as GamePlayer,
-  GameState} from "logic";
+import type { Player as GamePlayer, GameState } from "logic";
 import {
+  allRoles,
   Game,
   ModeratorGameView,
-  PlayerGameView,
-  allRoles,
   notNull,
+  PlayerGameView,
   preparePlayers,
 } from "logic";
 import type { Id, Player, Role, Vote } from "models";
-import type {
-  Dispatch,
-  DispatchWithoutAction,
-  PropsWithChildren} from "react";
-import {
-  useMemo,
-  useReducer,
-} from "react";
-import type { QueryContext} from "ui";
+import type { Dispatch, DispatchWithoutAction, PropsWithChildren } from "react";
+import { useMemo, useReducer } from "react";
+import type { QueryContext } from "ui";
 import { GameProvider, invalidateGameQueries } from "ui";
 import { ImpersonationProvider } from "./impersonate";
-import type { GameStore} from "./store";
+import type { GameStore } from "./store";
 import { useLocalStore } from "./store";
 
 export const GAME_ID = "local";
@@ -61,10 +53,8 @@ function wrap<T extends (...args: any[]) => any>(func: T) {
       return await func(...args);
     } catch (e) {
       if (import.meta.env.DEV && e instanceof Error) {
-         
         console.error("an error occured in the logic package");
         console.error(e.stack ?? e.message);
-         
       }
       throw e;
     }
@@ -137,7 +127,7 @@ interface ExtendedGameContext extends QueryContext {
 
 function createLocalGame(onSave: GameStore["save"]): ExtendedGameContext {
   const savedHistory = useLocalStore.getState().history;
-  let impersonated: Id | undefined = undefined;
+  let impersonated: Id | undefined;
   let game: Game | null = savedHistory && gameOf(savedHistory, onSave);
 
   function createScopedContext() {

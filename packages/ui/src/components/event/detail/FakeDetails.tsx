@@ -1,7 +1,7 @@
 import type { FakeData } from "models";
+import RolePanel from "../../RolePanel";
 import type { DetailProps } from "../EventDetails";
 import EventDetails from "../EventDetails";
-import RolePanel from "../../RolePanel";
 export default function FakeDetails({
   data,
   createTitle,

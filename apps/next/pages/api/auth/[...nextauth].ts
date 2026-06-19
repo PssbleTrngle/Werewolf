@@ -1,4 +1,3 @@
-import { notNull } from "@/lib/util";
 import type { AuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import type { DiscordProfile } from "next-auth/providers/discord";
@@ -6,6 +5,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import type { GithubProfile } from "next-auth/providers/github";
 import GithubProvider from "next-auth/providers/github";
 import type { OAuthConfig, OAuthUserConfig } from "next-auth/providers/oauth";
+import { notNull } from "@/lib/util";
 
 function optionalProvider<T>(
   key: string,

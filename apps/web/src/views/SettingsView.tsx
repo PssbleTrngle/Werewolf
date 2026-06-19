@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useCallback, useId, useMemo, type SyntheticEvent } from "react";
+import { type SyntheticEvent, useCallback, useId, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {

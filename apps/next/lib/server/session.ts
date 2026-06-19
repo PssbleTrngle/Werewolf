@@ -1,5 +1,3 @@
-import { isAdmin } from "@/lib/server/permissions";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { ModeratorGameView, PlayerGameView, requirePlayer } from "logic";
 import type { Id } from "models";
 import { ApiError } from "models";
@@ -8,14 +6,15 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from "next";
-import type { Session} from "next-auth";
+import type { Session } from "next-auth";
 import { getServerSession } from "next-auth";
-
+import { GameStatus } from "storage/src/lobbies";
+import zod from "zod";
+import { isAdmin } from "@/lib/server/permissions";
 import { IdSchema } from "@/lib/server/schemas";
 import connectStorage from "@/lib/server/storage";
 import { ModeratorUser } from "@/lib/specialUsers";
-import { GameStatus } from "storage/src/lobbies";
-import zod from "zod";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 async function gameIdOf(session: Session) {
   const storage = await connectStorage();

@@ -1,4 +1,11 @@
-import type { DeathCause, Event, GameInfo, GameSettings, Id, Time } from "models";
+import type {
+  DeathCause,
+  Event,
+  GameInfo,
+  GameSettings,
+  Id,
+  Time,
+} from "models";
 import type { Logger } from "../logging.js";
 import type { ArrayOrSingle, PartialOrFactory } from "../util.js";
 import type { Effect } from "./effect/Effect.js";

@@ -15,12 +15,12 @@ async function run() {
       await Promise.all([
         redis.json.set(`lobby:${lobby.id}`, "$", lobby),
         ...lobby.players.map((it) =>
-          redis.set(`player:${it.id}:lobby`, lobby.id)
+          redis.set(`player:${it.id}:lobby`, lobby.id),
         ),
       ]);
 
       console.log(`${++completed}/${total}`);
-    })
+    }),
   );
 
   console.log("Successfully seeded redis");

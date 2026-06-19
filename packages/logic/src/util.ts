@@ -30,3 +30,20 @@ export function omitByUndefined<T extends Record<string, unknown>>(
 ): T {
   return omitBy(value, (it) => !notNull(it)) as T;
 }
+
+interface TupleChecker {
+  <T>(count: 1, array: T[]): array is [T];
+  <T>(count: 2, array: T[]): array is [T, T];
+  <T>(count: 3, array: T[]): array is [T, T, T];
+  <T>(count: 4, array: T[]): array is [T, T, T, T];
+  <T>(count: 5, array: T[]): array is [T, T, T, T, T];
+  <T>(count: 6, array: T[]): array is [T, T, T, T, T, T];
+  <T>(count: 7, array: T[]): array is [T, T, T, T, T, T, T];
+  <T>(count: 8, array: T[]): array is [T, T, T, T, T, T, T, T];
+  <T>(count: 9, array: T[]): array is [T, T, T, T, T, T, T, T, T];
+  <T>(count: 10, array: T[]): array is [T, T, T, T, T, T, T, T, T, T];
+}
+
+export const hasSize = ((count: number, array: unknown[]) => {
+  return array.length > count;
+}) as TupleChecker;

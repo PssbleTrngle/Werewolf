@@ -1,4 +1,3 @@
-import { useJoinMutation, useLobbies } from "@/lib/client/remoteContext";
 import { useTranslation } from "react-i18next";
 import type { Lobby } from "storage";
 import styled from "styled-components";
@@ -11,6 +10,7 @@ import {
   tooltip,
   useCreateMutation,
 } from "ui";
+import { useJoinMutation, useLobbies } from "@/lib/client/remoteContext";
 
 export default function NoGame() {
   const { mutate: create } = useCreateMutation();

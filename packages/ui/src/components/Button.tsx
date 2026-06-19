@@ -1,5 +1,5 @@
 import { invert, lighten } from "polished";
-import type { ShouldForwardProp} from "styled-components";
+import type { ShouldForwardProp } from "styled-components";
 import styled, { css } from "styled-components";
 import type { RuleSet } from "styled-components/dist/types";
 import { InputStyles } from "./Input";
