@@ -12,24 +12,24 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@styled-icons/boxicons-regular": "^10.47.0",
-    "@styled-icons/boxicons-solid": "^10.47.0",
-    "@styled-icons/simple-icons": "^10.46.0",
-    "@tanstack/react-query": "^5.101.0",
-    "i18next": "^23.16.8",
-    "polished": "^4.3.1",
-    "react": "^19.2.7",
-    "react-i18next": "^17.0.8",
+    "@styled-icons/boxicons-regular": "catalog:",
+    "@styled-icons/boxicons-solid": "catalog:",
+    "@styled-icons/simple-icons": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "i18next": "catalog:",
+    "polished": "catalog:",
+    "react": "catalog:",
+    "react-i18next": "catalog:",
     "react-tooltip": "^6.0.7",
-    "styled-components": "^6.4.2",
+    "styled-components": "^catalog:",
     "styled-icons": "^10.47.1"
   },
   "devDependencies": {
-    "@types/react": "^19.2.17",
+    "@types/react": "catalog:",
     "@werewolf/configs": "workspace:*",
     "models": "workspace:*"
   },
   "peerDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^5"
   }
 }

@@ -18,14 +18,19 @@
     "logic": "workspace:*",
     "models": "workspace:*",
     "nanoid": "^5.1.11",
-    "react-dom": "^19.2.7",
+    "react-dom": "catalog:",
     "react-error-boundary": "^6.1.2",
     "react-router-dom": "^7.17.0",
     "ui": "workspace:*",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.14",
+    "@tanstack/react-query": "catalog:",
+    "styled-components": "catalog:",
+    "react": "catalog:",
+    "react-i18next": "catalog:",
+    "i18next": "catalog:"
   },
   "devDependencies": {
-    "@types/react-dom": "^19.2.3",
+    "@types/react-dom": "catalog:",
     "@vite-pwa/assets-generator": "^1.0.2",
     "@vitejs/plugin-react": "^6.0.2",
     "@werewolf/configs": "workspace:*",
