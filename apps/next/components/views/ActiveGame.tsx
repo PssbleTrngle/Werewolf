@@ -1,5 +1,5 @@
 import { useLeaveMutation } from "@/lib/client/remoteContext";
-import { Id } from "models";
+import type { Id } from "models";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { Button, EventScreen, PlayerPanel, RolePanel, usePlayers } from "ui";

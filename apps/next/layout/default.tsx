@@ -1,7 +1,9 @@
 import NavBar from "@/components/NavBar";
 import Head from "next/head";
-import { ReactElement, Suspense } from "react";
-import { AppInfo, Footer, Globals, Loading, Page } from "ui";
+import type { ReactElement} from "react";
+import { Suspense } from "react";
+import type { AppInfo} from "ui";
+import { Footer, Globals, Loading, Page } from "ui";
 
 const appInfo: AppInfo = {
   repository: process.env.NEXT_PUBLIC_GIT_REPOSITORY,

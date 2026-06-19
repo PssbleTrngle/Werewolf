@@ -1,4 +1,4 @@
-import { User } from "models";
+import type { User } from "models";
 import "next-auth";
 
 declare module "next-auth" {

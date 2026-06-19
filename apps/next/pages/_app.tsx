@@ -1,6 +1,6 @@
 import Providers from "@/lib/providers";
 import { SessionProvider } from "next-auth/react";
-import { appWithTranslation } from "next-i18next";
+import { appWithTranslation } from "next-i18next/pages";
 import type { AppProps } from "next/app";
 import { Tooltip } from "ui";
 

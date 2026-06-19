@@ -1,17 +1,19 @@
 {
-  "extends": "tsconfig/nextjs",
+  "extends": "@werewolf/configs/tsconfig/react.json",
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "."
+  ],
   "compilerOptions": {
     "paths": {
-      "@/*": ["./*"]
-    }
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "seed/user.mjs",
-    "seed/lobby.mjs",
-    "seed/index.mjs"
-  ],
-  "exclude": ["node_modules"]
+      "@/*": [
+        "./*"
+      ]
+    },
+    "types": [
+      "bun"
+    ]
+  }
 }

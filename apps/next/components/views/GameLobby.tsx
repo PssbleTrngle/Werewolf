@@ -1,6 +1,6 @@
 import { useLeaveMutation, useStartMutation } from "@/lib/client/remoteContext";
 import { useTranslation } from "react-i18next";
-import { Lobby } from "storage";
+import type { Lobby } from "storage";
 import styled from "styled-components";
 import {
   Buttons,

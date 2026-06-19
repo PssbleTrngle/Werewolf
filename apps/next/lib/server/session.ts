@@ -1,13 +1,15 @@
 import { isAdmin } from "@/lib/server/permissions";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { ModeratorGameView, PlayerGameView, requirePlayer } from "logic";
-import { ApiError, Id } from "models";
-import {
+import type { Id } from "models";
+import { ApiError } from "models";
+import type {
   GetServerSidePropsContext,
   NextApiRequest,
   NextApiResponse,
 } from "next";
-import { Session, getServerSession } from "next-auth";
+import type { Session} from "next-auth";
+import { getServerSession } from "next-auth";
 
 import { IdSchema } from "@/lib/server/schemas";
 import connectStorage from "@/lib/server/storage";

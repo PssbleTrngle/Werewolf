@@ -1,7 +1,7 @@
 import { createApiHandler, methods } from "@/lib/server/apiHandlers";
 import { IdParameter } from "@/lib/server/schemas";
 import connectStorage from "@/lib/server/storage";
-import { Lobby } from "storage";
+import type { Lobby } from "storage";
 
 const GET = createApiHandler<Lobby>(async (req, res) => {
   const { id } = IdParameter.parse(req.query);

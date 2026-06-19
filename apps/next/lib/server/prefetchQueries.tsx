@@ -1,6 +1,6 @@
 import { preloadTranslations } from "@/lib/server/localization";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 export function prefetchQueries<T>(
   fetcher: (ctx: GetServerSidePropsContext, client: QueryClient) => Promise<T>,

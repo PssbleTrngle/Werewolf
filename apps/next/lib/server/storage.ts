@@ -1,4 +1,4 @@
-import { Player } from "models";
+import type { Player } from "models";
 import { Storage } from "storage";
 
 const cacheStorage = process.env.CACHE_STORAGE !== "false";

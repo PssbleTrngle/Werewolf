@@ -1,6 +1,7 @@
 import { ApiError } from "models";
-import { NextApiHandler } from "next";
-import { ZodError, ZodIssue } from "zod";
+import type { NextApiHandler } from "next";
+import type { ZodIssue } from "zod";
+import { ZodError } from "zod";
 
 type Method = "GET" | "POST" | "PUT" | "HEAD" | "PATCH" | "DELETE";
 

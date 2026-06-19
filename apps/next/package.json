@@ -4,28 +4,36 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prepare": "node setup/copyLocales.mjs",
+    "prepare": "bun setup/copyLocales.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "check": "tsc --noEmit"
   },
   "dependencies": {
     "logic": "workspace:*",
     "models": "workspace:*",
-    "next": "14.0.3",
-    "next-auth": "^4.24.5",
-    "next-i18next": "^15.0.0",
-    "react-dom": "^19.2.7",
+    "next": "^16.2.9",
+    "next-auth": "^4.24.14",
+    "next-i18next": "^16.0.7",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-i18next": "catalog:",
     "storage": "workspace:*",
     "ui": "workspace:*",
-    "zod": "^3.22.4",
-    "zustand": "^4.4.7"
+    "zod": "^4.4.3",
+    "zustand": "catalog:",
+    "styled-components": "catalog:",
+    "polished": "catalog:",
+    "@tanstack/react-query": "catalog:"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.3",
-    "@types/react-dom": "^19.2.3",
+    "@types/bun": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@werewolf/configs": "workspace:*",
+    "eslint-config-next": "^16.2.9",
     "locale": "workspace:*"
   },
   "peerDependencies": {

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prepare": "node setup/copyAssets.mjs && pwa-assets-generator",
+    "prepare": "bun setup/copyAssets.mjs && pwa-assets-generator",
     "build": "tsc && vite build",
     "lint": "eslint src",
     "preview": "vite preview",
@@ -22,7 +22,7 @@
     "react-error-boundary": "^6.1.2",
     "react-router-dom": "^7.17.0",
     "ui": "workspace:*",
-    "zustand": "^5.0.14",
+    "zustand": "catalog:",
     "@tanstack/react-query": "catalog:",
     "styled-components": "catalog:",
     "react": "catalog:",

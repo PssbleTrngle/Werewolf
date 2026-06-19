@@ -1,18 +1,21 @@
 "use client";
 
 import { useLocalStore } from "@/lib/client/store";
-import {
+import type {
   QueryFunction,
-  QueryKey,
+  QueryKey} from "@tanstack/react-query";
+import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { ApiError, Id } from "models";
-import querystring, { ParsedUrlQueryInput } from "querystring";
+import type { Id } from "models";
+import { ApiError } from "models";
+import type { ParsedUrlQueryInput } from "querystring";
+import querystring from "querystring";
 import { useMemo } from "react";
 import type { Lobby } from "storage";
-import { QueryContext } from "ui";
+import type { QueryContext } from "ui";
 
 interface ErrorData {
   message?: string;
