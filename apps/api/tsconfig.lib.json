@@ -1,0 +1,14 @@
+{
+  "extends": "@werewolf/configs/tsconfig/base.json",
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "src"
+  ],
+  "compilerOptions": {
+    "types": [
+      "bun"
+    ]
+  }
+}

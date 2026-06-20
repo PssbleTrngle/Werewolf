@@ -1,0 +1,26 @@
+{
+  "name": "@werewolf/api",
+  "module": "src/main.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch src/main.ts",
+    "lint": "eslint {src,test}",
+    "test": "bun test",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pothos/core": "^4.12.0",
+    "@werewolf/configs": "workspace:*",
+    "graphql-yoga": "^5.21.2",
+    "logic": "workspace:*",
+    "models": "workspace:*",
+    "storage": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

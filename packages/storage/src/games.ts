@@ -72,7 +72,7 @@ export default class GameStorage {
       game.start(),
     ]);
 
-    return game;
+    return id;
   }
 
   private async setVotes(gameId: Id, votes: Votes) {
