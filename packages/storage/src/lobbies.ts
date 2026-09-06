@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { redisJSON } from "./casting.js";
 import type { RedisClient } from "./redis.js";
 
-export const enum GameStatus {
+export enum GameStatus {
   NONE = "none",
   RUNNING = "running",
   FINISHED = "finished",

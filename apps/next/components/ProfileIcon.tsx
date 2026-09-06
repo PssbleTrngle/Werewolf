@@ -1,12 +1,12 @@
-import ImpersonateControl from "@/components/ImpersonateControl";
-import { useSelfLobby } from "@/lib/client/remoteContext";
-import { useLocalStore } from "@/lib/client/store";
 import { signIn, useSession } from "next-auth/react";
 import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { GameStatus } from "storage/src/lobbies";
 import styled from "styled-components";
 import { Button } from "ui";
+import ImpersonateControl from "@/components/ImpersonateControl";
+import { useSelfLobby } from "@/lib/client/remoteContext";
+import { useLocalStore } from "@/lib/client/store";
 
 export default function ProfileIcon() {
   const { t } = useTranslation("hub");

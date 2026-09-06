@@ -17,7 +17,7 @@ export default function overrides(tsconfigRootDir) {
       languageOptions: {
         parserOptions: {
           tsconfigRootDir,
-          project: ["./tsconfig.json"],
+          projectService: true,
         },
       },
     },

@@ -1,4 +1,4 @@
-import type { ArrayOrSingle} from "../../util.js";
+import type { ArrayOrSingle } from "../../util.js";
 import { arrayOrSelf } from "../../util.js";
 import type { Effect } from "../effect/Effect.js";
 import { EventEffect } from "../effect/EventEffect.js";

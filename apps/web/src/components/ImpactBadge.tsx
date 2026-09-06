@@ -1,7 +1,7 @@
+import { lighten, transparentize } from "polished";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { tooltip } from "ui";
-import { useTranslation } from "react-i18next";
-import { lighten, transparentize } from "polished";
 
 export const stringifyImpact = (value: number) =>
   value > 0 ? `+${value}` : `${value}`;

@@ -4,8 +4,9 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
+    "up": "docker compose -f docker-compose.test.yml up -d",
     "lint": "eslint {src,test}",
-    "seed": "node seed/index.mjs",
+    "seed": "bun seed/index.mjs",
     "test": "bun test",
     "check": "tsc --noEmit"
   },

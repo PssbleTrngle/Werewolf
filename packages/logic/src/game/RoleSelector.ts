@@ -121,9 +121,9 @@ export function generateRoles(
   const indizes = shuffle(times(players.length, (i) => i));
 
   return players.map((it, i) => {
-    const role = roles[i]!!;
+    const role = roles[i]!;
     const variant =
-      role.variants && role.variants[indizes[i]!! % role.variants.length];
+      role.variants && role.variants[indizes[i]! % role.variants.length];
     return { ...it, role: { ...role, variant } };
   });
 }

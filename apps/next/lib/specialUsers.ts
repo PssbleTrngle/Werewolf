@@ -1,4 +1,4 @@
-import { User } from "models";
+import type { User } from "models";
 
 export const ModeratorUser: User = {
   id: "moderator",

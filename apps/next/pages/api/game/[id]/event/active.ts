@@ -1,4 +1,4 @@
-import { Event } from "models";
+import type { Event } from "models";
 import { createApiHandler, methods } from "@/lib/server/apiHandlers";
 import { IdParameter } from "@/lib/server/schemas";
 import { requireSessionView } from "@/lib/server/session";

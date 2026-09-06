@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import type {
-  NavTab} from "ui";
+import type { NavTab } from "ui";
 import {
   NavBar as Base,
   DocuIcon,

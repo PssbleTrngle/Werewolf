@@ -1,16 +1,11 @@
-import ProfileIcon from "@/components/ProfileIcon";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
-import {
-  NavBar as Base,
-  Loading,
-  NavLinkStyle,
-  NavTab,
-  useActiveLink,
-} from "ui";
+import type { NavTab } from "ui";
+import { NavBar as Base, Loading, NavLinkStyle, useActiveLink } from "ui";
+import ProfileIcon from "@/components/ProfileIcon";
 
 const LINKS: ReadonlyArray<NavTab> = [
   { key: "home", path: "/" },

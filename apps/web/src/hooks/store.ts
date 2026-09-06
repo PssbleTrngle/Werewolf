@@ -1,6 +1,6 @@
-import type { GameState} from "logic";
+import type { GameState } from "logic";
 import { generateRoles } from "logic";
-import type { GameSettings, Id, Player} from "models";
+import type { GameSettings, Id, Player } from "models";
 import { defaultGameSettings } from "models";
 import { nanoid } from "nanoid";
 import { create, type StateCreator } from "zustand";

@@ -21,7 +21,7 @@ export class SeeEvent extends NoDataEvent {
     if (vote.type === "players") {
       return new RevealEffect(
         event.role as Role,
-        event.players[0]!!.id,
+        event.players[0]!.id,
         vote.players,
         (game) => game.settings.seerRevealType,
       );

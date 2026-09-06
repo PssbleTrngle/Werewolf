@@ -1,8 +1,8 @@
 import type { Event, Vote } from "models";
+import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 import type { Player } from "../player/Player.js";
 import { registerEventFactory } from "./EventRegistry.js";
 import { NoDataEvent } from "./NoDataEvent.js";
-import { PlayerDataEffect } from "../effect/PlayerDataEffect.js";
 
 export default class GuardEvent extends NoDataEvent {
   static create = registerEventFactory(

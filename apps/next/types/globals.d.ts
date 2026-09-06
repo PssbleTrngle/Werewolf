@@ -1,4 +1,4 @@
-import { Storage } from "storage";
+import type { Storage } from "storage";
 
 declare global {
   var cachedStorage:

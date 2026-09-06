@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { useInRouterContext } from "react-router-dom";
 import styled from "styled-components";
-import type { AppInfo} from "ui";
+import type { AppInfo } from "ui";
 import { Footer, Globals, MOBILE_NAV_HEIGHT, Page, XS } from "ui";
 import NavBar from "../components/NavBar";
 

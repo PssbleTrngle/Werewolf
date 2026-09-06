@@ -8,7 +8,7 @@ export class ReviveEvent extends NoDataEvent {
   finish(vote: Vote, _event: Event<undefined>): ArrayOrSingle<Effect> {
     if (vote.type === "players") {
       // TODO vote strategy?
-      return new ReviveEffect(vote.players[0]!!);
+      return new ReviveEffect(vote.players[0]!);
     }
 
     return [];

@@ -1,4 +1,5 @@
 import { DeathCause } from "models";
+import { hasSize } from "../../../util.js";
 import { KillEffect } from "../../effect/KillEffect.js";
 import AmorEvent from "../../event/AmorEvent.js";
 import { DeathEvents } from "../../event/DeathEvent.js";
@@ -32,16 +33,11 @@ export function registerAmorEvents(role = Amor) {
   });
 }
 
-// TODO common helper?
-function onlyTwoAlive<T>(players: ReadonlyArray<T>): players is [T, T] {
-  return players.length === 2;
-}
-
 export function registerLoversWinCondition() {
   WinConditions.register(({ players }) => {
     const alive = players.filter(isAlive);
 
-    if (!onlyTwoAlive(alive)) return false;
+    if (!hasSize(2, alive)) return false;
     const [romeo, julia] = alive;
 
     if (romeo.roleData.loves !== julia.id) return false;

@@ -1,6 +1,5 @@
 import type { Id, Player, Role } from "models";
 import { arrayOrSelf } from "../../../util.js";
-import { InitialDataEvents, generateRoles } from "../../RoleSelector.js";
 import type { EventFactory } from "../../event/Event.js";
 import { individualEvents, roleScopedFactory } from "../../event/Event.js";
 import { registerEvent } from "../../event/EventRegistry.js";
@@ -9,6 +8,7 @@ import { RevealEvent } from "../../event/RevealEvent.js";
 import { SeeEvent } from "../../event/SeeEvent.js";
 import { SleepEvents } from "../../event/SleepBoundary.js";
 import { hasRole, isAlive, others } from "../../player/predicates.js";
+import { generateRoles, InitialDataEvents } from "../../RoleSelector.js";
 import { Fool, Seer } from "./index.js";
 
 function seerSleepFactory(role: Role): EventFactory {
@@ -61,7 +61,7 @@ export const registerSeerEvents = (
         disabledRoles: [...settings.disabledRoles, seer.type, fool.type],
       }).map(({ role }) => ({ role }));
 
-      others.forEach(({ id }, i) => (hallucinatedRoles[id] = roles[i]!!));
+      others.forEach(({ id }, i) => (hallucinatedRoles[id] = roles[i]!));
       seers.forEach(({ id }) => (hallucinatedRoles[id] = { role: fool }));
 
       return { hallucinated: hallucinatedRoles };

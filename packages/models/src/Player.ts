@@ -4,7 +4,7 @@ export type Id = string;
 
 export type Status = "alive" | "dead" | "dying";
 
-export const enum DeathCause {
+export enum DeathCause {
   LYNCHED = "lynched",
   WOLFS = "wolfs",
   HUNTER = "hunter",

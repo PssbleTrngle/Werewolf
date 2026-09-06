@@ -22,7 +22,7 @@ export class HallucinateEvent extends NoDataEvent {
     if (vote.type === "players") {
       return new HallucinateEffect(
         event.role as Role,
-        event.players[0]!!.id,
+        event.players[0]!.id,
         vote.players,
       );
     }

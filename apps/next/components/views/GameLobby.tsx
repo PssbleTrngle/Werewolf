@@ -1,6 +1,5 @@
-import { useLeaveMutation, useStartMutation } from "@/lib/client/remoteContext";
 import { useTranslation } from "react-i18next";
-import { Lobby } from "storage";
+import type { Lobby } from "storage";
 import styled from "styled-components";
 import {
   Buttons,
@@ -11,6 +10,7 @@ import {
   StartIcon,
   tooltip,
 } from "ui";
+import { useLeaveMutation, useStartMutation } from "@/lib/client/remoteContext";
 
 export default function GameLobby({ lobby }: Readonly<{ lobby: Lobby }>) {
   const { t } = useTranslation("hub");

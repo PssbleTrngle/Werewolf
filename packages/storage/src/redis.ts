@@ -1,4 +1,4 @@
-import { SchemaFieldTypes, createClient } from "redis";
+import { createClient, SchemaFieldTypes } from "redis";
 
 export function connectRedis(): Promise<RedisClient> {
   return createClient()

@@ -1,14 +1,14 @@
 import type { Id, Time } from "models";
 import { transparentize } from "polished";
-import type { PropsWithChildren} from "react";
+import type { PropsWithChildren } from "react";
 import { useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useActiveEvent, useGameInfo } from "../..";
-import { XS, useMedia } from "../../styles/screens";
+import { useMedia, XS } from "../../styles/screens";
 import darkTheme from "../../theme/dark";
 import lightTheme from "../../theme/light";
-import RolePanel from "../RolePanel";
 import Background from "../background/Background";
+import RolePanel from "../RolePanel";
 import ChoicePanel from "./ChoicePanel";
 import ControlBar from "./ControlBar";
 import EventDetails from "./EventDetails";

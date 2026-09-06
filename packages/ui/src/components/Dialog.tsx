@@ -1,4 +1,4 @@
-import type { DispatchWithoutAction, PropsWithChildren} from "react";
+import type { DispatchWithoutAction, PropsWithChildren } from "react";
 import { useCallback } from "react";
 import styled, { css } from "styled-components";
 import { Buttons } from "../components/Button";

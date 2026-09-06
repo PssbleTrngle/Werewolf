@@ -10,7 +10,7 @@ import WinDetails from "./detail/WinDetails";
 
 function baseType(type: string) {
   const [base] = type.split(".");
-  return base!!;
+  return base!;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

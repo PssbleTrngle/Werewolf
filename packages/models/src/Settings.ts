@@ -1,4 +1,4 @@
-export const enum PlayerRevealType {
+export enum PlayerRevealType {
   ROLE = "role",
   GROUP = "group",
   ALIGNMENT = "alignment",

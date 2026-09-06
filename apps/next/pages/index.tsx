@@ -1,3 +1,5 @@
+import { GameStatus } from "storage/src/lobbies";
+import { activeEventKey, gameInfoKey, playersKey } from "ui";
 import ActiveGame from "@/components/views/ActiveGame";
 import GameLobby from "@/components/views/GameLobby";
 import NoGame from "@/components/views/NoGame";
@@ -11,8 +13,6 @@ import {
 import { prefetchQueries } from "@/lib/server/prefetchQueries";
 import { requireServerSession, requireSessionView } from "@/lib/server/session";
 import connectStorage from "@/lib/server/storage";
-import { GameStatus } from "storage/src/lobbies";
-import { activeEventKey, gameInfoKey, playersKey } from "ui";
 
 export const getServerSideProps = prefetchQueries(async (ctx, client) => {
   const session = await requireServerSession(ctx);

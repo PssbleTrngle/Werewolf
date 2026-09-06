@@ -1,5 +1,5 @@
 import type { Event, Role, Vote } from "models";
-import type { ArrayOrSingle} from "../../util.js";
+import type { ArrayOrSingle } from "../../util.js";
 import { arrayOrSelf } from "../../util.js";
 import type { Effect } from "../effect/Effect.js";
 import type { SubjectMappers } from "../permissions/index.js";

@@ -1,5 +1,5 @@
-import { useTranslation } from "next-i18next";
-import { PropsWithChildren } from "react";
+import { useTranslation } from "next-i18next/pages";
+import type { PropsWithChildren } from "react";
 import { I18nextProvider } from "react-i18next";
 
 /**

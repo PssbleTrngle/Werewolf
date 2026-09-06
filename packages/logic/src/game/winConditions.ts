@@ -1,8 +1,8 @@
+import { uniqBy } from "lodash-es";
 import type { WinState } from "models";
+import { notNull } from "../util.js";
 import { isAlive, requirePlayer } from "./player/predicates.js";
 import type { GameReadAccess } from "./state.js";
-import { notNull } from "../util.js";
-import { uniqBy } from "lodash-es";
 
 type WinConditionChecker = (game: GameReadAccess) => WinState | false;
 

@@ -8,7 +8,7 @@ import ReactDOM from "react-dom/client";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { Tooltip, darkTheme } from "ui";
+import { darkTheme, Tooltip } from "ui";
 import ErrorWrapper from "./components/ErrorWrapper";
 import LoadingPage from "./components/LoadingPage";
 import { LocalGameProvider } from "./hooks/localGame";
