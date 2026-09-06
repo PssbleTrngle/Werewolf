@@ -11,9 +11,9 @@
     "check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.3.1",
+    "@faker-js/faker": "^10.6.0",
     "@types/bun": "catalog:",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/coverage-v8": "^4.1.11",
     "@werewolf/configs": "workspace:*",
     "redis-mock": "^0.56.3"
   },
