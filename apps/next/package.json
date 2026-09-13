@@ -28,12 +28,12 @@
     "@tanstack/react-query": "catalog:"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.0.3",
+    "@next/bundle-analyzer": "^16.3.4",
     "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@werewolf/configs": "workspace:*",
-    "eslint-config-next": "^16.2.9",
+    "eslint-config-next": "^16.3.4",
     "locale": "workspace:*"
   },
   "peerDependencies": {
