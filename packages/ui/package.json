@@ -20,7 +20,7 @@
     "polished": "catalog:",
     "react": "catalog:",
     "react-i18next": "catalog:",
-    "react-tooltip": "^6.0.7",
+    "react-tooltip": "^6.0.8",
     "styled-components": "^catalog:",
     "styled-icons": "^10.47.1"
   },
