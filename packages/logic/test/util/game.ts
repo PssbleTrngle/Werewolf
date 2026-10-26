@@ -1,6 +1,6 @@
 import { expect } from "bun:test";
-import type { Event } from "models";
-import type { GameState, Player} from "../../src/index.js";
+import type { Event, Id } from "models";
+import type { GameState, Player } from "../../src/index.js";
 import { Game, isAlive } from "../../src/index.js";
 import createTestLogger from "./logger.js";
 import { skipVote } from "./votes.js";
@@ -29,9 +29,11 @@ export class TestGame extends Game {
     }
   }
 
-  async dismiss() {
-    await Promise.all(
-      this.players.filter(isAlive).map((it) => this.vote(it.id, skipVote())),
-    );
+  async dismiss(...players: Id[]) {
+    const ids =
+      players.length > 0
+        ? players
+        : this.players.filter(isAlive).map((it) => it.id);
+    await Promise.all(ids.map((id) => this.vote(id, skipVote())));
   }
 }

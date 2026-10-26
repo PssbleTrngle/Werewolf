@@ -80,7 +80,7 @@ export default class FrozenGame implements GameAccess {
     return this.initial.settings;
   }
 
-  modifyPlayer(id: Id, factory: PartialOrFactory<Player>) {
+  modifyPlayer(id: Id, factory: PartialOrFactory<Player>): Player {
     const player = requirePlayer(this.players, id);
     const values = resolvePartialFactory(factory, player);
     if (this.playerModifiers.has(id)) {
@@ -88,6 +88,7 @@ export default class FrozenGame implements GameAccess {
     } else {
       this.playerModifiers.set(id, [values]);
     }
+    return { ...player, ...values };
   }
 
   kill(playerId: Id, cause: DeathCause) {

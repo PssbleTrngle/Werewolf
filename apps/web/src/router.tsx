@@ -11,6 +11,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    // TODO this does not make sense
     errorElement: <NotFound />,
     children: [
       { path: "", loader: () => redirect("/game") },

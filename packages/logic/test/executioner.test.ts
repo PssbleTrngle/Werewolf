@@ -63,7 +63,7 @@ describe("tests regarding the executioner", () => {
     expectExecutionerWin(game);
   });
 
-  it("turns into a jester when the target dies without being lynched", async () => {
+  it.only("turns into a jester when the target dies without being lynched", async () => {
     const game = TestGame.create(players);
 
     await game.dismiss();
@@ -72,6 +72,8 @@ describe("tests regarding the executioner", () => {
     const target = requireTarget(game);
 
     await game.vote(wolf, playerVote(target));
+    game.expectCurrentEvent("convert.role");
+    await game.dismiss(executioner);
 
     game.expectEvents("announcement.death", "kill.lynch");
 

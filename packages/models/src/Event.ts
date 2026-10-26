@@ -16,6 +16,10 @@ export interface KillData {
   cause: DeathCause;
 }
 
+export interface ConvertData {
+  player: Player;
+}
+
 export interface RevealData {
   targets: ReadonlyArray<Player>;
 }

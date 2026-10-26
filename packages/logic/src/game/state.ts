@@ -30,6 +30,6 @@ export interface GameAccess extends GameReadAccess {
   broadcastDeaths(time?: Time): void;
   apply(effects: ArrayOrSingle<Effect>): void;
   setTime(time: Time): void;
-  modifyPlayer(id: Id, data: PartialOrFactory<Player>): void;
+  modifyPlayer(id: Id, data: PartialOrFactory<Player>): Player;
   readonly logger: Logger;
 }
