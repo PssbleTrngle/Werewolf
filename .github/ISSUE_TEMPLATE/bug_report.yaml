@@ -1,0 +1,37 @@
+name: Bug report
+description: Report a bug
+type: bug
+
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen
+      placeholder: What should have happened?
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: App version
+    validations:
+      required: true
+
+  - type: textarea
+    id: stack
+    attributes:
+      label: Error stacktrace
+      description: Prefilled by the app when reporting an issue
+      placeholder: You can leave this empty otherwise
+      render: shell
