@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { createElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Title } from "../Text";
+import ConvertDetail from "./detail/ConvertDetail";
 import DeathDetails from "./detail/DeathDetails";
 import FakeDetails from "./detail/FakeDetails";
 import RevealDetail from "./detail/RevealDetails";
@@ -19,6 +20,7 @@ export type DetailProps<T = any> = Readonly<{
   createTitle: (props?: Record<string, unknown>) => ReactNode;
 }>;
 const details: Record<string, (props: DetailProps) => ReactNode> = {
+  convert: ConvertDetail,
   reveal: RevealDetail,
   announcement: DeathDetails,
   win: WinDetails,

@@ -72,6 +72,8 @@ describe("tests regarding the executioner", () => {
     const target = requireTarget(game);
 
     await game.vote(wolf, playerVote(target));
+    game.expectCurrentEvent("convert.role");
+    await game.dismiss(executioner);
 
     game.expectEvents("announcement.death", "kill.lynch");
 

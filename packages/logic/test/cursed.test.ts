@@ -24,6 +24,8 @@ describe("tests regarding the cursed", () => {
     await game.dismiss();
 
     await game.vote(wolf, playerVote(cursed));
+    game.expectCurrentEvent("convert.role");
+    await game.dismiss(cursed);
 
     // No one died so the witch will not be notified
     game.expectEvents("kill.witch", "sleep");
@@ -38,6 +40,8 @@ describe("tests regarding the cursed", () => {
     await game.dismiss();
 
     await game.vote(wolf, playerVote(cursed));
+    game.expectCurrentEvent("convert.role");
+    await game.dismiss(cursed);
 
     // No one died so the witch will not be notified
     game.expectEvents("kill.witch", "sleep");
