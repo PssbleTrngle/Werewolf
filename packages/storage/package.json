@@ -13,9 +13,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
     "@types/bun": "catalog:",
-    "@vitest/coverage-v8": "^0.34.6",
-    "@werewolf/configs": "workspace:*",
-    "redis-mock": "^0.56.3"
+    "@werewolf/configs": "workspace:*"
   },
   "dependencies": {
     "@redis/json": "^1.0.6",
