@@ -3,6 +3,7 @@ import { RoleGroup } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import type { WithPassthroughProps } from "../props";
 import { tooltip } from "./Tooltip";
 
 export const groupEmojis: Record<RoleGroup, string> = {
@@ -16,7 +17,7 @@ export default function RolePanel({
   role,
   small = false,
   ...props
-}: Readonly<{ role?: Partial<Role>; small?: boolean }>) {
+}: WithPassthroughProps<{ role?: Partial<Role>; small?: boolean }>) {
   const { t } = useTranslation();
 
   const name = useMemo(() => {

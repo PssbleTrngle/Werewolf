@@ -8,7 +8,7 @@ import type { DialogProps } from "ui";
 import { Button, Buttons, Dialog, tooltip, useRoles } from "ui";
 import { useLocalStore } from "../../hooks/store.ts";
 import useDialog from "../../hooks/useDialog";
-import { stringifyImpact } from "../ImpactBadge";
+import { stringifyImpact } from "../../lib/impact.ts";
 
 export default function RoleSelectDialog({
   onSelect,

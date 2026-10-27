@@ -12,7 +12,7 @@ import { DreamWolf } from "../dreamWolf/index.js";
 import { LoneWolf } from "../loneWolf/index.js";
 import { WolfCub } from "../wolfCub/index.js";
 
-const createKillEvent = registerEventFactory(
+export const createKillEvent = registerEventFactory(
   "kill.wolfs",
   new KillEvent(),
   (targets: ReadonlyArray<Player>, voteCount: number) => ({

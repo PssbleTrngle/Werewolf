@@ -8,7 +8,8 @@ const Luminary = styled.div<{ $angle: number; $glow?: string[] }>`
   top: 95%;
   left: 50%;
   transform: translateX(-50%) rotate(${(p) => p.$angle}deg)
-    translateY(min(30vw, 30vh)) rotate(${(p) => -p.$angle}deg);
+    translateY(var(--lumary-horizon, min(30vw, 30vh)))
+    rotate(${(p) => -p.$angle}deg) translateX(var(--lumary-offset, 0));
 
   width: ${SIZE}px;
   height: ${SIZE}px;

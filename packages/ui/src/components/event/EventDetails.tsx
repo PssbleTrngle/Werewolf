@@ -2,6 +2,7 @@ import type { FakeData } from "models";
 import type { ReactNode } from "react";
 import { createElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import type { WithPassthroughProps } from "../../props";
 import { Title } from "../Text";
 import ConvertDetail from "./detail/ConvertDetail";
 import DeathDetails from "./detail/DeathDetails";
@@ -27,7 +28,10 @@ const details: Record<string, (props: DetailProps) => ReactNode> = {
   fake: FakeDetails,
 };
 
-export default function EventDetails({ event }: { event: FakeData }) {
+export default function EventDetails({
+  event,
+  ...props
+}: WithPassthroughProps<{ event: FakeData }>) {
   const { t } = useTranslation();
   const type = useMemo(() => baseType(event.type), [event]);
   const component = useMemo(() => details[type], [type]);
@@ -37,7 +41,11 @@ export default function EventDetails({ event }: { event: FakeData }) {
     [event, t],
   );
 
-  return component
-    ? createElement(component, { data: event.data, createTitle })
-    : createTitle();
+  return (
+    <section {...props}>
+      {component
+        ? createElement(component, { data: event.data, createTitle })
+        : createTitle()}
+    </section>
+  );
 }

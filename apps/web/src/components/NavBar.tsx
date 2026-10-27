@@ -5,6 +5,7 @@ import type { NavTab } from "ui";
 import {
   NavBar as Base,
   DocuIcon,
+  GuideIcon,
   HomeIcon,
   NavLinkStyle,
   SettingsIcon,
@@ -18,6 +19,7 @@ const LINKS: ReadonlyArray<NavTab> = [
   { key: "game", icon: <HomeIcon /> },
   { key: "players", icon: <UserIcon /> },
   { key: "roles", icon: <DocuIcon /> },
+  { key: "guide", icon: <GuideIcon /> },
   { key: "settings", icon: <SettingsIcon /> },
 ].map((it) => ({
   ...it,

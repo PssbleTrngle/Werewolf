@@ -3,11 +3,15 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useVoteMutation } from "../../hooks/queries";
+import type { WithPassthroughProps } from "../../props";
 import { XS } from "../../styles/screens";
 import Button, { Buttons } from "../Button";
 import PlayerPanel from "../PlayerPanel";
 
-export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
+export default function ChoicePanel({
+  choice,
+  ...props
+}: WithPassthroughProps<{ choice: Choice }>) {
   const { t } = useTranslation();
   const { mutate: vote } = useVoteMutation();
 
@@ -31,7 +35,7 @@ export default function ChoicePanel({ choice }: Readonly<{ choice: Choice }>) {
   );
 
   return (
-    <Style>
+    <Style {...props}>
       {choice.players && (
         <PlayerButtons $count={choice.players.length}>
           {choice.players.map((player) => (

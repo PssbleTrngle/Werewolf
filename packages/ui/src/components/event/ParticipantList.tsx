@@ -2,6 +2,7 @@ import type { Player } from "models";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import type { WithPassthroughProps } from "../../props";
 import PlayerPanel from "../PlayerPanel";
 
 export default function ParticipantList({
@@ -10,7 +11,7 @@ export default function ParticipantList({
   max = Infinity,
   hideRoles = false,
   ...props
-}: Readonly<{
+}: WithPassthroughProps<{
   players: ReadonlyArray<Player>;
   size?: number;
   max?: number;

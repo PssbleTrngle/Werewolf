@@ -27,6 +27,7 @@ function themeBy(time: Time) {
 export default function EventScreen({
   gameId,
   children,
+  ...props
 }: Readonly<
   PropsWithChildren<{
     gameId: Id;
@@ -53,23 +54,28 @@ export default function EventScreen({
     <ThemeProvider theme={theme}>
       <Background game={game}>
         {children}
-        <Style>
+        <Style {...props}>
           <ControlBar gameId={gameId} />
           <EventWrapper>
             {event.role && (
               <h3>
-                <RolePanel role={event.role} />
+                <RolePanel role={event.role} id={`${gameId}-event-role`} />
               </h3>
             )}
             <EventParticipantList
+              id={`${gameId}-event-participants`}
               size={1}
               players={participants}
               max={sliceParticipants ? 5 : undefined}
               hideRoles
             />
-            <EventDetails event={event} />
+            <EventDetails event={event} id={`${gameId}-event-details`} />
             {event?.choice && (
-              <ChoicePanel choice={event.choice} key={event.type} />
+              <ChoicePanel
+                choice={event.choice}
+                key={event.type}
+                id={`${gameId}-event-choice`}
+              />
             )}
           </EventWrapper>
         </Style>

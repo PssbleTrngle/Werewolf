@@ -12,7 +12,8 @@
     "game": "Game",
     "players": "Players",
     "roles": "Roles",
-    "settings": "Settings"
+    "settings": "Settings",
+    "guide": "Guide"
   },
   "dialog": {
     "rename": "Rename Player",
