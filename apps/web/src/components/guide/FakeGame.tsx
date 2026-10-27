@@ -14,6 +14,11 @@ function useFakeGame(): QueryContext {
     const game: GameInfo = {
       day: 1,
       time: "night",
+      queue: {
+        past: 2,
+        writtenFuture: 0,
+        unknownFuture: 3,
+      },
     };
 
     const players: Player[] = [

@@ -81,6 +81,10 @@ export const Buttons = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1em;
+
+  &:empty {
+    display: none;
+  }
 `;
 
 export default Button;

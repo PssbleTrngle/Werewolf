@@ -26,5 +26,25 @@
     "min_players_requirement": "At least {{count}} players are required to start a game",
     "missing_selected_roles": "Not every player has a role selected",
     "frozen_role": "This role cannot be disabled"
+  },
+  "guide": {
+    "title": "How to use the app",
+    "next": "Understood",
+    "previous": "Back",
+    "section": {
+      "players": "Manage players",
+      "game": "Play a game",
+      "settings": "Customize the game logic"
+    },
+    "hint": {
+      "intro": "The game screen always shows what is currently happening",
+      "event.role": "What role is this event about?",
+      "event.participants": "Which players should be awake?",
+      "event.details": "What should happen? This is usually a question you ask the players.",
+      "event.choice": "Press which target the players choose.",
+      "undo": "You can undo the last action if you made a mistake…",
+      "redo": "…or redo it if it was actually correct",
+      "outro": "You're ready to go"
+    }
   }
 }
