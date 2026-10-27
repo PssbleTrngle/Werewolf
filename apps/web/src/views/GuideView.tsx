@@ -1,8 +1,6 @@
 import { MIN_PLAYERS } from "logic";
-import { Villager } from "logic/src/game/role/villager";
-import { Werewolf } from "logic/src/game/role/wolf";
 import { useReducer } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import styled from "styled-components";
 import {
   Button,
@@ -11,7 +9,6 @@ import {
   CheckIcon,
   EventScreen,
   HomeIcon,
-  RolePanel,
   SettingsIcon,
   Title,
   UserIcon,
@@ -48,47 +45,30 @@ export default function GuideView() {
   return (
     <Centered>
       <Title>{t("guide.title")}</Title>
-      <Notice>
-        This app is made to be used by the moderator of the game and only them.
-        There is an online version in the works, but no ETA yet.
-      </Notice>
+      <Notice>{t("guide.notice")}</Notice>
 
       <SectionTitle>
         <UserIcon />
-        {t("guide.section.players")}
+        {t("guide.section.players.title")}
       </SectionTitle>
 
+      <Text>{t("guide.section.players.manage", { min: MIN_PLAYERS })}</Text>
+      <Text>{t("guide.section.players.roles")}</Text>
       <Text>
-        In the players tab you can add, remove & rename players. You need at
-        least {MIN_PLAYERS} to start a game.
-      </Text>
-      <Text>
-        You can asign the roles manually, or let the app asign them randomly
-        until you like what you see.
-      </Text>
-      <Text>
-        The badges <InlineBadge value={impact} /> next to the player names show
-        how much the role impacts the game negativily or positivly. The badge on
-        the top shows the summed up scores of all selected roles. The amount the
-        values deviates from zero tells you how much the odds are stacked in
-        favor of either the villagers or werewolfs.
+        <Trans
+          ns="local"
+          i18nKey="guide.section.players.impact"
+          components={{ badge: <InlineBadge value={impact} /> }}
+        />
       </Text>
 
       <SectionTitle>
         <HomeIcon />
-        {t("guide.section.game")}
+        {t("guide.section.game.title")}
       </SectionTitle>
 
-      <Text>
-        The home tab can be used to start/stop and actually play the game. You
-        can at any time exit the without interupting the game, but you cannot
-        modify any of the players while a game is running.
-      </Text>
-
-      <Text>
-        Below is an example of an active game, showing you what the different
-        parts of the screen mean.
-      </Text>
+      <Text>{t("guide.section.game.manage")}</Text>
+      <Text>{t("guide.section.game.example")}</Text>
 
       <FakeGame>
         <Controls>
@@ -109,25 +89,16 @@ export default function GuideView() {
 
       <SectionTitle>
         <SettingsIcon />
-        {t("guide.section.settings")}
+        {t("guide.section.settings.title")}
       </SectionTitle>
 
-      <Text>
-        In the roles tab you can disable or enable the various roles, with the
-        exception of the <RolePanel role={Villager} /> and the{" "}
-        <RolePanel role={Werewolf} />. These will be excluded from the role
-        randomizer in the players tab.
-      </Text>
-      <Text>
-        You can also slightly modify some additional parts of the game's logic
-        in the settings tab.
-      </Text>
+      <Text>{t("guide.section.settings.roles")}</Text>
+      <Text>{t("guide.section.settings.additional")}</Text>
     </Centered>
   );
 }
 
 const Text = styled.p`
-  padding-inline: 1em;
   width: 1000px;
   max-width: 95dvw;
 `;

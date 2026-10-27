@@ -12,7 +12,8 @@
     "game": "Dorf",
     "players": "Spieler",
     "roles": "Rollen",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "guide": "Anleitung"
   },
   "status": {
     "game.no_active": "Kein aktives Spiel"
@@ -25,5 +26,38 @@
   "dialog": {
     "rename": "Spieler umbenennen",
     "role_select": "Rolle auswählen"
+  },
+  "guide": {
+    "title": "Wie die App benutzt wird",
+    "next": "Verstanden",
+    "previous": "Zurück",
+    "section": {
+      "players": {
+        "title": "Spieler verwalten",
+        "manage": "Auf der Spieler-Seite lassen sich Spieler erstellen, löschen und bearbeiten. Es werden mindestens {{min}} Spieler benötigt, um eine Runde zu starten.",
+        "roles": "Du kannst die Rollen manuell auswählen, oder durch die App zufällig verteilen lassen.",
+        "impact": "Die Marke <badge /> neben dem Spielernamen zeigt wie sehr die Rollen das Spiel negativ oder positiv beiflusst. The Marke ganz oben zeigt den aufsummierten Wert aller verteilter Rollen. Wie sehr dieser Wert von Null abweicht zeigt an, ob die Chancen besser für die $t(common:role.group.villager) oder die $t(common:role.group.wolf) stehen."
+      },
+      "game": {
+        "title": "Eine Runde spielen",
+        "manage": "Auf der Hauptseite lasst sich das tatsächlich Spiel starten/stoppen. Zu jedem Zeitpunkt lässt sich die Seite verlassen, ohne das Spiel zu löschen, aber es lassen sich keine Spieler bearbeiten solange eine Runde aktiv ist.",
+        "example": "Hier ist ein Beispiel eines Spieles, welches erkärt, was auf dem Bildschirm angezeigt wird."
+      },
+      "settings": {
+        "title": "Verändere die Spiel-Logik",
+        "roles": "Auf der Rollen-Seite lassen sich die verschiedene Rollen aktivieren oder deaktivieren, mit Ausnahme der $t(common:role.villager.name) und $t(common:role.werewolf.name) Rolle. Deaktivierte Rollen werden nicht beim zufälligen Verteilen genutzt.",
+        "additional": "Außerdem lassen sich verschiedene Logikabläufe des Spieles auf in den $t(nav.settings) anpassen."
+      }
+    },
+    "hint": {
+      "intro": "Der Bildschirm zeigt an, was aktuell im Spiel passiert",
+      "event.role": "Welche Rolle is an der Reihe?",
+      "event.participants": "Welche Spieler sollten wach sein?",
+      "event.details": "Was sollte passieren? Hier steht für gewöhnlich eine Frage, die den Spielern gestellt wird",
+      "event.choice": "Wähle aus, welche Entscheidung die Spieler getroffen haben",
+      "undo": "Du kannst die letzte Aktion rückgängig machen, falls du einen Fehler gemacht hast…",
+      "redo": "…oder wieder anwenden",
+      "outro": "Das war's, du bist bereit"
+    }
   }
 }

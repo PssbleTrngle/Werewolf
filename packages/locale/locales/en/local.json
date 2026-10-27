@@ -31,10 +31,24 @@
     "title": "How to use the app",
     "next": "Understood",
     "previous": "Back",
+    "notice": "This app is made to be used by the moderator of the game and only them. There is an online version in the works, but no ETA yet.",
     "section": {
-      "players": "Manage players",
-      "game": "Play a game",
-      "settings": "Customize the game logic"
+      "players": {
+        "title": "Manage players",
+        "manage": "In the players tab you can add, remove & rename players. You need at least {{min}} to start a game.",
+        "roles": "You can asign the roles manually, or let the app asign them randomly until you like what you see.",
+        "impact": "The badges <badge /> next to the player names show how much the role impacts the game negativily or positivly. The badge on the top shows the summed up scores of all selected roles. How much the amount deviates from zero tells you how much the odds are stacked in favor of either the $t(common:role.group.villager) or $t(common:role.group.wolf)."
+      },
+      "game": {
+        "title": "Play a game",
+        "manage": "The home tab can be used to start/stop and actually play the game. You can at any time exit the page without interupting the game, but you cannot modify any of the players while a game is running.",
+        "example": "Below is an example of an active game, showing you what the different parts of the screen mean."
+      },
+      "settings": {
+        "title": "Customize the game logic",
+        "roles": "In the roles tab you can disable or enable the various roles, with the exception of the $t(common:role.villager.name) and the $t(common:role.werewolf.name). These will be excluded from the role randomizer in the players tab.",
+        "additional": "You can also slightly modify some additional parts of the game's logic in the $t(nav.settings) tab."
+      }
     },
     "hint": {
       "intro": "The game screen always shows what is currently happening",

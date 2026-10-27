@@ -53,9 +53,10 @@ const HintContent = styled.div`
   max-width: 90dvw;
 `;
 
-const GlobalHint = styled.p`
+const GlobalHint = styled.div`
   background: ${(p) => p.theme.accent};
 
+  margin-block: 0.5em;
   padding: 0.5em;
   text-align: center;
   border-radius: 3px;
